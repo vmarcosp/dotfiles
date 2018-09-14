@@ -1,0 +1,22 @@
+{
+  "workbench.iconTheme": "vscode-icons",
+  "workbench.colorTheme": "Atom Material Theme",
+  "window.zoomLevel": 1,
+  "editor.disableTranslate3d": true,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.showSuggestionsAsSnippets": true,
+  "emmet.triggerExpansionOnTab": true,
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+  "files.insertFinalNewline": true,
+  "editor.formatOnSave": true,
+  "javascript.format.insertSpaceAfterConstructor": true,
+  "editor.tabSize": 2,
+  "eslint.autoFixOnSave": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.fontFamily": "'Monaco', 'Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "vsicons.dontShowNewVersionMessage": true
+}

@@ -1,0 +1,19 @@
+[core]
+	editor = code --wait
+
+[alias]
+	a = add
+	sts = status
+	sts = status -sb
+	logger = git log --graph --abbrev-commit --decorate --date=relative
+	cm = commit -m
+	ca = commit -a
+	aall = add .
+	d = diff
+	fuck = reset --hard
+
+[push]
+	default = current
+
+[log]
+	decorate = short
