@@ -1,4 +1,4 @@
-# mv vscode's settings.json
+# mv vscode settings.json
 cp vscode/settings.json ~/.config/Code/User/settings.json
 
 # mv git config
