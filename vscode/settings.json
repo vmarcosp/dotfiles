@@ -1,1 +1,28 @@
-{}
+{
+  "workbench.iconTheme": "vscode-great-icons",
+  "window.zoomLevel": 0,
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact"
+  },
+  "emmet.showSuggestionsAsSnippets": true,
+  "emmet.triggerExpansionOnTab": true,
+  "files.insertFinalNewline": true,
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.fontFamily": "'Fira Code', 'Monaco','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+  "editor.fontLigatures": true,
+  "editor.fontSize": 16,
+  "breadcrumbs.enabled": true,
+  "files.exclude": {
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/*.bs.js": true,
+    "node_modules/": true,
+    "build/": true
+  },
+  "window.titleBarStyle": "custom"
+}
