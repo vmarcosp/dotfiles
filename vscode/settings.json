@@ -24,5 +24,6 @@
     "node_modules/": true,
     "build/": true
   },
-  "window.titleBarStyle": "custom"
+  "window.titleBarStyle": "custom",
+  "workbench.colorTheme": "Palenight Theme"
 }
