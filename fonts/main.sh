@@ -1,2 +1,2 @@
-sudo bash fira_code.sh
-sudo bash monaco.sh
+bash ./fira_code.sh
+bash ./monaco.sh
