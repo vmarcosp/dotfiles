@@ -1,3 +1,4 @@
 <p align="center">
-  <img src="./logo.svg" width="250" />
+  <img src="./assets/logo.svg" width="250" />
  </p>
+<hr>
