@@ -1,0 +1,15 @@
+{
+  "diagnostic.errorSign": "❗️",
+  "diagnostic.warningSign": "⚠️ ",
+  "diagnostic.infoSign": "⚠️ ",
+  "javascript.validate.enable": false,
+  "coc.preferences.formatOnSaveFiletypes": ["reason", "json"],
+  "eslint.autoFixOnsave": true,
+  "languageserver": {
+    "ocaml-lsp": {
+      "command": "esy",
+      "args": ["sh", "-c", "ocamllsp"],
+      "filetypes": ["ocaml", "reason"]
+    }
+  }
+}
