@@ -1,7 +1,3 @@
-# dotfiles
-
-My dotfiles :metal:
-
-## LICENSE
-WTFPL (DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE)
-
+<p align="center">
+  <img src="./logo.svg" width="250" />
+ </p>
