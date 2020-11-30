@@ -1,4 +1,26 @@
 <p align="center">
-  <img src="./__assets/logo.svg" width="250" />
+  <br>
+  <img src="./__assets/logo.svg" width="200" />
+  <br>
  </p>
+
+<br>
 <hr>
+<br>
+
+ ## This repository contains config files for:
+
+### nvim
+  - coc settings
+  - basic nvim config
+
+### zsh
+  - zshrc
+  - ohmyzsh
+  - zsh-nvm
+
+### resources
+  - `.editorconfig`
+
+## LICENSE
+WTFPL
