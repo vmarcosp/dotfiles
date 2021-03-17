@@ -91,10 +91,8 @@ let NERDTreeIgnore = ['\.bs.js$']
 iabbrev lenght length
 iabbrev widht width
 iabbrev heigth height
-iabbrev discipline disicpline
 " ---------------------
 
-" ------- Testing -----------
 " Não quebrar linhas por padrão. Para definir quebra de linha, só entrar no arquivo e digitar :set wrap
 set nowrap
 
