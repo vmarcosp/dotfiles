@@ -3,13 +3,21 @@
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
   "javascript.validate.enable": false,
-  "coc.preferences.formatOnSaveFiletypes": ["reason", "json"],
+  "coc.preferences.formatOnSaveFiletypes": ["reason", "json", "rescript"],
   "eslint.autoFixOnsave": true,
+  "tsserver.enableJavascript": true,
   "languageserver": {
-    "ocaml-lsp": {
+      "ocaml-lsp": {
       "command": "esy",
       "args": ["sh", "-c", "ocamllsp"],
       "filetypes": ["ocaml", "reason"]
+    },
+    "rescript": {
+      "enable": true,
+      "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
+      "args": ["--node-ipc"],
+      "filetypes": ["rescript"],
+      "rootPatterns": ["bsconfig.json"]
     }
   }
 }
