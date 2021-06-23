@@ -54,21 +54,22 @@ set background=dark
 " let g:dracula_italic = 0
 " colorscheme dracula
 " let g:airline_theme='dracula'
-"
+
 " Palenight 
-colorscheme palenight
-let g:airline_theme='palenight'
+" colorscheme palenight
+" let g:airline_theme='palenight'
 
 " OceanicNext 
 " colorscheme OceanicNext
 " let g:airline_theme='oceanicnext'
+
 "
 " Gruvbox
-" colorscheme gruvbox
-" let g:airline_theme='gruvbox'
+colorscheme gruvbox
+let g:airline_theme='gruvbox'
 
 " Iceberg
-"c olorscheme iceberg
+" colorscheme iceberg
 " let g:airline_theme='iceberg'
 " -------------------------------------------------
 
