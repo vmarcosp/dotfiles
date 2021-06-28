@@ -63,7 +63,6 @@ set background=dark
 " colorscheme OceanicNext
 " let g:airline_theme='oceanicnext'
 
-"
 " Gruvbox
 colorscheme gruvbox
 let g:airline_theme='gruvbox'
@@ -71,26 +70,19 @@ let g:airline_theme='gruvbox'
 " Iceberg
 " colorscheme iceberg
 " let g:airline_theme='iceberg'
+
 " -------------------------------------------------
 
-syntax on
-set expandtab
-set tabstop=2
-set softtabstop=2
-set number
-set ignorecase
+
+" ---------- Commands -----------------
+command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
 
 " ---------- Shortcuts -----------------
-autocmd FileType javascript nnoremap <c-a> :CocCommand eslint.executeAutofix<cr>
-autocmd FileType javascriptreact nnoremap <c-a> :CocCommand eslint.executeAutofix<cr>
-autocmd FileType typescript nnoremap <c-a> :CocCommand eslint.executeAutofix<cr>
-autocmd FileType typescriptreact nnoremap <c-a> :CocCommand eslint.executeAutofix<cr>
-autocmd FileType reason nnoremap <c-a> :call CocAction('format')<cr>
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-autocmd FileType typescriptreact nnoremap <c-f> :Prettier <cr>
-autocmd FileType javascriptreact nnoremap <c-f> :Prettier <cr>
-autocmd FileType typescript nnoremap <c-f> :Prettier <cr>
-autocmd FileType javascript nnoremap <c-f> :Prettier <cr>
+autocmd FileType typescriptreact nnoremap <c-i> :FormatFiles <cr>
+autocmd FileType javascriptreact nnoremap <c-i> :FormatFiles <cr>
+autocmd FileType typescript nnoremap <c-i>  :FormatFiles <cr>
+autocmd FileType javascript nnoremap <c-i>:FormatFiles <cr>
+
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
 
 nnoremap <c-s> :w <cr>
@@ -100,13 +92,10 @@ nnoremap <c-l> :nohl <cr>
 nnoremap <c-p> :Files <cr>
 nnoremap <c-Up> 5k <cr>
 nnoremap <c-Down> 5j <cr>
-
-set omnifunc=rescript#Complete
-set completeopt+=preview
+" ---------------------------------------
 
 " -------- Fonts & Icons -----------
 set encoding=utf8
-
 if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
@@ -125,16 +114,24 @@ iabbrev heigth height
 iabbrev discipline discipline
 " ---------------------
 
-set mouse=a
 
-" fzf config
+" ---------- FZF ---------------
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
 let $FZF_DEFAULT_COMMAND="rg --files-with-matches --hidden '.' --glob '!.git'"
-
+" ---------------------
+ 
+syntax on
 set nowrap
 set clipboard+=unnamedplus
-
 let g:user_emmet_leader_key=','
 set foldmethod=syntax
 set nofoldenable
+set mouse=a
+set omnifunc=rescript#Complete
+set completeopt+=preview
+set expandtab
+set tabstop=2
+set softtabstop=2
+set number
+set ignorecase
