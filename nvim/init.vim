@@ -94,8 +94,8 @@ autocmd FileType javascript nnoremap <c-f> :Prettier <cr>
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
 
 nnoremap <c-s> :w <cr>
-nnoremap <c-j> :m +1 <cr>
-nnoremap <c-k> :m -2 <cr>
+nnoremap <c-k> :m +1 <cr>
+nnoremap <c-j> :m -2 <cr>
 nnoremap <c-l> :nohl <cr>
 nnoremap <c-p> :Files <cr>
 nnoremap <c-Up> 5k <cr>
@@ -125,9 +125,12 @@ iabbrev heigth height
 iabbrev discipline discipline
 " ---------------------
 
+set mouse=a
+
 " fzf config
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
 let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+let $FZF_DEFAULT_COMMAND="rg --files-with-matches --hidden '.' --glob '!.git'"
 
 set nowrap
 set clipboard+=unnamedplus
@@ -135,10 +138,3 @@ set clipboard+=unnamedplus
 let g:user_emmet_leader_key=','
 set foldmethod=syntax
 set nofoldenable
-
-" Disable arrows
-nnoremap <Left> :echo "No left for you!"<CR>
-nnoremap <Up> :echo "No up for you!"<CR>
-nnoremap <Down> :echo "No down for you!"<CR>
-nnoremap <Right> :echo "No right for you!"<CR>
-
