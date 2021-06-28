@@ -1,3 +1,6 @@
+# zsh
+ln -s -f $PWD/env/.gitconfig ~/
+
 # mv git config
 ln -s -f $PWD/env/.gitconfig ~/
 

@@ -110,7 +110,7 @@ tmux_conf_theme_window_status_attr='none'
 tmux_conf_theme_window_status_format='#I #W'
 tmux_conf_theme_window_status_format='#{circled_window_index} #W'
 
-tmux_conf_theme_window_status_format='#I #W#{?window_bell_flag,🔔,} #{?window_zoomed_flag,⛶,}'
+tmux_conf_theme_window_status_format='#I::#W#{?window_bell_flag,🔔,} #{?window_zoomed_flag,⛶,}'
 
 # window current status style
 #   - built-in variables are:
@@ -285,26 +285,29 @@ bind -n C-S-M-Left swap-window -t -1\; select-window -t -1
 bind -n C-S-M-Right swap-window -t +1\; select-window -t +1
 
 # Navegar pelos painéis com Alt+h,j,k,l
-bind -n M-h select-pane -L
-bind -n M-l select-pane -R
-bind -n M-k select-pane -U
-bind -n M-j select-pane -D
+bind -n C-M-Left select-pane -L
+bind -n C-M-Right select-pane -R
+bind -n C-M-Up select-pane -U
+bind -n C-M-Down select-pane -D
 
 # Navegar pelas janelas com Ctrl+Alt+h,j,k,l
 bind -n C-M-h select-window -p
 bind -n C-M-l select-window -n
 
 # Criar painel vertical com <prefix>-
-bind - split-window -v
+bind - split-window -h
 
 # Criar painel horizontal com '<prefix>\'
-bind \\ split-window -h
+bind \\ split-window -v
 
 # Definir modo vim para navegação 
 set-window-option -g mode-keys vi
 
 # Habilitar mouse
 set -g mouse on
+# set -g mouse-resize-pane on
+# set -g mouse-select-pane on
+# set -g mouse-select-window on
 
 # Rebind do `s` para exibir a árvore de painéis em ordem alfabética
 bind s choose-tree -s -Z -O name
@@ -331,6 +334,10 @@ tmux_conf_theme_window_status_current_bg='#faae00'      # orange
 # previous tabs
 tmux_conf_theme_window_status_last_fg='#000000'         # black
 tmux_conf_theme_window_status_last_bg='#e0b349'         # orange
+tmux_conf_theme_window_status_fg='#000000'         # orange
+tmux_conf_theme_window_status_bg='#e0b349'         # orange
 
 # border color
 tmux_conf_theme_pane_active_border='#faae00'            # orange
+
+run-shell ~/.config/tmux/resurrect.tmux
