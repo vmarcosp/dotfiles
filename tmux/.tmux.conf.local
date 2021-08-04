@@ -284,15 +284,11 @@ set -g mode-keys vi
 bind -n C-S-M-Left swap-window -t -1\; select-window -t -1
 bind -n C-S-M-Right swap-window -t +1\; select-window -t +1
 
-# Navegar pelos painéis com Alt+h,j,k,l
-bind -n C-M-Left select-pane -L
-bind -n C-M-Right select-pane -R
-bind -n C-M-Up select-pane -U
-bind -n C-M-Down select-pane -D
-
-# Navegar pelas janelas com Ctrl+Alt+h,j,k,l
-bind -n C-M-h select-window -p
-bind -n C-M-l select-window -n
+# Navegar pelos painéis
+bind -n M-Left select-pane -L
+bind -n M-Right select-pane -R
+bind -n M-Up select-pane -U
+bind -n M-Down select-pane -D
 
 # Criar painel vertical com <prefix>-
 bind - split-window -h
@@ -301,7 +297,7 @@ bind - split-window -h
 bind \\ split-window -v
 
 # Definir modo vim para navegação 
-set-window-option -g mode-keys vi
+# set-window-option -g mode-keys vi
 
 # Habilitar mouse
 set -g mouse on
@@ -341,3 +337,5 @@ tmux_conf_theme_window_status_bg='#e0b349'         # orange
 tmux_conf_theme_pane_active_border='#faae00'            # orange
 
 run-shell ~/.config/tmux/resurrect.tmux
+
+set-window-option -g xterm-keys on

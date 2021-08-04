@@ -29,6 +29,7 @@ Plug 'arcticicestudio/nord-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
 Plug 'cocopon/iceberg.vim'
+Plug 'ayu-theme/ayu-vim'
 " --------------------------
 
 " -------- Syntax plugins --------
@@ -36,10 +37,10 @@ Plug 'sheerun/vim-polyglot'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
-Plug 'elixir-editors/vim-elixir' " Syntax highlighting, Filetype detection, Automatic indentation
-Plug 'mhinz/vim-mix-format' " Run mix formatter asynchronously (:MixFormat, :verb MixFormat, :MixFormatDiff)
-Plug 'slashmili/alchemist.vim' " Completion for Modules and functions, and much more...
-Plug 'neomake/neomake' " Execute code checks to find mistakes in the currently edited file
+Plug 'elixir-editors/vim-elixir' 
+Plug 'mhinz/vim-mix-format'
+Plug 'slashmili/alchemist.vim' 
+Plug 'neomake/neomake'
 " --------------------------------
 
 call plug#end()
@@ -70,6 +71,10 @@ let g:airline_theme='gruvbox'
 " Iceberg
 " colorscheme iceberg
 " let g:airline_theme='iceberg'
+
+" Ayu 
+" colorscheme ayu 
+" let g:airline_theme='ayu'
 
 " -------------------------------------------------
 
