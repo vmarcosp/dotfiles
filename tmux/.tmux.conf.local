@@ -110,7 +110,7 @@ tmux_conf_theme_window_status_attr='none'
 tmux_conf_theme_window_status_format='#I #W'
 tmux_conf_theme_window_status_format='#{circled_window_index} #W'
 
-tmux_conf_theme_window_status_format='#I::#W#{?window_bell_flag,🔔,} #{?window_zoomed_flag,⛶,}'
+tmux_conf_theme_window_status_format='#W#{?window_bell_flag,🔔,} #{?window_zoomed_flag,⛶,}'
 
 # window current status style
 #   - built-in variables are:
@@ -311,12 +311,42 @@ bind s choose-tree -s -Z -O name
 # ------ Gruvbox Theme ---------
 
 # line
-tmux_conf_theme_status_bg='#3a3a3a'                     # gray
+# tmux_conf_theme_status_bg='#3a3a3a'                     # gray
+# tmux_conf_theme_window_status_bg='#3a3a3a'              # dark gray
+
+# status left style
+# tmux_conf_theme_status_left_fg='#000000,#000000,#000000'  # black, black, black 
+# tmux_conf_theme_status_left_bg='#abad35,#ff00af,#00afff'  # orange , pink, white blue
+# tmux_conf_theme_status_left_attr='bold,none,none'
+
+# status right style
+# tmux_conf_theme_status_right_fg='#8a8a8a,#000000' # light gray, black
+# tmux_conf_theme_status_right_bg='#3a3a3a,#faae00' # gray, orange
+
+# current tab
+# tmux_conf_theme_window_status_current_fg='#000000'      # black
+# tmux_conf_theme_window_status_current_bg='#faae00'      # orange
+
+# previous tabs
+# tmux_conf_theme_window_status_last_fg='#000000'         # black
+# tmux_conf_theme_window_status_last_bg='#e0b349'         # orange
+# tmux_conf_theme_window_status_fg='#000000'         # orange
+# tmux_conf_theme_window_status_bg='#e0b349'         # orange
+
+# border color
+# tmux_conf_theme_pane_active_border='#faae00'            # orange
+
+# ----------------------------
+
+# ------ Ayu Theme ---------
+
+# line
+tmux_conf_theme_status_bg='#0f1418'                     # gray
 tmux_conf_theme_window_status_bg='#3a3a3a'              # dark gray
 
 # status left style
 tmux_conf_theme_status_left_fg='#000000,#000000,#000000'  # black, black, black 
-tmux_conf_theme_status_left_bg='#abad35,#ff00af,#00afff'  # orange , pink, white blue
+tmux_conf_theme_status_left_bg='#36a2d9,#0f1418,#0f1418'  # orange , pink, white blue
 tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
@@ -324,17 +354,21 @@ tmux_conf_theme_status_right_fg='#8a8a8a,#000000' # light gray, black
 tmux_conf_theme_status_right_bg='#3a3a3a,#faae00' # gray, orange
 
 # current tab
-tmux_conf_theme_window_status_current_fg='#000000'      # black
-tmux_conf_theme_window_status_current_bg='#faae00'      # orange
+tmux_conf_theme_window_status_current_fg='#0f1418'      # black
+tmux_conf_theme_window_status_current_bg='#ff3366'      # orange
 
 # previous tabs
-tmux_conf_theme_window_status_last_fg='#000000'         # black
-tmux_conf_theme_window_status_last_bg='#e0b349'         # orange
-tmux_conf_theme_window_status_fg='#000000'         # orange
-tmux_conf_theme_window_status_bg='#e0b349'         # orange
+tmux_conf_theme_window_status_last_fg='#0f1418'         # black
+tmux_conf_theme_window_status_last_bg='#ef7179'         # orange
+tmux_conf_theme_window_status_fg='#0f1419'         # orange
+tmux_conf_theme_window_status_bg='#ef7178'         # orange
 
 # border color
 tmux_conf_theme_pane_active_border='#faae00'            # orange
+
+# ----------------------------
+
+
 
 run-shell ~/.config/tmux/resurrect.tmux
 

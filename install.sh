@@ -4,6 +4,9 @@ ln -s -f $PWD/env/.gitconfig ~/
 # mv git config
 ln -s -f $PWD/env/.gitconfig ~/
 
+# link tmux config
+ln -s -f $PWD/tmux/.tmux.conf.local ~/
+
 # link nvim files
 mkdir -p ~/.config/coc/extensions
 mkdir -p ~/.config/nvim
