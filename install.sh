@@ -1,8 +1,8 @@
-# zsh
+# git
 ln -s -f $PWD/env/.gitconfig ~/
 
-# mv git config
-ln -s -f $PWD/env/.gitconfig ~/
+# zsh
+ln -s -f $PWD/env/.zshrc ~/
 
 # link tmux config
 ln -s -f $PWD/tmux/.tmux.conf.local ~/
@@ -17,4 +17,6 @@ ln -s -f $PWD/nvim/coc-package.json ~/.config/coc/extensions/package.json
 ln -s -f $PWD/nvim/coc-db.json ~/.config/coc/extensions/db.json
 
 # fix NVM/Node ZSH
-# bash nvm-zsh.sh
+git clone https://github.com/lukechilds/zsh-nvm.git ~/.zsh-nvm
+
+source ~/.zsh-nvm/zsh-nvm.plugin.zsh
