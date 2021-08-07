@@ -65,16 +65,16 @@ set background=dark
 " let g:airline_theme='oceanicnext'
 
 " Gruvbox
-colorscheme gruvbox
-let g:airline_theme='gruvbox'
+"colorscheme gruvbox
+"let g:airline_theme='gruvbox'
 
 " Iceberg
 " colorscheme iceberg
 " let g:airline_theme='iceberg'
 
 " Ayu 
-" colorscheme ayu 
-" let g:airline_theme='ayu'
+colorscheme ayu 
+let g:airline_theme='ayu'
 
 " -------------------------------------------------
 
@@ -95,8 +95,8 @@ nnoremap <c-k> :m +1 <cr>
 nnoremap <c-j> :m -2 <cr>
 nnoremap <c-l> :nohl <cr>
 nnoremap <c-p> :Files <cr>
-nnoremap <c-Up> 5k <cr>
-nnoremap <c-Down> 5j <cr>
+nnoremap <s-Up> 5k <cr>
+nnoremap <s-Down> 5j <cr>
 " ---------------------------------------
 
 " -------- Fonts & Icons -----------
