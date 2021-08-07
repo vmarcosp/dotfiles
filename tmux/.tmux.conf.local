@@ -1,4 +1,4 @@
-# https://github.com/gpakosz/.tmux
+  # https://github.com/gpakosz/.tmux
 # (‑●‑●)> dual licensed under the WTFPL v2 license and the MIT license,
 #         without any warranty.
 #         Copyright 2012— Gregory Pakosz (@gpakosz).
@@ -341,30 +341,30 @@ bind s choose-tree -s -Z -O name
 # ------ Ayu Theme ---------
 
 # line
-tmux_conf_theme_status_bg='#0f1418'                     # gray
-tmux_conf_theme_window_status_bg='#3a3a3a'              # dark gray
+tmux_conf_theme_status_bg='#0f1418'                     
+tmux_conf_theme_window_status_bg='#3a3a3a'              
 
 # status left style
-tmux_conf_theme_status_left_fg='#000000,#000000,#000000'  # black, black, black 
-tmux_conf_theme_status_left_bg='#36a2d9,#0f1418,#0f1418'  # orange , pink, white blue
+tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
+tmux_conf_theme_status_left_bg='#36a2d9,#0f1418,#0f1418'  
 tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-tmux_conf_theme_status_right_fg='#8a8a8a,#000000' # light gray, black
-tmux_conf_theme_status_right_bg='#3a3a3a,#faae00' # gray, orange
+tmux_conf_theme_status_right_fg='#8a8a8a,#000000'
+tmux_conf_theme_status_right_bg='#192127,#36a2d9' 
 
 # current tab
-tmux_conf_theme_window_status_current_fg='#0f1418'      # black
-tmux_conf_theme_window_status_current_bg='#ff3366'      # orange
+tmux_conf_theme_window_status_current_fg='#0f1418'
+tmux_conf_theme_window_status_current_bg='#ff3366'
 
 # previous tabs
-tmux_conf_theme_window_status_last_fg='#0f1418'         # black
-tmux_conf_theme_window_status_last_bg='#ef7179'         # orange
-tmux_conf_theme_window_status_fg='#0f1419'         # orange
-tmux_conf_theme_window_status_bg='#ef7178'         # orange
+tmux_conf_theme_window_status_last_fg='#0f1418'  
+tmux_conf_theme_window_status_last_bg='#ef7179'  
+tmux_conf_theme_window_status_fg='#0f1419'       
+tmux_conf_theme_window_status_bg='#ef7178'       
 
 # border color
-tmux_conf_theme_pane_active_border='#faae00'            # orange
+tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
 

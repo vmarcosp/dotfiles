@@ -41,6 +41,7 @@ Plug 'elixir-editors/vim-elixir'
 Plug 'mhinz/vim-mix-format'
 Plug 'slashmili/alchemist.vim' 
 Plug 'neomake/neomake'
+Plug 'chrisbra/Colorizer'
 " --------------------------------
 
 call plug#end()
