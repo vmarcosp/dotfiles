@@ -1,12 +1,10 @@
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=/opt/homebrew/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/bvihjcep/.oh-my-zsh" 
-export PATH="/home/bvihjcep/.deno/bin:$PATH"
-export PATH="$HOME/.linuxbrew/bin:$HOME/.linuxbrew/sbin:$PATH"
-source ~/.zsh-nvm/zsh-nvm.plugin.zsh
-. $HOME/.asdf/asdf.sh
+export ZSH="/Users/marcos/.oh-my-zsh"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
@@ -48,6 +46,8 @@ ZSH_THEME="robbyrussell"
 # ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
+# Caution: this setting can cause issues with multiline prompts (zsh 5.7.1 and newer seem to work)
+# See https://github.com/ohmyzsh/ohmyzsh/issues/5765
 # COMPLETION_WAITING_DOTS="true"
 
 # Uncomment the following line if you want to disable marking untracked files
@@ -100,8 +100,20 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#
+#
+if [ "$TMUX" = "" ]; then tmux; fi
 
-export YVM_DIR=/home/bvihjcep/.yvm
-[ -r $YVM_DIR/yvm.sh ] && . $YVM_DIR/yvm.sh
-alias mon2cam="deno run --unstable -A -r -q https://raw.githubusercontent.com/ShayBox/Mon2Cam/master/src/mod.ts"
-eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+. $(brew --prefix asdf)/asdf.sh
+
+function mktouch () {
+  for p in $@; do
+    mkdir -p $(dirname "$p")
+  done
+
+  touch $@
+}
