@@ -42,6 +42,7 @@ Plug 'mhinz/vim-mix-format'
 Plug 'slashmili/alchemist.vim' 
 Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
+Plug 'preservim/nerdtree'
 " --------------------------------
 
 call plug#end()
@@ -96,6 +97,7 @@ nnoremap <c-k> :m +1 <cr>
 nnoremap <c-j> :m -2 <cr>
 nnoremap <c-l> :nohl <cr>
 nnoremap <c-p> :Files <cr>
+nnoremap <c-i> :NERDTreeToggle <cr>
 nnoremap <s-Up> 5k <cr>
 nnoremap <s-Down> 5j <cr>
 " ---------------------------------------
@@ -111,6 +113,7 @@ let g:airline_symbols.notexists = ' ✗'
 
 " ---------- Files & Folders ---------------
 set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi
+let NERDTreeIgnore = ['\.bs.js$']
 " ------------------------------------------
 
 " ------- Typos --------
