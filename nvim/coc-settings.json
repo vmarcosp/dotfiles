@@ -3,9 +3,10 @@
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
   "javascript.validate.enable": false,
-  "coc.preferences.formatOnSaveFiletypes": ["reason", "json", "rescript"],
+  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json"],
   "eslint.autoFixOnsave": true,
   "tsserver.enableJavascript": true,
+  "tsserver.enableTypescript": false,
   "languageserver": {
       "ocaml-lsp": {
       "command": "esy",
