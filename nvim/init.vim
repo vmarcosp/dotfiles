@@ -124,14 +124,13 @@ lua << EOF
 local g = vim.g
 g.nvim_tree_special_files = { } 
 
-g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
+g.nvim_tree_add_trailing = 0
 g.nvim_tree_git_hl = git_status
 g.nvim_tree_gitignore = git_status
 g.nvim_tree_hide_dotfiles = 0
 g.nvim_tree_highlight_opened_files = 0
 g.nvim_tree_indent_markers = 1
 g.nvim_tree_ignore = { ".git", "node_modules", ".cache" }
-g.nvim_tree_quit_on_open = 0 -- closes tree when file's opened
 g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
 
 g.nvim_tree_icons = {
@@ -166,7 +165,7 @@ require'nvim-tree'.setup {
    hijack_netrw = true,
    ignore_ft_on_setup = { "dashboard" },
    auto_close = false,
-   open_on_tab = false,
+   open_on_tab = true,
    hijack_cursor = true,
    update_cwd = true,
    update_focused_file = {
@@ -184,13 +183,9 @@ EOF
 
 " -- Commands -------------------------------------
 command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
- au VimEnter * NvimTreeFocus
+au VimEnter * NvimTreeFocus
 
 " -- Shortcuts ------------------------------------
-autocmd FileType typescriptreact nnoremap <c-fm> :FormatFiles <cr>
-autocmd FileType javascriptreact nnoremap <c-fm> :FormatFiles <cr>
-autocmd FileType typescript nnoremap <c-fm>  :FormatFiles <cr>
-autocmd FileType javascript nnoremap <c-fm>:FormatFiles <cr>
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
 nnoremap <c-s> :w <cr>
 nnoremap <c-k> :m +1 <cr>
@@ -198,9 +193,11 @@ nnoremap <c-j> :m -2 <cr>
 nnoremap <c-l> :nohl <cr>
 nnoremap <s-Up> 5k <cr>
 nnoremap <s-Down> 5j <cr>
-nnoremap <c-p> :Telescope find_files prompt_prefix=⚡<cr>
+nnoremap <c-p> :Telescope find_files <cr>
+nnoremap <c-o> :Telescope live_grep  <cr>
 nnoremap <c-n> :BufferLineCyclePrev <CR>
 nnoremap <c-m> :BufferLineCycleNext <CR>
+nnoremap <c-i> :NvimTreeToggle <CR>
 " -------------------------------------------------
 
 " -- Fonts & Icons --------------------------------
@@ -230,7 +227,6 @@ let g:user_emmet_leader_key=','
 set foldmethod=syntax
 set nofoldenable
 set mouse=a
-set omnifunc=rescript#Complete
 set completeopt+=preview
 set expandtab
 set tabstop=2
