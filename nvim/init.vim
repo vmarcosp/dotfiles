@@ -1,31 +1,26 @@
 call plug#begin('~/.config/nvim/plugged')
 
-" Bufferline :: Tabs 
-Plug 'akinsho/bufferline.nvim'
-
-Plug 'tpope/vim-fugitive'
+" -- LSP & Syntax -----------------
+Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'tpope/vim-surround'
-Plug 'yuttie/comfortable-motion.vim'
-Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
+Plug 'lukas-reineke/indent-blankline.nvim'
+" ---------------------------------
 
-" Nvim tree
+" -- Nvim tree --------------------
 Plug 'kyazdani42/nvim-web-devicons'
 Plug 'kyazdani42/nvim-tree.lua'
+" ---------------------------------
 
-" Telescope
+" -- Telescope & Navigation --------
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'akinsho/bufferline.nvim'
+" ----------------------------------
 
-" ------- Basic plugins --------
-
-" -----------------------------
-
-" --------- Themes ---------
+" -- Themes ------------------------
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'       
-
 Plug 'joshdick/onedark.vim' 
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -35,10 +30,9 @@ Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
 Plug 'cocopon/iceberg.vim'
 Plug 'ayu-theme/ayu-vim'
-" --------------------------
+" ----------------------------------
 
-" -------- General Plugins --------
-Plug 'tpope/vim-sensible'
+" -- General Plugins ---------------
 Plug 'junegunn/seoul256.vim'
 Plug 'sheerun/vim-polyglot'
 Plug 'maxmellon/vim-jsx-pretty'
@@ -49,11 +43,15 @@ Plug 'mhinz/vim-mix-format'
 Plug 'slashmili/alchemist.vim' 
 Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
-" --------------------------------
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'yuttie/comfortable-motion.vim'
+" ----------------------------------
 
 call plug#end()
 
-" -------- Configuraçao de temas e cores ----------
+" -- Themes and Colors ----------------
 set t_Co=256
 set termguicolors
 set background=dark
@@ -86,91 +84,109 @@ let g:airline_theme='palenight'
 
 " -------------------------------------------------
 
-" ------ buffeliner.nvim --------------------------
+" -- Highlight line number ------------------------
+set cursorline
+au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
+" -------------------------------------------------
+
+" -- nvim-web-devicons ----------------------------
 lua << EOF
-require("bufferline").setup{}
+require("nvim-web-devicons").set_icon {
+  res = {
+    icon = "λ",
+    color = "#e6484f",
+    name = "rescript"
+  }
+}
 EOF
 " -------------------------------------------------
 
-" ------ nvim.tree config -------------------------
+" -- buffeliner.nvim ------------------------------
 lua << EOF
-require'nvim-tree'.setup()
+require("bufferline").setup{
+  options = {
+    separator_style = 'thin',
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = "",
+        highlight = "Directory",
+        text_align = "left"
+      }
+    }
+  }
+}
 EOF
-let g:nvim_tree_ignore = [ '.git', 'node_modules', '.cache' ] "empty by default
-let g:nvim_tree_gitignore = 1 "0 by default
-let g:nvim_tree_quit_on_open = 1 "0 by default, closes the tree when you open a file
-let g:nvim_tree_indent_markers = 1 "0 by default, this option shows indent markers when folders are open
-let g:nvim_tree_hide_dotfiles = 1 "0 by default, this option hides files and folders starting with a dot `.`
-let g:nvim_tree_git_hl = 1 "0 by default, will enable file highlight for git attributes (can be used without the icons).
-let g:nvim_tree_highlight_opened_files = 1 "0 by default, will enable folder and file icon highlight for opened files/directories.
-let g:nvim_tree_root_folder_modifier = ':~' "This is the default. See :help filename-modifiers for more options
-let g:nvim_tree_add_trailing = 1 "0 by default, append a trailing slash to folder names
-let g:nvim_tree_group_empty = 1 " 0 by default, compact folders that only contain a single folder into one node in the file tree
-let g:nvim_tree_disable_window_picker = 1 "0 by default, will disable the window picker.
-let g:nvim_tree_icon_padding = ' ' "one space by default, used for rendering the space between the icon and the filename. Use with caution, it could break rendering if you set an empty string depending on your font.
-let g:nvim_tree_symlink_arrow = ' >> ' " defaults to ' ➛ '. used as a separator between symlinks' source and target.
-let g:nvim_tree_respect_buf_cwd = 1 "0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
-let g:nvim_tree_create_in_closed_folder = 0 "1 by default, When creating files, sets the path of a file when cursor is on a closed folder to the parent folder when 0, and inside the folder when 1.
-let g:nvim_tree_refresh_wait = 500 "1000 by default, control how often the tree can be refreshed, 1000 means the tree can be refresh once per 1000ms.
-let g:nvim_tree_window_picker_exclude = {
-    \   'filetype': [
-    \     'notify',
-    \     'packer',
-    \     'qf'
-    \   ],
-    \   'buftype': [
-    \     'terminal'
-    \   ]
-    \ }
-
-let g:nvim_tree_show_icons = {
-    \ 'git': 1,
-    \ 'folders': 0,
-    \ 'files': 0,
-    \ 'folder_arrows': 0,
-    \ }
-
-let g:nvim_tree_icons = {
-    \ 'default': '',
-    \ 'symlink': '',
-    \ 'git': {
-    \   'unstaged': "",
-    \   'staged': "✓",
-    \   'unmerged': "",
-    \   'renamed': "➜",
-    \   'untracked': "★",
-    \   'deleted': "",
-    \   'ignored': "◌"
-    \   },
-    \ 'folder': {
-    \   'arrow_open': "",
-    \   'arrow_closed': "",
-    \   'default': "",
-    \   'open': "",
-    \   'empty': "",
-    \   'empty_open': "",
-    \   'symlink': "",
-    \   'symlink_open': "",
-    \   },
-    \   'lsp': {
-    \     'hint': "",
-    \     'info': "",
-    \     'warning': "",
-    \     'error': "",
-    \   }
-    \ }
-
-nnoremap <c-i> :NvimTreeToggle<cr>
-nnoremap <leader>r :NvimTreeRefresh<CR>
-
-highlight NvimTreeFolderIcon guibg=red
 " -------------------------------------------------
 
+" -- nvim.tree config -----------------------------
+lua << EOF
+local g = vim.g
+g.nvim_tree_special_files = { } 
 
-" ---------- Commands -----------------
+g.nvim_tree_add_trailing = 0 -- append a trailing slash to folder names
+g.nvim_tree_git_hl = git_status
+g.nvim_tree_gitignore = git_status
+g.nvim_tree_hide_dotfiles = 0
+g.nvim_tree_highlight_opened_files = 0
+g.nvim_tree_indent_markers = 1
+g.nvim_tree_ignore = { ".git", "node_modules", ".cache" }
+g.nvim_tree_quit_on_open = 0 -- closes tree when file's opened
+g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
+
+g.nvim_tree_icons = {
+   default = "",
+   symlink = "",
+   git = {
+      deleted = "",
+      ignored = "◌",
+      renamed = "➜",
+      staged = "✓",
+      unmerged = "",
+      unstaged = "",
+      untracked = "★",
+   },
+   folder = {
+      arrow_open = "",
+      arrow_closed = "",
+      default = "",
+      empty = "",
+      empty_open = "",
+      open = "",
+      symlink = "",
+      symlink_open = "",
+   },
+}
+
+g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/", string.rep(" ", 1000), "?:gs?^??" }
+
+require'nvim-tree'.setup {
+   lsp_diagnostics = false,
+   disable_netrw = true,
+   hijack_netrw = true,
+   ignore_ft_on_setup = { "dashboard" },
+   auto_close = false,
+   open_on_tab = false,
+   hijack_cursor = true,
+   update_cwd = true,
+   update_focused_file = {
+      enable = true,
+      update_cwd = true,
+   },
+   view = {
+      allow_resize = true,
+      side = "left",
+      width = 25,
+   },
+}
+EOF
+" -------------------------------------------------
+
+" -- Commands -------------------------------------
 command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
+ au VimEnter * NvimTreeFocus
 
-" ---------- Shortcuts -----------------
+" -- Shortcuts ------------------------------------
 autocmd FileType typescriptreact nnoremap <c-fm> :FormatFiles <cr>
 autocmd FileType javascriptreact nnoremap <c-fm> :FormatFiles <cr>
 autocmd FileType typescript nnoremap <c-fm>  :FormatFiles <cr>
@@ -183,38 +199,30 @@ nnoremap <c-l> :nohl <cr>
 nnoremap <s-Up> 5k <cr>
 nnoremap <s-Down> 5j <cr>
 nnoremap <c-p> :Telescope find_files prompt_prefix=⚡<cr>
-nnoremap <c-n> :BufferLineMovePrev <CR>
-nnoremap <c-m> :BufferLineMoveNext <CR>
-" --------------------------------------
+nnoremap <c-n> :BufferLineCyclePrev <CR>
+nnoremap <c-m> :BufferLineCycleNext <CR>
+" -------------------------------------------------
 
-" -------- Fonts & Icons -----------
+" -- Fonts & Icons --------------------------------
 set encoding=utf8
 if !exists('g:airline_symbols')
 let g:airline_symbols = {}
 endif
 let g:airline_powerline_fonts=1
 let g:airline_symbols.notexists = ' ✗'
-" ----------------------------------
+" -------------------------------------------------
 
-" ---------- Files & Folders ---------------
+" -- Files & Folders ------------------------------
 set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi
-let NERDTreeIgnore = ['\.bs.js$']
-" ------------------------------------------
+" -------------------------------------------------
 
-" ------- Typos --------
+" -- Typos ----------------------------------------
 iabbrev lenght length
 iabbrev widht width
 iabbrev heigth height
 iabbrev discipline discipline
-" ---------------------
+" -------------------------------------------------
 
-
-" ---------- FZF ---------------
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.9 } }
-let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:60%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
-let $FZF_DEFAULT_COMMAND="rg --files-with-matches --hidden '.' --glob '!.git'"
-" ---------------------
- 
 syntax on
 set nowrap
 set clipboard+=unnamedplus
