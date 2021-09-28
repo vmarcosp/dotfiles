@@ -1,5 +1,10 @@
 call plug#begin('~/.config/nvim/plugged')
 
+Plug 'terrortylor/nvim-comment'
+Plug 'andymass/vim-matchup'
+Plug 'windwp/nvim-autopairs'
+Plug 'famiu/bufdelete.nvim'
+
 " -- LSP & Syntax -----------------
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -91,6 +96,8 @@ au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg
 
 " -- nvim-web-devicons ----------------------------
 lua << EOF
+require('nvim_comment').setup()
+require('nvim-autopairs').setup{}
 require("nvim-web-devicons").set_icon {
   res = {
     icon = "λ",
@@ -126,11 +133,12 @@ g.nvim_tree_special_files = { }
 
 g.nvim_tree_add_trailing = 0
 g.nvim_tree_git_hl = git_status
-g.nvim_tree_gitignore = git_status
+g.nvim_tree_gitignore = 1
+g.nvim_tree_quit_on_open = 1
 g.nvim_tree_hide_dotfiles = 0
 g.nvim_tree_highlight_opened_files = 0
 g.nvim_tree_indent_markers = 1
-g.nvim_tree_ignore = { ".git", "node_modules", ".cache" }
+g.nvim_tree_ignore = { ".git", "node_modules", ".cache", "*.bs.js" }
 g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
 
 g.nvim_tree_icons = {
@@ -143,7 +151,7 @@ g.nvim_tree_icons = {
       staged = "✓",
       unmerged = "",
       unstaged = "",
-      untracked = "★",
+      untracked = "",
    },
    folder = {
       arrow_open = "",
@@ -175,7 +183,7 @@ require'nvim-tree'.setup {
    view = {
       allow_resize = true,
       side = "left",
-      width = 27,
+      width = 30,
    },
 }
 EOF
@@ -187,17 +195,18 @@ au VimEnter * NvimTreeFocus
 
 " -- Shortcuts ------------------------------------
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
-nnoremap <c-s> :w <cr>
-nnoremap <c-k> :m +1 <cr>
-nnoremap <c-j> :m -2 <cr>
-nnoremap <c-l> :nohl <cr>
-nnoremap <s-Up> 5k <cr>
-nnoremap <s-Down> 5j <cr>
-nnoremap <c-p> :Telescope find_files <cr>
-nnoremap <c-o> :Telescope live_grep  <cr>
-nnoremap <c-n> :BufferLineCyclePrev <CR>
-nnoremap <c-m> :BufferLineCycleNext <CR>
-nnoremap <c-i> :NvimTreeToggle <CR>
+nnoremap <silent> <c-s> :w <cr>
+nnoremap <silent> <c-k> :m +1 <cr>
+nnoremap <silent> <c-j> :m -2 <cr>
+nnoremap <silent> <c-l> :nohl <cr>
+nnoremap <silent> <s-Up> 5k <cr>
+nnoremap <silent> <s-Down> 5j <cr>
+nnoremap <silent> <c-p> :Telescope find_files <cr>
+nnoremap <silent> <c-o> :Telescope live_grep  <cr>
+nnoremap <silent> td :bdelete <cr>
+nnoremap <silent> nn :BufferLineCyclePrev <cr>
+nnoremap <silent> mm :BufferLineCycleNext <cr>
+nnoremap <silent> <c-i> :NvimTreeToggle <cr>
 " -------------------------------------------------
 
 " -- Fonts & Icons --------------------------------
@@ -210,7 +219,7 @@ let g:airline_symbols.notexists = ' ✗'
 " -------------------------------------------------
 
 " -- Files & Folders ------------------------------
-set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi
+set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi,*.bs.js
 " -------------------------------------------------
 
 " -- Typos ----------------------------------------
