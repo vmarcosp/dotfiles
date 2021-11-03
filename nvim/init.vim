@@ -1,10 +1,5 @@
 call plug#begin('~/.config/nvim/plugged')
 
-Plug 'terrortylor/nvim-comment'
-Plug 'andymass/vim-matchup'
-Plug 'windwp/nvim-autopairs'
-Plug 'famiu/bufdelete.nvim'
-
 " -- LSP & Syntax -----------------
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -52,6 +47,10 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'yuttie/comfortable-motion.vim'
+Plug 'terrortylor/nvim-comment'
+Plug 'andymass/vim-matchup'
+Plug 'windwp/nvim-autopairs'
+Plug 'famiu/bufdelete.nvim'
 " ----------------------------------
 
 call plug#end()
@@ -68,30 +67,30 @@ set background=dark
 " let g:airline_theme='dracula'
 
 " Palenight 
-colorscheme palenight
-let g:airline_theme='palenight'
+" colorscheme palenight
+" let g:airline_theme='palenight'
 
 " OceanicNext 
 " colorscheme OceanicNext
 " let g:airline_theme='oceanicnext'
 
 " Gruvbox
-"colorscheme gruvbox
+" colorscheme gruvbox
 " let g:airline_theme='gruvbox'
 
 " Iceberg
 " colorscheme iceberg
 " let g:airline_theme='iceberg'
 
-" Ayu 
+" Ayu  
 " colorscheme ayu 
 " let g:airline_theme='ayu'
 
 " -------------------------------------------------
 
 " -- Highlight line number ------------------------
-set cursorline
-au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
+ set cursorline
+ au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
 " -------------------------------------------------
 
 " -- nvim-web-devicons ----------------------------
@@ -183,7 +182,7 @@ require'nvim-tree'.setup {
    view = {
       allow_resize = true,
       side = "left",
-      width = 30,
+      width = 32,
    },
 }
 EOF
