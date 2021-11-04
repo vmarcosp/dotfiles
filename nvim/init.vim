@@ -4,7 +4,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'lukas-reineke/indent-blankline.nvim'
 " ---------------------------------
 
 " -- Nvim tree --------------------
@@ -71,8 +70,8 @@ set background=dark
 " let g:airline_theme='palenight'
 
 " OceanicNext 
-" colorscheme OceanicNext
-" let g:airline_theme='oceanicnext'
+colorscheme OceanicNext
+let g:airline_theme='oceanicnext'
 
 " Gruvbox
 " colorscheme gruvbox
@@ -189,6 +188,11 @@ EOF
 " -------------------------------------------------
 
 " -- Commands -------------------------------------
+function! DisableST()
+  return "%#NonText#"
+endfunction
+au BufEnter NvimTree setlocal statusline=%!DisableST()
+
 command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
 au VimEnter * NvimTreeFocus
 
