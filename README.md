@@ -6,11 +6,14 @@
 
 <br>
 
-## Resources
+## Resources 📦
 
-### nvim
-  - coc settings
-  - basic nvim config + plguins
+### nvim :nerd:
+  - `nvim.bufferline`
+  - `nvim.tree`
+  - Theme ➡️ `mhartington/oceanic-next`
+  - `coc.nvim` + `vim-rescript`
+  - My custom shortcuts
 
 ### zsh
   - zshrc
@@ -18,8 +21,8 @@
   - zsh-nvm
 
 ## tmux
-  - tmux + custom themes
-  - oh-my-tmux
+  - My custom themes (`oceanic-next`, `gruvbox`, `iceberg` and `ayu`)
+  - `oh-my-tmux`
   - tmux resurrect
 
 ### resources
@@ -27,4 +30,5 @@
   - `.gitconfig`
 
 ## LICENSE
+
 WTFPL
