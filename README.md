@@ -12,21 +12,21 @@
 ## Resources 📦
 
 ### nvim
-  - `nvim.bufferline`
-  - `nvim.tree`
-  - Theme ➡️ `mhartington/oceanic-next`
-  - `coc.nvim` + `vim-rescript`
+  - Tabs: `nvim.bufferline`
+  - Tree: `nvim.tree`
+  - Theme: `mhartington/oceanic-next`
+  - LSP: `coc.nvim` + `vim-rescript`
   - My custom shortcuts
 
 ### zsh
-  - zshrc
-  - ohmyzsh
+  - `.zshrc`
+  - ohmyzsh config
   - zsh-nvm
 
-## tmux
-  - My custom themes (`oceanic-next`, `gruvbox`, `iceberg` and `ayu`)
-  - `oh-my-tmux`
-  - tmux resurrect
+### tmux
+  - My custom themes for `oceanic-next`, `gruvbox`, `iceberg` and `ayu`
+  - `oh-my-tmux` config
+  - `tmux.resurrect`
 
 ### config
   - `.editorconfig`
