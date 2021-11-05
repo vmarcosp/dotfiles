@@ -96,7 +96,7 @@ tmux_conf_theme_status_attr='none'
 #     - #{hostname_ssh}
 #     - #{username}
 #     - #{username_ssh}
-tmux_conf_theme_terminal_title='🚀 #W'
+tmux_conf_theme_terminal_title='#W'
 
 # window status style
 #   - built-in variables are:
