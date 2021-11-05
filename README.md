@@ -1,14 +1,17 @@
-<p align="center">
+<h2 align="center">
   <br>
-  <img src="./__assets/preview.png" width="300" />
+  <span> ⚡ my .dotfiles ⚡ </span>
   <br>
- </p>
+  <br>
+  <img src="./__assets/preview.png" width="1200" />
+  <br>
+ </h2>
 
 <br>
 
 ## Resources 📦
 
-### nvim :nerd:
+### nvim
   - `nvim.bufferline`
   - `nvim.tree`
   - Theme ➡️ `mhartington/oceanic-next`
@@ -25,7 +28,7 @@
   - `oh-my-tmux`
   - tmux resurrect
 
-### resources
+### config
   - `.editorconfig`
   - `.gitconfig`
 
