@@ -8,7 +8,19 @@
   "tsserver.enableJavascript": true,
   "tsserver.enableTypescript": false,
   "languageserver": {
-      "ocaml-lsp": {
+    "haskell": {
+      "command": "haskell-language-server-wrapper",
+      "args": ["--lsp"],
+      "rootPatterns": [
+        "*.cabal",
+        "stack.yaml",
+        "cabal.project",
+        "package.yaml",
+        "hie.yaml"
+      ],
+      "filetypes": ["haskell", "lhaskell"]
+    },
+    "ocaml-lsp": {
       "command": "esy",
       "args": ["sh", "-c", "ocamllsp"],
       "filetypes": ["ocaml", "reason"]
