@@ -117,3 +117,4 @@ function mktouch () {
 
   touch $@
 }
+[ -f "/Users/marcos/.ghcup/env" ] && source "/Users/marcos/.ghcup/env" # ghcup-env

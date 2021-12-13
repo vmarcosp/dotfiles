@@ -66,16 +66,17 @@ set background=dark
 " let g:airline_theme='dracula'
 
 " Palenight 
-" colorscheme palenight
-" let g:airline_theme='palenight'
+ colorscheme palenight
+ let g:airline_theme='palenight'
 
 " OceanicNext 
-colorscheme OceanicNext
-let g:airline_theme='oceanicnext'
+" colorscheme OceanicNext
+" let g:airline_theme='oceanicnext'
 
 " Gruvbox
 " colorscheme gruvbox
 " let g:airline_theme='gruvbox'
+" let g:gruvbox_invert_selection = 0
 
 " Iceberg
 " colorscheme iceberg

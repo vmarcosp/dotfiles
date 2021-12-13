@@ -311,20 +311,20 @@ bind s choose-tree -s -Z -O name
 # ------ Gruvbox Theme ---------
 
 # line
-# tmux_conf_theme_status_bg='#3a3a3a'                     # gray
-# tmux_conf_theme_window_status_bg='#3a3a3a'              # dark gray
+# tmux_conf_theme_status_bg='#3d3837'                     # gray
+# tmux_conf_theme_window_status_bg='#3d3837'              # dark gray
 
 # status left style
-# tmux_conf_theme_status_left_fg='#000000,#000000,#000000'  # black, black, black 
-# tmux_conf_theme_status_left_bg='#abad35,#ff00af,#00afff'  # orange , pink, white blue
+# tmux_conf_theme_status_left_fg='#988a78,#000000,#000000'  # black, black, black 
+# tmux_conf_theme_status_left_bg='#504945,#ff00af,#00afff'  # orange , pink, white blue
 # tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-# tmux_conf_theme_status_right_fg='#8a8a8a,#000000' # light gray, black
-# tmux_conf_theme_status_right_bg='#3a3a3a,#faae00' # gray, orange
+# tmux_conf_theme_status_right_fg='#988a78,#3d3837' # light gray, black
+# tmux_conf_theme_status_right_bg='#504945,#faae00' # gray, orange
 
 # current tab
-# tmux_conf_theme_window_status_current_fg='#000000'      # black
+# tmux_conf_theme_window_status_current_fg='#3d3837'      # black
 # tmux_conf_theme_window_status_current_bg='#faae00'      # orange
 
 # previous tabs
@@ -341,30 +341,30 @@ bind s choose-tree -s -Z -O name
 # ------ Palenight ---------
 
 # line
-# tmux_conf_theme_status_bg='#292d3e'                     
-# tmux_conf_theme_window_status_bg='#3a3a3a'              
+ tmux_conf_theme_status_bg='#292d3e'                     
+ tmux_conf_theme_window_status_bg='#333747'              
 
 # status left style
-# tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
-# tmux_conf_theme_status_left_bg='#939ede,#0f1418,#0f1418'  
-# tmux_conf_theme_status_left_attr='bold,none,none'
+ tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
+ tmux_conf_theme_status_left_bg='#939ede,#0f1418,#0f1418'  
+ tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-# tmux_conf_theme_status_right_fg='#b9c1ce,#000000'
-# tmux_conf_theme_status_right_bg='#474b59,#939ede' 
+ tmux_conf_theme_status_right_fg='#b9c1ce,#000000'
+ tmux_conf_theme_status_right_bg='#474b59,#939ede' 
 
 # current tab
-# tmux_conf_theme_window_status_current_fg='#b9c1ce'
-# tmux_conf_theme_window_status_current_bg='#6e7382'
+ tmux_conf_theme_window_status_current_fg='#b9c1ce'
+ tmux_conf_theme_window_status_current_bg='#6e7382'
 
 # previous tabs
-# tmux_conf_theme_window_status_last_fg='#b9c1ce'  
-# tmux_conf_theme_window_status_last_bg='#474b59'  
-# tmux_conf_theme_window_status_fg='#b9c1ce'       
-# tmux_conf_theme_window_status_bg='#474b59'       
+ tmux_conf_theme_window_status_last_fg='#b9c1ce'  
+ tmux_conf_theme_window_status_last_bg='#474b59'  
+ tmux_conf_theme_window_status_fg='#b9c1ce'       
+ tmux_conf_theme_window_status_bg='#474b59'       
 
 # border color
-# tmux_conf_theme_pane_active_border='#faae00'    
+ tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
 
@@ -402,29 +402,29 @@ bind s choose-tree -s -Z -O name
 # ------ Oceanic Next Theme ---------
 
 # line
- tmux_conf_theme_status_bg='#343c46'                     
+# tmux_conf_theme_status_bg='#343c46'                     
 
 # status left style
- tmux_conf_theme_status_left_fg='#fafafa,#000000,#000000'
- tmux_conf_theme_status_left_bg='#62b3b2,#0f1418,#0f1418'  
- tmux_conf_theme_status_left_attr='bold,none,none'
+# tmux_conf_theme_status_left_fg='#fafafa,#000000,#000000'
+# tmux_conf_theme_status_left_bg='#62b3b2,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
- tmux_conf_theme_status_right_fg='#d5dbe6,#000000'
- tmux_conf_theme_status_right_bg='#65737e,#62b3b2' 
+# tmux_conf_theme_status_right_fg='#d5dbe6,#000000'
+# tmux_conf_theme_status_right_bg='#65737e,#62b3b2' 
 
 # current tab
- tmux_conf_theme_window_status_current_fg='#d5dbe6'
- tmux_conf_theme_window_status_current_bg='#65737e'
+# tmux_conf_theme_window_status_current_fg='#d5dbe6'
+# tmux_conf_theme_window_status_current_bg='#65737e'
 
 # previous tabs
- tmux_conf_theme_window_status_last_fg='#d5dbe6'  
- tmux_conf_theme_window_status_last_bg='#404950'  
- tmux_conf_theme_window_status_fg='#d5dbe6'       
- tmux_conf_theme_window_status_bg='#404950'       
+# tmux_conf_theme_window_status_last_fg='#d5dbe6'  
+# tmux_conf_theme_window_status_last_bg='#404950'  
+# tmux_conf_theme_window_status_fg='#d5dbe6'       
+# tmux_conf_theme_window_status_bg='#404950'       
 
 # border color
- tmux_conf_theme_pane_active_border='#faae00'    
+# tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
 
