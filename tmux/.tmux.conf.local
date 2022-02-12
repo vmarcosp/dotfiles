@@ -341,27 +341,27 @@ bind s choose-tree -s -Z -O name
 # ------ Palenight ---------
 
 # line
- tmux_conf_theme_status_bg='#292d3e'                     
- tmux_conf_theme_window_status_bg='#333747'              
+# tmux_conf_theme_status_bg='#292d3e'                     
+# tmux_conf_theme_window_status_bg='#333747'              
 
 # status left style
- tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
- tmux_conf_theme_status_left_bg='#939ede,#0f1418,#0f1418'  
- tmux_conf_theme_status_left_attr='bold,none,none'
+# tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
+# tmux_conf_theme_status_left_bg='#939ede,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
- tmux_conf_theme_status_right_fg='#b9c1ce,#000000'
- tmux_conf_theme_status_right_bg='#474b59,#939ede' 
+# tmux_conf_theme_status_right_fg='#b9c1ce,#000000'
+# tmux_conf_theme_status_right_bg='#474b59,#939ede' 
 
 # current tab
  tmux_conf_theme_window_status_current_fg='#b9c1ce'
  tmux_conf_theme_window_status_current_bg='#6e7382'
 
 # previous tabs
- tmux_conf_theme_window_status_last_fg='#b9c1ce'  
- tmux_conf_theme_window_status_last_bg='#474b59'  
- tmux_conf_theme_window_status_fg='#b9c1ce'       
- tmux_conf_theme_window_status_bg='#474b59'       
+# tmux_conf_theme_window_status_last_fg='#b9c1ce'  
+# tmux_conf_theme_window_status_last_bg='#474b59'  
+# tmux_conf_theme_window_status_fg='#b9c1ce'       
+# tmux_conf_theme_window_status_bg='#474b59'       
 
 # border color
  tmux_conf_theme_pane_active_border='#faae00'    
@@ -376,23 +376,23 @@ bind s choose-tree -s -Z -O name
 # tmux_conf_theme_window_status_bg='#3a3a3a'              
 
 # status left style
-# tmux_conf_theme_status_left_fg='#000000,#000000,#000000'
-# tmux_conf_theme_status_left_bg='#36a2d9,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_fg='#fafafa,#000000,#000000'
+# tmux_conf_theme_status_left_bg='#36a2d9,#fafafa,#fafafa'  
 # tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-# tmux_conf_theme_status_right_fg='#8a8a8a,#000000'
+# tmux_conf_theme_status_right_fg='#8a8a8a,#fafafa'
 # tmux_conf_theme_status_right_bg='#192127,#36a2d9' 
 
 # current tab
-# tmux_conf_theme_window_status_current_fg='#0f1418'
-# tmux_conf_theme_window_status_current_bg='#ff3366'
+# tmux_conf_theme_window_status_current_fg='#fafafa'
+# tmux_conf_theme_window_status_current_bg='#faae00'
 
 # previous tabs
-# tmux_conf_theme_window_status_last_fg='#0f1418'  
-# tmux_conf_theme_window_status_last_bg='#ef7179'  
-# tmux_conf_theme_window_status_fg='#0f1419'       
-# tmux_conf_theme_window_status_bg='#ef7178'       
+# tmux_conf_theme_window_status_last_fg='#e8e8e8'  
+# tmux_conf_theme_window_status_last_bg='#dbaf4f'  
+# tmux_conf_theme_window_status_fg='#e8e8e8'       
+# tmux_conf_theme_window_status_bg='#dbaf4f'       
 
 # border color
 # tmux_conf_theme_pane_active_border='#faae00'    
@@ -427,6 +427,36 @@ bind s choose-tree -s -Z -O name
 # tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
+
+# ------ One Half ---------
+
+# line
+tmux_conf_theme_status_bg='#282c34'                     
+
+# status left style
+tmux_conf_theme_status_left_fg='#282c34,#000000,#000000'
+tmux_conf_theme_status_left_bg='#98c378,#0f1418,#0f1418'  
+tmux_conf_theme_status_left_attr='bold,none,none'
+
+# status right style
+tmux_conf_theme_status_right_fg='#d5dbe6,#282c34'
+tmux_conf_theme_status_right_bg='#65737e,#98c378' 
+
+# current tab
+tmux_conf_theme_window_status_current_fg='#d5dbe6'
+tmux_conf_theme_window_status_current_bg='#65737e'
+
+# previous tabs
+tmux_conf_theme_window_status_last_fg='#d5dbe6'  
+tmux_conf_theme_window_status_last_bg='#404950'  
+tmux_conf_theme_window_status_fg='#d5dbe6'       
+tmux_conf_theme_window_status_bg='#404950'       
+
+# border color
+tmux_conf_theme_pane_active_border='#faae00'    
+
+# ----------------------------
+
 
 
 run-shell ~/.config/tmux/resurrect.tmux

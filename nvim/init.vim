@@ -29,6 +29,7 @@ Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
 Plug 'cocopon/iceberg.vim'
 Plug 'ayu-theme/ayu-vim'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 " ----------------------------------
 
 " -- General Plugins ---------------
@@ -66,8 +67,8 @@ set background=dark
 " let g:airline_theme='dracula'
 
 " Palenight 
- colorscheme palenight
- let g:airline_theme='palenight'
+" colorscheme palenight
+" let g:airline_theme='palenight'
 
 " OceanicNext 
 " colorscheme OceanicNext
@@ -85,6 +86,10 @@ set background=dark
 " Ayu  
 " colorscheme ayu 
 " let g:airline_theme='ayu'
+
+" One Half
+colorscheme onehalfdark
+let g:airline_theme='onehalfdark'
 
 " -------------------------------------------------
 
