@@ -23,7 +23,6 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'joshdick/onedark.vim' 
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'sonph/onehalf', {'rtp': 'vim/'}
 Plug 'arcticicestudio/nord-vim'
 Plug 'mhartington/oceanic-next'
 Plug 'morhetz/gruvbox'
@@ -38,9 +37,7 @@ Plug 'sheerun/vim-polyglot'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
-Plug 'elixir-editors/vim-elixir' 
 Plug 'mhinz/vim-mix-format'
-Plug 'slashmili/alchemist.vim' 
 Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
 Plug 'tpope/vim-sensible'
@@ -137,12 +134,9 @@ g.nvim_tree_special_files = { }
 
 g.nvim_tree_add_trailing = 0
 g.nvim_tree_git_hl = git_status
-g.nvim_tree_gitignore = 1
 g.nvim_tree_quit_on_open = 1
-g.nvim_tree_hide_dotfiles = 0
 g.nvim_tree_highlight_opened_files = 0
 g.nvim_tree_indent_markers = 1
-g.nvim_tree_ignore = { ".git", "node_modules", ".cache", "*.bs.js" }
 g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
 
 g.nvim_tree_icons = {
@@ -180,6 +174,12 @@ require'nvim-tree'.setup {
    open_on_tab = true,
    hijack_cursor = true,
    update_cwd = true,
+   filters = {
+     custom = { ".git", "node_modules", ".cache", "*.bs.js" }
+   },
+   git = {
+    ignore = 1
+   },
    update_focused_file = {
       enable = true,
       update_cwd = true,
