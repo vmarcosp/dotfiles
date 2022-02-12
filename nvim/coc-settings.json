@@ -3,23 +3,11 @@
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
   "javascript.validate.enable": false,
-  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json"],
+  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json", "md", "js", "jsx"],
   "eslint.autoFixOnsave": true,
   "tsserver.enableJavascript": true,
   "tsserver.enableTypescript": false,
   "languageserver": {
-    "haskell": {
-      "command": "haskell-language-server-wrapper",
-      "args": ["--lsp"],
-      "rootPatterns": [
-        "*.cabal",
-        "stack.yaml",
-        "cabal.project",
-        "package.yaml",
-        "hie.yaml"
-      ],
-      "filetypes": ["haskell", "lhaskell"]
-    },
     "ocaml-lsp": {
       "command": "esy",
       "args": ["sh", "-c", "ocamllsp"],

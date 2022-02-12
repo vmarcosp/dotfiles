@@ -41,9 +41,7 @@ Plug 'mhinz/vim-mix-format'
 Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
-Plug 'yuttie/comfortable-motion.vim'
 Plug 'terrortylor/nvim-comment'
 Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
@@ -251,3 +249,4 @@ set tabstop=2
 set softtabstop=2
 set number
 set ignorecase
+let g:colorizer_auto_color = 1
