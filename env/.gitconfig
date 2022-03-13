@@ -20,3 +20,7 @@
 [user]
 	name = Marcos Oliveira
 	email = vmarcosp.pereira@gmail.com
+[gpg]
+	program = gpg
+[commit]
+	gpgsign = false
