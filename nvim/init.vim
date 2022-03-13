@@ -233,13 +233,13 @@ set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.c
 iabbrev lenght length
 iabbrev widht width
 iabbrev heigth height
-iabbrev discipline discipline
+iabbrev investiments investments
 " -------------------------------------------------
 
+let g:user_emmet_leader_key=','
 syntax on
 set nowrap
 set clipboard+=unnamedplus
-let g:user_emmet_leader_key=','
 set foldmethod=syntax
 set nofoldenable
 set mouse=a
@@ -249,4 +249,3 @@ set tabstop=2
 set softtabstop=2
 set number
 set ignorecase
-let g:colorizer_auto_color = 1
