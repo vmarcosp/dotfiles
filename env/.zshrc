@@ -121,3 +121,4 @@ function mktouch () {
 [ -f "/Users/marcos/.ghcup/env" ] && source "/Users/marcos/.ghcup/env" # ghcup-env
 
 
+export PATH="$PATH:$HOME/.spicetify"

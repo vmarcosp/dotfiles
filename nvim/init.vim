@@ -29,6 +29,7 @@ Plug 'morhetz/gruvbox'
 Plug 'cocopon/iceberg.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'altercation/vim-colors-solarized'
 " ----------------------------------
 
 " -- General Plugins ---------------
@@ -73,18 +74,31 @@ set background=dark
 " colorscheme gruvbox
 " let g:airline_theme='gruvbox'
 " let g:gruvbox_invert_selection = 0
+" set background=light
 
 " Iceberg
 " colorscheme iceberg
 " let g:airline_theme='iceberg'
 
 " Ayu  
-" colorscheme ayu 
-" let g:airline_theme='ayu'
+" let ayucolor="light"
+colorscheme ayu 
+let g:airline_theme='ayu'
 
 " One Half
-colorscheme onehalfdark
-let g:airline_theme='onehalfdark'
+" colorscheme onehalfdark
+" let g:airline_theme='onehalfdark'
+
+" Solarized
+" syntax enable
+" set background=light
+" colorscheme solarized
+"
+" if has('gui_running')
+"     set background=light
+" else
+"     set background=dark
+" endif
 
 " -------------------------------------------------
 
@@ -99,7 +113,7 @@ require('nvim_comment').setup()
 require('nvim-autopairs').setup{}
 require("nvim-web-devicons").set_icon {
   res = {
-    icon = "λ",
+    icon = "■",
     color = "#e6484f",
     name = "rescript"
   }
@@ -132,7 +146,6 @@ g.nvim_tree_special_files = { }
 
 g.nvim_tree_add_trailing = 0
 g.nvim_tree_git_hl = git_status
-g.nvim_tree_quit_on_open = 1
 g.nvim_tree_highlight_opened_files = 0
 g.nvim_tree_indent_markers = 1
 g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
@@ -172,6 +185,7 @@ require'nvim-tree'.setup {
    open_on_tab = true,
    hijack_cursor = true,
    update_cwd = true,
+   quit_on_open = true,
    filters = {
      custom = { ".git", "node_modules", ".cache", "*.bs.js" }
    },

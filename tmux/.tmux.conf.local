@@ -144,9 +144,11 @@ tmux_conf_theme_window_status_last_attr='none'
 #tmux_conf_theme_left_separator_sub='|'
 #tmux_conf_theme_right_separator_main=''
 #tmux_conf_theme_right_separator_sub='|'
-tmux_conf_theme_left_separator_main='\uE0B0'  # /!\ you don't need to install Powerline
+# tmux_conf_theme_left_separator_main='\uE0B0a'  # /!\ you don't need to install Powerline
+tmux_conf_theme_left_separator_main=''  # /!\ you don't need to install Powerline
 tmux_conf_theme_left_separator_sub='\uE0B1'   #   you only need fonts patched with
-tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
+# tmux_conf_theme_right_separator_main='\uE0B2' #   Powerline symbols or the standalone
+tmux_conf_theme_right_separator_main=' ' #   Powerline symbols or the standalone
 tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see README.md
 
 # status left/right content:
@@ -175,8 +177,8 @@ tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see
 #     - #{username_ssh}
 
 # tmux_conf_theme_status_left=' 〣#S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} '
-tmux_conf_theme_status_left=' #S'
-tmux_conf_theme_status_right='#{prefix}#{pairing}#{synchronized} , %R , %d %b | #{username}#{root} '
+tmux_conf_theme_status_left=' #S '
+tmux_conf_theme_status_right='  %R %d %b | #{username}#{root} '
 
 tmux_conf_theme_status_right_attr='none,none'
 
@@ -372,27 +374,27 @@ bind s choose-tree -s -Z -O name
 # ------ Ayu Theme ---------
 
 # line
-# tmux_conf_theme_status_bg='#0f1418'                     
-# tmux_conf_theme_window_status_bg='#3a3a3a'              
+ tmux_conf_theme_status_bg='#1a2126'                     
+ tmux_conf_theme_window_status_bg='#1a2126'              
 
 # status left style
-# tmux_conf_theme_status_left_fg='#fafafa,#000000,#000000'
-# tmux_conf_theme_status_left_bg='#36a2d9,#fafafa,#fafafa'  
-# tmux_conf_theme_status_left_attr='bold,none,none'
+ tmux_conf_theme_status_left_fg='#C2E9F6,#000000,#000000'
+ tmux_conf_theme_status_left_bg='#36a2d9,#fafafa,#fafafa'  
+ tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-# tmux_conf_theme_status_right_fg='#8a8a8a,#fafafa'
-# tmux_conf_theme_status_right_bg='#192127,#36a2d9' 
+ tmux_conf_theme_status_right_fg='#8a8a8a,#C2E9F6'
+ tmux_conf_theme_status_right_bg='#192127,#36a2d9' 
 
 # current tab
-# tmux_conf_theme_window_status_current_fg='#fafafa'
-# tmux_conf_theme_window_status_current_bg='#faae00'
+ tmux_conf_theme_window_status_current_fg='#C2E9F6'
+ tmux_conf_theme_window_status_current_bg='#00A3D8'
 
 # previous tabs
-# tmux_conf_theme_window_status_last_fg='#e8e8e8'  
-# tmux_conf_theme_window_status_last_bg='#dbaf4f'  
-# tmux_conf_theme_window_status_fg='#e8e8e8'       
-# tmux_conf_theme_window_status_bg='#dbaf4f'       
+ tmux_conf_theme_window_status_last_fg='#6EB3CA'  
+ tmux_conf_theme_window_status_last_bg='#1a2126'  
+ tmux_conf_theme_window_status_fg='#6EB3CA'       
+ tmux_conf_theme_window_status_bg='#1a2126'       
 
 # border color
 # tmux_conf_theme_pane_active_border='#faae00'    
@@ -431,32 +433,61 @@ bind s choose-tree -s -Z -O name
 # ------ One Half ---------
 
 # line
-tmux_conf_theme_status_bg='#282c34'                     
+# tmux_conf_theme_status_bg='#282c34'                     
 
 # status left style
-tmux_conf_theme_status_left_fg='#282c34,#000000,#000000'
-tmux_conf_theme_status_left_bg='#98c378,#0f1418,#0f1418'  
-tmux_conf_theme_status_left_attr='bold,none,none'
+# tmux_conf_theme_status_left_fg='#282c34,#000000,#000000'
+# tmux_conf_theme_status_left_bg='#98c378,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
-tmux_conf_theme_status_right_fg='#d5dbe6,#282c34'
-tmux_conf_theme_status_right_bg='#65737e,#98c378' 
+# tmux_conf_theme_status_right_fg='#d5dbe6,#282c34'
+# tmux_conf_theme_status_right_bg='#65737e,#98c378' 
 
 # current tab
-tmux_conf_theme_window_status_current_fg='#d5dbe6'
-tmux_conf_theme_window_status_current_bg='#65737e'
+# tmux_conf_theme_window_status_current_fg='#d5dbe6'
+# tmux_conf_theme_window_status_current_bg='#65737e'
 
 # previous tabs
-tmux_conf_theme_window_status_last_fg='#d5dbe6'  
-tmux_conf_theme_window_status_last_bg='#404950'  
-tmux_conf_theme_window_status_fg='#d5dbe6'       
-tmux_conf_theme_window_status_bg='#404950'       
+# tmux_conf_theme_window_status_last_fg='#d5dbe6'  
+# tmux_conf_theme_window_status_last_bg='#404950'  
+# tmux_conf_theme_window_status_fg='#d5dbe6'       
+# tmux_conf_theme_window_status_bg='#404950'       
 
 # border color
-tmux_conf_theme_pane_active_border='#faae00'    
+# tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
 
+
+# ------ Ayu Light ---------
+
+# line
+# tmux_conf_theme_status_bg='#fafafa'                     
+
+# status left style
+# tmux_conf_theme_status_left_fg='#fafafa,#fafafa,#fafafa'
+# tmux_conf_theme_status_left_bg='#36a3d9,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_attr='bold,none,none'
+
+# status right style
+# tmux_conf_theme_status_right_fg='#fafafa,#fafafa'
+# tmux_conf_theme_status_right_bg='#82c5e6,#36a3d9' 
+
+# current tab
+# tmux_conf_theme_window_status_current_fg='#fafafa'
+# tmux_conf_theme_window_status_current_bg='#36a3d9'
+
+# previous tabs
+# tmux_conf_theme_window_status_last_fg='#fafafa'  
+# tmux_conf_theme_window_status_last_bg='#82c5e6'  
+# tmux_conf_theme_window_status_fg='#fafafa'       
+# tmux_conf_theme_window_status_bg='#82c5e6'       
+
+# border color
+# tmux_conf_theme_pane_active_border='#faae00'    
+
+# ----------------------------
 
 
 run-shell ~/.config/tmux/resurrect.tmux
