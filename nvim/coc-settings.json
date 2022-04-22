@@ -3,16 +3,16 @@
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
   "javascript.validate.enable": false,
-  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json", "md", "js", "jsx"],
-  "eslint.autoFixOnsave": true,
+  "coc.preferences.formatOnSaveFiletypes": ["rescript", "ocaml", "reason", "ml", "re", "md"],
+  "eslint.autoFixOnsave": false,
   "tsserver.enableJavascript": true,
   "tsserver.enableTypescript": false,
   "languageserver": {
     "ocaml-lsp": {
-      "command": "esy",
-      "args": ["sh", "-c", "ocamllsp"],
-      "filetypes": ["ocaml", "reason"]
-    },
+    "command": "esy",
+    "args": ["sh", "-c", "ocamllsp"],
+    "filetypes": ["ocaml", "reason"]
+  },
     "rescript": {
       "enable": true,
       "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
