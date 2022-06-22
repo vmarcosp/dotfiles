@@ -2,6 +2,8 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=/opt/homebrew/bin:$PATH
 source ~/env-vars.sh
+export PATH=$HOME/.local/share/solana/install/active_release/bin:$PATH
+source $HOME/.cargo/env
 
 # Path to your oh-my-zsh installation.
 export ZSH="/Users/marcos/.oh-my-zsh"

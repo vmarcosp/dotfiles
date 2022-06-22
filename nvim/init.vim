@@ -15,11 +15,15 @@ Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'akinsho/bufferline.nvim'
+Plug 'glepnir/dashboard-nvim'
 " ----------------------------------
 
 " -- Themes ------------------------
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'       
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'       
+Plug 'nvim-lualine/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+
 Plug 'joshdick/onedark.vim' 
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -30,6 +34,7 @@ Plug 'cocopon/iceberg.vim'
 Plug 'ayu-theme/ayu-vim'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
 Plug 'altercation/vim-colors-solarized'
+Plug 'haishanh/night-owl.vim'
 " ----------------------------------
 
 " -- General Plugins ---------------
@@ -67,7 +72,7 @@ set background=dark
 " let g:airline_theme='palenight'
 
 " OceanicNext 
-" colorscheme OceanicNext
+" colorscheme OceanicNext 
 " let g:airline_theme='oceanicnext'
 
 " Gruvbox
@@ -77,23 +82,27 @@ set background=dark
 " set background=light
 
 " Iceberg
-" colorscheme iceberg
-" let g:airline_theme='iceberg'
+ colorscheme iceberg
+ let g:airline_theme='iceberg'
 
 " Ayu  
 " let ayucolor="light"
-colorscheme ayu 
-let g:airline_theme='ayu'
+" colorscheme ayu 
+" let g:airline_theme='ayu'
 
 " One Half
-" colorscheme onehalfdark
-" let g:airline_theme='onehalfdark'
+ colorscheme onehalfdark
+ let g:airline_theme='onehalfdark'
 
 " Solarized
 " syntax enable
 " set background=light
 " colorscheme solarized
-"
+
+" Night Owl 
+" colorscheme night-owl
+" let g:airline_theme='night_owl'
+
 " if has('gui_running')
 "     set background=light
 " else
@@ -101,6 +110,15 @@ let g:airline_theme='ayu'
 " endif
 
 " -------------------------------------------------
+
+lua << END
+require('lualine').setup {
+  extensions = { 'nvim-tree' },
+  options = {
+    disabled_filetypes = {'NvimTree'}
+  }
+}
+END
 
 " -- Highlight line number ------------------------
  set cursorline
@@ -120,6 +138,41 @@ require("nvim-web-devicons").set_icon {
 }
 EOF
 " -------------------------------------------------
+
+lua <<EOF
+  local home = os.getenv('HOME')
+  local db = require('dashboard')
+  db.preview_command = 'cat | lolcat -F 0.3'
+  db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
+  db.preview_file_height = 12
+  db.preview_file_width = 80
+  db.custom_center = {
+      {icon = '  ',
+      desc = 'Recently latest session                  ',
+      shortcut = 'SPC s l',
+      action ='SessionLoad'},
+      {icon = '  ',
+      desc = 'Recently opened files                   ',
+      action =  'DashboardFindHistory',
+      shortcut = 'SPC f h'},
+      {icon = '  ',
+      desc = 'Find  File                              ',
+      action = 'Telescope find_files find_command=rg,--hidden,--files',
+      shortcut = 'SPC f f'},
+      {icon = '  ',
+      desc ='File Browser                            ',
+      action =  'Telescope file_browser',
+      shortcut = 'SPC f b'},
+      {icon = '  ',
+      desc = 'Find  word                              ',
+      action = 'Telescope live_grep',
+      shortcut = 'SPC f w'},
+      {icon = '  ',
+      desc = 'Open Personal dotfiles                  ',
+      action = 'Telescope dotfiles path=' .. home ..'/.dotfiles',
+      shortcut = 'SPC f d'},
+    }
+EOF
 
 " -- buffeliner.nvim ------------------------------
 lua << EOF
@@ -142,62 +195,65 @@ EOF
 " -- nvim.tree config -----------------------------
 lua << EOF
 local g = vim.g
-g.nvim_tree_special_files = { } 
 
-g.nvim_tree_add_trailing = 0
 g.nvim_tree_git_hl = git_status
-g.nvim_tree_highlight_opened_files = 0
-g.nvim_tree_indent_markers = 1
-g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/..", string.rep(" ", 1000), "?:gs?^??" }
-
-g.nvim_tree_icons = {
-   default = "",
-   symlink = "",
-   git = {
-      deleted = "",
-      ignored = "◌",
-      renamed = "➜",
-      staged = "✓",
-      unmerged = "",
-      unstaged = "",
-      untracked = "",
-   },
-   folder = {
-      arrow_open = "",
-      arrow_closed = "",
-      default = "",
-      empty = "",
-      empty_open = "",
-      open = "",
-      symlink = "",
-      symlink_open = "",
-   },
-}
-
-g.nvim_tree_root_folder_modifier = table.concat { ":t:gs?$?/", string.rep(" ", 1000), "?:gs?^??" }
 
 require'nvim-tree'.setup {
-   lsp_diagnostics = false,
+   -- lsp_diagnostics = false,
    disable_netrw = true,
    hijack_netrw = true,
    ignore_ft_on_setup = { "dashboard" },
-   auto_close = false,
+   -- auto_close = false,
    open_on_tab = true,
    hijack_cursor = true,
    update_cwd = true,
-   quit_on_open = true,
+   -- quit_on_open = true,
+   renderer = {
+     root_folder_modifier = table.concat { ":t:gs?$?/", string.rep(" ", 1000), "?:gs?^??" },
+     highlight_opened_files = "all",
+     add_trailing = true,
+     special_files = { },
+     indent_markers = {
+       enable = true
+     },
+     icons = {
+       glyphs = {
+           default = "",
+           symlink = "",
+           git = {
+              deleted = "",
+              ignored = "◌",
+              renamed = "➜",
+              staged = "✓",
+              unmerged = "",
+              unstaged = "",
+              untracked = "",
+           },
+           folder = {
+              arrow_open = "",
+              arrow_closed = "",
+              default = "",
+              empty = "",
+              empty_open = "",
+              open = "",
+              symlink = "",
+              symlink_open = "",
+           },
+        }
+     }
+   },
    filters = {
      custom = { ".git", "node_modules", ".cache", "*.bs.js" }
    },
    git = {
-    ignore = 1
+    ignore = true
    },
    update_focused_file = {
       enable = true,
       update_cwd = true,
    },
    view = {
-      allow_resize = true,
+      -- allow_resize = true,
       side = "left",
       width = 32,
    },
