@@ -2,6 +2,7 @@
   "dependencies": {
     "coc-eslint": ">=1.4.5",
     "coc-prettier": ">=1.1.24",
+    "coc-rls": ">=1.1.6",
     "coc-tsserver": ">=1.8.3"
   }
 }
