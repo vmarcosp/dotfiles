@@ -6,24 +6,17 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
 " ---------------------------------
 
-" -- Nvim tree --------------------
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'kyazdani42/nvim-tree.lua'
-" ---------------------------------
-
 " -- Telescope & Navigation --------
 Plug 'nvim-lua/plenary.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
+Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-telescope/telescope.nvim'
-Plug 'akinsho/bufferline.nvim'
-Plug 'glepnir/dashboard-nvim'
+Plug 'nvim-lualine/lualine.nvim'
 " ----------------------------------
 
 " -- Themes ------------------------
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'       
-Plug 'nvim-lualine/lualine.nvim'
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'kyazdani42/nvim-web-devicons'
-
 Plug 'joshdick/onedark.vim' 
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -82,8 +75,8 @@ set background=dark
 " set background=light
 
 " Iceberg
- colorscheme iceberg
- let g:airline_theme='iceberg'
+" colorscheme iceberg
+" let g:airline_theme='iceberg'
 
 " Ayu  
 " let ayucolor="light"
@@ -91,8 +84,8 @@ set background=dark
 " let g:airline_theme='ayu'
 
 " One Half
- colorscheme onehalfdark
- let g:airline_theme='onehalfdark'
+" colorscheme onehalfdark
+" let g:airline_theme='onehalfdark'
 
 " Solarized
 " syntax enable
@@ -102,6 +95,85 @@ set background=dark
 " Night Owl 
 " colorscheme night-owl
 " let g:airline_theme='night_owl'
+
+" Captuccin 
+lua << EOF
+local catppuccin = require("catppuccin")
+
+catppuccin.setup {
+transparent_background = false,
+term_colors = false,
+styles = {
+	comments = "italic",
+	conditionals = "italic",
+	loops = "NONE",
+	functions = "NONE",
+	keywords = "NONE",
+	strings = "NONE",
+	variables = "NONE",
+	numbers = "NONE",
+	booleans = "NONE",
+	properties = "NONE",
+	types = "NONE",
+	operators = "NONE",
+},
+integrations = {
+	treesitter = true,
+	native_lsp = {
+		enabled = true,
+		virtual_text = {
+			errors = "italic",
+			hints = "italic",
+			warnings = "italic",
+			information = "italic",
+		},
+		underlines = {
+			errors = "underline",
+			hints = "underline",
+			warnings = "underline",
+			information = "underline",
+		},
+	},
+    coc_nvim = false,
+	lsp_trouble = false,
+	cmp = true,
+	lsp_saga = false,
+	gitgutter = false,
+	gitsigns = true,
+	telescope = true,
+	nvimtree = {
+		enabled = true,
+		show_root = false,
+		transparent_panel = false,
+	},
+	neotree = {
+		enabled = false,
+		show_root = false,
+		transparent_panel = false,
+	},
+	which_key = false,
+	indent_blankline = {
+		enabled = true,
+		colored_indent_levels = false,
+	},
+	dashboard = true,
+	neogit = false,
+	vim_sneak = false,
+	fern = false,
+	barbar = false,
+	bufferline = true,
+	markdown = true,
+	lightspeed = false,
+	ts_rainbow = false,
+	hop = false,
+	notify = true,
+	telekasten = true,
+	symbols_outline = true,
+  }}
+EOF
+
+let g:catppuccin_flavour = "macchiato"
+colorscheme catppuccin
 
 " if has('gui_running')
 "     set background=light
@@ -139,59 +211,6 @@ require("nvim-web-devicons").set_icon {
 EOF
 " -------------------------------------------------
 
-lua <<EOF
-  local home = os.getenv('HOME')
-  local db = require('dashboard')
-  db.preview_command = 'cat | lolcat -F 0.3'
-  db.preview_file_path = home .. '/.config/nvim/static/neovim.cat'
-  db.preview_file_height = 12
-  db.preview_file_width = 80
-  db.custom_center = {
-      {icon = '  ',
-      desc = 'Recently latest session                  ',
-      shortcut = 'SPC s l',
-      action ='SessionLoad'},
-      {icon = '  ',
-      desc = 'Recently opened files                   ',
-      action =  'DashboardFindHistory',
-      shortcut = 'SPC f h'},
-      {icon = '  ',
-      desc = 'Find  File                              ',
-      action = 'Telescope find_files find_command=rg,--hidden,--files',
-      shortcut = 'SPC f f'},
-      {icon = '  ',
-      desc ='File Browser                            ',
-      action =  'Telescope file_browser',
-      shortcut = 'SPC f b'},
-      {icon = '  ',
-      desc = 'Find  word                              ',
-      action = 'Telescope live_grep',
-      shortcut = 'SPC f w'},
-      {icon = '  ',
-      desc = 'Open Personal dotfiles                  ',
-      action = 'Telescope dotfiles path=' .. home ..'/.dotfiles',
-      shortcut = 'SPC f d'},
-    }
-EOF
-
-" -- buffeliner.nvim ------------------------------
-lua << EOF
-require("bufferline").setup{
-  options = {
-    separator_style = 'thin',
-    offsets = {
-      {
-        filetype = "NvimTree",
-        text = "",
-        highlight = "Directory",
-        text_align = "left"
-      }
-    }
-  }
-}
-EOF
-" -------------------------------------------------
-
 " -- nvim.tree config -----------------------------
 lua << EOF
 local g = vim.g
@@ -199,15 +218,12 @@ local g = vim.g
 g.nvim_tree_git_hl = git_status
 
 require'nvim-tree'.setup {
-   -- lsp_diagnostics = false,
    disable_netrw = true,
    hijack_netrw = true,
    ignore_ft_on_setup = { "dashboard" },
-   -- auto_close = false,
    open_on_tab = true,
    hijack_cursor = true,
    update_cwd = true,
-   -- quit_on_open = true,
    renderer = {
      root_folder_modifier = table.concat { ":t:gs?$?/", string.rep(" ", 1000), "?:gs?^??" },
      highlight_opened_files = "all",
@@ -253,7 +269,6 @@ require'nvim-tree'.setup {
       update_cwd = true,
    },
    view = {
-      -- allow_resize = true,
       side = "left",
       width = 32,
    },
@@ -276,13 +291,11 @@ nnoremap <silent> <c-s> :w <cr>
 nnoremap <silent> <c-k> :m +1 <cr>
 nnoremap <silent> <c-j> :m -2 <cr>
 nnoremap <silent> <c-l> :nohl <cr>
-nnoremap <silent> <s-Up> 5k <cr>
-nnoremap <silent> <s-Down> 5j <cr>
-nnoremap <silent> <c-p> :Telescope find_files <cr>
-nnoremap <silent> <c-o> :Telescope live_grep  <cr>
-nnoremap <silent> td :bdelete <cr>
-nnoremap <silent> nn :BufferLineCyclePrev <cr>
-nnoremap <silent> mm :BufferLineCycleNext <cr>
+nnoremap <silent> <s-k> 5k <cr>
+nnoremap <silent> <s-j> 5j <cr>
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fo <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
 nnoremap <silent> <c-i> :NvimTreeToggle <cr>
 " -------------------------------------------------
 
@@ -306,7 +319,6 @@ iabbrev heigth height
 iabbrev investiments investments
 " -------------------------------------------------
 
-let g:user_emmet_leader_key=','
 syntax on
 set nowrap
 set clipboard+=unnamedplus
@@ -317,5 +329,9 @@ set completeopt+=preview
 set expandtab
 set tabstop=2
 set softtabstop=2
-set number
+set relativenumber
 set ignorecase
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
