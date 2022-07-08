@@ -433,31 +433,62 @@ bind s choose-tree -s -Z -O name
 # ------ One Half ---------
 
 # line
- tmux_conf_theme_status_bg='#282c34'                     
+# tmux_conf_theme_status_bg='#282c34'                     
 
 # status left style
- tmux_conf_theme_status_left_fg='#282c34,#000000,#000000'
- tmux_conf_theme_status_left_bg='#98c378,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_fg='#282c34,#000000,#000000'
+# tmux_conf_theme_status_left_bg='#98c378,#0f1418,#0f1418'  
+# tmux_conf_theme_status_left_attr='bold,none,none'
+
+# status right style
+# tmux_conf_theme_status_right_fg='#d5dbe6,#282c34'
+# tmux_conf_theme_status_right_bg='#65737e,#98c378' 
+
+# current tab
+# tmux_conf_theme_window_status_current_fg='#d5dbe6'
+# tmux_conf_theme_window_status_current_bg='#65737e'
+
+# previous tabs
+# tmux_conf_theme_window_status_last_fg='#d5dbe6'  
+# tmux_conf_theme_window_status_last_bg='#404950'  
+# tmux_conf_theme_window_status_fg='#d5dbe6'       
+# tmux_conf_theme_window_status_bg='#404950'       
+
+# border color
+# tmux_conf_theme_pane_active_border='#faae00'    
+
+# ----------------------------
+
+# ------ Captuccin Frappe ---------
+
+# line
+ tmux_conf_theme_status_bg='#1e1f30'                     
+
+# status left style
+ tmux_conf_theme_status_left_fg='#1e2030,#000000,#000000'
+ tmux_conf_theme_status_left_bg='#8aadf5,#0f1418,#0f1418'  
  tmux_conf_theme_status_left_attr='bold,none,none'
 
 # status right style
- tmux_conf_theme_status_right_fg='#d5dbe6,#282c34'
- tmux_conf_theme_status_right_bg='#65737e,#98c378' 
+ tmux_conf_theme_status_right_fg='#8aadf4,#1e2030'
+ tmux_conf_theme_status_right_bg='#494d64,#8aadf5' 
 
 # current tab
- tmux_conf_theme_window_status_current_fg='#d5dbe6'
- tmux_conf_theme_window_status_current_bg='#65737e'
+ tmux_conf_theme_window_status_current_fg='#8aadf4'
+ tmux_conf_theme_window_status_current_bg='#494d64'
 
 # previous tabs
- tmux_conf_theme_window_status_last_fg='#d5dbe6'  
- tmux_conf_theme_window_status_last_bg='#404950'  
- tmux_conf_theme_window_status_fg='#d5dbe6'       
- tmux_conf_theme_window_status_bg='#404950'       
+ tmux_conf_theme_window_status_last_fg='#8aadf4'  
+ tmux_conf_theme_window_status_last_bg='#353849'  
+ tmux_conf_theme_window_status_fg='#8aadf4'       
+ tmux_conf_theme_window_status_bg='#353849'       
 
 # border color
  tmux_conf_theme_pane_active_border='#faae00'    
 
 # ----------------------------
+
+
 
 
 # ------ Ayu Light ---------
