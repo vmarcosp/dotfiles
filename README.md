@@ -3,7 +3,7 @@
   <span> ⚡ my .dotfiles ⚡ </span>
   <br>
   <br>
-  <img src="./__assets/preview-v4.png" />
+  <img src="./__assets/preview-v4.1.png" />
   <br>
  </h2>
 
