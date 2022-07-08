@@ -3,7 +3,7 @@
   <span> ⚡ my .dotfiles ⚡ </span>
   <br>
   <br>
-  <img src="./__assets/preview-v3.png" />
+  <img src="./__assets/preview-v4.png" />
   <br>
  </h2>
 
@@ -12,9 +12,8 @@
 ## Resources 📦
 
 ### nvim
-  - Tabs: `nvim.bufferline`
   - Tree: `nvim.tree`
-  - Theme: `mhartington/oceanic-next`
+  - Theme: `catppuccin/nvim`
   - LSP: `coc.nvim` + `vim-rescript`
   - My custom shortcuts
 
@@ -31,7 +30,3 @@
 ### config
   - `.editorconfig`
   - `.gitconfig`
-
-## LICENSE
-
-WTFPL
