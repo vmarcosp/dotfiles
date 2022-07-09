@@ -32,19 +32,16 @@ Plug 'haishanh/night-owl.vim'
 
 " -- General Plugins ---------------
 Plug 'junegunn/seoul256.vim'
+Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sheerun/vim-polyglot'
 Plug 'maxmellon/vim-jsx-pretty'
-Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
-Plug 'mhinz/vim-mix-format'
 Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
-Plug 'terrortylor/nvim-comment'
 Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
-Plug 'famiu/bufdelete.nvim'
 " ----------------------------------
 
 call plug#end()
@@ -175,14 +172,9 @@ EOF
 let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
 
-" if has('gui_running')
-"     set background=light
-" else
-"     set background=dark
-" endif
+" ---------------------------------------
 
-" -------------------------------------------------
-
+" -- lualine ----------------------------
 lua << END
 require('lualine').setup {
   extensions = { 'nvim-tree' },
@@ -192,14 +184,8 @@ require('lualine').setup {
 }
 END
 
-" -- Highlight line number ------------------------
- set cursorline
- au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
-" -------------------------------------------------
-
-" -- nvim-web-devicons ----------------------------
+" -- nvim-web-devicons ------------------
 lua << EOF
-require('nvim_comment').setup()
 require('nvim-autopairs').setup{}
 require("nvim-web-devicons").set_icon {
   res = {
@@ -276,14 +262,32 @@ require'nvim-tree'.setup {
 EOF
 " -------------------------------------------------
 
-" -- Commands -------------------------------------
-function! DisableST()
-  return "%#NonText#"
-endfunction
-au BufEnter NvimTree setlocal statusline=%!DisableST()
+" ----- telescope ---------------------------------
+lua << EOF
+local actions = require "telescope.actions"
+require("telescope").setup {
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ["<c-d>"] = actions.delete_buffer + actions.move_to_top,
+        }
+      }
+    }
+  }
+}
+EOF
 
-command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
-au VimEnter * NvimTreeFocus
+" -------------------------------------------------
+
+" -- indent_blankline -----------------------------
+lua << EOF
+require("indent_blankline").setup {
+    -- for example, context is off by default, use this to turn it on
+    show_current_context = true,
+    show_current_context_start = true,
+}
+EOF
 
 " -- Shortcuts ------------------------------------
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
@@ -319,11 +323,23 @@ iabbrev heigth height
 iabbrev investiments investments
 " -------------------------------------------------
 
+" -- Highlight line number ------------------------
+ set cursorline
+ au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
+" -------------------------------------------------
+
+function! DisableST()
+  return "%#NonText#"
+endfunction
+au BufEnter NvimTree setlocal statusline=%!DisableST()
+
+command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
+au VimEnter * NvimTreeFocus
+
+
 syntax on
 set nowrap
 set clipboard+=unnamedplus
-set foldmethod=syntax
-set nofoldenable
 set mouse=a
 set completeopt+=preview
 set expandtab
