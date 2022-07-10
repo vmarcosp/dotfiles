@@ -44,6 +44,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
 Plug 'glepnir/dashboard-nvim'
+Plug 'SirVer/ultisnips'
 " ----------------------------------
 
 call plug#end()
@@ -53,6 +54,7 @@ set t_Co=256
 set termguicolors
 set background=dark
 
+let g:UltiSnipsEditSplit="vertical"
 " Dracula
 " let g:dracula_colorterm = 0
 " let g:dracula_italic = 0
@@ -100,7 +102,7 @@ lua << EOF
 local catppuccin = require("catppuccin")
 
 catppuccin.setup {
-transparent_background = false,
+transparent_background = true,
 term_colors = false,
 styles = {
 	comments = "italic",
@@ -170,7 +172,6 @@ integrations = {
 	symbols_outline = true,
   }}
 EOF
-
 let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
 
@@ -179,10 +180,36 @@ colorscheme catppuccin
 " -- lualine ----------------------------
 lua << END
 require('lualine').setup {
-  extensions = { 'nvim-tree' },
   options = {
-    disabled_filetypes = {'NvimTree'}
-  }
+    icons_enabled = true,
+    theme = 'auto',
+    component_separators = { left = '', right = ''},
+    section_separators = { left = '', right = ''},
+    disabled_filetypes = {},
+    always_divide_middle = true,
+    globalstatus = false,
+  },
+  sections = {
+    lualine_a = {'mode'},
+    lualine_b = {'branch', 'diff', 'diagnostics'},
+    lualine_c = {''},
+    lualine_x = {'filename', 'filetype'},
+    lualine_y = {''},
+    lualine_z = {''}
+  },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {'filename'},
+    lualine_x = {'location'},
+    lualine_y = {},
+    lualine_z = {}
+  },
+  tabline = {},
+  extensions = { 'nvim-tree', 'fugitive' },
+  options = {
+     disabled_filetypes = {'NvimTree'}
+   }
 }
 END
 
@@ -291,13 +318,16 @@ require("indent_blankline").setup {
 EOF
 
 " -- Shortcuts ------------------------------------
-autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
-nnoremap <silent> <c-s> :w <cr>
-nnoremap <silent> <c-j> :m +1 <cr>
-nnoremap <silent> <c-k> :m -2 <cr>
-nnoremap <silent> <c-l> :nohl <cr>
-nnoremap <silent> <s-k> 5k <cr>
-nnoremap <silent> <s-j> 5j <cr>
+autocmd FileType json nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile eslint.executeAutofix<cr>
+autocmd FileType javascript nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile eslint.executeAutofix<cr>
+autocmd FileType markdown nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile eslint.executeAutofix<cr>
+autocmd FileType rescript nnoremap <leader>fi <cmd>RescriptFormat<cr>
+nnoremap <c-s> :w <cr>
+nnoremap <c-j> :m +1 <cr>
+nnoremap <c-k> :m -2 <cr>
+nnoremap <c-l> :nohl <cr>
+nnoremap <s-k> 5k <cr>
+nnoremap <s-j> 5j <cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
 nnoremap <leader>fw <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
@@ -338,30 +368,30 @@ db.default_banner = {
   "",
 }
 
-db.custom_footer = {"📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
+db.custom_footer = {"", "📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
 
 db.custom_center = {
      {
         icon = " ",
-        desc = "Open explorer                             ",
+        desc = "Open explorer                     ",
         action = "NvimTreeToggle",
         shortcut = "\\tt"
     },{
         icon = "  ",
-        desc = "Find word                                 ",
+        desc = "Find word                         ",
         action = "Telescope live_grep",
         shortcut = "\\fh"
     },
     {
         icon = "  ",
-        desc = "Find  File                                ",
+        desc = "Find  File                        ",
         action = "Telescope find_files find_command=rg,--hidden,--files",
         shortcut = "\\ff"
     },
     
     {
         icon = "  ",
-        desc = "Open dotfiles                             ",
+        desc = "Open dotfiles                     ",
         action = "e " .. home .. "/Projects/dotfiles/nvim/init.vim",
         shortcut = "\\sd"
     }
@@ -369,7 +399,6 @@ db.custom_center = {
 
 EOF
 
-command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
 au BufEnter NvimTree setlocal statusline=%!DisableST()
 au VimEnter * Dashboard
 
