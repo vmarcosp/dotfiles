@@ -1,0 +1,63 @@
+snippet modcomponent
+module type ${1} = {
+	@react.component
+	let make = () => {
+		${0}
+	}
+};
+endsnippet
+
+snippet doc
+/*
+	${0}
+ */
+endsnippet
+
+snippet let
+let ${1} = ${0};
+endsnippet
+
+snippet fn
+let ${1} = (${2}) => {
+	${0}
+};
+endsnippet
+
+snippet fun
+fun ${1} => ${0}
+endsnippet
+
+snippet ty
+type ${1} = ${0};
+endsnippet
+
+snippet mod
+module ${1} = {
+	${0}
+};
+endsnippet
+
+snippet modty
+module type ${1} = {
+	${0}
+};
+endsnippet
+
+snippet sw
+switch (${1}) {
+| ${2} => ${0}
+}
+endsnippet
+
+snippet |
+	| ${1} => ${0}
+endsnippet
+
+snippet if
+	if (${1}) {
+		${2}
+	} else {
+		${0}
+	}
+endsnippet
+
