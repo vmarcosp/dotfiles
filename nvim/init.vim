@@ -16,7 +16,6 @@ Plug 'nvim-lualine/lualine.nvim'
 
 " -- Themes ------------------------
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-Plug 'kyazdani42/nvim-web-devicons'
 Plug 'joshdick/onedark.vim' 
 Plug 'drewtempelmeyer/palenight.vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
@@ -40,8 +39,11 @@ Plug 'neomake/neomake'
 Plug 'chrisbra/Colorizer'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
+Plug 'nvim-treesitter/nvim-treesitter'
+Plug 'tpope/vim-fugitive'
 Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
+Plug 'glepnir/dashboard-nvim'
 " ----------------------------------
 
 call plug#end()
@@ -283,7 +285,6 @@ EOF
 " -- indent_blankline -----------------------------
 lua << EOF
 require("indent_blankline").setup {
-    -- for example, context is off by default, use this to turn it on
     show_current_context = true,
     show_current_context_start = true,
 }
@@ -292,24 +293,15 @@ EOF
 " -- Shortcuts ------------------------------------
 autocmd FileType rescript nnoremap <silent> <buffer> gd :RescriptJumpToDefinition<CR>
 nnoremap <silent> <c-s> :w <cr>
-nnoremap <silent> <c-k> :m +1 <cr>
-nnoremap <silent> <c-j> :m -2 <cr>
+nnoremap <silent> <c-j> :m +1 <cr>
+nnoremap <silent> <c-k> :m -2 <cr>
 nnoremap <silent> <c-l> :nohl <cr>
 nnoremap <silent> <s-k> 5k <cr>
 nnoremap <silent> <s-j> 5j <cr>
 nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fo <cmd>Telescope live_grep<cr>
+nnoremap <leader>fw <cmd>Telescope live_grep<cr>
 nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <silent> <c-i> :NvimTreeToggle <cr>
-" -------------------------------------------------
-
-" -- Fonts & Icons --------------------------------
-set encoding=utf8
-if !exists('g:airline_symbols')
-let g:airline_symbols = {}
-endif
-let g:airline_powerline_fonts=1
-let g:airline_symbols.notexists = ' ✗'
+nnoremap <leader>tt <cmd>NvimTreeToggle<cr>
 " -------------------------------------------------
 
 " -- Files & Folders ------------------------------
@@ -331,11 +323,55 @@ iabbrev investiments investments
 function! DisableST()
   return "%#NonText#"
 endfunction
-au BufEnter NvimTree setlocal statusline=%!DisableST()
+
+lua << EOF
+local home = os.getenv('HOME')
+local db = require('dashboard')
+db.default_banner = {
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+  "",
+}
+
+db.custom_footer = {"📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
+
+db.custom_center = {
+     {
+        icon = " ",
+        desc = "Open explorer                             ",
+        action = "NvimTreeToggle",
+        shortcut = "\\tt"
+    },{
+        icon = "  ",
+        desc = "Find word                                 ",
+        action = "Telescope live_grep",
+        shortcut = "\\fh"
+    },
+    {
+        icon = "  ",
+        desc = "Find  File                                ",
+        action = "Telescope find_files find_command=rg,--hidden,--files",
+        shortcut = "\\ff"
+    },
+    
+    {
+        icon = "  ",
+        desc = "Open dotfiles                             ",
+        action = "e " .. home .. "/Projects/dotfiles/nvim/init.vim",
+        shortcut = "\\sd"
+    }
+}
+
+EOF
 
 command! -nargs=0 FormatFiles :CocCommand  prettier.formatFile eslint.executeAutofix
-au VimEnter * NvimTreeFocus
-
+au BufEnter NvimTree setlocal statusline=%!DisableST()
+au VimEnter * Dashboard
 
 syntax on
 set nowrap
@@ -347,6 +383,7 @@ set tabstop=2
 set softtabstop=2
 set relativenumber
 set ignorecase
+set encoding=utf8
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
