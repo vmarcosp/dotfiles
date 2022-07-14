@@ -103,7 +103,9 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-#
+alias rs="npx rescript build -w"
+alias rsclean="npx rescript clean"
+alias rsbuild="npx rescript clean && npx rescript build -w"
 #
 if [ "$TMUX" = "" ]; then tmux; fi
 
@@ -120,7 +122,13 @@ function mktouch () {
 
   touch $@
 }
+
 [ -f "/Users/marcos/.ghcup/env" ] && source "/Users/marcos/.ghcup/env" # ghcup-env
 
+function png2webp () {
+  for file in *; do
+      cwebp -q 80 "$file" -o "${file%.png}.webp"
+  done
+}
 
 export PATH="$PATH:$HOME/.spicetify"

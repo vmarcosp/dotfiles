@@ -123,7 +123,7 @@ tmux_conf_theme_window_status_format='#W#{?window_bell_flag,🔔,}#{?window_zoom
 tmux_conf_theme_window_status_current_attr='bold'
 tmux_conf_theme_window_status_current_format='#I #W'
 tmux_conf_theme_window_status_current_format='#{circled_window_index} #W'
-tmux_conf_theme_window_status_current_format='#W#{?window_zoomed_flag,::zoomed,}'
+tmux_conf_theme_window_status_current_format='#W#{?window_zoomed_flag,,}'
 
 # window activity status style
 tmux_conf_theme_window_status_activity_fg='default'
@@ -178,7 +178,7 @@ tmux_conf_theme_right_separator_sub='\uE0B3'  #   PowerlineSymbols.otf font, see
 
 # tmux_conf_theme_status_left=' 〣#S | ↑#{?uptime_y, #{uptime_y}y,}#{?uptime_d, #{uptime_d}d,}#{?uptime_h, #{uptime_h}h,}#{?uptime_m, #{uptime_m}m,} '
 tmux_conf_theme_status_left=' #S '
-tmux_conf_theme_status_right='  %R %d %b | #{username}#{root} '
+tmux_conf_theme_status_right='  📅 %d %b 🕑 %R  '
 
 tmux_conf_theme_status_right_attr='none,none'
 
