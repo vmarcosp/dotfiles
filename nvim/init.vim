@@ -45,6 +45,7 @@ Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
 Plug 'glepnir/dashboard-nvim'
 Plug 'SirVer/ultisnips'
+Plug 'folke/which-key.nvim'
 " ----------------------------------
 
 call plug#end()
@@ -176,6 +177,31 @@ let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
 
 " ---------------------------------------
+nnoremap <c-j> :m +1 <cr>
+nnoremap <c-k> :m -2 <cr>
+nnoremap <c-s> :w <cr>
+nnoremap <c-l> :nohl <cr>
+
+lua << EOF
+  local wk = require("which-key")
+
+  wk.register({
+    ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find file" },
+    ["<leader>fw"] = { "<cmd>Telescope live_grep<cr>", "Find word" },
+    ["<leader>fb"] = { "<cmd>Telescope buffers<cr>", "Show buffers" },
+    ["<leader>tt"] = { "<cmd>NvimTreeToggle<cr>", "Open file explorer" },
+    ["<leader>tc"] = { "<cmd>NvimTreeCollapse<cr>", "Collpase folders" },
+    ["<s-k>"] = { "5k", "Jump 5 lines above"},
+    ["<s-j>"] = { "5j", "Jump 5 lines below"},
+  })
+
+  wk.setup({
+    spelling = {
+      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      suggestions = 20, -- how many suggestions should be shown in the list?
+    },
+  })
+EOF
 
 " -- lualine ----------------------------
 lua << END
@@ -274,7 +300,7 @@ require'nvim-tree'.setup {
      }
    },
    filters = {
-     custom = { ".git", "node_modules", ".cache", "*.bs.js" }
+     custom = { ".git", "node_modules", "*.bs.js" }
    },
    git = {
     ignore = true
@@ -322,16 +348,6 @@ autocmd FileType json nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile e
 autocmd FileType javascript nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile eslint.executeAutofix<cr>
 autocmd FileType markdown nnoremap <leader>fi <cmd>CocCommand  prettier.formatFile eslint.executeAutofix<cr>
 autocmd FileType rescript nnoremap <leader>fi <cmd>RescriptFormat<cr>
-nnoremap <c-s> :w <cr>
-nnoremap <c-j> :m +1 <cr>
-nnoremap <c-k> :m -2 <cr>
-nnoremap <c-l> :nohl <cr>
-nnoremap <s-k> 5k <cr>
-nnoremap <s-j> 5j <cr>
-nnoremap <leader>ff <cmd>Telescope find_files<cr>
-nnoremap <leader>fw <cmd>Telescope live_grep<cr>
-nnoremap <leader>fb <cmd>Telescope buffers<cr>
-nnoremap <leader>tt <cmd>NvimTreeToggle<cr>
 " -------------------------------------------------
 
 " -- Files & Folders ------------------------------
@@ -354,6 +370,8 @@ function! DisableST()
   return "%#NonText#"
 endfunction
 
+
+" -- dashboard -----------------------------------
 lua << EOF
 local home = os.getenv('HOME')
 local db = require('dashboard')
@@ -372,7 +390,7 @@ db.custom_footer = {"", "📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Project
 
 db.custom_center = {
      {
-        icon = " ",
+        icon = "  ",
         desc = "Open explorer                     ",
         action = "NvimTreeToggle",
         shortcut = "\\tt"
@@ -398,6 +416,7 @@ db.custom_center = {
 }
 
 EOF
+" --------------------------------------------
 
 au BufEnter NvimTree setlocal statusline=%!DisableST()
 au VimEnter * Dashboard
