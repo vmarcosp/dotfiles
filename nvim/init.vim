@@ -424,7 +424,7 @@ au VimEnter * Dashboard
 syntax on
 set nowrap
 set clipboard+=unnamedplus
-set mouse=a
+" set mouse=a
 set completeopt+=preview
 set expandtab
 set tabstop=2
