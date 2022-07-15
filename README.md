@@ -1,32 +1,27 @@
+# :bulb: `~/.dotfiles`
 <h2 align="center">
-  <br>
-  <span> ⚡ my .dotfiles ⚡ </span>
-  <br>
-  <br>
-  <img src="./__assets/preview-v4.png" />
+  <img width="800" src="./__assets/preview-v4.png" />
   <br>
  </h2>
 
-<br>
-
-## Resources 📦
-
-### nvim
-  - Tree: `nvim.tree`
+### `nvim`
+  - `nvim.tree`
+  - `telescope.nvim`
+  - `which.key`
+  - `coc.nvim` + `vim-rescript`
   - Theme: `catppuccin/nvim`
-  - LSP: `coc.nvim` + `vim-rescript`
-  - My custom shortcuts
+  - My custom bindings
 
-### zsh
+### `zsh`
   - `.zshrc`
   - ohmyzsh config
   - zsh-nvm
 
-### tmux
-  - My custom themes for `oceanic-next`, `gruvbox`, `iceberg` and `ayu`
-  - `oh-my-tmux` config
+### `tmux`
+  - My custom themes for `oceanic-next`, `gruvbox`, `iceberg`, `ayu`, `catpuccin`, etc.
+  - My custom `oh-my-tmux` config
   - `tmux.resurrect`
 
-### config
+### `config`
   - `.editorconfig`
   - `.gitconfig`
