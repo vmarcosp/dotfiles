@@ -3,7 +3,6 @@
 
 [alias]
 	a = add
-	sts = status
 	sts = status -sb
 	logger = git log --graph --abbrev-commit --decorate --date=relative
 	cm = commit -m
@@ -12,9 +11,10 @@
 	d = diff
 	fuck = reset --hard
 
+[pull]
+	rebase = true
 [push]
 	default = current
-
 [log]
 	decorate = short
 [user]
