@@ -16,17 +16,8 @@ Plug 'nvim-lualine/lualine.nvim'
 
 " -- Themes ------------------------
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-Plug 'joshdick/onedark.vim' 
-Plug 'drewtempelmeyer/palenight.vim'
-Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'arcticicestudio/nord-vim'
-Plug 'mhartington/oceanic-next'
-Plug 'morhetz/gruvbox'
-Plug 'cocopon/iceberg.vim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'sonph/onehalf', { 'rtp': 'vim' }
-Plug 'altercation/vim-colors-solarized'
-Plug 'haishanh/night-owl.vim'
 " ----------------------------------
 
 " -- General Plugins ---------------
@@ -55,44 +46,10 @@ set t_Co=256
 set termguicolors
 set background=dark
 
-let g:UltiSnipsEditSplit="vertical"
-" Dracula
-" let g:dracula_colorterm = 0
-" let g:dracula_italic = 0
-" colorscheme dracula
-" let g:airline_theme='dracula'
-
-" Palenight 
-" colorscheme palenight
-" let g:airline_theme='palenight'
-
-" OceanicNext 
-" colorscheme OceanicNext 
-" let g:airline_theme='oceanicnext'
-
-" Gruvbox
-" colorscheme gruvbox
-" let g:airline_theme='gruvbox'
-" let g:gruvbox_invert_selection = 0
-" set background=light
-
-" Iceberg
-" colorscheme iceberg
-" let g:airline_theme='iceberg'
-
 " Ayu  
 " let ayucolor="light"
 " colorscheme ayu 
 " let g:airline_theme='ayu'
-
-" One Half
-" colorscheme onehalfdark
-" let g:airline_theme='onehalfdark'
-
-" Solarized
-" syntax enable
-" set background=light
-" colorscheme solarized
 
 " Night Owl 
 " colorscheme night-owl
@@ -177,10 +134,16 @@ let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
 
 " ---------------------------------------
+" -- Which Key + Keybindings ------------
 nnoremap <c-j> :m +1 <cr>
 nnoremap <c-k> :m -2 <cr>
 nnoremap <c-s> :w <cr>
-nnoremap <c-l> :nohl <cr>
+nnoremap <tab> :bnext<cr>
+nnoremap <C-H> <C-W>h
+nnoremap <C-J> <C-W>j
+nnoremap <C-K> <C-W>k
+nnoremap <C-L> <C-W>l
+nnoremap <leader>cl :nohl <cr>
 
 lua << EOF
   local wk = require("which-key")
@@ -197,11 +160,12 @@ lua << EOF
 
   wk.setup({
     spelling = {
-      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-      suggestions = 20, -- how many suggestions should be shown in the list?
+      enabled = true, 
+      suggestions = 20, 
     },
   })
 EOF
+" ---------------------------------------
 
 " -- lualine ----------------------------
 lua << END
@@ -366,11 +330,6 @@ iabbrev investiments investments
  au InsertEnter * highlight CursorLine ctermfg=none ctermbg=none cterm=none guifg=none guibg=none gui=none
 " -------------------------------------------------
 
-function! DisableST()
-  return "%#NonText#"
-endfunction
-
-
 " -- dashboard -----------------------------------
 lua << EOF
 local home = os.getenv('HOME')
@@ -418,20 +377,22 @@ db.custom_center = {
 EOF
 " --------------------------------------------
 
-au BufEnter NvimTree setlocal statusline=%!DisableST()
+" -- Other configs ---------------------------
 au VimEnter * Dashboard
+
+let g:UltiSnipsEditSplit="vertical"
 
 syntax on
 set nowrap
 set clipboard+=unnamedplus
-" set mouse=a
-set completeopt+=preview
+set completeopt=longest,menuone
 set expandtab
 set tabstop=2
 set softtabstop=2
 set relativenumber
 set ignorecase
 set encoding=utf8
+
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
