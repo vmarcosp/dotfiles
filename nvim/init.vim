@@ -5,7 +5,7 @@ Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'editorconfig/editorconfig-vim'
 " ---------------------------------
-
+Plug 'ervandew/supertab'
 " -- Telescope & Navigation --------
 Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
