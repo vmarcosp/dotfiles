@@ -260,3 +260,5 @@ bind s choose-tree -s -Z -O name
 run-shell ~/.config/tmux/resurrect.tmux
 
 set-window-option -g xterm-keys on
+
+setw -g mouse off
