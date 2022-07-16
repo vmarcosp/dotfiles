@@ -46,15 +46,6 @@ set t_Co=256
 set termguicolors
 set background=dark
 
-" Ayu  
-" let ayucolor="light"
-" colorscheme ayu 
-" let g:airline_theme='ayu'
-
-" Night Owl 
-" colorscheme night-owl
-" let g:airline_theme='night_owl'
-
 " Captuccin 
 lua << EOF
 local catppuccin = require("catppuccin")
@@ -143,7 +134,7 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
-nnoremap <leader>cl :nohl <cr>
+nnoremap <leader>cc :nohl <cr>
 
 lua << EOF
   local wk = require("which-key")
