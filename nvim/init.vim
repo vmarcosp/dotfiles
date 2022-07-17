@@ -129,15 +129,19 @@ colorscheme catppuccin
 nnoremap <c-j> :m +1 <cr>
 nnoremap <c-k> :m -2 <cr>
 nnoremap <c-s> :w <cr>
-nnoremap <tab> :bnext<cr>
 nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
+nnoremap <leader>bb :bnext<cr>
+nnoremap <leader>vv :bprevious<cr>
 nnoremap <leader>cc :nohl <cr>
+nnoremap <leader>cc :nohl <cr>
+nnoremap <leader>cc <cr>
 
 lua << EOF
   local wk = require("which-key")
+  local home = os.getenv("HOME")
 
   wk.register({
     ["<leader>ff"] = { "<cmd>Telescope find_files<cr>", "Find file" },
@@ -147,6 +151,8 @@ lua << EOF
     ["<leader>tc"] = { "<cmd>NvimTreeCollapse<cr>", "Collpase folders" },
     ["<s-k>"] = { "5k", "Jump 5 lines above"},
     ["<s-j>"] = { "5j", "Jump 5 lines below"},
+    ["<leader>dv"] = { "<cmd>e $MYVIMRC<cr>", "Open init.vim"},
+    ["<leader>dt"] = { "<cmd>e " .. home .. "/Projects/dotfiles/tmux/.tmux.conf.local<cr>", "Open tmux config"},
   })
 
   wk.setup({
@@ -334,6 +340,8 @@ db.default_banner = {
   "",
   "",
   "",
+  "",
+  "",
 }
 
 db.custom_footer = {"", "📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
@@ -361,7 +369,7 @@ db.custom_center = {
         icon = "  ",
         desc = "Open dotfiles                     ",
         action = "e " .. home .. "/Projects/dotfiles/nvim/init.vim",
-        shortcut = "\\sd"
+        shortcut = "\\dv"
     }
 }
 
