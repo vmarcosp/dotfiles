@@ -20,3 +20,5 @@ ln -s -f $PWD/nvim/coc-db.json ~/.config/coc/extensions/db.json
 git clone https://github.com/lukechilds/zsh-nvm.git ~/.zsh-nvm
 
 source ~/.zsh-nvm/zsh-nvm.plugin.zsh
+
+git clone https://github.com/tmux-plugins/tmux-resurrect ~/.config/tmux/
