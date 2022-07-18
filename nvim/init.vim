@@ -136,8 +136,6 @@ nnoremap <C-L> <C-W>l
 nnoremap <leader>bb :bnext<cr>
 nnoremap <leader>vv :bprevious<cr>
 nnoremap <leader>cc :nohl <cr>
-nnoremap <leader>cc :nohl <cr>
-nnoremap <leader>cc <cr>
 
 lua << EOF
   local wk = require("which-key")
