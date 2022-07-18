@@ -5,7 +5,7 @@ tmux_conf_theme_window_status_format='#W'
 
 # Panels
 tmux_conf_theme_status_left=' 👋 #S '
-tmux_conf_theme_status_right='#{music_status} 🗓️  %d %b 🕑 %R  '
+tmux_conf_theme_status_right=' 🗓️  %d %b 🕑 %R  '
 # tmux_conf_theme_status_right=' 🕑 %R  '
 tmux_conf_copy_to_os_clipboard=true
 set -g history-limit 10000
