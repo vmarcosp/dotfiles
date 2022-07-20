@@ -1,17 +1,18 @@
 call plug#begin('~/.config/nvim/plugged')
 
 " -- LSP & Syntax -----------------
-Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'editorconfig/editorconfig-vim'
 " ---------------------------------
-Plug 'ervandew/supertab'
+
 " -- Telescope & Navigation --------
-Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
+Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lualine/lualine.nvim'
+Plug 'ervandew/supertab'
 " ----------------------------------
 
 " -- Themes ------------------------
@@ -133,9 +134,26 @@ nnoremap <C-H> <C-W>h
 nnoremap <C-J> <C-W>j
 nnoremap <C-K> <C-W>k
 nnoremap <C-L> <C-W>l
+
+" -- Navigating between opened buffers --
 nnoremap <leader>bb :bnext<cr>
 nnoremap <leader>vv :bprevious<cr>
 nnoremap <leader>cc :nohl <cr>
+
+" -- coc.nvim bindings ----------------- 
+nmap <leader>gd <Plug>(coc-definition)
+nmap <leader>gg :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
 
 lua << EOF
   local wk = require("which-key")
