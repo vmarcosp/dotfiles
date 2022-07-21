@@ -1,17 +1,18 @@
-# git
+# -- git ---------------------
 ln -s -f $PWD/env/.gitconfig ~/
 
-# zsh
+# -- zsh ---------------------
 ln -s -f $PWD/env/.zshrc ~/
 
-# link tmux config
+# -- tmux --------------------
 mkdir ~/tmux-themes/
-ln -s -f $PWD/tmux/.tmux.conf.local ~/
+ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf.local
 ln -s -f $PWD/tmux/ayu-light.conf ~/tmux-themes/
 ln -s -f $PWD/tmux/catpuccin.conf ~/tmux-themes/
 ln -s -f $PWD/tmux/ayu.conf ~/tmux-themes/
+git clone https://github.com/tmux-plugins/tmux-resurrect ~/.config/tmux/
 
-# link nvim files
+# -- nvim -------------------
 mkdir -p ~/.config/coc/extensions
 mkdir -p ~/.config/nvim
 
@@ -20,9 +21,7 @@ ln -s -f $PWD/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
 ln -s -f $PWD/nvim/coc-package.json ~/.config/coc/extensions/package.json
 ln -s -f $PWD/nvim/coc-db.json ~/.config/coc/extensions/db.json
 
-# fix NVM/Node ZSH
+# -- fix nvm with zsh ------ 
 git clone https://github.com/lukechilds/zsh-nvm.git ~/.zsh-nvm
-
 source ~/.zsh-nvm/zsh-nvm.plugin.zsh
 
-git clone https://github.com/tmux-plugins/tmux-resurrect ~/.config/tmux/
