@@ -5,7 +5,11 @@ ln -s -f $PWD/env/.gitconfig ~/
 ln -s -f $PWD/env/.zshrc ~/
 
 # link tmux config
+mkdir ~/tmux-themes/
 ln -s -f $PWD/tmux/.tmux.conf.local ~/
+ln -s -f $PWD/tmux/ayu-light.conf ~/tmux-themes/
+ln -s -f $PWD/tmux/catpuccin.conf ~/tmux-themes/
+ln -s -f $PWD/tmux/ayu.conf ~/tmux-themes/
 
 # link nvim files
 mkdir -p ~/.config/coc/extensions
