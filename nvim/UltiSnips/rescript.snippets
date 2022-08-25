@@ -1,3 +1,16 @@
+snippet component-styles
+module Styles = {
+  open Emotion
+
+	let ${1} = css({
+
+	})
+}
+@react.component
+let make = () => {
+  ${2}
+}
+endsnippet
 snippet modcomponent
 module ${1} = {
 	@react.component
@@ -5,6 +18,13 @@ module ${1} = {
 		${0}
 	}
 };
+endsnippet
+
+snippet component
+@react.component
+let make = () => {
+	${0}
+}
 endsnippet
 
 snippet doc
