@@ -14,8 +14,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-. $(brew --prefix asdf)/asdf.sh
-
 function mktouch () {
   for p in $@; do
     mkdir -p $(dirname "$p")
@@ -26,11 +24,13 @@ function mktouch () {
 
 function png2webp () {
   for file in *; do
-      cwebp -q 80 "$file" -o "${file%.png}.webp"
+      cwebp -q 100 "$file" -o "${file%.png}.webp"
   done
 }
 
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
-
+source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
+source /opt/homebrew/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.1.2

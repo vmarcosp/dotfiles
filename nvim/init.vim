@@ -4,6 +4,7 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'editorconfig/editorconfig-vim'
+Plug 'makerj/vim-pdf'
 " ---------------------------------
 
 " -- Telescope & Navigation --------
@@ -25,6 +26,7 @@ Plug 'ayu-theme/ayu-vim'
 Plug 'junegunn/seoul256.vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sheerun/vim-polyglot'
+Plug 'jxnblk/vim-mdx-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'jparise/vim-graphql'
 Plug 'neomake/neomake'
@@ -37,7 +39,9 @@ Plug 'andymass/vim-matchup'
 Plug 'windwp/nvim-autopairs'
 Plug 'glepnir/dashboard-nvim'
 Plug 'SirVer/ultisnips'
+Plug 'yuttie/comfortable-motion.vim'
 Plug 'folke/which-key.nvim'
+Plug 'vim-ruby/vim-ruby'
 " ----------------------------------
 
 call plug#end()
@@ -122,7 +126,7 @@ integrations = {
 	symbols_outline = true,
   }}
 EOF
-let g:catppuccin_flavour = "macchiato"
+let g:catppuccin_flavour = "frappe"
 colorscheme catppuccin
 
 " ---------------------------------------
@@ -168,7 +172,7 @@ lua << EOF
     ["<s-k>"] = { "5k", "Jump 5 lines above"},
     ["<s-j>"] = { "5j", "Jump 5 lines below"},
     ["<leader>dv"] = { "<cmd>e $MYVIMRC<cr>", "Open init.vim"},
-    ["<leader>dt"] = { "<cmd>e " .. home .. "/Projects/dotfiles/tmux/.tmux.conf.local<cr>", "Open tmux config"},
+    ["<leader>dt"] = { "<cmd>e " .. home .. "/Projects/dotfiles/tmux/.tmux.conf<cr>", "Open tmux config"},
   })
 
   wk.setup({
@@ -360,7 +364,7 @@ db.default_banner = {
   "",
 }
 
-db.custom_footer = {"", "📦 " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
+db.custom_footer = {"", " " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
 
 db.custom_center = {
      {
@@ -407,9 +411,13 @@ set softtabstop=2
 set relativenumber
 set ignorecase
 set encoding=utf8
+set nocompatible
 
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 set mouse=a
+
+let g:comfortable_motion_scroll_down_key = "j"
+let g:comfortable_motion_scroll_up_key = "k"
