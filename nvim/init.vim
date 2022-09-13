@@ -13,7 +13,6 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'kyazdani42/nvim-tree.lua'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-lualine/lualine.nvim'
-Plug 'ervandew/supertab'
 " ----------------------------------
 
 " -- Themes ------------------------
@@ -54,77 +53,38 @@ set background=dark
 " Captuccin 
 lua << EOF
 local catppuccin = require("catppuccin")
-
-catppuccin.setup {
-transparent_background = true,
-term_colors = false,
-styles = {
-	comments = "italic",
-	conditionals = "italic",
-	loops = "NONE",
-	functions = "NONE",
-	keywords = "NONE",
-	strings = "NONE",
-	variables = "NONE",
-	numbers = "NONE",
-	booleans = "NONE",
-	properties = "NONE",
-	types = "NONE",
-	operators = "NONE",
-},
-integrations = {
-	treesitter = true,
-	native_lsp = {
-		enabled = true,
-		virtual_text = {
-			errors = "italic",
-			hints = "italic",
-			warnings = "italic",
-			information = "italic",
-		},
-		underlines = {
-			errors = "underline",
-			hints = "underline",
-			warnings = "underline",
-			information = "underline",
-		},
-	},
-    coc_nvim = false,
-	lsp_trouble = false,
-	cmp = true,
-	lsp_saga = false,
-	gitgutter = false,
-	gitsigns = true,
-	telescope = true,
-	nvimtree = {
-		enabled = true,
-		show_root = false,
-		transparent_panel = false,
-	},
-	neotree = {
+require("catppuccin").setup({
+	transparent_background = false,
+	term_colors = false,
+	compile = {
 		enabled = false,
-		show_root = false,
-		transparent_panel = false,
+		path = vim.fn.stdpath("cache") .. "/catppuccin",
 	},
-	which_key = false,
-	indent_blankline = {
-		enabled = true,
-		colored_indent_levels = false,
+	dim_inactive = {
+		enabled = false,
+		shade = "dark",
+		percentage = 0.15,
 	},
-	dashboard = true,
-	neogit = false,
-	vim_sneak = false,
-	fern = false,
-	barbar = false,
-	bufferline = true,
-	markdown = true,
-	lightspeed = false,
-	ts_rainbow = false,
-	hop = false,
-	notify = true,
-	telekasten = true,
-	symbols_outline = true,
-  }}
+	styles = {
+		comments = { "italic" },
+		conditionals = { "italic" },
+		loops = {},
+		functions = {},
+		keywords = {},
+		strings = {},
+		variables = {},
+		numbers = {},
+		booleans = {},
+		properties = {},
+		types = {},
+		operators = {},
+	},
+	integrations = {
+		-- For various plugins integrations see https://github.com/catppuccin/nvim#integrations
+	},
+	color_overrides = {},
+	highlight_overrides = {},
+})
 EOF
 let g:catppuccin_flavour = "frappe"
 colorscheme catppuccin
@@ -190,27 +150,29 @@ require('lualine').setup {
   options = {
     icons_enabled = true,
     theme = 'auto',
-    component_separators = { left = '', right = ''},
-    section_separators = { left = '', right = ''},
     disabled_filetypes = {},
     always_divide_middle = true,
     globalstatus = false,
   },
   sections = {
-    lualine_a = {'mode'},
-    lualine_b = {'branch', 'diff', 'diagnostics'},
-    lualine_c = {''},
-    lualine_x = {'filename', 'filetype'},
-    lualine_y = {''},
-    lualine_z = {''}
+    lualine_a = {
+      { 'mode', separator = { right = ' ' }, left_padding = 0 },
+    },
+    lualine_b = { '' },
+    lualine_c = { '' },
+    lualine_x = { '' },
+    lualine_y = { '' },
+    lualine_z = { 
+      { 'progress', separator = { left = ' ' } },
+    },  
   },
   inactive_sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_c = {'filename'},
-    lualine_x = {'location'},
+    lualine_c = { 'filename' },
+    lualine_x = { 'location' },
     lualine_y = {},
-    lualine_z = {}
+    lualine_z = {},  
   },
   tabline = {},
   extensions = { 'nvim-tree', 'fugitive' },
@@ -360,8 +322,6 @@ db.default_banner = {
   "",
   "",
   "",
-  "",
-  "",
 }
 
 db.custom_footer = {"", " " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
@@ -409,6 +369,7 @@ set expandtab
 set tabstop=2
 set softtabstop=2
 set relativenumber
+set number
 set ignorecase
 set encoding=utf8
 set nocompatible
