@@ -11,6 +11,19 @@ let make = () => {
   ${2}
 }
 endsnippet
+
+snippet modcomponent-bindings
+module ${0} = {
+	@react.component
+	@module("${1}")
+	external make: (
+		${2}
+	) => React.element = "${3}"
+}
+endsnippet
+
+
+
 snippet modcomponent
 module ${1} = {
 	@react.component
