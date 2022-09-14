@@ -6,11 +6,7 @@ ln -s -f $PWD/env/.zshrc ~/
 
 # -- tmux --------------------
 mkdir ~/tmux-themes/
-ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf.local
-ln -s -f $PWD/tmux/ayu-light.conf ~/tmux-themes/
-ln -s -f $PWD/tmux/catpuccin.conf ~/tmux-themes/
-ln -s -f $PWD/tmux/ayu.conf ~/tmux-themes/
-git clone https://github.com/tmux-plugins/tmux-resurrect ~/.config/tmux/
+ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
 
 # -- nvim -------------------
 mkdir -p ~/.config/coc/extensions
