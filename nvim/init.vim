@@ -326,8 +326,6 @@ db.default_banner = {
   "",
   "",
   "",
-  "",
-  "",
 }
 
 db.custom_footer = {"", " " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
@@ -384,7 +382,6 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
-set mouse=a
 
 let g:comfortable_motion_scroll_down_key = "j"
 let g:comfortable_motion_scroll_up_key = "k"

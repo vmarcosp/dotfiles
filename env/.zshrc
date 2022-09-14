@@ -31,6 +31,3 @@ function png2webp () {
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
-source /opt/homebrew/opt/chruby/share/chruby/chruby.sh
-source /opt/homebrew/opt/chruby/share/chruby/auto.sh
-chruby ruby-3.1.2
