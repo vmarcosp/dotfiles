@@ -3,15 +3,16 @@
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
   "javascript.validate.enable": false,
-  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json", "js", "md"],
-  "eslint.autoFixOnsave": false,
-  "tsserver.enableJavascript": true,
+  "coc.preferences.formatOnSaveFiletypes": ["rescript", "json"],
+  "eslint.autoFixOnsave": true,
+  "tsserver.enableTypescript": false,
+  "languageserver": {
     "rescript": {
-      "enable": true,
-      "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
-      "args": ["--node-ipc"],
-      "filetypes": ["rescript"],
-      "rootPatterns": ["bsconfig.json"]
+    "enable": true,
+    "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
+    "args": ["--node-ipc"],
+    "filetypes": ["rescript"],
+    "rootPatterns": ["bsconfig.json"]
     }
   }
 }
