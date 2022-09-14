@@ -18,6 +18,7 @@ Plug 'nvim-lualine/lualine.nvim'
 " -- Themes ------------------------
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 Plug 'arcticicestudio/nord-vim'
+Plug 'olivercederborg/poimandres.nvim'
 Plug 'ayu-theme/ayu-vim'
 " ----------------------------------
 
@@ -86,8 +87,13 @@ require("catppuccin").setup({
 	highlight_overrides = {},
 })
 EOF
-let g:catppuccin_flavour = "frappe"
+let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
+"
+lua << EOF
+  require('poimandres').setup {}
+EOF
+" colorscheme poimandres
 
 " ---------------------------------------
 " -- Which Key + Keybindings ------------
