@@ -153,10 +153,12 @@ require('lualine').setup {
     lualine_a = {
       { 'mode', separator = { right = ' ' }, left_padding = 0 },
     },
-    lualine_b = { '' },
+    lualine_b = { 
+      { 'filename', separator = { right = ' ' }, left_padding = 0 }, 
+    },
     lualine_c = { '' },
     lualine_x = { '' },
-    lualine_y = { '' },
+    lualine_y = { 'diagnostics' },
     lualine_z = { 
       { 'progress', separator = { left = ' ' } },
     },  
