@@ -4,7 +4,6 @@ call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'editorconfig/editorconfig-vim'
-Plug 'makerj/vim-pdf'
 " ---------------------------------
 
 " -- Telescope & Navigation --------
@@ -17,16 +16,12 @@ Plug 'nvim-lualine/lualine.nvim'
 
 " -- Themes ------------------------
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
-Plug 'arcticicestudio/nord-vim'
-Plug 'olivercederborg/poimandres.nvim'
-Plug 'ayu-theme/ayu-vim'
 " ----------------------------------
 
 " -- General Plugins ---------------
 Plug 'junegunn/seoul256.vim'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'sheerun/vim-polyglot'
-Plug 'jxnblk/vim-mdx-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'jparise/vim-graphql'
 Plug 'neomake/neomake'
@@ -41,7 +36,6 @@ Plug 'glepnir/dashboard-nvim'
 Plug 'SirVer/ultisnips'
 Plug 'yuttie/comfortable-motion.vim'
 Plug 'folke/which-key.nvim'
-Plug 'vim-ruby/vim-ruby'
 " ----------------------------------
 
 call plug#end()
@@ -51,7 +45,7 @@ set t_Co=256
 set termguicolors
 set background=dark
 
-" Captuccin 
+" Theme 
 lua << EOF
 local catppuccin = require("catppuccin")
 require("catppuccin").setup({
@@ -89,13 +83,8 @@ require("catppuccin").setup({
 EOF
 let g:catppuccin_flavour = "macchiato"
 colorscheme catppuccin
-"
-lua << EOF
-  require('poimandres').setup {}
-EOF
-" colorscheme poimandres
-
 " ---------------------------------------
+
 " -- Which Key + Keybindings ------------
 nnoremap <c-j> :m +1 <cr>
 nnoremap <c-k> :m -2 <cr>
@@ -300,7 +289,7 @@ autocmd FileType rescript nnoremap <leader>fi <cmd>RescriptFormat<cr>
 " -------------------------------------------------
 
 " -- Files & Folders ------------------------------
-set wildignore+=*_esy/*,*esy.lock/*,*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi,*.bs.js
+set wildignore+=*/node_modules/*,*.reast,*.cmj,*.d,*.cmt,*.cmi,*.bs.js
 " -------------------------------------------------
 
 " -- Typos ----------------------------------------
