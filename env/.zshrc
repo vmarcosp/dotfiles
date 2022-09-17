@@ -1,7 +1,7 @@
 export PATH=/opt/homebrew/bin:$PATH
 source ~/env-vars.sh
 
-export ZSH="/Users/marcos/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh/"
 
 ZSH_THEME="robbyrussell"
 plugins=(git)

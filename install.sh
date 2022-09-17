@@ -1,41 +1,43 @@
-# -- brew -------------------------------
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+#!/usr/bin/env bash
+
 brew update
 brew upgrade
 brew install wget
 brew install curl
-
-# -- nvim + nvim plugins/configs ---------
 brew install neovim
 brew install python3
 pip3 install --user --upgrade neovim
 brew install ripgrep
-
-# -- git --------------------------------
+brew install tmux
+arch -arm64 brew install reattach-to-user-namespace
 brew install git
+
 ln -s -f $PWD/env/.gitconfig ~/
 
 # -- oh-my-zsh + zsh ---------------------
 touch ~/env-vars.sh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+curl -o- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash
 ln -s -f $PWD/env/.zshrc ~/
 
 # -- tmux --------------------------------
-brew install tmux
-arch -arm64 brew install reattach-to-user-namespace
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
 
 # -- nvim --------------------------------
-mkdir -p ~/.config/coc/extensions
 mkdir -p ~/.config/nvim
+mkdir -p ~/.config/coc/extensions
+touch ~/.config/coc/extensions/package.json
+touch ~/.config/coc/extensions/db.json
+sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
+       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
 ln -s -f $PWD/nvim/init.vim ~/.config/nvim/init.vim
 ln -s -f $PWD/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
+n -s -f $PWD/nvim/UltiSnips ~/.config/nvim
 ln -s -f $PWD/nvim/coc-package.json ~/.config/coc/extensions/package.json
 ln -s -f $PWD/nvim/coc-db.json ~/.config/coc/extensions/db.json
 
-# -- nvm + custom nvm plugin for zsh ------ 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
-git clone https://github.com/lukechilds/zsh-nvm.git ~/.zsh-nvm
-source ~/.zsh-nvm/zsh-nvm.plugin.zsh
-
+# -- nvm + custom nvm config for zsh ------ 
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+nvm install node
