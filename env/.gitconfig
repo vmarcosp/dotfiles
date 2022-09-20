@@ -1,6 +1,9 @@
 [core]
 	editor = nvim
 
+[init]
+  defaultBranch = main
+
 [alias]
 	a = add
 	sts = status -sb
