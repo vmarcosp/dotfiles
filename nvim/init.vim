@@ -6,3 +6,5 @@ source $HOME/.config/nvim/modules/telescope.vim
 source $HOME/.config/nvim/modules/typos.vim
 source $HOME/.config/nvim/modules/normalize.vim
 source $HOME/.config/nvim/modules/ui.vim
+source $HOME/.config/nvim/modules/statusline.vim
+source $HOME/.config/nvim/modules/general.vim
