@@ -1,0 +1,15 @@
+set t_Co=256
+set termguicolors
+set background=dark
+syntax on
+set nowrap
+set clipboard+=unnamedplus
+set completeopt=longest,menuone
+set expandtab
+set tabstop=2
+set softtabstop=2
+set relativenumber
+set number
+set ignorecase
+set encoding=utf8
+set nocompatible
