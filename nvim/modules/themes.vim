@@ -34,5 +34,5 @@ require("catppuccin").setup({
 })
 EOF
 
-let g:catppuccin_flavour = "macchiato"
+let g:catppuccin_flavour = "mocha"
 colorscheme catppuccin

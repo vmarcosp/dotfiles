@@ -4,5 +4,7 @@
     "coc-json": ">=1.6.1",
     "coc-prettier": ">=9.3.1",
     "coc-tsserver": ">=1.11.9"
-  }
+  },
+  "disabled": [],
+  "locked": []
 }
