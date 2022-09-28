@@ -37,6 +37,10 @@ n -s -f $PWD/nvim/UltiSnips ~/.config/nvim
 ln -s -f $PWD/nvim/coc-package.json ~/.config/coc/extensions/package.json
 ln -s -f $PWD/nvim/coc-db.json ~/.config/coc/extensions/db.json
 
+# -- wezterm -----------------------------
+mkdir ~/.config/wezterm/
+ln -s -f $PWD/wezterm/wezterm.lua ~/.config/wezterm/
+
 # -- nvm + custom nvm config for zsh ------ 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
