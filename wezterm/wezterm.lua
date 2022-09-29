@@ -1,7 +1,8 @@
 local wezterm = require 'wezterm'
+
 return {
-  font = wezterm.font 'SpaceMono Nerd Font Mono',
-  font_size = 16,
+  font = wezterm.font('SpaceMono Nerd Font Mono', { weight = "Regular" }),
+  font_size = 18,
 	use_fancy_tab_bar = false,
 	inactive_pane_hsb = {
 		brightness = 0.7,
