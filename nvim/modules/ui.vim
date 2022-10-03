@@ -11,8 +11,8 @@ EOF
 
 lua << EOF
 require("indent_blankline").setup {
-    show_current_context = true,
-    show_current_context_start = true,
+    show_current_context = false,
+    show_current_context_start = false,
 }
 EOF
 
@@ -27,8 +27,6 @@ db.default_banner = {
   "",
   "",
   "",
-  "",
-  "",
 }
 
 db.custom_footer = {"", " " .. vim.fn.getcwd():gsub(home, ""):gsub("/Projects", "") .. ""}
@@ -38,27 +36,20 @@ db.custom_center = {
         icon = "  ",
         desc = "Open explorer                     ",
         action = "NvimTreeToggle",
-        shortcut = "\\tt"
+        shortcut = "ctrl+n"
     },{
         icon = "  ",
         desc = "Find word                         ",
         action = "Telescope live_grep",
-        shortcut = "\\fh"
+        shortcut = "ctrl+f"
     },
     {
         icon = "  ",
         desc = "Find  File                        ",
         action = "Telescope find_files find_command=rg,--hidden,--files",
-        shortcut = "\\ff"
+        shortcut = "ctrl+p"
     },
-    
-    {
-        icon = "  ",
-        desc = "Open dotfiles                     ",
-        action = "e $MYVIMRC",
-        shortcut = "\\dv"
-    }
-}
+  }
 
 EOF
 
