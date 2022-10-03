@@ -2,7 +2,7 @@ call plug#begin('~/.config/nvim/plugged')
 
 Plug 'numToStr/Comment.nvim'
 Plug 'windwp/nvim-spectre'
-Plug 'feline-nvim/feline.nvim', { 'branch': '0.5-compat' }
+Plug 'nvim-lualine/lualine.nvim'
 Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'npm install'}
 Plug 'rescript-lang/vim-rescript', {'branch': 'master'}
 Plug 'editorconfig/editorconfig-vim'
