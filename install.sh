@@ -30,7 +30,7 @@ touch ~/.config/coc/extensions/package.json
 touch ~/.config/coc/extensions/db.json
 sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
        https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-ln -s -f $PWD/nvim/modules/ ~/.config/nvim/modules/
+ln -s -f $PWD/nvim/modules/ ~/.config/nvim/
 ln -s -f $PWD/nvim/init.vim ~/.config/nvim/init.vim
 ln -s -f $PWD/nvim/coc-settings.json ~/.config/nvim/coc-settings.json
 n -s -f $PWD/nvim/UltiSnips ~/.config/nvim
