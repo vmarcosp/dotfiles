@@ -1,1 +1,5 @@
-return {}
+return {
+  mappings = {
+    leader = "\\"
+  }
+}
