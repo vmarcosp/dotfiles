@@ -1,10 +1,10 @@
 local wezterm = require 'wezterm'
 
 return {
-  font = wezterm.font('FiraCode Nerd Font', { weight = "Bold", italic = false, }),
-  font_size = 16,
+  font = wezterm.font('SpaceMono Nerd Font Mono', { weight = "Bold" }),
+  font_size = 18,
 	use_fancy_tab_bar = false,
-  line_height = 2.0,
+  line_height = 1.7,
 	hide_tab_bar_if_only_one_tab = true,
   color_scheme = "Catppuccin Mocha",
 	window_decorations = "RESIZE",
