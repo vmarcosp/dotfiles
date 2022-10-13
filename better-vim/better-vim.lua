@@ -1,9 +1,11 @@
 return {
   mappings = {
-    leader = "\\"
+    leader = "\\",
+    custom = {
+      ["<c-b>"] = { "<cmd>NvimTreeToggle<cr>", "Open file explorer" },
+    }
   },
   flags = {
-    disable_tabs = true,
-    disable_dashboard = true
+    disable_tabs = false
   }
 }
