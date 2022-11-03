@@ -1,0 +1,17 @@
+{
+  "diagnostic.errorSign": "❗️ ",
+  "diagnostic.warningSign": "⚠️ ",
+  "diagnostic.infoSign": "⚠️ ",
+  "javascript.validate.enable": false,
+  "eslint.autoFixOnSave": true,
+  "coc.preferences.formatOnSaveFiletypes": ["rescript", "md", "json", "typescript", "javascript"],
+  "languageserver": {
+    "rescript": {
+      "enable": true,
+      "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
+      "args": ["--node-ipc"],
+      "filetypes": ["rescript"],
+      "rootPatterns": ["bsconfig.json"]
+    }
+  }
+}
