@@ -2,9 +2,9 @@
   "diagnostic.errorSign": "❗️ ",
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
-  "javascript.validate.enable": false,
+  "javascript.validate.enable": true,
   "eslint.autoFixOnSave": true,
-  "coc.preferences.formatOnSaveFiletypes": ["rescript", "md", "json", "typescript", "javascript"],
+  "coc.preferences.formatOnSave": true,
   "languageserver": {
     "rescript": {
       "enable": true,
