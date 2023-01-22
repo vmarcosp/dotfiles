@@ -2,10 +2,15 @@
   "diagnostic.errorSign": "❗️ ",
   "diagnostic.warningSign": "⚠️ ",
   "diagnostic.infoSign": "⚠️ ",
+  "coc.preferences.formatOnSave": true,
   "javascript.validate.enable": true,
   "eslint.autoFixOnSave": true,
-  "coc.preferences.formatOnSave": true,
   "languageserver": {
+    "ocaml-lsp": {
+      "command": "opam",
+      "args": ["config", "exec", "--", "ocamllsp"],
+      "filetypes": ["ocaml", "reason"]
+    },
     "rescript": {
       "enable": true,
       "module": "~/.config/nvim/plugged/vim-rescript/server/out/server.js",
