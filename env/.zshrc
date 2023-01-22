@@ -1,3 +1,5 @@
+# Fig pre block. Keep at the top of this file.
+[[ -f "$HOME/.fig/shell/zshrc.pre.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.pre.zsh"
 export PATH=/opt/homebrew/bin:$PATH
 source ~/env-vars.sh
 
@@ -31,3 +33,9 @@ function png2webp () {
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
+
+# opam configuration
+[[ ! -r /Users/marcos/.opam/opam-init/init.zsh ]] || source /Users/marcos/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
+
+# Fig post block. Keep at the bottom of this file.
+[[ -f "$HOME/.fig/shell/zshrc.post.zsh" ]] && builtin source "$HOME/.fig/shell/zshrc.post.zsh"

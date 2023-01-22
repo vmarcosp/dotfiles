@@ -6,7 +6,9 @@ require("nvim-web-devicons").set_icon {
     name = "ReScript"
   }
 }
+require("todo-comments").setup {}
 EOF
 
 set mouse=a
 set relativenumber
+set laststatus=3
