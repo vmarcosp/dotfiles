@@ -3,8 +3,10 @@ return {
     leader = "\\",
   },
   theme = {
-    name = "catppuccin",
-    catppuccin_flavour = "mocha"
+    name = "nordfox",
+    catppuccin_flavour = "mocha",
+    rose_pine = {},
+    nightfox = {}
   },
   flags = {
     disable_tabs = true
@@ -13,6 +15,12 @@ return {
     view = {
 		  hide_root_folder = true,
       adaptive_size = true
+    }
+  },
+  lualine = {
+    options = {
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '' , right = ''}
     }
   }
 }
