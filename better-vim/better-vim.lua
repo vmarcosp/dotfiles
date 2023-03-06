@@ -3,8 +3,8 @@ return {
     leader = "\\",
   },
   theme = {
-    name = "nordfox",
-    catppuccin_flavour = "mocha",
+    name = "catppuccin",
+    catppuccin_flavour = "frappe",
     rose_pine = {},
     nightfox = {}
   },
