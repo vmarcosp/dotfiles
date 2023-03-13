@@ -1,27 +1,24 @@
 # :bulb: `~/.dotfiles`
 <h2 align="center">
-  <img width="800" src="./__assets/preview-v4.png" />
+  <img width="920" src="./__assets/preview-5.png" />
   <br>
  </h2>
 
-### `nvim`
-  - `nvim.tree`
-  - `telescope.nvim`
-  - `which.key`
-  - `coc.nvim` + `vim-rescript`
-  - Theme: `catppuccin/nvim`
-  - My custom bindings
+### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
+- BetterVim files (`~/better-vim/`)
+- `coc.nvim` config
 
-### `zsh`
+### 💡 zsh
   - `.zshrc`
-  - ohmyzsh config
-  - zsh-nvm
+  - `oh-my-zsh` config
+  - Support for `nvm`
 
-### `tmux`
-  - My custom themes for `oceanic-next`, `gruvbox`, `iceberg`, `ayu`, `catpuccin`, etc.
-  - My custom `oh-my-tmux` config
-  - `tmux.resurrect`
+### 🖥️ tmux
+  - My custom `tmux` config
+  - Support for `tpm` (tmux plugins manager)
+  - Themes like `catppuccin`
+  - `tmux.ressurrect` config.
 
-### `config`
+### 📦 General
   - `.editorconfig`
   - `.gitconfig`
