@@ -1,6 +1,6 @@
 # :bulb: `~/.dotfiles`
 <h2 align="center">
-  <img width="920" src="./__assets/preview-5.png" />
+  <img style="border-radius:8px" width="920" src="./__assets/preview-5.png" />
   <br>
  </h2>
 
