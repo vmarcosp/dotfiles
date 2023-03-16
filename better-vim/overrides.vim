@@ -6,6 +6,8 @@ require("nvim-web-devicons").set_icon {
     name = "ReScript"
   }
 }
+
+require('gitsigns').setup()
 EOF
 
 set mouse=a
