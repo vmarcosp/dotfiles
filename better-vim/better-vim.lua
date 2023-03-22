@@ -4,9 +4,7 @@ return {
   },
   theme = {
     name = "catppuccin",
-    catppuccin_flavour = "frappe",
-    rose_pine = {},
-    nightfox = {}
+    catppuccin_flavour = "mocha",
   },
   flags = {
     disable_tabs = true
@@ -17,10 +15,4 @@ return {
       adaptive_size = true
     }
   },
-  lualine = {
-    options = {
-      component_separators = { left = '', right = ''},
-      section_separators = { left = '' , right = ''}
-    }
-  }
 }
