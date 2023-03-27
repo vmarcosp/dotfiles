@@ -4,7 +4,7 @@ return {
   },
   theme = {
     name = "catppuccin",
-    catppuccin_flavour = "mocha",
+    catppuccin_flavour = "frappe"
   },
   flags = {
     disable_tabs = true
