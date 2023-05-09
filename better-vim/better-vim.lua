@@ -19,8 +19,13 @@ return {
   },
   nvim_tree = {
     view = {
-      hide_root_folder = true,
       adaptive_size = false
+    }
+  },
+  lualine = {
+    options = {
+      component_separators = { left = '', right = ''},
+      section_separators = { left = '', right = ''},
     }
   },
   hooks = {
