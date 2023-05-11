@@ -12,7 +12,7 @@ M.mappings = {
 
 M.theme = {
   name = "catppuccin",
-  catppuccin_flavour = "macchiato",
+  catppuccin_flavour = "mocha",
 }
 
 M.flags = {
