@@ -7,15 +7,13 @@ return {
     "nkrkv/nvim-treesitter-rescript",
     "devongovett/tree-sitter-highlight",
   },
-  treesitter = "all",
-  lsps = {
-    ["rescriptls@latest-master"] = {},
-  },
+  lsps = {},
   theme = {
     name = "catppuccin",
     catppuccin_flavour = "macchiato",
   },
   flags = {
+    format_on_save = true,
     disable_tabs = true
   },
   nvim_tree = {
