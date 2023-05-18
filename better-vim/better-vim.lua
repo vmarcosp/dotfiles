@@ -39,4 +39,8 @@ M.hooks = {
   end
 }
 
+M.lsps = {
+   ["rescriptls@latest-master"] = {},
+}
+
 return M
