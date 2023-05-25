@@ -4,6 +4,7 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
+  "virchau13/tree-sitter-astro"
 }
 
 M.mappings = {
@@ -36,11 +37,19 @@ M.lualine = {
 M.hooks = {
   after_setup = function()
     vim.cmd("set relativenumber")
+    vim.filetype.add({
+      extension = {
+        astro = "astro"
+      }
+    })
   end
 }
 
 M.lsps = {
-   ["rescriptls@latest-master"] = {},
+  ["rescriptls@latest-master"] = {},
+  astro = {}
 }
+
+M.treesitter = "all"
 
 return M
