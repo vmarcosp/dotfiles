@@ -36,6 +36,7 @@ function png2webp () {
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
+alias vim="nvim"
 
 # opam configuration
 [[ ! -r /Users/marcos/.opam/opam-init/init.zsh ]] || source /Users/marcos/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
