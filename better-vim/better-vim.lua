@@ -1,14 +1,39 @@
 local M = {}
 
+M.noice = {
+  cmdline = {
+    format = {
+      search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
+      search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
+    },
+  },
+  messages = {
+    enabled = true,
+    view = "mini",
+    view_error = "mini",
+    view_warn = "mini",
+    view_history = "messages",
+    view_search = "virtualtext",
+  },
+}
+
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
-  "virchau13/tree-sitter-astro"
+  "virchau13/tree-sitter-astro",
+  "ThePrimeagen/vim-be-good",
+  "kchmck/vim-coffee-script",
+  { "akinsho/toggleterm.nvim", version = "*", config = true }
 }
 
 M.mappings = {
   leader = "\\",
+  custom = {
+    ["<leader>t"] = { "<cmd>ToggleTerm direction=float<cr>", "Toggle Terminal" },
+    ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
+    ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
+  }
 }
 
 M.theme = {
