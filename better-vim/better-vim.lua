@@ -1,22 +1,5 @@
 local M = {}
 
-M.noice = {
-  cmdline = {
-    format = {
-      search_down = { kind = "search", pattern = "^/", icon = " ", lang = "regex" },
-      search_up = { kind = "search", pattern = "^%?", icon = " ", lang = "regex" },
-    },
-  },
-  messages = {
-    enabled = true,
-    view = "mini",
-    view_error = "mini",
-    view_warn = "mini",
-    view_history = "messages",
-    view_search = "virtualtext",
-  },
-}
-
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
@@ -43,7 +26,7 @@ M.theme = {
 
 M.flags = {
   format_on_save = true,
-  disable_tabs = true
+  disable_tabs = true,
 }
 
 M.nvim_tree = {
@@ -76,5 +59,9 @@ M.lsps = {
 }
 
 M.treesitter = "all"
+
+M.unload_plugins = {
+  "noice"
+}
 
 return M
