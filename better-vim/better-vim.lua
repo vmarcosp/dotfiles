@@ -26,7 +26,7 @@ M.theme = {
 
 M.flags = {
   format_on_save = true,
-  disable_tabs = true,
+  disable_tabs = true
 }
 
 M.nvim_tree = {
