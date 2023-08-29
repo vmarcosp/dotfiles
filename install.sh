@@ -7,13 +7,13 @@ brew install curl
 brew install tmux
 brew install reattach-to-user-namespace
 brew install git
+brew install --cask raycast
+brew install --cask spotify
+brew install --cask iterm2
 
 # -- :BetterVim --------------------------
 curl -L https://bettervim.com/install/$BETTER_VIM_LICENSE | bash
-ln -sf $PWD/better-vim/overrides.vim ~/.config/better-vim/
-ln -sf $PWD/better-vim/plugins.vim ~/.config/better-vim/
 ln -sf $PWD/better-vim/better-vim.lua ~/.config/better-vim/
-ln -sf $PWD/coc/coc-settings.json ~/.config/nvim/
 
 # -- git ---------------------------------
 ln -s -f $PWD/env/.gitconfig ~/
