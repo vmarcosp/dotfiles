@@ -7,7 +7,19 @@ M.plugins = {
   "virchau13/tree-sitter-astro",
   "ThePrimeagen/vim-be-good",
   "kchmck/vim-coffee-script",
-  { "akinsho/toggleterm.nvim", version = "*", config = true }
+  { "akinsho/toggleterm.nvim", version = "*", config = true },
+  {
+    "neanias/everforest-nvim",
+    config = function()
+      require("everforest").setup({
+        background = "hard"
+      })
+      require("everforest").load()
+    end,
+    version = false,
+    lazy = false,
+    priority = 1000,
+  }
 }
 
 M.mappings = {
@@ -19,12 +31,10 @@ M.mappings = {
   }
 }
 
-M.theme = {
-  name = "catppuccin",
-  catppuccin_flavour = "mocha",
-}
+M.theme = {}
 
 M.flags = {
+  disable_theme = true,
   format_on_save = true,
   disable_tabs = true
 }
@@ -45,6 +55,9 @@ M.lualine = {
 M.hooks = {
   after_setup = function()
     vim.cmd("set relativenumber")
+    require("everforest").setup({
+      background = "hard"
+    })
     vim.filetype.add({
       extension = {
         astro = "astro"
