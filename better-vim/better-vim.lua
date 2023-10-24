@@ -28,13 +28,15 @@ M.mappings = {
     ["<leader>t"] = { "<cmd>ToggleTerm direction=float<cr>", "Toggle Terminal" },
     ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
     ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
+    -- Disabling nvim.tree
+    ["<c-n>"] = { "", "" },
   }
 }
 
 M.theme = {}
 
 M.flags = {
-  disable_theme = true,
+  disable_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
