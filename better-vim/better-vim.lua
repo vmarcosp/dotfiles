@@ -4,7 +4,6 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
-  "virchau13/tree-sitter-astro",
   "ThePrimeagen/vim-be-good",
   "kchmck/vim-coffee-script",
   { "akinsho/toggleterm.nvim", version = "*", config = true },
@@ -62,18 +61,19 @@ M.hooks = {
     })
     vim.filetype.add({
       extension = {
-        astro = "astro"
+        mdx = 'mdx',
       }
     })
+
+    vim.treesitter.language.register('markdown', 'mdx')
   end
 }
 
 M.lsps = {
   ["rescriptls@latest-master"] = {},
-  astro = {}
 }
 
-M.treesitter = "all"
+-- M.treesitter = "all"
 
 M.unload_plugins = {
   "noice"
