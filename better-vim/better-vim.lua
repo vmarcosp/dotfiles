@@ -1,30 +1,61 @@
 local M = {}
 
+local toggle_term = {
+  "akinsho/toggleterm.nvim",
+  version = "*",
+  config = function()
+    require("toggleterm").setup {
+      float_opts = {
+        border = 'curved',
+        width = 124,
+        height = 16,
+        winblend = 3,
+        zindex = 999,
+      },
+    }
+  end
+}
+
+local everforest = {
+  "neanias/everforest-nvim",
+  config = function()
+    require("everforest").setup({
+      background = "hard"
+    })
+    require("everforest").load()
+  end,
+  version = false,
+  lazy = false,
+  priority = 1000,
+}
+
+
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
   "ThePrimeagen/vim-be-good",
   "kchmck/vim-coffee-script",
-  { "akinsho/toggleterm.nvim", version = "*", config = true },
-  {
-    "neanias/everforest-nvim",
-    config = function()
-      require("everforest").setup({
-        background = "hard"
-      })
-      require("everforest").load()
-    end,
-    version = false,
-    lazy = false,
-    priority = 1000,
-  }
+  toggle_term,
+  everforest
 }
 
 M.mappings = {
   leader = "\\",
   custom = {
-    ["<leader>t"] = { "<cmd>ToggleTerm direction=float<cr>", "Toggle Terminal" },
+    ["<leader>gt"] = {
+      function()
+        vim.cmd(":ToggleTerm  direction=float")
+        vim.cmd(":TermExec cmd='lazygit'")
+      end,
+      'Open lazygit'
+    },
+    ["<leader>t"] = {
+      function()
+        vim.cmd(":ToggleTerm  direction=float")
+      end,
+      'Open terminal'
+    },
     ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
     ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
     -- Disabling nvim.tree
