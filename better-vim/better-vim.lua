@@ -1,21 +1,5 @@
 local M = {}
 
-local toggle_term = {
-  "akinsho/toggleterm.nvim",
-  version = "*",
-  config = function()
-    require("toggleterm").setup {
-      float_opts = {
-        border = 'curved',
-        width = 124,
-        height = 16,
-        winblend = 3,
-        zindex = 999,
-      },
-    }
-  end
-}
-
 local everforest = {
   "neanias/everforest-nvim",
   config = function()
@@ -35,24 +19,82 @@ M.plugins = {
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
   "ThePrimeagen/vim-be-good",
+  "rcarriga/nvim-notify",
   "kchmck/vim-coffee-script",
-  toggle_term,
+  {
+    "akinsho/toggleterm.nvim",
+    version = "*",
+    config = true,
+  },
   everforest
 }
+
+local Terminals = {}
+
+Terminals.floating_window_opts = {
+  border = 'curved',
+  width = 124,
+  height = 16,
+  winblend = 3,
+  zindex = 999,
+}
+
+Terminals.lazygit = {
+  cmd = "lazygit",
+  direction = "float",
+  float_opts = Terminals.floating_window_opts,
+  on_open = function(term)
+    vim.cmd("startinsert!")
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+  end,
+  on_close = function()
+    vim.cmd("startinsert!")
+  end,
+}
+
+Terminals.default = {
+  direction = "float",
+  float_opts = Terminals.floating_window_opts,
+}
+
+vim.api.nvim_create_user_command('BetterVimUpdate', function()
+  local terminal = require('toggleterm.terminal').Terminal
+  terminal:new({
+    display_name = "Updating BetterVim",
+    name = "Updating BetterVim",
+    cmd = "bash ~/.config/nvim/better-vim-update.sh",
+    direction = "float",
+    float_opts = {
+      border = 'curved',
+      width = 36,
+      height = 3,
+      winblend = 3,
+      zindex = 999,
+    },
+    on_open = function()
+      require("notify")("We're updating your config, please wait ⚙️", "info", { title = "BetterVim", timeout = 1000 })
+    end,
+    on_close = function()
+      require("notify")("Successfully updated your config, reopen your Neovim", "info", { title = "BetterVim" })
+    end
+  }
+  ):toggle()
+end, {})
 
 M.mappings = {
   leader = "\\",
   custom = {
     ["<leader>gt"] = {
       function()
-        vim.cmd(":ToggleTerm  direction=float")
-        vim.cmd(":TermExec cmd='lazygit'")
+        local terminal = require('toggleterm.terminal').Terminal
+        terminal:new(Terminals.lazygit):toggle()
       end,
       'Open lazygit'
     },
     ["<leader>t"] = {
       function()
-        vim.cmd(":ToggleTerm  direction=float")
+        local terminal = require('toggleterm.terminal').Terminal
+        terminal:new(Terminals.default):toggle()
       end,
       'Open terminal'
     },
@@ -66,7 +108,7 @@ M.mappings = {
 M.theme = {}
 
 M.flags = {
-  disable_theme_loading = true,
+  disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
