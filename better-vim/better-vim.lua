@@ -2,25 +2,23 @@ local M = {}
 
 local everforest = {
   "neanias/everforest-nvim",
-  config = function()
-    require("everforest").setup({
-      background = "hard"
-    })
-    require("everforest").load()
-  end,
   version = false,
   lazy = false,
   priority = 1000,
+  config = function()
+    local everforest = require("everforest")
+    everforest.setup({ background = "hard" })
+    everforest.load()
+  end,
 }
-
 
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
-  "ThePrimeagen/vim-be-good",
   "rcarriga/nvim-notify",
   "kchmck/vim-coffee-script",
+  "f-person/git-blame.nvim",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -105,18 +103,10 @@ M.mappings = {
   }
 }
 
-M.theme = {}
-
 M.flags = {
   disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
-}
-
-M.nvim_tree = {
-  view = {
-    adaptive_size = false
-  }
 }
 
 M.lualine = {
@@ -128,16 +118,13 @@ M.lualine = {
 
 M.hooks = {
   after_setup = function()
-    vim.cmd("set relativenumber")
-    require("everforest").setup({
-      background = "hard"
-    })
+    vim.o.relativenumber = 1
+    -- Syntax highlight support for MDX
     vim.filetype.add({
       extension = {
         mdx = 'mdx',
       }
     })
-
     vim.treesitter.language.register('markdown', 'mdx')
   end
 }
@@ -146,10 +133,6 @@ M.lsps = {
   ["rescriptls@latest-master"] = {},
 }
 
--- M.treesitter = "all"
-
-M.unload_plugins = {
-  "noice"
-}
+M.unload_plugins = { "noice" }
 
 return M
