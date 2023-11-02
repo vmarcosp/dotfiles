@@ -1,4 +1,4 @@
-local M = {}
+local Config = {}
 
 local everforest = {
   "neanias/everforest-nvim",
@@ -12,7 +12,7 @@ local everforest = {
   end,
 }
 
-M.plugins = {
+Config.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
@@ -79,7 +79,7 @@ vim.api.nvim_create_user_command('BetterVimUpdate', function()
   ):toggle()
 end, {})
 
-M.mappings = {
+Config.mappings = {
   leader = "\\",
   custom = {
     ["<leader>gt"] = {
@@ -103,20 +103,20 @@ M.mappings = {
   }
 }
 
-M.flags = {
+Config.flags = {
   disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
 
-M.lualine = {
+Config.lualine = {
   options = {
     component_separators = { left = '', right = '' },
     section_separators = { left = '', right = '' },
   }
 }
 
-M.hooks = {
+Config.hooks = {
   after_setup = function()
     vim.o.relativenumber = 1
     -- Syntax highlight support for MDX
@@ -129,10 +129,10 @@ M.hooks = {
   end
 }
 
-M.lsps = {
+Config.lsps = {
   ["rescriptls@latest-master"] = {},
 }
 
-M.unload_plugins = { "noice" }
+Config.unload_plugins = { "noice" }
 
-return M
+return Config
