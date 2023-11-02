@@ -8,3 +8,4 @@ brew install --cask font-inconsolata-go-nerd-font
 brew install --cask font-inconsolata-lgc-nerd-font
 brew install --cask font-inconsolata-nerd-font
 
+
