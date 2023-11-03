@@ -133,6 +133,9 @@ Config.lsps = {
   ["rescriptls@latest-master"] = {},
 }
 
+
+Config.treesitter = { "javascript", "typescript", "lua"}
+
 Config.unload_plugins = { "noice" }
 
 return Config
