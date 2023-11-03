@@ -55,6 +55,45 @@ Terminals.default = {
   float_opts = Terminals.floating_window_opts,
 }
 
+function get_bettervimrc()
+  local config_file_path = os.getenv("HOME") .. "/.config/better-vim/.bettervimrc"
+  local values = {}
+
+  local file = io.open(config_file_path, "r")
+  if not file then
+    return values
+  end
+
+  for line in file:lines() do
+    local key, value = line:match("export%s+([^=]+)=\"(.+)\"")
+    if key and value then
+      values[key] = value
+    end
+  end
+
+  file:close()
+  return values
+end
+
+vim.api.nvim_create_user_command('BetterVimLicense', function()
+  local bettervimrc = get_bettervimrc()
+  local message = "Your license: " .. bettervimrc["BETTER_VIM_LICENSE"]
+  local opts = { title = "BetterVim", timeout = 1000 }
+  require("notify")(message, "info", opts)
+end, {})
+
+vim.api.nvim_create_user_command('BetterVimVersion', function()
+  local bettervimrc = get_bettervimrc()
+  local message = "Your BetterVim is at v" .. bettervimrc["BETTER_VIM_VERSION"]
+  local opts = { title = "BetterVim", timeout = 1000 }
+  require("notify")(message, "info", opts)
+end, {})
+
+
+vim.api.nvim_create_user_command('BetterVimDocs', function()
+  os.execute("open https://bettervim.com/docs")
+end, {})
+
 vim.api.nvim_create_user_command('BetterVimUpdate', function()
   local terminal = require('toggleterm.terminal').Terminal
   terminal:new({
@@ -64,7 +103,7 @@ vim.api.nvim_create_user_command('BetterVimUpdate', function()
     direction = "float",
     float_opts = {
       border = 'curved',
-      width = 36,
+      width = 28,
       height = 3,
       winblend = 3,
       zindex = 999,
