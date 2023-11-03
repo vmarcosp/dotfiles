@@ -1,12 +1,11 @@
 # :bulb: `~/.dotfiles`
-<h2 align="center">
-  <img style="border-radius:8px" width="920" src="./__assets/preview-v6.png" />
-  <br>
- </h2>
+
+<p align="center">
+  <img width="1000" src="./__assets/preview-v6.png" />
+</p>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
 - BetterVim files (`~/better-vim/`)
-- `coc.nvim` config
 
 ### 💡 zsh
   - `.zshrc`
