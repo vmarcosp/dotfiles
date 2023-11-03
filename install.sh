@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
+if [ -z "$BETTER_VIM_LICENSE" ]
+then
+    echo "\BETTER_VIM_LICENSE is empty."
+    exit 1
+fi
+
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"brew update
+brew update
 brew upgrade
 brew install wget
 brew install curl
@@ -11,7 +18,7 @@ brew install --cask spotify
 brew install --cask iterm2
 
 # -- :BetterVim --------------------------
-curl -L https://bettervim.com/install/$BETTER_VIM_LICENSE | bash
+curl -L "https://bettervim.com/install/$BETTER_VIM_LICENSE" | bash
 ln -sf $PWD/better-vim/better-vim.lua ~/.config/better-vim/
 
 # -- git ---------------------------------
