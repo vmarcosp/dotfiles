@@ -1,4 +1,14 @@
-local Config = {}
+local M = {}
+
+local Utils = {
+  get_file_name = function()
+    if vim.bo.filetype == "NvimTree" then
+      return "  Explorer"
+    else
+      return " " .. vim.fn.expand "%:t"
+    end
+  end
+}
 
 local everforest = {
   "neanias/everforest-nvim",
@@ -12,7 +22,7 @@ local everforest = {
   end,
 }
 
-Config.plugins = {
+M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
@@ -26,6 +36,7 @@ Config.plugins = {
   },
   everforest
 }
+
 
 local Terminals = {}
 
@@ -55,70 +66,7 @@ Terminals.default = {
   float_opts = Terminals.floating_window_opts,
 }
 
-function get_bettervimrc()
-  local config_file_path = os.getenv("HOME") .. "/.config/better-vim/.bettervimrc"
-  local values = {}
-
-  local file = io.open(config_file_path, "r")
-  if not file then
-    return values
-  end
-
-  for line in file:lines() do
-    local key, value = line:match("export%s+([^=]+)=\"(.+)\"")
-    if key and value then
-      values[key] = value
-    end
-  end
-
-  file:close()
-  return values
-end
-
-vim.api.nvim_create_user_command('BetterVimLicense', function()
-  local bettervimrc = get_bettervimrc()
-  local message = "Your license: " .. bettervimrc["BETTER_VIM_LICENSE"]
-  local opts = { title = "BetterVim", timeout = 1000 }
-  require("notify")(message, "info", opts)
-end, {})
-
-vim.api.nvim_create_user_command('BetterVimVersion', function()
-  local bettervimrc = get_bettervimrc()
-  local message = "Your BetterVim is at v" .. bettervimrc["BETTER_VIM_VERSION"]
-  local opts = { title = "BetterVim", timeout = 1000 }
-  require("notify")(message, "info", opts)
-end, {})
-
-
-vim.api.nvim_create_user_command('BetterVimDocs', function()
-  os.execute("open https://bettervim.com/docs")
-end, {})
-
-vim.api.nvim_create_user_command('BetterVimUpdate', function()
-  local terminal = require('toggleterm.terminal').Terminal
-  terminal:new({
-    display_name = "Updating BetterVim",
-    name = "Updating BetterVim",
-    cmd = "bash ~/.config/nvim/better-vim-update.sh",
-    direction = "float",
-    float_opts = {
-      border = 'curved',
-      width = 28,
-      height = 3,
-      winblend = 3,
-      zindex = 999,
-    },
-    on_open = function()
-      require("notify")("We're updating your config, please wait ⚙️", "info", { title = "BetterVim", timeout = 1000 })
-    end,
-    on_close = function()
-      require("notify")("Successfully updated your config, reopen your Neovim", "info", { title = "BetterVim" })
-    end
-  }
-  ):toggle()
-end, {})
-
-Config.mappings = {
+M.mappings = {
   leader = "\\",
   custom = {
     ["<leader>gt"] = {
@@ -142,21 +90,30 @@ Config.mappings = {
   }
 }
 
-Config.flags = {
+M.flags = {
   disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
 
-Config.lualine = {
+M.lualine = {
   options = {
+    globalstatus = true,
     component_separators = { left = '', right = '' },
     section_separators = { left = '', right = '' },
+  },
+  sections = {
+    a = { "mode" },
+    b = { "branch" },
+    c = { Utils.get_file_name },
+    z = { "filetype" },
   }
 }
 
-Config.hooks = {
+M.hooks = {
   after_setup = function()
+    -- Remove the ~ from empty lines
+    vim.opt.fillchars = { eob = ' ' }
     vim.o.relativenumber = 1
     -- Syntax highlight support for MDX
     vim.filetype.add({
@@ -168,13 +125,10 @@ Config.hooks = {
   end
 }
 
-Config.lsps = {
+M.lsps = {
   ["rescriptls@latest-master"] = {},
 }
+M.treesitter = { "javascript", "typescript", "lua" }
+M.unload_plugins = { "noice" }
 
-
-Config.treesitter = { "javascript", "typescript", "lua"}
-
-Config.unload_plugins = { "noice" }
-
-return Config
+return M
