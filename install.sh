@@ -18,6 +18,7 @@ brew install --cask spotify
 brew install --cask iterm2
 brew install gh
 brew install lazygit
+brew install --cask fig
 
 # -- :BetterVim --------------------------
 curl -L "https://bettervim.com/install/$BETTER_VIM_LICENSE" | bash
