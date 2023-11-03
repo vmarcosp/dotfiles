@@ -33,6 +33,10 @@ function png2webp () {
   done
 }
 
+function clean-swap(){
+  rm -rf ~/.local/state/nvim/swap/**/*.swp
+}
+
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
