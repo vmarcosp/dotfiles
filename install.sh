@@ -8,17 +8,25 @@ fi
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"brew update
 brew update
 brew upgrade
+## -- General tools -------------------
 brew install wget
 brew install curl
+
+## -- tmux ----------------------------
 brew install tmux
 brew install reattach-to-user-namespace
-brew install git
+brew install gh
+brew install lazygit
+
+## -- Cask ----------------------------
 brew install --cask raycast
 brew install --cask spotify
 brew install --cask iterm2
-brew install gh
-brew install lazygit
 brew install --cask fig
+
+# -- NerdFonts ------------------------------
+brew tap homebrew/cask-fonts
+brew install --cask font-space-mono-nerd-font
 
 # -- :BetterVim --------------------------
 curl -L "https://bettervim.com/install/$BETTER_VIM_LICENSE" | bash

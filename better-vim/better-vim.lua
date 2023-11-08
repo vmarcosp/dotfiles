@@ -85,8 +85,6 @@ M.mappings = {
     },
     ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
     ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
-    -- Disabling nvim.tree
-    ["<c-n>"] = { "", "" },
   }
 }
 
