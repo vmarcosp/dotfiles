@@ -3,7 +3,7 @@ local M = {}
 local Utils = {
   get_file_name = function()
     if vim.bo.filetype == "NvimTree" then
-      return "  Explorer"
+      return "   Explorer"
     else
       return " " .. vim.fn.expand "%:t"
     end
