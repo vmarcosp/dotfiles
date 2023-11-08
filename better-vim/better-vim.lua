@@ -16,9 +16,9 @@ local everforest = {
   lazy = false,
   priority = 1000,
   config = function()
-    local everforest = require("everforest")
-    everforest.setup({ background = "hard" })
-    everforest.load()
+    -- local everforest = require("everforest")
+    -- everforest.setup({ background = "hard" })
+    -- everforest.load()
   end,
 }
 
@@ -88,8 +88,12 @@ M.mappings = {
   }
 }
 
+M.theme = {
+  name = "nord",
+}
+
 M.flags = {
-  disable_auto_theme_loading = true,
+  -- disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
