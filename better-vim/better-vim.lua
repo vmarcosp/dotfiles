@@ -22,6 +22,21 @@ local everforest = {
   end,
 }
 
+
+local poimandres = {
+  'olivercederborg/poimandres.nvim',
+  lazy = false,
+  priority = 1000,
+  config = function()
+    require('poimandres').setup {}
+    vim.cmd("colorscheme poimandres")
+  end,
+}
+
+M.theme = {
+  -- name = "nord"
+}
+
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
@@ -34,7 +49,8 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  everforest
+  -- everforest,
+  poimandres,
 }
 
 
