@@ -49,8 +49,8 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  -- everforest,
-  poimandres,
+  everforest,
+  -- poimandres,
 }
 
 
@@ -142,9 +142,10 @@ M.hooks = {
 
 M.lsps = {
   bashls = {},
+  ocamllsp = {},
   ["rescriptls@latest-master"] = {},
 }
-M.treesitter = { "javascript", "typescript", "lua", "bash" }
+M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
 
 return M
