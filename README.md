@@ -4,20 +4,25 @@
   <img width="1000" src="./__assets/preview-v6.png" />
 </p>
 
-### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
-- BetterVim files (`~/better-vim/`)
+### ⌨️ nvim —— [BetterVim](https://bettervim.com)
+- My BetterVim config: `bettervim/bettervim.lua`
 
 ### 💡 zsh
   - `.zshrc`
-  - `oh-my-zsh` config
+  - My `oh-my-zsh` config
   - Support for `nvm`
+  - Some useful aliases and functions
 
 ### 🖥️ tmux
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
-  - Themes like `catppuccin`
-  - `tmux.ressurrect` config.
+  - `My tmux.ressurrect` config
+  - UI and themes handled by [shifter](https://github.com/bettervim/shifter)
 
-### 📦 General
+### 📦 general
   - `.editorconfig`
   - `.gitconfig`
+
+
+## ⚖️ license
+MIT
