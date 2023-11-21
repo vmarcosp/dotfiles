@@ -13,11 +13,15 @@
   - Support for `nvm`
   - Some useful aliases and functions
 
+### ⌨️ terminal
+ - iterm2 themes: `itermcolors/`
+
 ### 🖥️ tmux
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
-  - `My tmux.ressurrect` config
-  - UI and themes handled by [shifter](https://github.com/bettervim/shifter)
+      - `tmux-sensible` config.
+      -  `tmux-ressurrect` config.
+      -  UI and themes handled by [shifter](https://github.com/bettervim/shifter)
 
 ### 📦 general
   - `.editorconfig`
