@@ -33,10 +33,6 @@ local poimandres = {
   end,
 }
 
-M.theme = {
-  -- name = "nord"
-}
-
 M.plugins = {
   "rescript-lang/vim-rescript",
   "nkrkv/nvim-treesitter-rescript",
@@ -49,10 +45,12 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  everforest,
-  -- poimandres,
 }
 
+M.theme = {
+  name = "catppuccin",
+  catpuccin_flavour = "mocha"
+}
 
 local Terminals = {}
 
@@ -101,11 +99,12 @@ M.mappings = {
     },
     ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
     ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
+    ["<C-n>"] = { "", "" }
   }
 }
 
 M.flags = {
-  disable_auto_theme_loading = true,
+  -- disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
