@@ -1,14 +1,5 @@
 local M = {}
-
-local Utils = {
-  get_file_name = function()
-    if vim.bo.filetype == "NvimTree" then
-      return "   Explorer"
-    else
-      return " " .. vim.fn.expand "%:t"
-    end
-  end
-}
+local utils = require "better-vim-utils"
 
 local everforest = {
   "neanias/everforest-nvim",
@@ -99,7 +90,6 @@ M.mappings = {
     },
     ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
     ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
-    ["<C-n>"] = { "", "" }
   }
 }
 
@@ -118,7 +108,7 @@ M.lualine = {
   sections = {
     a = { "mode" },
     b = { "branch" },
-    c = { Utils.get_file_name },
+    c = { utils.statusline.get_file_name },
     z = { "filetype" },
   }
 }
@@ -142,7 +132,7 @@ M.hooks = {
 M.lsps = {
   bashls = {},
   ocamllsp = {},
-  ["rescriptls@latest-master"] = {},
+  -- ["rescriptls@latest-master"] = {},
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
