@@ -26,10 +26,7 @@ local _poimandres = {
 
 M.plugins = {
   "rescript-lang/vim-rescript",
-  "nkrkv/nvim-treesitter-rescript",
   "devongovett/tree-sitter-highlight",
-  "rcarriga/nvim-notify",
-  "kchmck/vim-coffee-script",
   "f-person/git-blame.nvim",
   {
     "akinsho/toggleterm.nvim",
