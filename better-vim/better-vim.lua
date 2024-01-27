@@ -14,7 +14,7 @@ local everforest = {
 }
 
 
-local poimandres = {
+local _poimandres = {
   'olivercederborg/poimandres.nvim',
   lazy = false,
   priority = 1000,
@@ -132,7 +132,7 @@ M.hooks = {
 M.lsps = {
   bashls = {},
   ocamllsp = {},
-  -- ["rescriptls@latest-master"] = {},
+  rescriptls = {},
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
