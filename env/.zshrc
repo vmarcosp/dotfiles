@@ -39,6 +39,10 @@ function clean-swap(){
   rm -rf ~/.local/state/nvim/swap/**/*.swp
 }
 
+function clean-branches(){
+  git branch | grep -v 'main' | xargs git branch -D
+}
+
 alias rs="npx rescript build -w"
 alias rsclean="npx rescript clean"
 alias rsbuild="npx rescript clean && npx rescript build -w"
