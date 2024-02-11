@@ -1,7 +1,7 @@
 local M = {}
 local utils = require "better-vim-utils"
 
-local everforest = {
+local _everforest = {
   "neanias/everforest-nvim",
   version = false,
   lazy = false,
@@ -14,7 +14,7 @@ local everforest = {
 }
 
 
-local _poimandres = {
+local poimandres = {
   'olivercederborg/poimandres.nvim',
   lazy = false,
   priority = 1000,
@@ -28,6 +28,7 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "f-person/git-blame.nvim",
+  poimandres,
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -91,7 +92,7 @@ M.mappings = {
 }
 
 M.flags = {
-  -- disable_auto_theme_loading = true,
+  disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
