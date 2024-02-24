@@ -5,7 +5,6 @@ then
     exit 1
 fi
 
-curl -sSL https://raw.githubusercontent.com/bettervim/tmux-ease/main/scripts/install.sh | bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"brew update
 brew update
 brew upgrade

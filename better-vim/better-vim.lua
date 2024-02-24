@@ -3,19 +3,6 @@ local utils = require "better-vim-utils"
 
 local Themes = {}
 
-Themes.everforest = {
-  "neanias/everforest-nvim",
-  version = false,
-  lazy = false,
-  priority = 1000,
-  config = function()
-    local everforest = require("everforest")
-    everforest.setup({ background = "hard" })
-    everforest.load()
-  end,
-}
-
-
 Themes.poimandres = {
   'olivercederborg/poimandres.nvim',
   lazy = false,
@@ -30,7 +17,6 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "f-person/git-blame.nvim",
-  Themes.poimandres,
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -39,8 +25,7 @@ M.plugins = {
 }
 
 M.theme = {
-  name = "catppuccin",
-  catpuccin_flavour = "mocha"
+  name = "nord",
 }
 
 local Terminals = {}
@@ -94,7 +79,7 @@ M.mappings = {
 }
 
 M.flags = {
-  disable_auto_theme_loading = true,
+  disable_auto_theme_loading = false,
   format_on_save = true,
   disable_tabs = true
 }
