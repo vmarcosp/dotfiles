@@ -16,7 +16,6 @@ Themes.poimandres = {
 M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
-  "f-person/git-blame.nvim",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
