@@ -14,6 +14,7 @@ Themes.poimandres = {
 }
 
 M.plugins = {
+  "github/copilot.vim",
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   {
@@ -99,6 +100,12 @@ M.lualine = {
 
 M.hooks = {
   after_setup = function()
+    require("nvim-web-devicons").set_icon {
+      toml = {
+        icon = "󰅪",
+        name = "TOML"
+      }
+    }
     -- Remove the ~ from empty lines
     vim.opt.fillchars = { eob = ' ' }
     vim.o.relativenumber = 1
