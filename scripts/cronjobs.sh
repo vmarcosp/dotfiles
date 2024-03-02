@@ -1,4 +1,4 @@
-LOGSEQ_AUTOSAVE="*/1 * * * * ~/projects/dotfiles/logseq/autosave.sh"
+LOGSEQ_AUTOSAVE="*/60 * * * * ~/projects/dotfiles/logseq/autosave.sh"
 CURRENT_CRONS="current_crons"
 
 crontab -l > "$CURRENT_CRONS" 
