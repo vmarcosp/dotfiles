@@ -122,7 +122,6 @@ M.hooks = {
 
 M.lsps = {
   bashls = {},
-  ocamllsp = {},
   rescriptls = {},
   graphql = {}
 }
