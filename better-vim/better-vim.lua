@@ -124,6 +124,7 @@ M.lsps = {
   bashls = {},
   ocamllsp = {},
   rescriptls = {},
+  graphql = {}
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
