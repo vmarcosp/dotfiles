@@ -17,6 +17,7 @@ M.plugins = {
   "github/copilot.vim",
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
+  Themes.poimandres,
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -79,7 +80,7 @@ M.mappings = {
 }
 
 M.flags = {
-  disable_auto_theme_loading = false,
+  disable_auto_theme_loading = true,
   format_on_save = true,
   disable_tabs = true
 }
@@ -123,7 +124,8 @@ M.hooks = {
 M.lsps = {
   bashls = {},
   rescriptls = {},
-  graphql = {}
+  graphql = {},
+  tailwindcss = {}
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
