@@ -20,9 +20,9 @@ brew install lazygit
 
 ## -- Cask ----------------------------
 brew install --cask raycast
-brew install --cask spotify
 brew install --cask iterm2
 brew install --cask fig
+brew install --cask arc
 
 # -- NerdFonts ------------------------------
 brew tap homebrew/cask-fonts
