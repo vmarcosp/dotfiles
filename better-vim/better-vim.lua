@@ -1,15 +1,18 @@
 local M = {}
 local utils = require "better-vim-utils"
+local themes = require "better-vim.themes"
 
 M.plugins = {
   "github/copilot.vim",
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
+  "fladson/vim-kitty",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
   },
+  themes.poimandres
 }
 
 local Terminals = {}
