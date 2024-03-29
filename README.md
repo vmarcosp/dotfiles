@@ -1,32 +1,32 @@
 # :bulb: `~/.dotfiles`
 
 <p align="center">
-  <img width="1000" src="./__assets/preview-v6.png" />
+  <img width="1000" src="./__assets/preview-v7.1.png" />
 </p>
 
-### ⌨️ nvim —— [BetterVim](https://bettervim.com)
+### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
 - My BetterVim config: `bettervim/bettervim.lua`
 
-### 💡 zsh
+### 💡 ZSH
   - `.zshrc`
   - My `oh-my-zsh` config
   - Support for `nvm`
   - Some useful aliases and functions
 
-### ⌨️ terminal
- - iterm2 themes: `itermcolors/`
+### ⌨️ Kitty 🐱
+ - My custom configs
+ - Themes (such as poimandres)
 
-### 🖥️ tmux
+### 🖥️ TMUX
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
       - `tmux-sensible` config.
       -  `tmux-ressurrect` config.
       -  UI and themes handled by [shifter](https://github.com/bettervim/shifter)
 
-### 📦 general
+### 📦 General
   - `.editorconfig`
   - `.gitconfig`
-
 
 ## ⚖️ license
 MIT
