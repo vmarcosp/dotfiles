@@ -23,10 +23,12 @@ brew install --cask raycast
 brew install --cask iterm2
 brew install --cask fig
 brew install --cask arc
+brew install --cask discord
+brew install --cask arc
+brew install --cask logseq
 
 # -- NerdFonts ------------------------------
-brew tap homebrew/cask-fonts
-brew install --cask font-space-mono-nerd-font
+bash ./scripts/install-nerd-fonts.sh
 
 # -- :BetterVim --------------------------
 curl -L "https://bettervim.com/install/$BETTER_VIM_LICENSE" | bash
