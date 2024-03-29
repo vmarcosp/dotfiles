@@ -8,6 +8,7 @@ fi
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"brew update
 brew update
 brew upgrade
+
 ## -- General tools -------------------
 brew install wget
 brew install curl
@@ -20,11 +21,9 @@ brew install lazygit
 
 ## -- Cask ----------------------------
 brew install --cask raycast
-brew install --cask iterm2
-brew install --cask fig
+brew install --cask kitty
 brew install --cask arc
 brew install --cask discord
-brew install --cask arc
 brew install --cask logseq
 
 # -- NerdFonts ------------------------------
