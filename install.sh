@@ -41,7 +41,7 @@ curl -o- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/i
 ln -s -f $PWD/env/.zshrc ~/
 
 # -- kitty --------------------------------
-ln -s @PWRD/kitty/* ~/.config/kitty
+ln -s $PWD/kitty/* ~/.config/kitty
 
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
