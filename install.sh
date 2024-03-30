@@ -40,6 +40,9 @@ ln -s -f $PWD/env/.gitconfig ~/
 curl -o- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash
 ln -s -f $PWD/env/.zshrc ~/
 
+# -- kitty --------------------------------
+ln -s @PWRD/kitty/* ~/.config/kitty
+
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
