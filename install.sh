@@ -27,6 +27,7 @@ bash ./scripts/install-nerd-fonts.sh
 # -- :BetterVim --------------------------
 curl -L "https://bettervim.com/install/$BETTER_VIM_LICENSE" | bash
 ln -sf $PWD/better-vim/better-vim.lua ~/.config/better-vim/
+ln -sf $PWD/yugem ~/yugem
 
 # -- git ---------------------------------
 ln -s -f $PWD/env/.gitconfig ~/
@@ -42,6 +43,7 @@ ln -s $PWD/kitty/* ~/.config/kitty
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
 ln -s -f $PWD/tmux/shifter.sh ~/shifter.sh
+chmod +x ~/shifter.sh
 
 # -- nvm + custom nvm config for zsh ------ 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
