@@ -41,19 +41,4 @@ function clean-branches(){
   git branch | grep -v 'main' | xargs git branch -D
 }
 
-alias rs="npx rescript build -w"
-alias rsclean="npx rescript clean"
-alias rsbuild="npx rescript clean && npx rescript build -w"
 alias vim="nvim"
-
-# opam configuration
-[[ ! -r /Users/marcos/.opam/opam-init/init.zsh ]] || source /Users/marcos/.opam/opam-init/init.zsh  > /dev/null 2> /dev/null
-
-eval $(opam config env)
-
-# bun completions
-[ -s "/Users/admin/.bun/_bun" ] && source "/Users/admin/.bun/_bun"
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
