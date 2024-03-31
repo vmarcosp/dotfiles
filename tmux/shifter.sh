@@ -7,7 +7,7 @@ PRIMARY="#313340"
 tmux set -g window-status-separator ""
 
 ## Current
-tmux set -g window-status-current-format 
+tmux set -g window-status-current-format "$WINDOW_FORMAT"
 tmux set -g window-status-current-style "bg=$PRIMARY"
 
 ## General
