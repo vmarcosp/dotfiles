@@ -1,18 +1,32 @@
 local M = {}
 local utils = require "better-vim-utils"
-local themes = require "better-vim.themes"
+local Themes = {}
+
+Themes.poimandres = {
+  'olivercederborg/poimandres.nvim',
+  lazy = false,
+  priority = 1000,
+  config = function()
+    require('poimandres').setup {}
+  end,
+
+  init = function()
+    vim.cmd("colorscheme poimandres")
+  end
+}
 
 M.plugins = {
   "github/copilot.vim",
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
+  "rktjmp/lush.nvim",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
   },
-  themes.poimandres
+  Themes.poimandres
 }
 
 local Terminals = {}
