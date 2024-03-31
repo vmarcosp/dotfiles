@@ -1,7 +1,7 @@
 # :bulb: `~/.dotfiles`
 
 <p align="center">
-  <img width="1000" src="./__assets/preview-v7.1.png" />
+  <img width="1000" src="./__assets/preview-v8.png" />
 </p>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
