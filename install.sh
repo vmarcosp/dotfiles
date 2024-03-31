@@ -9,17 +9,12 @@ fi
 brew update
 brew upgrade
 
-## -- General tools -------------------
 brew install wget
 brew install curl
-
-## -- tmux ----------------------------
 brew install tmux
 brew install reattach-to-user-namespace
 brew install gh
 brew install lazygit
-
-## -- Cask ----------------------------
 brew install --cask raycast
 brew install --cask kitty
 brew install --cask arc
@@ -46,6 +41,7 @@ ln -s $PWD/kitty/* ~/.config/kitty
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
+ln -s -f $PWD/tmux/shifter.sh ~/shifter.sh
 
 # -- nvm + custom nvm config for zsh ------ 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
