@@ -1,6 +1,6 @@
 # Constants
 WINDOW_FORMAT=" #I: #W "
-BACKGROUND="#1C1E28"
+BACKGROUND="#111111"
 PRIMARY="#313340"
 
 # Window
