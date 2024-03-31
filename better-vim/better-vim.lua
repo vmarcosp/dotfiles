@@ -1,20 +1,5 @@
 local M = {}
 local utils = require "better-vim-utils"
-local Themes = {}
-
-Themes.poimandres_local = {
-  dir = '~/yugem',
-  lazy = true,
-  priority = 1000,
-  config = function()
-    require('yugem').setup {}
-  end,
-
-  init = function()
-    vim.cmd("colorscheme yugem")
-  end
-}
-
 
 M.plugins = {
   "github/copilot.vim",
@@ -27,7 +12,19 @@ M.plugins = {
     version = "*",
     config = true,
   },
-  Themes.poimandres_local
+  {
+    dir = '~/yugem',
+    lazy = true,
+    priority = 1000,
+    config = function()
+      require('yugem').setup {}
+    end,
+
+    init = function()
+      vim.cmd("colorscheme yugem")
+    end
+  }
+
 }
 
 local Terminals = {}
