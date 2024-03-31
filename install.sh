@@ -35,6 +35,7 @@ ln -s -f $PWD/env/.gitconfig ~/
 # -- oh-my-zsh + zsh ---------------------
 curl -o- https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh | bash
 ln -s -f $PWD/env/.zshrc ~/
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # -- kitty --------------------------------
 ln -s $PWD/kitty/* ~/.config/kitty

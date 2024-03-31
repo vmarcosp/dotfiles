@@ -6,6 +6,7 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
+  "nvim-pack/nvim-spectre",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
