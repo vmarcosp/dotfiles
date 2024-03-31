@@ -20,4 +20,4 @@ tmux set -g status-fg "#FAFAFA"
 
 # Status Left
 tmux set -g status-left ""
-tmux set -g status-right "#[bg=$PRIMARY] #S "
+tmux set -g status-right ""
