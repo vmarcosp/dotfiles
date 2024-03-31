@@ -24,7 +24,6 @@ M.plugins = {
       vim.cmd("colorscheme yugem")
     end
   }
-
 }
 
 local Terminals = {}
