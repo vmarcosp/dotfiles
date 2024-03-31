@@ -6,7 +6,6 @@ M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
-  "rktjmp/lush.nvim",
   {
     "akinsho/toggleterm.nvim",
     version = "*",
