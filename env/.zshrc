@@ -48,6 +48,7 @@ kitty-reload() {
   kill -SIGUSR1 $(pidof kitty)
 }
 
+
 alias vim="nvim"
 
 
