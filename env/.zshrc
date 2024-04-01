@@ -44,6 +44,10 @@ function clean-branches(){
   git branch | grep -v 'main' | xargs git branch -D
 }
 
+kitty-reload() {
+  kill -SIGUSR1 $(pidof kitty)
+}
+
 alias vim="nvim"
 
 
