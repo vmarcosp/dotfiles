@@ -1,4 +1,6 @@
 brew tap homebrew/cask-fonts
+brew tap shaunsingh/SFMono-Nerd-Font-Ligaturized
+
 brew install --cask font-3270-nerd-font
 brew install --cask font-fira-mono-nerd-font
 brew install --cask font-inconsolata-go-nerd-font
@@ -49,3 +51,4 @@ brew install --cask font-terminess-ttf-nerd-font
 brew install --cask font-tinos-nerd-font
 brew install --cask font-ubuntu-nerd-font
 brew install --cask font-victor-mono-nerd-font
+brew install --cask font-sf-mono-nerd-font-ligaturized
