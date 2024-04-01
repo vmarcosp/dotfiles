@@ -14,6 +14,7 @@ brew install curl
 brew install tmux
 brew install reattach-to-user-namespace
 brew install gh
+brew install pidof
 brew install lazygit
 brew install --cask raycast
 brew install --cask kitty
