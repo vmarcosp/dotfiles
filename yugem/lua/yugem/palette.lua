@@ -2,9 +2,9 @@
 local variants = {
   main = { -- main palette
     yellow = '#FFFAC2',
-    teal1 = '#07FABD',
-    teal2 = '#5FB3A1',
-    teal3 = '#42675A',
+    teal1 = '#E4E4A6',
+    teal2 = '#FFFAC2',
+    teal3 = '#E4D4A6',
     blue1 = '#89DDFF',
     blue2 = '#ADD7FF',
     blue3 = '#91B4D5',
@@ -16,7 +16,7 @@ local variants = {
     blueGray2 = '#767C9D',
     blueGray3 = '#506477',
     background1 = '#303340',
-    background2 = '#111111',
+    background2 = '#1B1E28',
     background3 = '#171922',
     text = '#E4F0FB',
     white = '#FFFFFF',
@@ -27,5 +27,11 @@ local variants = {
 local palette = {}
 
 palette = variants.main
+
+-- if vim.o.background == "light" then
+-- 	palette = variants.main
+-- else
+-- 	palette = variants[(vim.g.poimandres_variant == "storm" and "storm") or "main"]
+-- end
 
 return palette
