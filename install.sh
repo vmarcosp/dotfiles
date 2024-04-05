@@ -40,6 +40,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 
 # -- kitty --------------------------------
 ln -s $PWD/kitty/* ~/.config/kitty
+cp $PWD/kitty/kitty-local.conf.example ~/.config/kitty/kitty-local.conf
 
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
