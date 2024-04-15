@@ -21,6 +21,7 @@ brew install --cask kitty
 brew install --cask arc
 brew install --cask discord
 brew install --cask logseq
+brew install --cask hiddenbar
 
 # -- NerdFonts ------------------------------
 bash ./scripts/install-nerd-fonts.sh
