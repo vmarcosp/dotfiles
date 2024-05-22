@@ -121,7 +121,9 @@ M.lsps = {
   bashls = {},
   rescriptls = {},
   graphql = {},
-  tailwindcss = {}
+  tailwindcss = {},
+  cssls = {},
+  cssmodules_ls = {}
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
