@@ -123,7 +123,8 @@ M.lsps = {
   graphql = {},
   tailwindcss = {},
   cssls = {},
-  cssmodules_ls = {}
+  cssmodules_ls = {},
+  biome = {}
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
 M.unload_plugins = { "noice" }
