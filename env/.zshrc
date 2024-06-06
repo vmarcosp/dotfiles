@@ -42,3 +42,11 @@ function clean-branches(){
 }
 
 alias vim="nvim"
+
+# pnpm
+export PNPM_HOME="/Users/marcosoliveira/Library/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
