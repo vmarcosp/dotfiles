@@ -3,7 +3,7 @@
 # `~/.dotfiles`
 
 <p align="center">
-  <img width="1000" src="./__assets/preview-v9.png" />
+  <img width="1000" src="./__assets/preview-v9.1.png" />
 </p>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
