@@ -1,11 +1,14 @@
-# :bulb: `~/.dotfiles`
+<samp>
+
+# `~/.dotfiles`
 
 <p align="center">
-  <img width="1000" src="./__assets/preview-v8.png" />
+  <img width="1000" src="./__assets/preview-v9.png" />
 </p>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
 - My BetterVim config: `bettervim/bettervim.lua`
+- My own theme (yugem 幽玄)
 
 ### 💡 ZSH
   - `.zshrc`
@@ -15,14 +18,14 @@
 
 ### ⌨️ Kitty 🐱
  - My custom configs
- - Themes (such as poimandres)
+ - My own theme (yugem 幽玄)
 
 ### 🖥️ TMUX
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
       - `tmux-sensible` config.
-      -  `tmux-ressurrect` config.
-      -  UI and themes handled by [shifter](https://github.com/bettervim/shifter)
+      -  `tmux-ressurrect` config
+  -  My own theme (yugem 幽玄)
 
 ### 📦 General
   - `.editorconfig`
@@ -30,3 +33,4 @@
 
 ## ⚖️ license
 MIT
+</samp>
