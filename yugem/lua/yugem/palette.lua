@@ -1,37 +1,32 @@
 --- palette variants
 local variants = {
   main = { -- main palette
-    yellow = '#FFFAC2',
-    teal1 = '#E4E4A6',
-    teal2 = '#FFFAC2',
-    teal3 = '#E4D4A6',
-    blue1 = '#89DDFF',
-    blue2 = '#ADD7FF',
-    blue3 = '#91B4D5',
-    blue4 = '#7390AA',
-    pink1 = '#FAE4FC',
-    pink2 = '#FCC5E9',
-    pink3 = '#D0679D',
-    blueGray1 = '#A6ACCD',
-    blueGray2 = '#767C9D',
-    blueGray3 = '#506477',
-    background1 = '#303340',
-    background2 = '#1B1E28',
-    background3 = '#171922',
-    text = '#E4F0FB',
-    white = '#FFFFFF',
-    none = 'NONE',
+    yellow = '#D3D3D3', -- light gray for yellow replacement
+    teal1 = '#FAFAFA', -- medium gray
+    teal2 = '#696969', -- dark gray
+    teal3 = '#A9A9A9', -- medium gray for teal3
+    blue1 = '#D3D3D3', -- light gray for blue1
+    blue2 = '#A9A9A9', -- fechamento da tag < </
+    blue3 = '#696969', -- dark gray for blue3
+    blue4 = '#505050', -- darker gray for blue4
+    pink1 = '#D3D3D3', -- light gray for pink1
+    pink2 = '#A9A9A9', -- medium gray for pink2
+    pink3 = '#696969', -- dark gray for pink3
+    blueGray1 = '#E0B094', -- medium gray
+    blueGray2 = '#696969', -- dark gray
+    blueGray3 = '#505050', -- darker gray
+    background1 = '#303030', -- medium dark gray background
+    background2 = '#000000', -- very dark gray background
+    background3 = '#000000', -- true black background
+    text = '#d4d4d4', -- white text
+    white = '#d4d4d4', -- true white
+    none = 'NONE', -- no color
   },
 }
+
 
 local palette = {}
 
 palette = variants.main
-
--- if vim.o.background == "light" then
--- 	palette = variants.main
--- else
--- 	palette = variants[(vim.g.poimandres_variant == "storm" and "storm") or "main"]
--- end
 
 return palette
