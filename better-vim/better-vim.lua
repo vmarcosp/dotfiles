@@ -105,7 +105,7 @@ M.hooks = {
     }
     -- Remove the ~ from empty lines
     vim.opt.fillchars = { eob = ' ' }
-    vim.o.relativenumber = 1
+    vim.o.relativenumber = true
     -- Syntax highlight support for MDX
     vim.filetype.add({
       extension = {
