@@ -14,7 +14,7 @@ function M.get(config)
     float_background = (config.disable_float_background and p.none) or groups.panel,
   }
   styles.nc_background = (config.dim_nc_background and not config.disable_background and groups.panel)
-    or styles.background
+      or styles.background
 
   theme = {
     ColorColumn = { bg = p.blueGray1 },
@@ -22,7 +22,6 @@ function M.get(config)
     CurSearch = { link = 'IncSearch' },
     Cursor = { fg = p.background3, bg = p.blueGray1 },
     CursorColumn = { bg = p.background1 },
-    -- CursorIM = {},
     CursorLine = { bg = p.background1 },
     CursorLineNr = { fg = p.text },
     DarkenedPanel = { bg = groups.panel },
@@ -35,7 +34,6 @@ function M.get(config)
     diffChanged = { link = 'DiffChange' },
     diffRemoved = { link = 'DiffDelete' },
     Directory = { fg = p.blue3, bg = p.none },
-    -- EndOfBuffer = {},
     ErrorMsg = { fg = p.pink3, style = 'bold' },
     FloatBorder = { fg = groups.border },
     FloatTitle = { fg = p.blueGray2 },
@@ -56,8 +54,6 @@ function M.get(config)
     PmenuSel = { fg = p.text, bg = p.background1 },
     PmenuThumb = { bg = p.blueGray3 },
     Question = { fg = p.yellow },
-    -- QuickFixLine = {},
-    -- RedrawDebugNormal = {}
     RedrawDebugClear = { fg = '#ffffff', bg = p.yellow },
     RedrawDebugComposed = { fg = '#ffffff', bg = p.teal2 },
     RedrawDebugRecompose = { fg = '#ffffff', bg = p.pink3 },
@@ -78,37 +74,30 @@ function M.get(config)
     Title = { fg = p.text },
     VertSplit = { fg = groups.border, bg = styles.vert_split },
     Visual = { fg = p.text, bg = p.blueGray3 },
-    -- VisualNOS = {},
     WarningMsg = { fg = p.yellow },
     Whitespace = { fg = p.blueGray3 },
     WildMenu = { link = 'IncSearch' },
 
-    -- These groups are not listed as default vim groups,
-    -- but they are defacto standard group names for syntax highlighting.
-    -- commented out groups should chain up to their "preferred" group by
-    -- default,
-    -- Uncomment and edit if you want more specific syntax highlighting.
+    Constant = { fg = p.text },         -- (preferred) any constant
+    String = { fg = p.teal1 },          --   a string constant: "this is a string"
+    Character = { fg = p.pink3 },       --  a character constant: 'c', '\n'
+    Number = { fg = p.teal1 },          --   a number constant: 234, 0xff
+    Boolean = { fg = p.teal1 },         --  a boolean constant: TRUE, false
+    Float = { fg = p.teal1 },           --    a floating point constant: 2.3e10
 
-    Constant = { fg = p.text }, -- (preferred) any constant
-    String = { fg = p.teal1 }, --   a string constant: "this is a string"
-    Character = { fg = p.pink3 }, --  a character constant: 'c', '\n'
-    Number = { fg = p.teal1 }, --   a number constant: 234, 0xff
-    Boolean = { fg = p.teal1 }, --  a boolean constant: TRUE, false
-    Float = { fg = p.teal1 }, --    a floating point constant: 2.3e10
+    Identifier = { fg = p.teal3 },      -- (preferred) any variable name
+    Function = { fg = p.blue2 },        -- function name (also: methods for classes)
 
-    Identifier = { fg = p.teal3 }, -- (preferred) any variable name
-    Function = { fg = p.blue2 }, -- function name (also: methods for classes)
-
-    Statement = { fg = p.text }, -- (preferred) any statement
+    Statement = { fg = p.text },        -- (preferred) any statement
     Conditional = { fg = p.blueGray1 }, --  if, then, else, endif, switch, etc.
-    Repeat = { fg = p.blue3 }, --   for, do, while, etc.
-    Label = { fg = p.text }, --    case, default, etc.
-    Operator = { fg = p.blue2 }, -- "sizeof", "+", "*", etc.
-    Keyword = { fg = p.blue3 }, --  any other keyword
-    Exception = { fg = p.blue3 }, --  try, catch, throw
+    Repeat = { fg = p.blue3 },          --   for, do, while, etc.
+    Label = { fg = p.text },            --    case, default, etc.
+    Operator = { fg = p.blue2 },        -- "sizeof", "+", "*", etc.
+    Keyword = { fg = p.blue3 },         --  any other keyword
+    Exception = { fg = p.blue3 },       --  try, catch, throw
 
-    PreProc = { fg = p.text }, -- (preferred) generic Preprocessor
-    Include = { fg = p.blueGray1 }, --  preprocessor #include
+    PreProc = { fg = p.text },          -- (preferred) generic Preprocessor
+    Include = { fg = p.blueGray1 },     --  preprocessor #include
     -- Define        = { }, --   preprocessor #define
     -- Macro         = { }, --    same as Define
     -- PreCondit     = { }, --  preprocessor #if, #else, #endif, etc.
@@ -118,14 +107,14 @@ function M.get(config)
     -- StorageClass  = { }, -- static, register, volatile, etc.
     -- Typedef = { fg = p.blueGray1 }, --  A typedef
 
-    Special = { fg = p.blueGray2 }, -- (preferred) any special symbol
+    Special = { fg = p.blueGray2 },        -- (preferred) any special symbol
     -- SpecialChar   = { }, --  special character in a constant
-    Tag = { fg = p.text }, --    you can use CTRL-] on this
-    Delimiter = { fg = p.blueGray1 }, --  character that needs attention
+    Tag = { fg = p.text },                 --    you can use CTRL-] on this
+    Delimiter = { fg = p.blueGray1 },      --  character that needs attention
     SpecialComment = { fg = p.blueGray1 }, -- special things inside a comment
     -- Debug         = { }, --    debugging statements
 
-    Comment = { fg = p.blueGray1 }, -- (preferred) any special symbol
+    Comment = { fg = p.blueGray1 },       -- (preferred) any special symbol
 
     Underlined = { style = 'underline' }, -- (preferred) text that stands out, HTML links
     Bold = { style = 'bold' },
@@ -134,7 +123,7 @@ function M.get(config)
     -- ("Ignore", below, may be invisible...)
     -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
 
-    Error = { fg = p.pink3 }, -- (preferred) any erroneous construct
+    Error = { fg = p.pink3 },                     -- (preferred) any erroneous construct
     Todo = { bg = p.yellow, fg = p.background3 }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
 
     qfLineNr = { fg = p.blueGray3 },
@@ -159,7 +148,7 @@ function M.get(config)
     markdownH4 = { fg = p.blue2, style = 'bold' },
     markdownLinkText = { fg = p.blue1, style = 'underline' },
 
-    debugPC = { bg = p.background1 }, -- used for highlighting the current line in terminal-debug
+    debugPC = { bg = p.background1 },                       -- used for highlighting the current line in terminal-debug
     debugBreakpoint = { bg = p.background2, fg = p.pink3 }, -- used for breakpoint colors in terminal-debug
     DiagnosticError = { fg = groups.error },
     DiagnosticHint = { fg = groups.hint },
@@ -278,7 +267,7 @@ function M.get(config)
     cssTSProperty = { fg = p.blue2 },
     cssTSType = { fg = p.teal1 },
     cssTSKeyword = { fg = p.blueGray1 },
-    cssClassName = { fg = p.teal2, style = styles.italic },
+    cssClassName = { fg = p.blueGray1, style = styles.italic },
     cssPseudoClass = { fg = p.blue3, style = styles.italic },
     cssDefinition = { fg = p.blue2 },
     cssTSError = { link = 'cssClassName' },
@@ -289,35 +278,8 @@ function M.get(config)
     LspReferenceWrite = { bg = p.blue2 },
 
     -- lsp-highlight-codelens
-    LspCodeLens = { fg = p.blueGray1 }, -- virtual text of code lens
+    LspCodeLens = { fg = p.blueGray1 },          -- virtual text of code lens
     LspCodeLensSeparator = { fg = p.blueGray3 }, -- separator between two or more code lens
-
-    -- nvim-ts-rainbow
-    rainbowcol1 = { fg = p.blue1 },
-    rainbowcol2 = { fg = p.teal1 },
-    rainbowcol3 = { fg = p.yellow },
-    rainbowcol4 = { fg = p.blue2 },
-    rainbowcol5 = { fg = p.teal2 },
-    rainbowcol6 = { fg = p.pink3 },
-    rainbowcol7 = { fg = p.blue3 },
-
-    -- romgrk/barbar.nvim
-    BufferCurrent = { fg = p.text, bg = p.background2 },
-    BufferCurrentIndex = { fg = p.text, bg = p.background2 },
-    BufferCurrentMod = { fg = p.teal1, bg = p.background2 },
-    BufferCurrentSign = { fg = p.blueGray1, bg = p.background2 },
-    BufferCurrentTarget = { fg = p.yellow, bg = p.background2 },
-    BufferInactive = { fg = p.blueGray1 },
-    BufferInactiveIndex = { fg = p.blueGray1 },
-    BufferInactiveMod = { fg = p.teal1 },
-    BufferInactiveSign = { fg = p.blueGray2 },
-    BufferInactiveTarget = { fg = p.yellow },
-    BufferTabpageFill = { fg = groups.background, bg = groups.background },
-    BufferVisible = { fg = p.blueGray1 },
-    BufferVisibleIndex = { fg = p.blueGray1 },
-    BufferVisibleMod = { fg = p.teal1 },
-    BufferVisibleSign = { fg = p.blueGray2 },
-    BufferVisibleTarget = { fg = p.yellow },
 
     -- lewis6991/gitsigns.nvim
     GitSignsAdd = { fg = groups.git_add },
@@ -327,12 +289,6 @@ function M.get(config)
     SignChange = { link = 'GitSignsChange' },
     SignDelete = { link = 'GitSignsDelete' },
 
-    -- mvllow/modes.nvim
-    ModesCopy = { bg = p.yellow },
-    ModesDelete = { bg = p.pink3 },
-    ModesInsert = { bg = p.teal1 },
-    ModesVisual = { bg = p.yellow },
-
     -- kyazdani42/nvim-tree.lua
     NvimTreeEmptyFolderName = { fg = p.blueGray3 },
     NvimTreeFileDeleted = { fg = p.pink3 },
@@ -341,8 +297,8 @@ function M.get(config)
     NvimTreeFileNew = { fg = p.teal1 },
     NvimTreeFileRenamed = { fg = p.blueGray3 },
     NvimTreeFileStaged = { fg = p.blue1 },
-    NvimTreeFolderIcon = { fg = p.blue3 },
-    NvimTreeFolderName = { fg = p.blue3 },
+    NvimTreeFolderIcon = { fg = p.blue2 },
+    NvimTreeFolderName = { fg = p.blue2 },
     NvimTreeGitDeleted = { fg = groups.git_delete },
     NvimTreeGitDirty = { fg = groups.git_dirty },
     NvimTreeGitIgnored = { fg = groups.git_ignore },
@@ -352,11 +308,12 @@ function M.get(config)
     NvimTreeGitStaged = { fg = groups.git_stage },
     NvimTreeImageFile = { fg = p.text },
     NvimTreeNormal = { fg = p.text },
-    NvimTreeOpenedFile = { fg = p.text, bg = p.background1 },
+    NvimTreeOpenedFile = { fg = p.text, bg = 'none' },
     NvimTreeOpenedFolderName = { link = 'NvimTreeFolderName' },
     NvimTreeRootFolder = { fg = p.teal1 },
     NvimTreeSpecialFile = { link = 'NvimTreeNormal' },
     NvimTreeWindowPicker = { fg = groups.bg, bg = p.blueGray1 },
+    WinSeparator = { fg = p.blue4, bg = p.background2 },
 
     -- folke/which-key.nvim
     WhichKey = { fg = p.text },
@@ -410,20 +367,6 @@ function M.get(config)
     TelescopeResultsDiffChange = { fg = p.yellow },
     TelescopeResultsDiffDelete = { fg = p.pink3 },
 
-    -- phaazon/hop.nvim
-    HopNextKey = { fg = p.blue1 },
-    HopNextKey1 = { fg = p.teal1 },
-    HopNextKey2 = { fg = p.teal2 },
-    HopUnmatched = { fg = p.blueGray3 },
-    HopCursor = { fg = p.blue3 },
-
-    -- ggandor/leap.nvim
-    LeapMatch = { fg = p.background2, bg = p.pink2 },
-    LeapLabelPrimary = { fg = p.background2, bg = p.teal1 },
-    LeapLabelSecondary = { fg = p.background2, bg = p.blue1 },
-    LeapLabelSelected = { fg = p.background2, bg = p.yellow },
-    LeapBackground = { bg = p.background1 },
-
     -- rcarriga/nvim-notify
     NotifyINFOBorder = { fg = p.teal1 },
     NotifyINFOTitle = { link = 'NotifyINFOBorder' },
@@ -441,14 +384,6 @@ function M.get(config)
     NotifyERRORTitle = { link = 'NotifyERRORBorder' },
     NotifyERRORIcon = { link = 'NotifyERRORBorder' },
 
-    -- glepnir/lspsaga.nvim
-    TitleString = { fg = p.blue2 },
-    TitleIcon = { fg = p.blue2 },
-    SagaBorder = { bg = p.background2, fg = p.blueGray2 },
-    SagaNormal = { bg = p.background2 },
-    SagaExpand = { fg = p.teal2 },
-    SagaCollapse = { fg = p.teal2 },
-    SagaBeacon = { bg = p.yellow },
     -- code action
     ActionPreviewNormal = { link = 'SagaNormal' },
     ActionPreviewBorder = { link = 'SagaBorder' },
@@ -512,20 +447,20 @@ function M.get(config)
 
   vim.g.terminal_color_0 = p.background3 -- black
   vim.g.terminal_color_8 = p.background3 -- bright black
-  vim.g.terminal_color_1 = p.pink3 -- red
-  vim.g.terminal_color_9 = p.pink3 -- bright red
-  vim.g.terminal_color_2 = p.teal1 -- green
-  vim.g.terminal_color_10 = p.teal1 -- bright green
-  vim.g.terminal_color_3 = p.yellow -- yellow
-  vim.g.terminal_color_11 = p.yellow -- bright yellow
-  vim.g.terminal_color_4 = p.blue1 -- blue
-  vim.g.terminal_color_12 = p.blue2 -- bright blue
-  vim.g.terminal_color_5 = p.pink2 -- magenta
-  vim.g.terminal_color_13 = p.pink2 -- bright magenta
-  vim.g.terminal_color_6 = p.blue1 -- cyan
-  vim.g.terminal_color_14 = p.blue2 -- bright cyan
-  vim.g.terminal_color_7 = p.white -- white
-  vim.g.terminal_color_15 = p.white -- bright white
+  vim.g.terminal_color_1 = p.pink3       -- red
+  vim.g.terminal_color_9 = p.pink3       -- bright red
+  vim.g.terminal_color_2 = p.teal1       -- green
+  vim.g.terminal_color_10 = p.teal1      -- bright green
+  vim.g.terminal_color_3 = p.yellow      -- yellow
+  vim.g.terminal_color_11 = p.yellow     -- bright yellow
+  vim.g.terminal_color_4 = p.blue1       -- blue
+  vim.g.terminal_color_12 = p.blue2      -- bright blue
+  vim.g.terminal_color_5 = p.pink2       -- magenta
+  vim.g.terminal_color_13 = p.pink2      -- bright magenta
+  vim.g.terminal_color_6 = p.blue1       -- cyan
+  vim.g.terminal_color_14 = p.blue2      -- bright cyan
+  vim.g.terminal_color_7 = p.white       -- white
+  vim.g.terminal_color_15 = p.white      -- bright white
 
   return theme
 end
