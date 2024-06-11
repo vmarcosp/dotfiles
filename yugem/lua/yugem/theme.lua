@@ -205,16 +205,6 @@ function M.get(config)
     -- lua
     luaTSConstructor = { fg = p.blueGray1 },
 
-    -- css
-    cssTSFunction = { fg = p.blueGray1 },
-    cssTSProperty = { fg = p.blue2 },
-    cssTSType = { fg = p.teal1 },
-    cssTSKeyword = { fg = p.blueGray1 },
-    cssClassName = { fg = p.blueGray1, style = styles.italic },
-    cssPseudoClass = { fg = p.blue3, style = styles.italic },
-    cssDefinition = { fg = p.blue2 },
-    cssTSError = { link = 'cssClassName' },
-
     -- vim.lsp.buf.document_highlight()
     LspReferenceText = { bg = p.blue2 },
     LspReferenceRead = { bg = p.blue2 },
