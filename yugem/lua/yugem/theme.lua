@@ -22,8 +22,8 @@ function M.get(config)
     CurSearch = { link = 'IncSearch' },
     Cursor = { fg = p.background3, bg = p.blueGray1 },
     CursorColumn = { bg = p.background1 },
-    CursorLine = { bg = p.background1 },
-    CursorLineNr = { fg = p.text },
+    CursorLine = { bg = p.color600 },
+    CursorLineNr = { fg = p.color300 },
     DarkenedPanel = { bg = groups.panel },
     DarkenedStatusline = { bg = groups.panel },
     DiffAdd = { bg = blend(groups.git_add, groups.background, 0.5) },
@@ -40,28 +40,28 @@ function M.get(config)
     FoldColumn = { fg = p.blueGray2 },
     Folded = { fg = p.text, bg = groups.panel },
     IncSearch = { fg = p.background3, bg = p.blue2 },
-    LineNr = { fg = p.blueGray3 },
-    MatchParen = { fg = p.background3, bg = p.blueGray3 },
+    LineNr = { fg = p.color500 },
+    MatchParen = { fg = p.color200, bg = p.color700 },
     ModeMsg = { fg = p.blue3 },
     MoreMsg = { fg = p.blue3 },
-    NonText = { fg = p.blue4 },
-    Normal = { fg = p.text, bg = styles.background },
-    NormalFloat = { fg = p.text, bg = styles.float_background },
+    NonText = { fg = p.color500 },
+    Normal = { fg = p.color200, bg = styles.color800 },
+    NormalFloat = { fg = p.color200, bg = styles.color700 },
     NormalNC = { fg = p.text, bg = styles.nc_background },
     NvimInternalError = { fg = '#ffffff', bg = p.pink3 },
     Pmenu = { fg = p.blueGray1, bg = styles.float_background },
     PmenuSbar = { bg = p.blueGray2 },
     PmenuSel = { fg = p.text, bg = p.background1 },
-    PmenuThumb = { bg = p.blueGray3 },
-    Question = { fg = p.yellow },
-    RedrawDebugClear = { fg = '#ffffff', bg = p.yellow },
+    PmenuThumb = { bg = p.color700 },
+    Question = { fg = p.warning },
+    RedrawDebugClear = { fg = '#ffffff', bg = p.warning },
     RedrawDebugComposed = { fg = '#ffffff', bg = p.teal2 },
     RedrawDebugRecompose = { fg = '#ffffff', bg = p.pink3 },
-    Search = { fg = p.white, bg = p.blueGray3 },
+    Search = { fg = p.color200, bg = p.blueGray3 },
     SpecialKey = { fg = p.teal1 },
     SpellBad = { sp = p.pink3, style = 'undercurl' },
     SpellCap = { sp = p.blue1, style = 'undercurl' },
-    SpellLocal = { sp = p.yellow, style = 'undercurl' },
+    SpellLocal = { sp = p.warning, style = 'undercurl' },
     SpellRare = { sp = p.blue1, style = 'undercurl' },
     SignColumn = { fg = p.text, bg = p.none },
     StatusLine = { fg = p.blue3, bg = styles.float_background },
@@ -73,27 +73,27 @@ function M.get(config)
     TabLineSel = { fg = p.text, bg = p.background1 },
     Title = { fg = p.text },
     VertSplit = { fg = groups.border, bg = styles.vert_split },
-    Visual = { fg = p.text, bg = p.blueGray3 },
-    WarningMsg = { fg = p.yellow },
-    Whitespace = { fg = p.blueGray3 },
+    Visual = { fg = p.color200, bg = p.color600 },
+    WarningMsg = { fg = p.warning },
+    Whitespace = { fg = p.color700 },
     WildMenu = { link = 'IncSearch' },
 
-    Constant = { fg = p.text },         -- (preferred) any constant
-    String = { fg = p.teal1 },          --   a string constant: "this is a string"
+    Constant = { fg = p.color200 },         -- (preferred) any constant
+    String = { fg = p.primary },        --   a string constant: "this is a string"
     Character = { fg = p.pink3 },       --  a character constant: 'c', '\n'
-    Number = { fg = p.teal1 },          --   a number constant: 234, 0xff
-    Boolean = { fg = p.teal1 },         --  a boolean constant: TRUE, false
-    Float = { fg = p.teal1 },           --    a floating point constant: 2.3e10
+    Number = { fg = p.primary },          --   a number constant: 234, 0xff
+    Boolean = { fg = p.primary },         --  a boolean constant: TRUE, false
+    Float = { fg = p.primary },           --    a floating point constant: 2.3e10
 
     Identifier = { fg = p.teal3 },      -- (preferred) any variable name
-    Function = { fg = p.blue2 },        -- function name (also: methods for classes)
+    Function = { fg = p.primary },      -- function name (also: methods for classes)
 
     Statement = { fg = p.text },        -- (preferred) any statement
     Conditional = { fg = p.blueGray1 }, --  if, then, else, endif, switch, etc.
     Repeat = { fg = p.blue3 },          --   for, do, while, etc.
     Label = { fg = p.text },            --    case, default, etc.
     Operator = { fg = p.blue2 },        -- "sizeof", "+", "*", etc.
-    Keyword = { fg = p.blue3 },         --  any other keyword
+    Keyword = { fg = p.color400 },         --  any other keyword
     Exception = { fg = p.blue3 },       --  try, catch, throw
 
     PreProc = { fg = p.text },          -- (preferred) generic Preprocessor
@@ -102,43 +102,31 @@ function M.get(config)
     -- Macro         = { }, --    same as Define
     -- PreCondit     = { }, --  preprocessor #if, #else, #endif, etc.
 
-    Type = { fg = p.blueGray1 }, -- (preferred) int, long, char, etc.
+    Type = { fg = p.color300 }, -- (preferred) int, long, char, etc.
     --[[ Structure = { fg = p.blueGray1 }, --  struct, union, enum, etc. ]]
     -- StorageClass  = { }, -- static, register, volatile, etc.
     -- Typedef = { fg = p.blueGray1 }, --  A typedef
 
     Special = { fg = p.blueGray2 },        -- (preferred) any special symbol
     -- SpecialChar   = { }, --  special character in a constant
-    Tag = { fg = p.text },                 --    you can use CTRL-] on this
+    Tag = { fg = p.primary },                 --    you can use CTRL-] on this
     Delimiter = { fg = p.blueGray1 },      --  character that needs attention
-    SpecialComment = { fg = p.blueGray1 }, -- special things inside a comment
+    SpecialComment = { fg = p.color500 }, -- special things inside a comment
     -- Debug         = { }, --    debugging statements
 
-    Comment = { fg = p.blueGray1 },       -- (preferred) any special symbol
+    Comment = { fg = p.color500 },       -- (preferred) any special symbol
 
     Underlined = { style = 'underline' }, -- (preferred) text that stands out, HTML links
     Bold = { style = 'bold' },
     Italic = { style = 'italic' },
-
-    -- ("Ignore", below, may be invisible...)
-    -- Ignore = { }, -- (preferred) left blank, hidden  |hl-Ignore|
-
-    Error = { fg = p.pink3 },                     -- (preferred) any erroneous construct
-    Todo = { bg = p.yellow, fg = p.background3 }, -- (preferred) anything that needs extra attention; mostly the keywords TODO FIXME and XXX
-
     qfLineNr = { fg = p.blueGray3 },
     qfFileName = { fg = p.blueGray2 },
-
     htmlH1 = { fg = p.teal1, style = 'bold' },
     htmlH2 = { fg = p.teal1, style = 'bold' },
-
-    -- mkdHeading = { fg = c.orange, style = "bold" },
-    -- mkdCode = { bg = c.terminal_black, fg = c.fg },
     mkdCodeDelimiter = { bg = p.background3, fg = p.text },
     mkdCodeStart = { fg = p.teal2, style = 'bold' },
     mkdCodeEnd = { fg = p.teal2, style = 'bold' },
     mkdLink = { fg = p.blue1, style = 'underline' },
-
     markdownHeadingDelimiter = { fg = p.blue4, style = 'bold' },
     markdownCode = { fg = p.blueGray1 },
     markdownCodeBlock = { fg = p.teal2 },
@@ -147,7 +135,6 @@ function M.get(config)
     markdownH3 = { fg = p.blue2, style = 'bold' },
     markdownH4 = { fg = p.blue2, style = 'bold' },
     markdownLinkText = { fg = p.blue1, style = 'underline' },
-
     debugPC = { bg = p.background1 },                       -- used for highlighting the current line in terminal-debug
     debugBreakpoint = { bg = p.background2, fg = p.pink3 }, -- used for breakpoint colors in terminal-debug
     DiagnosticError = { fg = groups.error },
@@ -180,72 +167,50 @@ function M.get(config)
     DiagnosticVirtualTextWarn = { fg = groups.warn },
 
     -- Treesitter
-    ['@variable'] = { fg = p.text },
-    -- TSAttribute = {},
-    -- TSKeywordReturn = { fg = p.teal2 },
+    ['@variable'] = { fg = p.color200 },
     ['@boolean'] = { link = 'Boolean' },
-    -- TSCharacter = { link = 'Character' },
     ['@comment'] = { link = 'Comment' },
-    -- TSConditional = { link = 'Conditional' },
-    ['@variable.builtin'] = { fg = p.blue2 },
-    ['@constant.builtin'] = { fg = p.blue2 },
-    ['@constant.falsy'] = { fg = p.pink3 },
-    -- TSConstMacro = {},
-    -- TSConstant = { fg = p.text },
+    ['@variable.builtin'] = { fg = p.color300 },
+    ['@constant.builtin'] = { fg = p.color300 },
+    ['@constant.falsy'] = { fg = p.primary },
     ['@constructor'] = { fg = p.teal1 },
-    -- TSEmphasis = {},
-    -- TSError = {},
-    -- TSException = {},
     ['field'] = { fg = p.text },
-    -- TSFloat = {},
-    ['@function.builtin'] = { fg = p.blue2 },
-    -- TSFuncMacro = {},
+    ['@function.builtin'] = { fg = p.color300 },
     ['@function'] = { link = 'Function' },
     ['@function.call'] = { fg = p.blueGray1 },
     TSInclude = { fg = p.blue2 },
     ['@keyword'] = { link = 'Keyword' },
-    ['@keyword.return'] = { fg = p.teal2 },
-    ['@keyword.function'] = { fg = p.blue2 },
-    ['@keyword.operator'] = { fg = p.teal1 },
+    ['@keyword.return'] = { fg = p.color300 },
+    ['@keyword.function'] = { fg = p.color300 },
+    ['@keyword.operator'] = { fg = p.color400 },
     ['@label'] = { fg = p.blue3 },
-    -- TSLiteral = {},
     ['@method'] = { fg = p.teal1 },
-    -- TSNamespace = {},
-    -- TSNone = {},
-    -- TSNumber = { link = 'Number' },
-    ['@operator'] = { link = 'Operator' },
+    ['@operator'] = { fg = 'color400' },
     ['@parameter'] = { fg = p.text },
-    -- TSParameterReference = {},
-    ['@property'] = { fg = p.blue2 },
+    ['@property'] = { fg = p.color300 },
     ['@punctuation.delimiter'] = { fg = groups.punctuation },
     ['@punctuation.special'] = { fg = groups.punctuation },
-    ['@punctuation.bracket'] = { fg = p.text },
-    -- TSRepeat = {},
-    -- TSStrike = {},
-    ['@string'] = { link = 'String' },
+    ['@punctuation.bracket'] = { fg = p.color400 },
+    ['@string'] = { fg = p.color200 },
     ['@string.escape'] = { fg = p.pink3 },
-    -- TSStringRegex = {},
-    -- TSStringSpecial = { fg = p.teal1 },
-    -- TSSymbol = {},
-    ['@tag'] = { fg = p.teal1 },
-    ['@tag.delimiter'] = { fg = p.text },
-    ['@tag.attribute'] = { fg = p.blue3, style = styles.italic },
-    ['@text'] = { fg = p.text },
+    ['@tag'] = { fg = p.primary },
+    ['@tag.delimiter'] = { fg = p.color400 },
+    ['@tag.attribute'] = { fg = p.color300, style = styles.italic },
+    ['@text'] = { fg = p.color200 },
     ['@title'] = { fg = groups.headings.h1, style = 'bold' },
     ['@type'] = { link = 'Type' },
     ['@type.builtin'] = { link = 'Type' },
     TSURI = { fg = groups.link },
-    -- TSUnderline = {},
 
     -- tsx
-    ['@keyword.export.tsx'] = { fg = p.teal1 },
-    ['@keyword.import.tsx'] = { fg = p.teal1 },
-    ['@import.identifier.tsx'] = { fg = p.blue2 },
+    ['@keyword.export.tsx'] = { fg = p.color400 },
+    ['@keyword.import.tsx'] = { fg = p.color400 },
+    ['@import.identifier.tsx'] = { fg = p.color300 },
 
     -- typescript
-    ['@keyword.export.typescript'] = { fg = p.teal1 },
-    ['@keyword.import.typescript'] = { fg = p.teal1 },
-    ['@import.identifier.typescript'] = { fg = p.blue2 },
+    ['@keyword.export.typescript'] = { fg = p.color400 },
+    ['@keyword.import.typescript'] = { fg = p.color400 },
+    ['@import.identifier.typescript'] = { fg = p.color300 },
     typescriptVariable = { fg = p.blue2 },
     typescriptExport = { fg = p.teal1 },
     typescriptDefault = { fg = p.teal1 },
@@ -289,59 +254,51 @@ function M.get(config)
     SignChange = { link = 'GitSignsChange' },
     SignDelete = { link = 'GitSignsDelete' },
 
-    -- kyazdani42/nvim-tree.lua
-    NvimTreeEmptyFolderName = { fg = p.blueGray3 },
-    NvimTreeFileDeleted = { fg = p.pink3 },
-    NvimTreeFileDirty = { fg = p.blue4 },
-    NvimTreeFileMerge = { fg = p.blue2 },
-    NvimTreeFileNew = { fg = p.teal1 },
-    NvimTreeFileRenamed = { fg = p.blueGray3 },
-    NvimTreeFileStaged = { fg = p.blue1 },
-    NvimTreeFolderIcon = { fg = p.blue2 },
-    NvimTreeFolderName = { fg = p.blue2 },
-    NvimTreeGitDeleted = { fg = groups.git_delete },
-    NvimTreeGitDirty = { fg = groups.git_dirty },
+    -- NvimTree
+    NvimTreeFileDirty = { fg = p.color200 },
+    NvimTreeFileNew = { fg = p.color200 },
+    NvimTreeFileRenamed = { fg = p.color200 },
+    NvimTreeFileStaged = { fg = p.color200 },
+    NvimTreeFolderIcon = { fg = p.color400 },
+    NvimTreeFolderName = { fg = p.color300 },
+    NvimTreeGitDeleted = { fg = groups.color200 },
+    NvimTreeGitDirty = { fg = p.color200 },
     NvimTreeGitIgnored = { fg = groups.git_ignore },
     NvimTreeGitMerge = { fg = groups.git_merge },
     NvimTreeGitNew = { fg = groups.git_add },
     NvimTreeGitRenamed = { fg = groups.git_rename },
     NvimTreeGitStaged = { fg = groups.git_stage },
-    NvimTreeImageFile = { fg = p.text },
-    NvimTreeNormal = { fg = p.text },
-    NvimTreeOpenedFile = { fg = p.text, bg = 'none' },
+    NvimTreeImageFile = { fg = p.color100 },
+    NvimTreeExecFile = { fg = p.color100 },
+    NvimTreeNormal = { fg = p.color200 },
+    NvimTreeOpenedFile = { fg = p.color400, bg = 'none' },
     NvimTreeOpenedFolderName = { link = 'NvimTreeFolderName' },
-    NvimTreeRootFolder = { fg = p.teal1 },
+    NvimTreeRootFolder = { fg = p.color100 },
     NvimTreeSpecialFile = { link = 'NvimTreeNormal' },
-    NvimTreeWindowPicker = { fg = groups.bg, bg = p.blueGray1 },
-    WinSeparator = { fg = p.blue4, bg = p.background2 },
+    NvimTreeWindowPicker = { fg = p.color100, bg = p.color600 },
+    WinSeparator = { fg = p.color600, bg = p.color800 },
 
     -- folke/which-key.nvim
-    WhichKey = { fg = p.text },
-    WhichKeyGroup = { fg = p.text },
-    WhichKeySeparator = { fg = p.text },
-    WhichKeyDesc = { fg = p.text },
-    WhichKeyFloat = { bg = groups.panel },
-    WhichKeyValue = { fg = p.text },
+    WhichKey = { fg = p.color200 },
+    WhichKeyGroup = { fg = p.color200 },
+    WhichKeySeparator = { fg = p.color500 },
+    WhichKeyDesc = { fg = p.color200 },
+    WhichKeyBorder = { bg = p.color200 },
+    WhichKeyFloat = { bg = p.color700 },
+    WhichKeyValue = { fg = p.color200 },
 
-    -- luka-reineke/indent-blankline.nvim
-    IndentBlanklineChar = { fg = p.background1 },
-    IndentBlanklineContextChar = { fg = p.yellow, gui = 'nocombine' },
-    IndentBlanklineContextStart = { fg = p.yellow, gui = 'underline' },
-    IndentBlanklineSpaceChar = { link = 'Whitespace' },
-    IndentBlanklineSpaceCharBlankline = { link = 'Whitespace' },
-
-    -- hrsh7th/nvim-cmp
+    -- Nvim Cmp
     CmpItemAbbr = { fg = p.blueGray2 },
-    CmpItemAbbrDeprecated = { fg = p.pink3, style = 'strikethrough' },
-    CmpItemAbbrMatch = { fg = p.text, style = 'bold' },
-    CmpItemAbbrMatchFuzzy = { fg = p.teal1, style = 'bold' },
-    CmpItemKind = { fg = p.blue3 },
-    CmpItemKindClass = { fg = p.yellow },
-    CmpItemKindFunction = { fg = p.blue1 },
-    CmpItemKindInterface = { fg = p.blue2 },
-    CmpItemKindMethod = { fg = p.pink3 },
-    CmpItemKindSnippet = { fg = p.blueGray1 },
-    CmpItemKindVariable = { fg = p.teal1 },
+    CmpItemAbbrDeprecated = { fg = p.color700, style = 'strikethrough' },
+    CmpItemAbbrMatch = { fg = p.color300 },
+    CmpItemAbbrMatchFuzzy = { fg = p.color100 },
+    CmpItemKind = { fg = p.primary },
+    CmpItemKindClass = { fg = p.primary },
+    CmpItemKindFunction = { fg = p.primary },
+    CmpItemKindInterface = { fg = p.primary },
+    CmpItemKindMethod = { fg = p.primary },
+    CmpItemKindSnippet = { fg = p.primary },
+    CmpItemKindVariable = { fg = p.primary },
 
     -- ray-x/lsp_signature.nvim
     LspSignatureActiveParameter = { bg = p.blueGray1 },
@@ -352,26 +309,32 @@ function M.get(config)
     PounceGap = { link = 'Search' },
     PounceMatch = { link = 'Search' },
 
-    -- nvim-telescope/telescope.nvim
-    TelescopeMatching = { fg = p.teal1 },
-    TelescopeNormal = { fg = p.text },
-    TelescopeSelection = { fg = p.text, bg = p.background1 },
-    TelescopeTitle = { fg = p.blueGray2 },
-    TelescopeBorder = { fg = p.background1 },
-    TelescopePromptBorder = { fg = p.background1 },
-    TelescopePromptNormal = { fg = p.text },
-    TelescopePromptPrefix = { fg = p.blueGray2 },
-    TelescopePreviewTitle = { fg = p.background2, bg = p.teal1 },
-    TelescopePromptTitle = { fg = p.background2, bg = p.blue1 },
-    TelescopeResultsDiffAdd = { fg = p.teal1 },
-    TelescopeResultsDiffChange = { fg = p.yellow },
-    TelescopeResultsDiffDelete = { fg = p.pink3 },
+    -- Telescope
+    TelescopeMatching = { fg = p.primary },
+    TelescopeNormal = { fg = p.color100 },
+    TelescopeSelection = { fg = p.color200, bg = p.color700 },
+    TelescopeTitle = { fg = p.color200 },
+    TelescopeBorder = { fg = p.color600 },
+    TelescopePromptBorder = { fg = p.color700 },
+    TelescopePromptNormal = { fg = p.color100 },
+    TelescopePromptPrefix = { fg = p.color200 },
+    TelescopePreviewTitle = { fg = p.color100, bg = p.color700 },
+    TelescopePromptTitle = { fg = p.color100, bg = p.color700 },
+    TelescopeResultsDiffAdd = { fg = p.primary },
+    TelescopeResultsDiffChange = { fg = p.color600 },
+    TelescopeResultsDiffDelete = { fg = p.primary },
+
+    -- Dashboard
+    DashboardFooter = { fg = p.color400, bg = 'none', bold = true },
+    BvDashboardKey = { fg = p.color100, bg = 'none', bold = true },
+    BvDashboardItemIcon = { fg = p.color300 },
+    BvDashboardItemText = { fg = p.color300 },
 
     -- rcarriga/nvim-notify
     NotifyINFOBorder = { fg = p.teal1 },
     NotifyINFOTitle = { link = 'NotifyINFOBorder' },
     NotifyINFOIcon = { link = 'NotifyINFOBorder' },
-    NotifyWARNBorder = { fg = p.yellow },
+    NotifyWARNBorder = { fg = p.warning },
     NotifyWARNTitle = { link = 'NotifyWARNBorder' },
     NotifyWARNIcon = { link = 'NotifyWARNBorder' },
     NotifyDEBUGBorder = { fg = p.blue1 },
@@ -390,13 +353,13 @@ function M.get(config)
     ActionPreviewTitle = { fg = p.blueGray2, bg = p.background2 },
     CodeActionNormal = { link = 'SagaNormal' },
     CodeActionBorder = { link = 'SagaBorder' },
-    CodeActionText = { fg = p.yellow },
+    CodeActionText = { fg = p.warning },
     CodeActionNumber = { fg = p.blue3 },
     -- finder
     FinderSelection = { fg = p.blueGray2, bold = true },
     FinderFileName = { fg = p.white },
     FinderCount = { link = 'Label' },
-    FinderIcon = { fg = p.yellow },
+    FinderIcon = { fg = p.warning },
     FinderType = { fg = p.teal1 },
     --finder spinner
     FinderSpinnerTitle = { fg = p.pink3, bold = true },
@@ -445,22 +408,22 @@ function M.get(config)
     TerminalNormal = { link = 'SagaNormal' },
   }
 
-  vim.g.terminal_color_0 = p.background3 -- black
-  vim.g.terminal_color_8 = p.background3 -- bright black
-  vim.g.terminal_color_1 = p.pink3       -- red
-  vim.g.terminal_color_9 = p.pink3       -- bright red
-  vim.g.terminal_color_2 = p.teal1       -- green
-  vim.g.terminal_color_10 = p.teal1      -- bright green
-  vim.g.terminal_color_3 = p.yellow      -- yellow
-  vim.g.terminal_color_11 = p.yellow     -- bright yellow
-  vim.g.terminal_color_4 = p.blue1       -- blue
-  vim.g.terminal_color_12 = p.blue2      -- bright blue
-  vim.g.terminal_color_5 = p.pink2       -- magenta
-  vim.g.terminal_color_13 = p.pink2      -- bright magenta
-  vim.g.terminal_color_6 = p.blue1       -- cyan
-  vim.g.terminal_color_14 = p.blue2      -- bright cyan
-  vim.g.terminal_color_7 = p.white       -- white
-  vim.g.terminal_color_15 = p.white      -- bright white
+  vim.g.terminal_color_0 = p.color800
+  vim.g.terminal_color_8 = p.color300
+  vim.g.terminal_color_1 = p.primary   -- red
+  vim.g.terminal_color_9 = p.color300  -- bright red
+  vim.g.terminal_color_2 = p.color400  -- green
+  vim.g.terminal_color_10 = p.color500 -- bright green
+  vim.g.terminal_color_3 = p.warning  -- yellow
+  vim.g.terminal_color_11 = p.color300 -- bright yellow
+  vim.g.terminal_color_4 = p.color400  -- blue
+  vim.g.terminal_color_12 = p.primary  -- bright blue
+  vim.g.terminal_color_5 = p.primary   -- magenta
+  vim.g.terminal_color_13 = '#D00000'  -- bright magenta
+  vim.g.terminal_color_6 = p.color200  -- cyan
+  vim.g.terminal_color_14 = '#D00000'  -- bright cyan
+  vim.g.terminal_color_7 = p.color100  -- white
+  vim.g.terminal_color_15 = p.color100 -- bright white
 
   return theme
 end

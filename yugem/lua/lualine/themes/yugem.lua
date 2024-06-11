@@ -3,31 +3,32 @@ local palette = require('yugem.palette')
 local yugem = {}
 
 yugem.normal = {
-	a = { fg = palette.background2, bg = palette.teal1, gui = 'bold' },
-	b = { fg = palette.text, bg = palette.background1 },
-	c = { fg = palette.blueGray1, bg = palette.none },
+	a = { fg = palette.color800, bg = palette.color100, gui = 'bold' },
+	b = { fg = palette.color100, bg = palette.color600 },
+	c = { fg = palette.color400, bg = palette.none },
 }
 
 yugem.insert = {
-	a = { fg = palette.background2, bg = palette.blue1, gui = 'bold' },
-	b = { fg = palette.text, bg = palette.background1 },
+	a = { fg = palette.color800, bg = palette.color100, gui = 'bold' },
+	b = { fg = palette.color100, bg = palette.color600 },
 }
 
 yugem.visual = {
-	a = { fg = palette.background2, bg = palette.yellow, gui = 'bold' },
-	b = { fg = palette.text, bg = palette.background1 },
+	a = { fg = palette.color800, bg = palette.color100, gui = 'bold' },
+	b = { fg = palette.color100, bg = palette.color600 },
 }
 
 yugem.replace = {
-	a = { fg = palette.background2, bg = palette.pink3, gui = 'bold' },
-	b = { fg = palette.text, bg = palette.background1 },
+	a = { fg = palette.color800, bg = palette.color100, gui = 'bold' },
+	b = { fg = palette.color100, bg = palette.color600 },
 }
 
 yugem.command = {
-	a = { fg = palette.background2, bg = palette.yellow, gui = 'bold' },
-	b = { fg = palette.text, bg = palette.background1 },
+	a = { fg = palette.color800, bg = palette.color100, gui = 'bold' },
+	b = { fg = palette.color100, bg = palette.color600 },
 }
 
+-- TODO: How to simulate this scenario?
 yugem.inactive = {
 	a = { fg = palette.blueGray3, bg = palette.background1, gui = 'bold' },
 	b = { fg = palette.blueGray3, bg = palette.background1 },
