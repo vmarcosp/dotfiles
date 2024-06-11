@@ -1,4 +1,3 @@
---[[ require 'yugem.highlights' ]]
 local utils = require 'yugem.utils'
 
 local M = {}
@@ -48,7 +47,6 @@ local config = {
 
 function M.setup(opts)
   opts = opts or {}
-  -- vim.g.yugem_variant = opts.dark_variant or 'main'
 
   if opts.groups and type(opts.groups.headings) == 'string' then
     opts.groups.headings = {
@@ -75,15 +73,12 @@ function M.colorscheme()
 
   local theme = require('yugem.theme').get(config)
 
-  -- Set theme highlights
   for group, color in pairs(theme) do
-    -- Skip highlight group if user overrides
     if config.highlight_groups[group] == nil then
       utils.highlight(group, color)
     end
   end
 
-  -- Set user highlights
   for group, color in pairs(config.highlight_groups) do
     utils.highlight(group, color)
   end

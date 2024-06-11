@@ -20,6 +20,7 @@ local variants = {
     text = '#FAFAFA',
     white = '#800080',
     none = 'NONE',
+
     -- new theme
     color100 = '#FAFAFA',
     color200 = '#D4D4D4',
