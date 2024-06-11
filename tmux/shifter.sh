@@ -1,8 +1,8 @@
 # Colors
 WINDOW_FORMAT=" #I: #W "
 BACKGROUND="#000000"
-PRIMARY="#1B1B1B"
-FOREGROUND="#FAFAFA"
+PRIMARY="#151515"
+FOREGROUND="#D2D2D2"
 
 # Window
 tmux set -g window-status-separator ""
