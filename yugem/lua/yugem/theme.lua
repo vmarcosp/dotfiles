@@ -34,32 +34,32 @@ function M.get(config)
     diffChanged = { link = 'DiffChange' },
     diffRemoved = { link = 'DiffDelete' },
     Directory = { fg = p.blue3, bg = p.none },
-    ErrorMsg = { fg = p.pink3, style = 'bold' },
+    ErrorMsg = { fg = p.error, style = 'bold' },
     FloatBorder = { fg = groups.border },
     FloatTitle = { fg = p.blueGray2 },
     FoldColumn = { fg = p.blueGray2 },
     Folded = { fg = p.text, bg = groups.panel },
-    IncSearch = { fg = p.background3, bg = p.blue2 },
+    IncSearch = { fg = p.color200, bg = p.color600 },
     LineNr = { fg = p.color500 },
     MatchParen = { fg = p.color200, bg = p.color700 },
-    ModeMsg = { fg = p.blue3 },
-    MoreMsg = { fg = p.blue3 },
+    ModeMsg = { fg = p.color200 },
+    MoreMsg = { fg = p.color200 },
     NonText = { fg = p.color500 },
     Normal = { fg = p.color200, bg = styles.color800 },
     NormalFloat = { fg = p.color200, bg = styles.color700 },
     NormalNC = { fg = p.text, bg = styles.nc_background },
-    NvimInternalError = { fg = '#ffffff', bg = p.pink3 },
-    Pmenu = { fg = p.blueGray1, bg = styles.float_background },
-    PmenuSbar = { bg = p.blueGray2 },
-    PmenuSel = { fg = p.text, bg = p.background1 },
-    PmenuThumb = { bg = p.color700 },
+    NvimInternalError = { fg = p.error, bg = p.color700 },
+    Pmenu = { fg = p.color200, bg = p.color700 },
+    PmenuSbar = { bg = p.colo700 },
+    PmenuSel = { fg = p.color200, bg = p.color400 },
+    PmenuThumb = { bg = p.color600 },
     Question = { fg = p.warning },
     RedrawDebugClear = { fg = '#ffffff', bg = p.warning },
     RedrawDebugComposed = { fg = '#ffffff', bg = p.teal2 },
-    RedrawDebugRecompose = { fg = '#ffffff', bg = p.pink3 },
-    Search = { fg = p.color200, bg = p.blueGray3 },
+    RedrawDebugRecompose = { fg = p.error, bg = p.color700 },
+    Search = { fg = p.color200, bg = p.color600 },
     SpecialKey = { fg = p.teal1 },
-    SpellBad = { sp = p.pink3, style = 'undercurl' },
+    SpellBad = { sp = p.error, style = 'undercurl' },
     SpellCap = { sp = p.blue1, style = 'undercurl' },
     SpellLocal = { sp = p.warning, style = 'undercurl' },
     SpellRare = { sp = p.blue1, style = 'undercurl' },
@@ -78,63 +78,41 @@ function M.get(config)
     Whitespace = { fg = p.color700 },
     WildMenu = { link = 'IncSearch' },
 
-    Constant = { fg = p.color200 },         -- (preferred) any constant
-    String = { fg = p.primary },        --   a string constant: "this is a string"
-    Character = { fg = p.pink3 },       --  a character constant: 'c', '\n'
+    Constant = { fg = p.color200 },       -- (preferred) any constant
+    String = { fg = p.primary },          --   a string constant: "this is a string"
+    Character = { fg = p.successuccess }, --  a character constant: 'c', '\n'
     Number = { fg = p.primary },          --   a number constant: 234, 0xff
     Boolean = { fg = p.primary },         --  a boolean constant: TRUE, false
     Float = { fg = p.primary },           --    a floating point constant: 2.3e10
 
-    Identifier = { fg = p.teal3 },      -- (preferred) any variable name
-    Function = { fg = p.primary },      -- function name (also: methods for classes)
+    Identifier = { fg = p.teal3 },        -- (preferred) any variable name
+    Function = { fg = p.primary },        -- function name (also: methods for classes)
 
-    Statement = { fg = p.text },        -- (preferred) any statement
-    Conditional = { fg = p.blueGray1 }, --  if, then, else, endif, switch, etc.
-    Repeat = { fg = p.blue3 },          --   for, do, while, etc.
-    Label = { fg = p.text },            --    case, default, etc.
-    Operator = { fg = p.blue2 },        -- "sizeof", "+", "*", etc.
-    Keyword = { fg = p.color400 },         --  any other keyword
-    Exception = { fg = p.blue3 },       --  try, catch, throw
+    Statement = { fg = p.text },          -- (preferred) any statement
+    Conditional = { fg = p.blueGray1 },   --  if, then, else, endif, switch, etc.
+    Repeat = { fg = p.blue3 },            --   for, do, while, etc.
+    Label = { fg = p.text },              --    case, default, etc.
+    Operator = { fg = p.color400 },       -- "sizeof", "+", "*", etc.
+    Keyword = { fg = p.color400 },        --  any other keyword
+    Exception = { fg = p.blue3 },         --  try, catch, throw
 
-    PreProc = { fg = p.text },          -- (preferred) generic Preprocessor
-    Include = { fg = p.blueGray1 },     --  preprocessor #include
-    -- Define        = { }, --   preprocessor #define
-    -- Macro         = { }, --    same as Define
-    -- PreCondit     = { }, --  preprocessor #if, #else, #endif, etc.
+    PreProc = { fg = p.text },            -- (preferred) generic Preprocessor
+    Include = { fg = p.blueGray1 },       --  preprocessor #include
 
     Type = { fg = p.color300 }, -- (preferred) int, long, char, etc.
-    --[[ Structure = { fg = p.blueGray1 }, --  struct, union, enum, etc. ]]
-    -- StorageClass  = { }, -- static, register, volatile, etc.
-    -- Typedef = { fg = p.blueGray1 }, --  A typedef
 
-    Special = { fg = p.blueGray2 },        -- (preferred) any special symbol
-    -- SpecialChar   = { }, --  special character in a constant
-    Tag = { fg = p.primary },                 --    you can use CTRL-] on this
-    Delimiter = { fg = p.blueGray1 },      --  character that needs attention
+    Special = { fg = p.blueGray2 },       -- (preferred) any special symbol
+    Tag = { fg = p.primary },             --    you can use CTRL-] on this
+    Delimiter = { fg = p.blueGray1 },     --  character that needs attention
     SpecialComment = { fg = p.color500 }, -- special things inside a comment
-    -- Debug         = { }, --    debugging statements
 
-    Comment = { fg = p.color500 },       -- (preferred) any special symbol
+    Comment = { fg = p.color500 },        -- (preferred) any special symbol
 
     Underlined = { style = 'underline' }, -- (preferred) text that stands out, HTML links
     Bold = { style = 'bold' },
     Italic = { style = 'italic' },
     qfLineNr = { fg = p.blueGray3 },
     qfFileName = { fg = p.blueGray2 },
-    htmlH1 = { fg = p.teal1, style = 'bold' },
-    htmlH2 = { fg = p.teal1, style = 'bold' },
-    mkdCodeDelimiter = { bg = p.background3, fg = p.text },
-    mkdCodeStart = { fg = p.teal2, style = 'bold' },
-    mkdCodeEnd = { fg = p.teal2, style = 'bold' },
-    mkdLink = { fg = p.blue1, style = 'underline' },
-    markdownHeadingDelimiter = { fg = p.blue4, style = 'bold' },
-    markdownCode = { fg = p.blueGray1 },
-    markdownCodeBlock = { fg = p.teal2 },
-    markdownH1 = { fg = p.blue2, style = 'bold' },
-    markdownH2 = { fg = p.blue2, style = 'bold' },
-    markdownH3 = { fg = p.blue2, style = 'bold' },
-    markdownH4 = { fg = p.blue2, style = 'bold' },
-    markdownLinkText = { fg = p.blue1, style = 'underline' },
     debugPC = { bg = p.background1 },                       -- used for highlighting the current line in terminal-debug
     debugBreakpoint = { bg = p.background2, fg = p.pink3 }, -- used for breakpoint colors in terminal-debug
     DiagnosticError = { fg = groups.error },
@@ -173,17 +151,17 @@ function M.get(config)
     ['@variable.builtin'] = { fg = p.color300 },
     ['@constant.builtin'] = { fg = p.color300 },
     ['@constant.falsy'] = { fg = p.primary },
-    ['@constructor'] = { fg = p.teal1 },
+    ['@constructor'] = { fg = p.color500 },
     ['field'] = { fg = p.text },
     ['@function.builtin'] = { fg = p.color300 },
     ['@function'] = { link = 'Function' },
-    ['@function.call'] = { fg = p.blueGray1 },
+    ['@function.call'] = { fg = p.primary },
     TSInclude = { fg = p.blue2 },
     ['@keyword'] = { link = 'Keyword' },
     ['@keyword.return'] = { fg = p.color300 },
     ['@keyword.function'] = { fg = p.color300 },
     ['@keyword.operator'] = { fg = p.color400 },
-    ['@label'] = { fg = p.blue3 },
+    ['@label'] = { fg = p.color500 },
     ['@method'] = { fg = p.teal1 },
     ['@operator'] = { fg = 'color400' },
     ['@parameter'] = { fg = p.text },
@@ -191,8 +169,8 @@ function M.get(config)
     ['@punctuation.delimiter'] = { fg = groups.punctuation },
     ['@punctuation.special'] = { fg = groups.punctuation },
     ['@punctuation.bracket'] = { fg = p.color400 },
-    ['@string'] = { fg = p.color200 },
-    ['@string.escape'] = { fg = p.pink3 },
+    ['@string'] = { fg = p.color400 },
+    ['@string.escape'] = { fg = p.color100 },
     ['@tag'] = { fg = p.primary },
     ['@tag.delimiter'] = { fg = p.color400 },
     ['@tag.attribute'] = { fg = p.color300, style = styles.italic },
@@ -303,15 +281,9 @@ function M.get(config)
     -- ray-x/lsp_signature.nvim
     LspSignatureActiveParameter = { bg = p.blueGray1 },
 
-    -- rlane/pounce.nvim
-    PounceAccept = { fg = p.pink3, bg = p.text },
-    PounceAcceptBest = { fg = p.text, bg = p.text },
-    PounceGap = { link = 'Search' },
-    PounceMatch = { link = 'Search' },
-
     -- Telescope
     TelescopeMatching = { fg = p.primary },
-    TelescopeNormal = { fg = p.color100 },
+    TelescopeNormal = { fg = p.color200 },
     TelescopeSelection = { fg = p.color200, bg = p.color700 },
     TelescopeTitle = { fg = p.color200 },
     TelescopeBorder = { fg = p.color600 },
@@ -329,23 +301,6 @@ function M.get(config)
     BvDashboardKey = { fg = p.color100, bg = 'none', bold = true },
     BvDashboardItemIcon = { fg = p.color300 },
     BvDashboardItemText = { fg = p.color300 },
-
-    -- rcarriga/nvim-notify
-    NotifyINFOBorder = { fg = p.teal1 },
-    NotifyINFOTitle = { link = 'NotifyINFOBorder' },
-    NotifyINFOIcon = { link = 'NotifyINFOBorder' },
-    NotifyWARNBorder = { fg = p.warning },
-    NotifyWARNTitle = { link = 'NotifyWARNBorder' },
-    NotifyWARNIcon = { link = 'NotifyWARNBorder' },
-    NotifyDEBUGBorder = { fg = p.blue1 },
-    NotifyDEBUGTitle = { link = 'NotifyDEBUGBorder' },
-    NotifyDEBUGIcon = { link = 'NotifyDEBUGBorder' },
-    NotifyTRACEBorder = { fg = p.blue1 },
-    NotifyTRACETitle = { link = 'NotifyTRACEBorder' },
-    NotifyTRACEIcon = { link = 'NotifyTRACEBorder' },
-    NotifyERRORBorder = { fg = p.pink3 },
-    NotifyERRORTitle = { link = 'NotifyERRORBorder' },
-    NotifyERRORIcon = { link = 'NotifyERRORBorder' },
 
     -- code action
     ActionPreviewNormal = { link = 'SagaNormal' },
@@ -369,7 +324,7 @@ function M.get(config)
     FinderNormal = { link = 'SagaNormal' },
     FinderBorder = { link = 'SagaBorder' },
     FinderPreviewBorder = { link = 'SagaBorder' },
-    -- definition
+    -- definitionheading
     DefinitionBorder = { link = 'SagaBorder' },
     DefinitionNormal = { link = 'SagaNormal' },
     DefinitionSearch = { link = 'Search' },
@@ -414,7 +369,7 @@ function M.get(config)
   vim.g.terminal_color_9 = p.color300  -- bright red
   vim.g.terminal_color_2 = p.color400  -- green
   vim.g.terminal_color_10 = p.color500 -- bright green
-  vim.g.terminal_color_3 = p.warning  -- yellow
+  vim.g.terminal_color_3 = p.warning   -- yellow
   vim.g.terminal_color_11 = p.color300 -- bright yellow
   vim.g.terminal_color_4 = p.color400  -- blue
   vim.g.terminal_color_12 = p.primary  -- bright blue
