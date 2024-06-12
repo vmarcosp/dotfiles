@@ -17,10 +17,10 @@ brew install gh
 brew install pidof
 brew install lazygit
 brew install --cask raycast
+brew install --cask rectangle
 brew install --cask kitty
 brew install --cask arc
 brew install --cask discord
-brew install --cask logseq
 brew install --cask hiddenbar
 
 # -- NerdFonts ------------------------------
