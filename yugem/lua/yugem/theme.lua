@@ -33,7 +33,7 @@ function M.get(config)
     diffAdded = { link = 'DiffAdd' },
     diffChanged = { link = 'DiffChange' },
     diffRemoved = { link = 'DiffDelete' },
-    Directory = { fg = p.blue3, bg = p.none },
+    Directory = { fg = p.primary, bg = p.none },
     ErrorMsg = { fg = p.error, style = 'bold' },
     FloatBorder = { fg = groups.border },
     FloatTitle = { fg = p.blueGray2 },
