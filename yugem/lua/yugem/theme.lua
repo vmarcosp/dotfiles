@@ -288,7 +288,7 @@ function M.get(config)
 
     -- Dashboard
     DashboardFooter = { fg = p.color400, bg = 'none', bold = true },
-    BvDashboardKey = { fg = p.color100, bg = 'none', bold = true },
+    BvDashboardKey = { fg = p.primary, bg = 'none', bold = true },
     BvDashboardItemIcon = { fg = p.color300 },
     BvDashboardItemText = { fg = p.color300 },
 

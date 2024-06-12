@@ -41,6 +41,12 @@ function clean-branches(){
   git branch | grep -v 'main' | xargs git branch -D
 }
 
+function commit-sync() {
+  git add .
+  git commit -m "*"
+  git push
+}
+
 alias vim="nvim"
 
 # pnpm
