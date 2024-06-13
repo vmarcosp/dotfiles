@@ -96,8 +96,8 @@ function M.get(config)
     Keyword = { fg = p.color400 },        --  any other keyword
     Exception = { fg = p.blue3 },         --  try, catch, throw
 
-    PreProc = { fg = p.text },            -- (preferred) generic Preprocessor
-    Include = { fg = p.blueGray1 },       --  preprocessor #include
+    PreProc = { fg = p.color200 },            -- (preferred) generic Preprocessor
+    Include = { fg = p.primary },       --  preprocessor #include
 
     Type = { fg = p.color300 }, -- (preferred) int, long, char, etc.
 
@@ -162,7 +162,7 @@ function M.get(config)
     ['@keyword.function'] = { fg = p.color300 },
     ['@keyword.operator'] = { fg = p.color400 },
     ['@label'] = { fg = p.color500 },
-    ['@method'] = { fg = p.teal1 },
+    ['@method'] = { fg = p.primary },
     ['@operator'] = { fg = 'color400' },
     ['@parameter'] = { fg = p.text },
     ['@property'] = { fg = p.color300 },
