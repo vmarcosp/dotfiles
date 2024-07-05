@@ -1,5 +1,4 @@
-import { Box, BetterTmuxConfig, WindowConfig, useTheme } from 'better-tmux'
-import { Hostname } from 'better-tmux/widgets'
+import { Box, BetterTmuxConfig, WindowConfig } from 'better-tmux'
 
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
@@ -8,7 +7,6 @@ const Window = ({ type, number, name }: WindowConfig) => {
     </Box>
   )
 }
-
 
 const StatusLeft = () => <Box> </Box>
 
