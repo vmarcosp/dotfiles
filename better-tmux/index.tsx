@@ -8,9 +8,9 @@ const Window = ({ type, number, name }: WindowConfig) => {
   )
 }
 
-const StatusLeft = () => <Box> </Box>
-
 export default {
-  statusLeft: <StatusLeft />,
+  status: {
+    bg: '#000000'
+  },
   window: (window) => <Window {...window} />
 } satisfies BetterTmuxConfig
