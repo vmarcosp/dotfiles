@@ -12,8 +12,8 @@ importers:
         specifier: 18.3.3
         version: 18.3.3
       better-tmux:
-        specifier: 0.0.6
-        version: 0.0.6
+        specifier: 0.0.9
+        version: 0.0.9
       react:
         specifier: 18.3.1
         version: 18.3.1
@@ -29,8 +29,8 @@ packages:
   '@types/react@18.3.3':
     resolution: {integrity: sha512-hti/R0pS0q1/xx+TsI73XIqk26eBsISZ2R0wUijXIngRK9R/e7Xw/cXVxQK7R5JjW+SV4zGcn5hXjudkN/pLIw==}
 
-  better-tmux@0.0.6:
-    resolution: {integrity: sha512-ex2m4rDRmRas52UfJFyT18WUvQbKHmXhz3HPGOclnbiVAnSEESfTzg2ayTwRL3RAePZbYHiT0/dXehqb3Uj5jQ==}
+  better-tmux@0.0.9:
+    resolution: {integrity: sha512-Ptx658src5JtUt5zt7NOmmfq3i58T2+AfomXnROQ6wvDs9EB+f85j+9/JQty16BRCIsyCiM3p4RgpATQ2BZxjg==}
 
   csstype@3.1.3:
     resolution: {integrity: sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==}
@@ -62,7 +62,7 @@ snapshots:
       '@types/prop-types': 15.7.12
       csstype: 3.1.3
 
-  better-tmux@0.0.6:
+  better-tmux@0.0.9:
     dependencies:
       '@types/node': 20.14.10
       '@types/react': 18.3.3
