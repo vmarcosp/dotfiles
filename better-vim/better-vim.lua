@@ -57,22 +57,24 @@ Terminals.default = {
 M.mappings = {
   leader = "\\",
   custom = {
-    ["<leader>gt"] = {
+    {
+      "<leader>gt",
       function()
         local terminal = require('toggleterm.terminal').Terminal
         terminal:new(Terminals.lazygit):toggle()
       end,
-      'Open lazygit'
+      desc = 'Open lazygit'
     },
-    ["<leader>t"] = {
+    {
+      "<leader>t",
       function()
         local terminal = require('toggleterm.terminal').Terminal
         terminal:new(Terminals.default):toggle()
       end,
-      'Open terminal'
+      desc = 'Open terminal'
     },
-    ["<s-k>"] = { "5kzz", "Jump 5 lines above" },
-    ["<s-j>"] = { "5jzz", "Jump 5 lines below" },
+    { "<s-k>", "5kzz", desc = "Jump 5 lines above" },
+    { "<s-j>", "5jzz", desc = "Jump 5 lines below" },
   }
 }
 
