@@ -14,16 +14,19 @@ M.plugins = {
     config = true,
   },
   {
-    dir = '~/yugem',
-    lazy = true,
-    priority = 1000,
-    config = function()
-      require('yugem').setup {}
-    end,
-    init = function()
-      vim.cmd("colorscheme yugem")
-    end
-  }
+     'bettervim/yugen',
+     config = function()
+       vim.cmd.colorscheme('yugen')
+     end,
+   },
+  -- {
+  --   dir = '~/yugen',
+  --   lazy = true,
+  --   priority = 1000,
+  --   init = function()
+  --     vim.cmd("colorscheme yugen")
+  --   end
+  -- }
 }
 
 local Terminals = {}
