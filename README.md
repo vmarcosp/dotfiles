@@ -8,7 +8,7 @@
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
 - My BetterVim config: `bettervim/bettervim.lua`
-- My own theme (yugem 幽玄)
+- My own theme ([yugen 幽玄](https://github.com/bettervim/yugen))
 
 ### 💡 ZSH
   - `.zshrc`
@@ -18,14 +18,14 @@
 
 ### ⌨️ Kitty 🐱
  - My custom configs
- - My own theme (yugem 幽玄)
+ - My own theme (yugen 幽玄)
 
 ### 🖥️ TMUX
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
       - `tmux-sensible` config.
       -  `tmux-ressurrect` config
-  -  My own theme (yugem 幽玄)
+  -  My own theme (yugen 幽玄)
 
 ### 📦 General
   - `.editorconfig`
