@@ -28,7 +28,6 @@ yugem.command = {
 	b = { fg = palette.color100, bg = palette.color600 },
 }
 
--- TODO: How to simulate this scenario?
 yugem.inactive = {
 	a = { fg = palette.blueGray3, bg = palette.background1, gui = 'bold' },
 	b = { fg = palette.blueGray3, bg = palette.background1 },
