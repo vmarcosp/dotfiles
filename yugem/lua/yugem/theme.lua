@@ -20,7 +20,7 @@ function M.get(config)
     ColorColumn = { bg = p.blueGray1 },
     Conceal = { bg = p.none },
     CurSearch = { link = 'IncSearch' },
-    Cursor = { fg = p.background3, bg = p.blueGray1 },
+    Cursor = { fg = p.color200, bg = p.blueGray1 },
     CursorColumn = { bg = p.background1 },
     CursorLine = { bg = p.color600 },
     CursorLineNr = { fg = p.color300 },
@@ -36,9 +36,9 @@ function M.get(config)
     Directory = { fg = p.primary, bg = p.none },
     ErrorMsg = { fg = p.error, style = 'bold' },
     FloatBorder = { fg = groups.border },
-    FloatTitle = { fg = p.blueGray2 },
-    FoldColumn = { fg = p.blueGray2 },
-    Folded = { fg = p.text, bg = groups.panel },
+    FloatTitle = { fg = p.color200 },
+    FoldColumn = { fg = p.color200 },
+    Folded = { fg = p.color200, bg = groups.panel },
     IncSearch = { fg = p.color200, bg = p.color600 },
     LineNr = { fg = p.color500 },
     MatchParen = { fg = p.color200, bg = p.color700 },
@@ -47,7 +47,7 @@ function M.get(config)
     NonText = { fg = p.color500 },
     Normal = { fg = p.color200, bg = styles.color800 },
     NormalFloat = { fg = p.color200, bg = styles.color700 },
-    NormalNC = { fg = p.text, bg = styles.nc_background },
+    NormalNC = { fg = p.color200, bg = styles.nc_background },
     NvimInternalError = { fg = p.error, bg = p.color700 },
     Pmenu = { fg = p.color200, bg = p.color700 },
     PmenuSbar = { bg = p.colo700 },
@@ -58,20 +58,20 @@ function M.get(config)
     RedrawDebugComposed = { fg = '#ffffff', bg = p.teal2 },
     RedrawDebugRecompose = { fg = p.error, bg = p.color700 },
     Search = { fg = p.color200, bg = p.color600 },
-    SpecialKey = { fg = p.teal1 },
+    SpecialKey = { fg = p.color200 },
     SpellBad = { sp = p.error, style = 'undercurl' },
     SpellCap = { sp = p.blue1, style = 'undercurl' },
     SpellLocal = { sp = p.warning, style = 'undercurl' },
     SpellRare = { sp = p.blue1, style = 'undercurl' },
-    SignColumn = { fg = p.text, bg = p.none },
-    StatusLine = { fg = p.blue3, bg = styles.float_background },
-    StatusLineNC = { fg = p.blue3, bg = styles.background },
+    SignColumn = { fg = p.color200, bg = p.none },
+    StatusLine = { fg = p.color200, bg = styles.float_background },
+    StatusLineNC = { fg = p.color200, bg = styles.background },
     StatusLineTerm = { link = 'StatusLine' },
     StatusLineTermNC = { link = 'StatusLineNC' },
-    TabLine = { fg = p.blue3, bg = styles.float_background },
+    TabLine = { fg = p.color200, bg = styles.float_background },
     TabLineFill = { bg = styles.float_background },
-    TabLineSel = { fg = p.text, bg = p.background1 },
-    Title = { fg = p.text },
+    TabLineSel = { fg = p.color200, bg = p.background1 },
+    Title = { fg = p.color200 },
     VertSplit = { fg = groups.border, bg = styles.vert_split },
     Visual = { fg = p.color200, bg = p.color600 },
     WarningMsg = { fg = p.warning },
@@ -85,25 +85,25 @@ function M.get(config)
     Boolean = { fg = p.primary },         --  a boolean constant: TRUE, false
     Float = { fg = p.primary },           --    a floating point constant: 2.3e10
 
-    Identifier = { fg = p.teal3 },        -- (preferred) any variable name
+    Identifier = { fg = p.color200 },        -- (preferred) any variable name
     Function = { fg = p.primary },        -- function name (also: methods for classes)
 
-    Statement = { fg = p.text },          -- (preferred) any statement
-    Conditional = { fg = p.blueGray1 },   --  if, then, else, endif, switch, etc.
-    Repeat = { fg = p.blue3 },            --   for, do, while, etc.
-    Label = { fg = p.text },              --    case, default, etc.
+    Statement = { fg = p.color200 },          -- (preferred) any statement
+    Conditional = { fg = p.color200 },   --  if, then, else, endif, switch, etc.
+    Repeat = { fg = p.color200 },            --   for, do, while, etc.
+    Label = { fg = p.color200 },              --    case, default, etc.
     Operator = { fg = p.color400 },       -- "sizeof", "+", "*", etc.
     Keyword = { fg = p.color400 },        --  any other keyword
-    Exception = { fg = p.blue3 },         --  try, catch, throw
+    Exception = { fg = p.color200 },         --  try, catch, throw
 
-    PreProc = { fg = p.color200 },            -- (preferred) generic Preprocessor
-    Include = { fg = p.primary },       --  preprocessor #include
+    PreProc = { fg = p.color200 },        -- (preferred) generic Preprocessor
+    Include = { fg = p.primary },         --  preprocessor #include
 
-    Type = { fg = p.color300 }, -- (preferred) int, long, char, etc.
+    Type = { fg = p.color300 },           -- (preferred) int, long, char, etc.
 
-    Special = { fg = p.blueGray2 },       -- (preferred) any special symbol
+    Special = { fg = p.color200 },       -- (preferred) any special symbol
     Tag = { fg = p.primary },             --    you can use CTRL-] on this
-    Delimiter = { fg = p.blueGray1 },     --  character that needs attention
+    Delimiter = { fg = p.color200 },     --  character that needs attention
     SpecialComment = { fg = p.color500 }, -- special things inside a comment
 
     Comment = { fg = p.color500 },        -- (preferred) any special symbol
@@ -111,10 +111,10 @@ function M.get(config)
     Underlined = { style = 'underline' }, -- (preferred) text that stands out, HTML links
     Bold = { style = 'bold' },
     Italic = { style = 'italic' },
-    qfLineNr = { fg = p.blueGray3 },
-    qfFileName = { fg = p.blueGray2 },
+    qfLineNr = { fg = p.color200 },
+    qfFileName = { fg = p.color200 },
     debugPC = { bg = p.background1 },                       -- used for highlighting the current line in terminal-debug
-    debugBreakpoint = { bg = p.background2, fg = p.pink3 }, -- used for breakpoint colors in terminal-debug
+    debugBreakpoint = { bg = p.background2, fg = p.color200 }, -- used for breakpoint colors in terminal-debug
     DiagnosticError = { fg = groups.error },
     DiagnosticHint = { fg = groups.hint },
     DiagnosticInfo = { fg = groups.info },
@@ -154,11 +154,11 @@ function M.get(config)
     ['@constant.rescript'] = { fg = p.primary },
     ['@constant'] = { link = ' Constant' },
     ['@constructor'] = { fg = p.color500 },
-    ['field'] = { fg = p.text },
+    ['field'] = { fg = p.color200 },
     ['@function.builtin'] = { fg = p.color300 },
     ['@function'] = { link = 'Function' },
     ['@function.call'] = { fg = p.primary },
-    TSInclude = { fg = p.blue2 },
+    TSInclude = { fg = p.color200 },
     ['@keyword.rescript'] = { fg = p.primary },
     ['@keyword'] = { link = 'Keyword' },
     ['@keyword.return'] = { fg = p.color300 },
@@ -167,7 +167,7 @@ function M.get(config)
     ['@label'] = { fg = p.color500 },
     ['@method'] = { fg = p.primary },
     ['@operator'] = { fg = 'color400' },
-    ['@parameter'] = { fg = p.text },
+    ['@parameter'] = { fg = p.color200 },
     ['@property'] = { fg = p.color300 },
     ['@punctuation.delimiter'] = { fg = groups.punctuation },
     ['@punctuation.special'] = { fg = groups.punctuation },
@@ -192,30 +192,30 @@ function M.get(config)
     ['@keyword.export.typescript'] = { fg = p.color400 },
     ['@keyword.import.typescript'] = { fg = p.color400 },
     ['@import.identifier.typescript'] = { fg = p.color300 },
-    typescriptVariable = { fg = p.blue2 },
-    typescriptExport = { fg = p.teal1 },
-    typescriptDefault = { fg = p.teal1 },
-    typescriptConstraint = { fg = p.teal1 },
-    typescriptBlock = { fg = p.text },
-    typescriptIdentifierName = { fg = p.blueGray2 },
-    typescriptTSInclude = { fg = p.teal1 },
-    typescriptCastKeyword = { fg = p.blueGray2 },
-    typescriptEnum = { fg = p.blue4 },
-    typescriptTypeCast = { fg = p.blueGray2 },
-    typescriptParenExp = { fg = p.blueGray2 },
-    typescriptObjectType = { fg = p.blueGray1 },
+    typescriptVariable = { fg = p.color200 },
+    typescriptExport = { fg = p.color200 },
+    typescriptDefault = { fg = p.color200 },
+    typescriptConstraint = { fg = p.color200 },
+    typescriptBlock = { fg = p.color200 },
+    typescriptIdentifierName = { fg = p.color200 },
+    typescriptTSInclude = { fg = p.color200 },
+    typescriptCastKeyword = { fg = p.color200 },
+    typescriptEnum = { fg = p.color200 },
+    typescriptTypeCast = { fg = p.color200 },
+    typescriptParenExp = { fg = p.color200 },
+    typescriptObjectType = { fg = p.color200 },
 
     -- lua
-    luaTSConstructor = { fg = p.blueGray1 },
+    luaTSConstructor = { fg = p.color200 },
 
     -- vim.lsp.buf.document_highlight()
-    LspReferenceText = { bg = p.blue2 },
-    LspReferenceRead = { bg = p.blue2 },
-    LspReferenceWrite = { bg = p.blue2 },
+    LspReferenceText = { bg = p.color800 },
+    LspReferenceRead = { bg = p.color800 },
+    LspReferenceWrite = { bg = p.color8000 },
 
     -- lsp-highlight-codelens
-    LspCodeLens = { fg = p.blueGray1 },          -- virtual text of code lens
-    LspCodeLensSeparator = { fg = p.blueGray3 }, -- separator between two or more code lens
+    LspCodeLens = { fg = p.color200 },          -- virtual text of code lens
+    LspCodeLensSeparator = { fg = p.color200 }, -- separator between two or more code lens
 
     -- lewis6991/gitsigns.nvim
     GitSignsAdd = { fg = groups.git_add },
@@ -230,7 +230,7 @@ function M.get(config)
     NvimTreeFileNew = { fg = p.color200 },
     NvimTreeFileRenamed = { fg = p.color200 },
     NvimTreeFileStaged = { fg = p.color200 },
-    NvimTreeFolderIcon = { fg = p.color400 },
+    NvimTreeFolderIcon = { fg = p.primary },
     NvimTreeFolderName = { fg = p.color300 },
     NvimTreeGitDeleted = { fg = groups.color200 },
     NvimTreeGitDirty = { fg = p.color200 },
@@ -259,7 +259,7 @@ function M.get(config)
     WhichKeyValue = { fg = p.color200 },
 
     -- Nvim Cmp
-    CmpItemAbbr = { fg = p.blueGray2 },
+    CmpItemAbbr = { fg = p.color200 },
     CmpItemAbbrDeprecated = { fg = p.color700, style = 'strikethrough' },
     CmpItemAbbrMatch = { fg = p.color300 },
     CmpItemAbbrMatchFuzzy = { fg = p.color100 },
@@ -298,22 +298,22 @@ function M.get(config)
     -- code action
     ActionPreviewNormal = { link = 'SagaNormal' },
     ActionPreviewBorder = { link = 'SagaBorder' },
-    ActionPreviewTitle = { fg = p.blueGray2, bg = p.background2 },
+    ActionPreviewTitle = { fg = p.color200, bg = p.background2 },
     CodeActionNormal = { link = 'SagaNormal' },
     CodeActionBorder = { link = 'SagaBorder' },
     CodeActionText = { fg = p.warning },
-    CodeActionNumber = { fg = p.blue3 },
+    CodeActionNumber = { fg = p.color200 },
     -- finder
-    FinderSelection = { fg = p.blueGray2, bold = true },
-    FinderFileName = { fg = p.white },
+    FinderSelection = { fg = p.color200, bold = true },
+    FinderFileName = { fg = p.color200 },
     FinderCount = { link = 'Label' },
     FinderIcon = { fg = p.warning },
-    FinderType = { fg = p.teal1 },
+    FinderType = { fg = p.color200 },
     --finder spinner
-    FinderSpinnerTitle = { fg = p.pink3, bold = true },
-    FinderSpinner = { fg = p.pink3, bold = true },
+    FinderSpinnerTitle = { fg = p.color200, bold = true },
+    FinderSpinner = { fg = p.color200, bold = true },
     FinderPreviewSearch = { link = 'Search' },
-    FinderVirtText = { fg = p.blue1 },
+    FinderVirtText = { fg = p.color200 },
     FinderNormal = { link = 'SagaNormal' },
     FinderBorder = { link = 'SagaBorder' },
     FinderPreviewBorder = { link = 'SagaBorder' },
@@ -326,29 +326,29 @@ function M.get(config)
     HoverBorder = { link = 'SagaBorder' },
     -- rename
     RenameBorder = { link = 'SagaBorder' },
-    RenameNormal = { fg = p.white, p.background2 },
+    RenameNormal = { fg = p.color200, p.background2 },
     RenameMatch = { link = 'Search' },
     -- diagnostic
     DiagnosticBorder = { link = 'SagaBorder' },
-    DiagnosticSource = { fg = p.blueGray2 },
+    DiagnosticSource = { fg = p.color200 },
     DiagnosticNormal = { link = 'SagaNormal' },
     DiagnosticErrorBorder = { link = 'DiagnosticError' },
     DiagnosticWarnBorder = { link = 'DiagnosticWarn' },
     DiagnosticHintBorder = { link = 'DiagnosticHint' },
     DiagnosticInfoBorder = { link = 'DiagnosticInfo' },
-    DiagnosticPos = { fg = p.blueGray2 },
-    DiagnosticWord = { fg = p.white },
+    DiagnosticPos = { fg = p.color200 },
+    DiagnosticWord = { fg = p.color200 },
     -- Call Hierachry
     CallHierarchyNormal = { link = 'SagaNormal' },
     CallHierarchyBorder = { link = 'SagaBorder' },
-    CallHierarchyIcon = { fg = p.pink2 },
-    CallHierarchyTitle = { fg = p.pink2 },
+    CallHierarchyIcon = { fg = p.color200 },
+    CallHierarchyTitle = { fg = p.color200 },
     -- lightbulb
     LspSagaLightBulb = { link = 'DiagnosticSignHint' },
     -- shadow
     SagaShadow = { bg = p.background3 },
     -- Outline
-    OutlineIndent = { fg = p.blue2 },
+    OutlineIndent = { fg = p.color200 },
     OutlinePreviewBorder = { link = 'SagaNormal' },
     OutlinePreviewNormal = { link = 'SagaBorder' },
     -- Float term
@@ -358,20 +358,20 @@ function M.get(config)
 
   vim.g.terminal_color_0 = p.color800
   vim.g.terminal_color_8 = p.color300
-  vim.g.terminal_color_1 = p.primary   -- red
-  vim.g.terminal_color_9 = p.color300  -- bright red
-  vim.g.terminal_color_2 = p.color400  -- green
-  vim.g.terminal_color_10 = p.color500 -- bright green
-  vim.g.terminal_color_3 = p.warning   -- yellow
-  vim.g.terminal_color_11 = p.color300 -- bright yellow
-  vim.g.terminal_color_4 = p.color400  -- blue
-  vim.g.terminal_color_12 = p.primary  -- bright blue
-  vim.g.terminal_color_5 = p.primary   -- magenta
-  vim.g.terminal_color_13 = '#D00000'  -- bright magenta
-  vim.g.terminal_color_6 = p.color200  -- cyan
-  vim.g.terminal_color_14 = '#D00000'  -- bright cyan
-  vim.g.terminal_color_7 = p.color100  -- white
-  vim.g.terminal_color_15 = p.color100 -- bright white
+  vim.g.terminal_color_1 = p.primary
+  vim.g.terminal_color_9 = p.color300
+  vim.g.terminal_color_2 = p.color400
+  vim.g.terminal_color_10 = p.color500
+  vim.g.terminal_color_3 = p.warning
+  vim.g.terminal_color_11 = p.color300
+  vim.g.terminal_color_4 = p.color400
+  vim.g.terminal_color_12 = p.primary
+  vim.g.terminal_color_5 = p.primary
+  vim.g.terminal_color_13 = '#D00000'
+  vim.g.terminal_color_6 = p.color200
+  vim.g.terminal_color_14 = '#D00000'
+  vim.g.terminal_color_7 = p.color100
+  vim.g.terminal_color_15 = p.color100
 
   return theme
 end
