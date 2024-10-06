@@ -14,7 +14,7 @@ M.plugins = {
     config = true,
   },
   {
-     'bettervim/yugen',
+     'bettervim/yugen.nvim',
      config = function()
        vim.cmd.colorscheme('yugen')
      end,
