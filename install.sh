@@ -40,7 +40,10 @@ ln -s -f $PWD/env/.zshrc ~/
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # -- kitty --------------------------------
-ln -s $PWD/kitty/* ~/.config/kitty
+mv ./kitty/kitty-local.conf.example ./kitty/kitty-local.conf
+ln -s $PWD/kitty/yugen.conf ~/.config/kitty
+ln -s $PWD/kitty/kitty-local.conf ~/.config/kitty
+ln -s $PWD/kitty/kitty.conf ~/.config/kitty
 cp $PWD/kitty/kitty-local.conf.example ~/.config/kitty/kitty-local.conf
 
 # -- tmux --------------------------------
