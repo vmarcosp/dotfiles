@@ -16,6 +16,7 @@ brew install reattach-to-user-namespace
 brew install gh
 brew install pidof
 brew install lazygit
+brew install oven-sh/bun/bun
 brew install --cask raycast
 brew install --cask rectangle
 brew install --cask kitty
@@ -49,8 +50,8 @@ cp $PWD/kitty/kitty-local.conf.example ~/.config/kitty/kitty-local.conf
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
-ln -s -f $PWD/tmux/shifter.sh ~/shifter.sh
-chmod +x ~/shifter.sh
+ln -s -f $PWD/better-tmux ~/.config
+bun install --cwd ./better-tmux
 
 # -- nvm + custom nvm config for zsh ------ 
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
