@@ -47,6 +47,11 @@ function commit-sync() {
   git push
 }
 
+function commit-changelog() {
+  prefix=$( [ -n "$1" ] && echo "docs($1):" || echo "docs:" )
+  echo "$prefix updated CHANGELOG.md"
+}
+
 alias vim="nvim"
 
 # pnpm
