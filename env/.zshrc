@@ -49,7 +49,7 @@ function commit-sync() {
 
 function commit-changelog() {
   prefix=$( [ -n "$1" ] && echo "docs($1):" || echo "docs:" )
-  echo "$prefix updated CHANGELOG.md"
+  git commit -m "$prefix updated CHANGELOG.md"
 }
 
 alias vim="nvim"

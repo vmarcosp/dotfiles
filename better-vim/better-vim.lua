@@ -2,7 +2,6 @@ local M = {}
 local utils = require "better-vim-utils"
 
 M.plugins = {
-  "github/copilot.vim",
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
