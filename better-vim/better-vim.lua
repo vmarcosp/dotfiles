@@ -13,11 +13,11 @@ M.plugins = {
     config = true,
   },
   {
-     'bettervim/yugen.nvim',
-     config = function()
-       vim.cmd.colorscheme('yugen')
-     end,
-   },
+    'bettervim/yugen.nvim',
+    config = function()
+      vim.cmd.colorscheme('yugen')
+    end,
+  },
   -- {
   --   dir = '~/yugen',
   --   lazy = true,
@@ -140,9 +140,10 @@ M.lsps = {
   tailwindcss = {},
   cssls = {},
   cssmodules_ls = {},
-  biome = {}
+  biome = {},
+  rust_analyzer = {}
 }
-M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml" }
+M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml", "rust" }
 M.unload_plugins = { "noice" }
 
 return M
