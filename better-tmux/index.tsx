@@ -66,7 +66,7 @@ export default {
     setTitles: "on",
     setTitlesString: " ",
     modeKeys: "vi",
-    mouse: "on",
+    mouse: "off",
   },
   status: {
     bg: '#000000',

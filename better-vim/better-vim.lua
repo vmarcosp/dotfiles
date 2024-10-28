@@ -94,6 +94,7 @@ M.lualine = {
 
 M.hooks = {
   after_setup = function()
+    vim.opt.mouse:remove("a")
     require("nvim-web-devicons").set_icon {
       toml = {
         icon = "󰅪",
