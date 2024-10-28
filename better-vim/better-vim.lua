@@ -17,15 +17,7 @@ M.plugins = {
     config = function()
       vim.cmd.colorscheme('yugen')
     end,
-  },
-  -- {
-  --   dir = '~/yugen',
-  --   lazy = true,
-  --   priority = 1000,
-  --   init = function()
-  --     vim.cmd("colorscheme yugen")
-  --   end
-  -- }
+  }
 }
 
 local Terminals = {}
