@@ -67,6 +67,7 @@ M.mappings = {
       end,
       desc = 'Open terminal'
     },
+    { "<leader>ff", "<cmd>Format<cr>" },
     { "<s-k>", "5kzz", desc = "Jump 5 lines above" },
     { "<s-j>", "5jzz", desc = "Jump 5 lines below" },
   }
