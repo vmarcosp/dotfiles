@@ -2,7 +2,7 @@ import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
-    <Box paddingLeft={1} bg='#000000' fg={type === 'active' ? '#959595' : '#4b4b4b'} bold>
+    <Box paddingLeft={1} bg='#14161B' fg={type === 'active' ? '#959595' : '#4b4b4b'} bold>
       {number}: {name}
     </Box>
   )
@@ -69,7 +69,7 @@ export default {
     mouse: "on",
   },
   status: {
-    bg: '#000000',
+    bg: '#14161B',
     fg: '#fafafa',
     position: "top"
   },

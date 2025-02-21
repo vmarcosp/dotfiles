@@ -1,7 +1,20 @@
 local M = {}
 local utils = require "better-vim-utils"
 
+local everforest = {
+  "neanias/everforest-nvim",
+  version = false,
+  lazy = false,
+  priority = 1000, -- make sure to load this before all the other start plugins
+  -- Optional; default configuration will be used if setup isn't called.
+  config = function()
+    require("everforest").setup({
+    })
+  end,
+}
+
 M.plugins = {
+  everforest,
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
@@ -11,12 +24,6 @@ M.plugins = {
     "akinsho/toggleterm.nvim",
     version = "*",
     config = true,
-  },
-  {
-    'bettervim/yugen.nvim',
-    config = function()
-      vim.cmd.colorscheme('yugen')
-    end,
   }
 }
 
