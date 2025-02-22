@@ -92,6 +92,7 @@ local setup_theme = function()
     highlight_overrides = {
       all = function(colors)
         return {
+          NvimTreeNormal = { bg = '#0D0D14' },
           CurSearch = { bg = colors.sky },
           IncSearch = { bg = colors.sky },
           CursorLineNr = { fg = colors.blue, style = { "bold" } },
@@ -120,7 +121,7 @@ local setup_theme = function()
       mocha = {
         rosewater = "#F5B8AB",
         flamingo = "#F29D9D",
-        pink = "#AD6FF7",
+        pink = "#F5B8AB",
         mauve = "#FF8F40",
         red = "#E66767",
         maroon = "#EB788B",
