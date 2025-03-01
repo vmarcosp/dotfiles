@@ -146,7 +146,7 @@ local setup_theme = function()
         return {
           CmpItemMenu = { fg = colors.surface2 },
           CursorLineNr = { fg = colors.text },
-          FloatBorder = { bg = colors.base, fg = colors.subtext1 }, -- colors.surface0 }, difficult to see
+          FloatBorder = { bg = colors.base, fg = colors.surface1 }, -- colors.surface0 }, difficult to see
           GitSignsChange = { fg = colors.peach },
           LineNr = { fg = colors.overlay0 },
           LspInfoBorder = { link = "FloatBorder" },
