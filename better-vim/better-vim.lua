@@ -1,12 +1,31 @@
 local M = {}
 local utils = require "better-vim-utils"
 
+local copilot_chat_plugin = {
+  "CopilotC-Nvim/CopilotChat.nvim",
+  dependencies = {
+    { "github/copilot.vim" },
+    { "nvim-lua/plenary.nvim", branch = "master" },
+  },
+  build = "make tiktoken",
+  opts = {
+    mappings = {
+      complete = {
+        detail = 'Use @<Tab> or /<Tab> for options.',
+        insert = '<S-Tab>',
+      }
+    }
+  },
+}
+
+
 M.plugins = {
   "rescript-lang/vim-rescript",
   "devongovett/tree-sitter-highlight",
   "fladson/vim-kitty",
   "nvim-pack/nvim-spectre",
   "rescript-lang/tree-sitter-rescript",
+  copilot_chat_plugin,
   {
     "akinsho/toggleterm.nvim",
     version = "*",
@@ -45,6 +64,7 @@ Terminals.default = {
 M.mappings = {
   leader = "\\",
   custom = {
+    -- git + terminal stuff
     {
       "<leader>gt",
       function()
@@ -61,8 +81,12 @@ M.mappings = {
       end,
       desc = 'Open terminal'
     },
-    { "<leader>ff", "<cmd>Format<cr>" },
+    { "<leader>ft", "<cmd>Format<cr>" },
+    -- AI stuff
+    { "<s-p>", "<cmd>CopilotChat<cr>" },
+    -- Navigation
     { "<s-k>", "5kzz", desc = "Jump 5 lines above" },
+    { "<s-j>", "5jzz", desc = "Jump 5 lines below" },
     { "<s-j>", "5jzz", desc = "Jump 5 lines below" },
   }
 }
@@ -158,7 +182,9 @@ local setup_theme = function()
           BvDashboardItemText = { fg = colors.text },
           BvDashboardKey = { fg = colors.blue },
           DashboardFooter = { fg = colors.green },
+
           NvimTreeWinSeparator = { fg = colors.surface0 },
+          VertSplit = { fg = colors.text, bg = colors.base },
 
           -- telescope prompt
           TelescopePromptTitle = { fg = colors.mantle, bg = colors.blue, style = { "bold" } },
@@ -177,7 +203,6 @@ local setup_theme = function()
           TelescopePreviewNormal = { fg = '#2D2C2C', bg = '#2D2C2C' },
           TelescopePreviewBorder = { link = "TelescopePreviewNormal" },
 
-          VertSplit = { bg = colors.base, fg = colors.surface0 },
           WhichKeyFloat = { bg = colors.mantle },
           YankHighlight = { bg = colors.surface2 },
           FidgetTask = { fg = colors.subtext2 },
@@ -410,7 +435,6 @@ end
 M.hooks = {
   after_setup = function()
     setup_theme()
-    vim.opt.mouse:remove("a")
     require("nvim-web-devicons").set_icon {
       toml = {
         icon = "󰅪",
