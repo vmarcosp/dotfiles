@@ -474,8 +474,7 @@ M.lsps = {
   cssls = {},
   cssmodules_ls = {},
   biome = {},
-  rust_analyzer = {},
-  ocamllsp = {}
+  rust_analyzer = {}
 }
 M.treesitter = { "javascript", "typescript", "lua", "bash", "ocaml", "rust" }
 M.unload_plugins = { "noice" }
