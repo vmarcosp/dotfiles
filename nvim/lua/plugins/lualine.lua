@@ -1,56 +1,35 @@
-local function make(section_config, excluded_buffers)
-	excluded_buffers = excluded_buffers or { "Home" }
+local make = function(components)
+	local updated_components = {}
+	local hide_lookup = {
+		"alpha",
+		"TelescopePrompt",
+		"toggleterm",
+	}
 
-	local exclude_lookup = {}
-	for _, buf_name in ipairs(excluded_buffers) do
-		exclude_lookup[buf_name] = true
-	end
+	for i, component in ipairs(components) do
+		local updated_component = component
 
-	local result = {}
-	for _, component in ipairs(section_config) do
 		if component == "filename" then
-			table.insert(result, {
-				function()
-					if vim.bo.filetype == "NvimTree" then
-						return ""
-					end
-
-					local filename = vim.fn.expand("%:t")
-					if exclude_lookup[filename] then
-						return ""
-					end
-
-					return filename
-				end,
-			})
-		elseif type(component) == "table" then
-			local original_cond = component.cond
-			component.cond = function()
-				local filename = vim.fn.expand("%:t")
-				if exclude_lookup[filename] then
-					return false
+			updated_component = function()
+				if vim.bo.filetype == "NvimTree" then
+					return ""
 				end
 
-				if original_cond then
-					return original_cond()
-				end
-
-				return true
+				return vim.fn.expand("%:t")
 			end
-			table.insert(result, component)
-		else
-			table.insert(result, {
-				component,
-				cond = function()
-					local filename = vim.fn.expand("%:t")
-					return not exclude_lookup[filename]
-				end,
-			})
 		end
+
+		updated_components[i] = {
+			updated_component,
+			cond = function()
+				return not vim.tbl_contains(hide_lookup, vim.bo.filetype)
+			end,
+		}
 	end
 
-	return result
+	return updated_components
 end
+
 return {
 	"nvim-lualine/lualine.nvim",
 	opts = {

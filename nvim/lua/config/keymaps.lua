@@ -26,6 +26,9 @@ keymap("n", "<c-p>", telescope.find_files, silent)
 keymap("n", "<c-f>", telescope.live_grep, silent)
 keymap("n", "<c-o>", telescope.buffers, silent)
 
+-- ai stuff
+keymap("n", "<s-p>", ":CopilotChat<cr>", silent)
+
 -- comment using ctrl /
 vim.cmd([[ nmap <C-/> gcc ]])
 vim.cmd([[ nmap <C-_> gcc ]])
@@ -35,38 +38,59 @@ vim.cmd([[ vmap <C-_> gc ]])
 -- terminals
 local Terminals = {}
 
-Terminals.floating_window_opts = {
-	border = "curved",
-	width = 124,
-	height = 16,
-	winblend = 3,
-	zindex = 999,
-}
+-- Function to calculate dynamic terminal size (80% of screen)
+local function get_dynamic_size()
+	local width = math.floor(vim.o.columns * 0.9)
+	local height = math.floor(vim.o.lines * 0.7)
+	return {
+		width = width,
+		height = height,
+	}
+end
 
-Terminals.lazygit = {
-	cmd = "lazygit",
-	direction = "float",
-	float_opts = Terminals.floating_window_opts,
-	on_open = function(term)
-		vim.cmd("startinsert!")
-		vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-	end,
-	on_close = function()
-		vim.cmd("startinsert!")
-	end,
-}
+-- Get the floating window options with dynamic size
+function Terminals.get_float_opts()
+	local dynamic_size = get_dynamic_size()
+	return {
+		width = dynamic_size.width,
+		height = dynamic_size.height,
+		winblend = 3,
+		zindex = 999,
+	}
+end
 
-Terminals.default = {
-	direction = "float",
-	float_opts = Terminals.floating_window_opts,
-}
+-- Set up the toggle term configuration
+local Terminal = require("toggleterm.terminal").Terminal
 
+-- Create a function to get a new lazygit terminal with current window size
+function Terminals.create_lazygit()
+	return Terminal:new({
+		cmd = "lazygit",
+		direction = "float",
+		float_opts = Terminals.get_float_opts(),
+		on_open = function(term)
+			vim.cmd("startinsert!")
+			vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+		end,
+		on_close = function()
+			vim.cmd("startinsert!")
+		end,
+	})
+end
+
+-- Create a function to get a new default terminal with current window size
+function Terminals.create_default()
+	return Terminal:new({
+		direction = "float",
+		float_opts = Terminals.get_float_opts(),
+	})
+end
+
+-- Set up keymaps
 keymap("n", "<leader>gt", function()
-	local terminal = require("toggleterm.terminal").Terminal
-	terminal:new(Terminals.lazygit):toggle()
+	Terminals.create_lazygit():toggle()
 end)
 
 keymap("n", "<leader>t", function()
-	local terminal = require("toggleterm.terminal").Terminal
-	terminal:new(Terminals.default):toggle()
+	Terminals.create_default():toggle()
 end)

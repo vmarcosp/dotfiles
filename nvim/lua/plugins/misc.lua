@@ -3,6 +3,7 @@ return {
 	"andymass/vim-matchup",
 	"tpope/vim-sensible",
 	"nvim-pack/nvim-spectre",
+	"norcalli/nvim-colorizer.lua",
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
