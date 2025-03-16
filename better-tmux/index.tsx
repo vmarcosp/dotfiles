@@ -76,7 +76,7 @@ export default {
   status: {
     bg: '#1E2225',
     fg: '#F1E4C3',
-    position: "top"
+    position: "bottom"
   },
   window: (window) => <Window {...window} />
 } satisfies BetterTmuxConfig

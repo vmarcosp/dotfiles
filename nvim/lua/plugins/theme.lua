@@ -59,18 +59,16 @@ return {
 					return {
 						CmpItemMenu = { fg = colors.surface2 },
 						CursorLineNr = { fg = colors.text },
-						FloatBorder = { bg = colors.base, fg = colors.surface1 }, -- colors.surface0 }, difficult to see
+						FloatBorder = { bg = colors.base, fg = colors.surface1 },
 						GitSignsChange = { fg = colors.peach },
 						LineNr = { fg = colors.overlay0 },
 						LspInfoBorder = { link = "FloatBorder" },
 						NormalFloat = { bg = colors.base },
 						Pmenu = { bg = colors.mantle, fg = "" },
-
-						-- dashboard
-						BvDashboardItemIcon = { fg = colors.blue },
-						BvDashboardItemText = { fg = colors.text },
-						BvDashboardKey = { fg = colors.blue },
-						DashboardFooter = { fg = colors.green },
+						-- alpha dashboard
+						AlphaFooter = { fg = colors.overlay0 },
+						AlphaShortcut = { fg = colors.blue },
+						AlphaButtons = { fg = colors.subtext0 },
 
 						NvimTreeWinSeparator = { fg = colors.surface0 },
 						VertSplit = { fg = colors.text, bg = colors.base },
