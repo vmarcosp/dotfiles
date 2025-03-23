@@ -12,10 +12,15 @@ keymap("n", "<s-k>", "5kzz")
 keymap("n", "<s-j>", "5jzz")
 keymap("n", "<s-j>", "5jzz")
 
+keymap("v", "<s-j>", ":m '>+1<CR>gv=gv")
+keymap("v", "<s-k>", ":m '<-2<CR>gv=gv")
+
 -- save with ctrl s
 keymap("n", "<C-s>", ":w<CR>", silent)
 keymap("i", "<C-s>", "<Esc>:w<CR>", silent)
 keymap("v", "<C-s>", "<Esc>:w<CR>", silent)
+
+keymap("n", "<leader>cl", "<cmd>nohl<cr>")
 
 -- nvim-tree
 keymap("n", "<C-n>", ":NvimTreeToggle<CR>", silent)
