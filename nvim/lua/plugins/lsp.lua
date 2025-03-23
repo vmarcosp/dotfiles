@@ -47,7 +47,7 @@ return {
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("<leader>gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 					map("cr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 					map("<leader>cd", vim.lsp.buf.hover, "Type [D]efinition")
@@ -60,6 +60,8 @@ return {
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 					map("<leader>gd", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("<leader>dn", vim.diagnostic.goto_next, "Go to [n]ext [d]iagnostic message")
+					map("<leader>dp", vim.diagnostic.goto_prev, "Go to [p]revious [d]iagnostic message")
 
 					local function client_supports_method(client, method, bufnr)
 						if vim.fn.has("nvim-0.11") == 1 then
