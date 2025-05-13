@@ -5,6 +5,7 @@ local lsps = {
 	tailwindcss = {},
 	cssls = {},
 	cssmodules_ls = {},
+	rescriptls = {},
 	biome = {},
 	lua_ls = {
 		settings = {
@@ -30,8 +31,8 @@ return {
 	{
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "williamboman/mason.nvim", opts = {} },
-			"williamboman/mason-lspconfig.nvim",
+			{ "williamboman/mason.nvim", opts = {}, version = "^1.0.0" },
+			{ "williamboman/mason-lspconfig.nvim", version = "^1.0.0" },
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			{ "j-hui/fidget.nvim", opts = {} },
@@ -47,7 +48,7 @@ return {
 						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
-					map("<leader>gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 					map("cr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 					map("<leader>cd", vim.lsp.buf.hover, "Type [D]efinition")
