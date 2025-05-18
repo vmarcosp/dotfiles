@@ -1,4 +1,4 @@
-return {
+local catppuccin = {
 	"catppuccin/nvim",
 	config = function()
 		require("catppuccin").setup({
@@ -317,5 +317,12 @@ return {
 		})
 
 		vim.api.nvim_command("colorscheme catppuccin-frappe")
+	end,
+}
+return {
+	-- catppuccin,
+	"bettervim/yugen.nvim",
+	config = function()
+		vim.cmd.colorscheme("yugen")
 	end,
 }
