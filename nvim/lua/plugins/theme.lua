@@ -320,9 +320,9 @@ local catppuccin = {
 	end,
 }
 return {
-	-- catppuccin,
-	"bettervim/yugen.nvim",
-	config = function()
-		vim.cmd.colorscheme("yugen")
-	end,
+	catppuccin,
+	-- "bettervim/yugen.nvim",
+	-- config = function()
+	-- 	vim.cmd.colorscheme("yugen")
+	-- end,
 }
