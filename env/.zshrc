@@ -64,3 +64,6 @@ esac
 #
 
 export PATH="$HOME/.local/bin:$PATH"
+
+# bun completions
+[ -s "/Users/marcosoliveira/.bun/_bun" ] && source "/Users/marcosoliveira/.bun/_bun"

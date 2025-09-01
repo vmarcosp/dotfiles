@@ -3,7 +3,6 @@ import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
     <Box padding={1} bg={'#1E2225'} fg={type === 'active' ? '#e8e8e8' : '#94979a'} bold>
-
       {number}: {name}
     </Box>
   )
