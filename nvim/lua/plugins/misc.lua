@@ -22,6 +22,7 @@ return {
 		opts = {
 			input = { enabled = true },
 			indent = { enabled = true },
+			animate = { enabled = true },
 			notifier = {
 				enabled = true,
 				timeout = 3000,

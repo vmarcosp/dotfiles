@@ -23,22 +23,15 @@ return {
 			vim.api.nvim_set_hl(0, group, styles)
 		end
 
-		if os.getenv("NVIM_AVANTE_MODE") then
-			hl("AvanteSidebarWinSeparator", { bg = p.color800, fg = p.color800 })
-		else
-			hl("AvanteSidebarWinSeparator", { bg = p.color800, fg = p.color600 })
-		end
-
+		hl("AvanteSidebarWinSeparator", { bg = p.color800, fg = p.color600 })
 		hl("AvanteTitle", { bg = p.color600, fg = p.color200 })
 		hl("AvanteThirdTitle", { bg = p.color600, fg = p.color200 })
 		hl("AvanteReversedTitle", { bg = p.color800, fg = p.color600 })
 		hl("AvanteReversedThirdTitle", { bg = p.color800, fg = p.color600 })
-		hl("AvanteInlineHint", { bg = p.none, fg = p.none })
-		hl("AvantePopupHint", { bg = p.none, fg = p.none })
 		hl("AvanteStateSpinnerGenerating", { bg = p.primary, fg = p.color800 })
 		hl("AvantePromptInput", { bg = p.color700, fg = p.color100 })
 		hl("AvantePromptInputBorder", { bg = p.color700, fg = p.color800 })
-		hl("CustomLualineMode", { bg = p.color800, fg = p.color300 })
+		hl("CustomLualineMode", { bg = p.color800, fg = p.color400 })
 		hl("AlphaFooter", { bg = p.color800, fg = p.color400 })
 
 		hl("TelescopeResultsTitle", { bg = p.color700, fg = p.color700 })
@@ -54,5 +47,6 @@ return {
 		hl("TelescopePromptTitle", { bg = p.color600, fg = p.color100 })
 		hl("TelescopePromptNormal", { bg = p.color700, fg = p.color100 })
 		hl("TelescopePromptBorder", { bg = p.color700, fg = p.color700 })
+		hl("AvantePopupHint", { bg = p.none, fg = p.color200 })
 	end,
 }
