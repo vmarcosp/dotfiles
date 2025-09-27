@@ -21,9 +21,12 @@ return {
 		lazy = false,
 		opts = {
 			input = { enabled = true },
-			explorer = { enabled = true },
-			picker = { enabled = true },
-			quickfile = { enabled = true },
+			indent = { enabled = true },
+			notifier = {
+				enabled = true,
+				timeout = 3000,
+			},
+			scroll = { enabled = true },
 		},
 	},
 }

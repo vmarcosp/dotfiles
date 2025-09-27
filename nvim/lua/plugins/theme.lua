@@ -1,10 +1,6 @@
-local custom_catppuccin = require("plugins/themes/custom_catppuccin")
+local yugen = require("plugins/themes/yugen")
 
 return {
 	-- custom_catppuccin,
-	-- "bettervim/yugen.nvim",
-	dir = "~/projects/vmcp/yugen.nvim",
-	config = function()
-		vim.cmd.colorscheme("yugen")
-	end,
+	yugen,
 }
