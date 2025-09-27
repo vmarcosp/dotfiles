@@ -8,6 +8,7 @@ return {
 	opts = {
 		instructions_file = "avante.md",
 		provider = "copilot",
+		hints = { enabled = false },
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
