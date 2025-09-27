@@ -1,4 +1,5 @@
 return {
+	"github/copilot.vim",
 	"tpope/vim-surround",
 	"andymass/vim-matchup",
 	"tpope/vim-sensible",
