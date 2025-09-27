@@ -36,7 +36,11 @@ return {
 			"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 			{ "j-hui/fidget.nvim", opts = {} },
-			{ "SmiteshP/nvim-navic", opts = {} },
+			{ "SmiteshP/nvim-navic", opts = {
+				lsp = {
+					auto_attach = true,
+				},
+			} },
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
@@ -73,6 +77,12 @@ return {
 					end
 
 					local client = vim.lsp.get_client_by_id(event.data.client_id)
+
+					-- Attach navic if client supports document symbols
+					if client and client.server_capabilities.documentSymbolProvider then
+						require("nvim-navic").attach(client, event.buf)
+					end
+
 					if
 						client
 						and client_supports_method(
@@ -174,7 +184,7 @@ return {
 		cmd = { "ConformInfo" },
 		keys = {
 			{
-				"<leader>f",
+				"<leader>ff",
 				function()
 					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
