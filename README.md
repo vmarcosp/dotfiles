@@ -30,34 +30,31 @@
 
 <h2 align="center">Overview</h1>
 
-### ⌨️ Neovim
+### nvim
 - My nvim config
 - My own theme ([yugen 幽玄](https://github.com/bettervim/yugen))
 
-### 💡 ZSH
+### zsh
   - `.zshrc`
   - My `oh-my-zsh` config
   - Support for `nvm`
   - Some useful aliases and functions
 
-### ⌨️ Kitty 🐱
+### kitty
  - My custom configs
  - My own theme (yugen 幽玄)
 
-### 🖥️ TMUX
+### tmux
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
       - `tmux-sensible` config.
       -  `tmux-ressurrect` config
   -  My own theme (yugen 幽玄)
 
-### 📦 General
+### misc
   - `.editorconfig`
   - `.gitconfig`
 
-## 💬 Inspiration
-- [alex35mil/dotfiles](https://github.com/alex35mil/dotfiles)
-
-## ⚖️ license
+<h2 align="center">License</h2>
 MIT
 </samp>
