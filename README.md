@@ -3,8 +3,32 @@
 <h1 align="center"><code>$dotfiles</code></h1>
 
 <p align="center">
-  <img width="1000" src="./__assets/v10/case-1.png" />
+  <img src="./__assets/v10/cover.png" />
 </p>
+
+<h2 align="center">Preview</h1>
+
+<p align="center">
+  <img src="./__assets/v10/case-1.png" />
+</p>
+<p align="center">Editor</p>
+
+<p align="center">
+  <img src="./__assets/v10/case-2.png" />
+</p>
+<p align="center">Dashboard</p>
+
+<p align="center">
+  <img src="./__assets/v10/case-3.png" />
+</p>
+<p align="center">File finder</p>
+
+<p align="center">
+  <img src="./__assets/v10/case-4.png" />
+</p>
+<p align="center">Diagnostics</p>
+
+<h2 align="center">Overview</h1>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
 - My BetterVim config: `bettervim/bettervim.lua`
@@ -30,6 +54,9 @@
 ### 📦 General
   - `.editorconfig`
   - `.gitconfig`
+
+## 💬 Inspiration
+- [alex35mil/dotfiles](https://github.com/alex35mil/dotfiles)
 
 ## ⚖️ license
 MIT
