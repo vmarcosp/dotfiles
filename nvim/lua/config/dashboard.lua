@@ -1,4 +1,5 @@
 local hour = tonumber(os.date("%H"))
+
 local greeting
 if hour < 12 then
 	greeting = "Good evening 󰖨"
