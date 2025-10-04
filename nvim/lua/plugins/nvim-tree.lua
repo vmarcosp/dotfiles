@@ -52,7 +52,7 @@ return {
 				custom = { ".git", "node_modules" },
 			},
 			git = {
-				enable = true,
+				enable = false,
 				ignore = true,
 			},
 			update_focused_file = {

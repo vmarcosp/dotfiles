@@ -24,7 +24,7 @@ return {
 		end
 
 		hl("CustomLualineMode", { bg = p.color800, fg = p.color400 })
-		hl("MyDashboardFooter", { bg = p.color800, fg = p.color400 })
+		hl("MyDashboardFooter", { bg = p.color800, fg = p.primary })
 
 		hl("TelescopeResultsTitle", { bg = p.color700, fg = p.color700 })
 		hl("TelescopePreviewBorder", { bg = p.color700, fg = p.color700 })
@@ -40,5 +40,9 @@ return {
 		hl("TelescopePromptNormal", { bg = p.color700, fg = p.color100 })
 		hl("TelescopePromptBorder", { bg = p.color700, fg = p.color700 })
 		hl("WinSeparator", { bg = p.color800, fg = p.color700 })
+		hl("SnacksDashboardHeader", { bg = p.color800, fg = p.color300 })
+		hl("SnacksDashboardDesc", { bg = p.color800, fg = p.color400 })
+		hl("SnacksDashboardIcon", { bg = p.color800, fg = p.color400 })
+		hl("SnacksDashboardKey", { bg = p.color800, fg = p.color400 })
 	end,
 }

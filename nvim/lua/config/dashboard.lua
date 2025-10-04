@@ -1,17 +1,22 @@
 local hour = tonumber(os.date("%H"))
 local greeting
 if hour < 12 then
-	greeting = "good morning."
+	greeting = "Good evening 󰖨"
 elseif hour < 18 then
-	greeting = "good afternoon."
+	greeting = "Good afternoon "
 else
-	greeting = "good evening."
+	greeting = "Good morning 󰖨"
 end
 
 return {
 	enabled = true,
-	width = 40,
+	width = 32,
 	preset = {
+		header = [[
+██▀▀▀▀▀▀▀▀▀▀▀▀▀██
+                
+██▄▄▄▄▄▄▄▄▄▄▄▄▄██
+]],
 		keys = {
 			{ icon = "", key = "f", desc = "Find File", action = ":Telescope find_files" },
 			{
@@ -24,6 +29,7 @@ return {
 		},
 	},
 	sections = {
+		{ section = "header" },
 		{ section = "keys", gap = 1, padding = 1 },
 		{
 			text = { { greeting, hl = "MyDashboardFooter" } },
