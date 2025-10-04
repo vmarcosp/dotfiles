@@ -1,4 +1,4 @@
-local yugen = require("plugins/themes/yugen")
+local yugen = require("themes/yugen")
 
 return {
 	yugen,
