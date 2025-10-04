@@ -31,9 +31,6 @@ keymap("n", "<c-p>", telescope.find_files, silent)
 keymap("n", "<c-f>", telescope.live_grep, silent)
 keymap("n", "<c-o>", telescope.buffers, silent)
 
--- ai stuff
-keymap("n", "<s-p>", ":CopilotChat<cr>", silent)
-
 -- comment using ctrl /
 vim.cmd([[ nmap <C-/> gcc ]])
 vim.cmd([[ nmap <C-_> gcc ]])
