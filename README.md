@@ -1,9 +1,9 @@
 <samp>
 
-# `~/.dotfiles`
+<h1 align="center"><code>$dotfiles</code></h1>
 
 <p align="center">
-  <img width="1000" src="./__assets/preview-v9.2.png" />
+  <img width="1000" src="./__assets/v10/case-1.png" />
 </p>
 
 ### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
