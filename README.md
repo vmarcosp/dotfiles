@@ -30,8 +30,8 @@
 
 <h2 align="center">Overview</h1>
 
-### ⌨️ Neovim —— [BetterVim](https://bettervim.com)
-- My BetterVim config: `bettervim/bettervim.lua`
+### ⌨️ Neovim
+- My nvim config
 - My own theme ([yugen 幽玄](https://github.com/bettervim/yugen))
 
 ### 💡 ZSH
