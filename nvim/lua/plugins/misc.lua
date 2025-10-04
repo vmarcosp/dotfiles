@@ -1,9 +1,7 @@
 return {
-	"github/copilot.vim",
 	"tpope/vim-surround",
 	"andymass/vim-matchup",
 	"tpope/vim-sensible",
-	"nvim-pack/nvim-spectre",
 	"norcalli/nvim-colorizer.lua",
 	{
 		"akinsho/toggleterm.nvim",
@@ -20,14 +18,12 @@ return {
 		priority = 1000,
 		lazy = false,
 		opts = {
-			input = { enabled = true },
 			indent = { enabled = true },
-			animate = { enabled = true },
-			notifier = {
-				enabled = true,
-				timeout = 3000,
-			},
+			dashboard = require("config.dashboard"),
+			input = { enabled = true },
+			notifier = { enabled = true },
 			scroll = { enabled = true },
+			animations = { enabled = true },
 		},
 	},
 }
