@@ -1,0 +1,2 @@
+- alterar icone do css no nvim tree
+- alterar cor do icone no nvim tree

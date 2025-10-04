@@ -6,6 +6,8 @@ return {
 		"nvim-tree/nvim-web-devicons",
 	},
 	config = function()
+		-- Alterar todas as cores dos ícones para cinza
+
 		require("nvim-tree").setup({
 			disable_netrw = true,
 			hijack_netrw = true,

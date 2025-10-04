@@ -24,10 +24,6 @@ return {
 		end
 
 		hl("CustomLualineMode", { bg = p.color800, fg = p.color300 })
-		hl("SnacksInputBorder", { bg = p.color700, fg = p.color700 })
-		hl("SnacksInputNormal", { bg = p.color700, fg = p.color200 })
-		hl("SnacksInputTitle", { bg = p.color600, fg = p.color200 })
-		hl("SnacksInputIcon", { bg = p.color700, fg = p.primary })
 
 		hl("MyDashboardFooter", { bg = p.color800, fg = p.primary })
 
@@ -50,5 +46,21 @@ return {
 		hl("SnacksDashboardDesc", { bg = p.color800, fg = p.color400 })
 		hl("SnacksDashboardIcon", { bg = p.color800, fg = p.color400 })
 		hl("SnacksDashboardKey", { bg = p.color800, fg = p.color400 })
+		hl("SnacksInputBorder", { bg = p.color700, fg = p.color700 })
+		hl("SnacksInputNormal", { bg = p.color700, fg = p.color200 })
+		hl("SnacksInputTitle", { bg = p.color600, fg = p.color200 })
+		hl("SnacksInputIcon", { bg = p.color700, fg = p.primary })
+
+		hl("NormalFloat", { bg = p.color700, fg = p.color200 })
+		hl("FloatBorder", { bg = p.color700, fg = p.color700 })
+
+		-- Ícones do nvim-tree
+		hl("DevIconTs", { fg = p.color100 })
+		local devicons = require("nvim-web-devicons")
+		local icons = devicons.get_icons()
+		for _, icon in pairs(icons) do
+			icon.color = p.primary
+		end
+		devicons.set_icon(icons)
 	end,
 }
