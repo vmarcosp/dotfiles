@@ -16,7 +16,7 @@ local p = {
 }
 
 return {
-	dir = "~/projects/vmcp/yugen.nvim",
+	"bettervim/yugen.nvim",
 	config = function()
 		vim.cmd.colorscheme("yugen")
 		local hl = function(group, styles)
@@ -55,7 +55,6 @@ return {
 		hl("FloatBorder", { bg = p.color700, fg = p.color700 })
 
 		-- Ícones do nvim-tree
-		hl("DevIconTs", { fg = p.color100 })
 		local devicons = require("nvim-web-devicons")
 		local icons = devicons.get_icons()
 		for _, icon in pairs(icons) do

@@ -69,3 +69,6 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # bun completions
 [ -s "/Users/marcosoliveira/.bun/_bun" ] && source "/Users/marcosoliveira/.bun/_bun"
+
+# Shopify Hydrogen alias to local projects
+alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
