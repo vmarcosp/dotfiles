@@ -1,0 +1,14 @@
+{
+  "alwaysThinkingEnabled": true,
+   "permissions": {
+      "allow": [
+        "Bash(*)",
+        "Read(*)",
+        "Write(*)",
+        "Edit(*)"
+      ],
+      "deny": [
+        "Bash(rm -rf *)"
+      ]
+    }
+}

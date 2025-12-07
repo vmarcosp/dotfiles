@@ -50,7 +50,14 @@ ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
 ln -s -f $PWD/better-tmux ~/.config
 bun install --cwd ./better-tmux
 
-# -- nvm + custom nvm config for zsh ------ 
+# -- claude code ---------------------------
+mkdir -p ~/.claude/agents
+rm -f ~/.claude/CLAUDE.md ~/.claude/settings.json ~/.claude/agents/committer.md
+ln -s -f $PWD/.claude/CLAUDE.md ~/.claude/CLAUDE.md
+ln -s -f $PWD/.claude/settings.json ~/.claude/settings.json
+ln -s -f $PWD/.claude/agents/committer.md ~/.claude/agents/committer.md
+
+# -- nvm + custom nvm config for zsh ------
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
 export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
