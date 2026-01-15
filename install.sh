@@ -15,6 +15,7 @@ brew install tmux
 brew install reattach-to-user-namespace
 brew install gh
 brew install pidof
+brew install jq
 brew install lazygit
 brew install oven-sh/bun/bun
 brew install --cask raycast
@@ -51,11 +52,25 @@ ln -s -f $PWD/better-tmux ~/.config
 bun install --cwd ./better-tmux
 
 # -- claude code ---------------------------
-mkdir -p ~/.claude/agents
-rm -f ~/.claude/CLAUDE.md ~/.claude/settings.json ~/.claude/agents/committer.md
+rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands
+rm -f ~/.claude/CLAUDE.md ~/.claude/settings.json
 ln -s -f $PWD/.claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -s -f $PWD/.claude/settings.json ~/.claude/settings.json
-ln -s -f $PWD/.claude/agents/committer.md ~/.claude/agents/committer.md
+ln -sfn $PWD/.claude/agents ~/.claude/agents
+ln -sfn $PWD/.claude/skills ~/.claude/skills
+ln -sfn $PWD/.claude/commands ~/.claude/commands
+
+# Add MCP servers globally (user scope)
+for server in $(jq -r 'keys[]' $PWD/claude/mcp-servers.json); do
+    claude mcp remove -s user "$server" 2>/dev/null || true
+    cmd=$(jq -r ".\"$server\".command" $PWD/claude/mcp-servers.json)
+    args=$(jq -r ".\"$server\".args | join(\" \")" $PWD/claude/mcp-servers.json)
+    claude mcp add -s user "$server" -- $cmd $args
+done
+
+# -- global scripts (bin) --------------------
+mkdir -p ~/bin
+ln -s -f $PWD/bin/ai-notify ~/bin/ai-notify
 
 # -- nvm + custom nvm config for zsh ------
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash

@@ -3,6 +3,7 @@ source ~/env-vars.sh
 
 export ZSH="$HOME/.oh-my-zsh/"
 export LANG=en_US.UTF-8
+export EDITOR="nvim"
 
 ZSH_THEME="robbyrussell"
 plugins=(
@@ -42,6 +43,12 @@ function clean-branches(){
   git branch | grep -v 'main' | xargs git branch -D
 }
 
+function kill-ports() {
+  for port in "$@"; do
+    lsof -ti:$port | xargs kill -9 2>/dev/null
+  done
+}
+
 function commit-sync() {
   git add .
   git commit -m "*"
@@ -65,7 +72,7 @@ esac
 # pnpm end
 #
 
-export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
 # bun completions
 [ -s "/Users/marcosoliveira/.bun/_bun" ] && source "/Users/marcosoliveira/.bun/_bun"

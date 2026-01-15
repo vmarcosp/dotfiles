@@ -1,0 +1,53 @@
+#!/bin/bash
+# AI Agent notification script
+# Usage: ai-notify [type] [message]
+# Types: done (default), waiting, error, info
+# Message: optional custom message
+#
+# Examples:
+#   ai-notify                    # "Task completed" notification
+#   ai-notify done               # Same as above
+#   ai-notify waiting            # "Need your attention" notification
+#   ai-notify error              # "Something went wrong" notification
+#   ai-notify done "PR created"  # Custom message
+
+TYPE="${1:-done}"
+MESSAGE="${2:-}"
+
+# Default messages per type
+case "$TYPE" in
+  done)
+    SOUND="/System/Library/Sounds/Blow.aiff"
+    DEFAULT_MSG="Task completed"
+    TITLE="Claude Code ✅"
+    ;;
+  waiting)
+    SOUND="/System/Library/Sounds/Blow.aiff"
+    DEFAULT_MSG="Need your attention"
+    TITLE="Claude Code ⏳"
+    ;;
+  error)
+    SOUND="/System/Library/Sounds/Basso.aiff"
+    DEFAULT_MSG="Something went wrong"
+    TITLE="Claude Code ❌"
+    ;;
+  info)
+    SOUND="/System/Library/Sounds/Pop.aiff"
+    DEFAULT_MSG="FYI"
+    TITLE="Claude Code 💡"
+    ;;
+  *)
+    SOUND="/System/Library/Sounds/Blow.aiff"
+    DEFAULT_MSG="Notification"
+    TITLE="Claude Code"
+    ;;
+esac
+
+# Use custom message if provided, otherwise default
+FINAL_MSG="${MESSAGE:-$DEFAULT_MSG}"
+
+# Play sound in background
+afplay "$SOUND" &
+
+# Show macOS notification
+osascript -e "display notification \"$FINAL_MSG\" with title \"$TITLE\""
