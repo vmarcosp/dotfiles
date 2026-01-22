@@ -1,8 +1,19 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
+// Everforest Light Soft palette
+const colors = {
+  bg0: '#F3EAD3',
+  bg1: '#EAE4CA',
+  bg2: '#E5DFC5',
+  fg: '#5C6A72',
+  grey0: '#A6B0A0',
+  grey1: '#939F91',
+  grey2: '#829181',
+}
+
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
-    <Box padding={1} bg={'default'} fg={type === 'active' ? '#e8e8e8' : '#94979a'} bold>
+    <Box padding={1} bg={'default'} fg={type === 'active' ? colors.fg : colors.grey1} bold>
       {number}: {name}
     </Box>
   )
@@ -69,8 +80,8 @@ export default {
     mouse: "on",
   },
   status: {
-    bg: '#000000',
-    fg: '#fafafa',
+    bg: colors.bg0,
+    fg: colors.fg,
     position: "bottom"
   },
   window: (window) => <Window {...window} />

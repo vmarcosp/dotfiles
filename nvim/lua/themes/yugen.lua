@@ -1,65 +1,10 @@
-local p = {
-	placeholder = "#FFFF00",
-	color100 = "#FAFAFA",
-	color200 = "#D4D4D4",
-	color300 = "#A9A9A9",
-	color400 = "#696969",
-	color500 = "#505050",
-	color600 = "#303030",
-	color700 = "#151515",
-	color800 = "#000000",
-	primary = "#FFBE89",
-	success = "#7EAB8E",
-	warning = "#FFF2AF",
-	error = "#F57A7A",
-	none = "none",
-}
-
 return {
-	"bettervim/yugen.nvim",
+	"sainnhe/everforest",
+	priority = 1000,
 	config = function()
-		vim.cmd.colorscheme("yugen")
-		local hl = function(group, styles)
-			vim.api.nvim_set_hl(0, group, styles)
-		end
-
-		hl("CustomLualineMode", { bg = p.color800, fg = p.color300 })
-
-		hl("MyDashboardFooter", { bg = p.color800, fg = p.primary })
-
-		hl("TelescopeResultsTitle", { bg = p.color700, fg = p.color700 })
-		hl("TelescopePreviewBorder", { bg = p.color700, fg = p.color700 })
-
-		hl("TelescopePreviewTitle", { bg = p.color700, fg = p.color700 })
-		hl("TelescopePreviewNormal", { bg = p.color700, fg = p.color100 })
-		hl("TelescopePreviewBorder", { bg = p.color700, fg = p.color700 })
-
-		hl("TelescopeResultsNormal", { bg = p.color700, fg = p.color100 })
-		hl("TelescopeResultsBorder", { bg = p.color700, fg = p.color700 })
-
-		hl("TelescopePromptTitle", { bg = p.color600, fg = p.color100 })
-		hl("TelescopePromptNormal", { bg = p.color700, fg = p.color100 })
-		hl("TelescopePromptBorder", { bg = p.color700, fg = p.color700 })
-		hl("WinSeparator", { bg = p.color800, fg = p.color700 })
-
-		hl("SnacksDashboardHeader", { bg = p.color800, fg = p.color300 })
-		hl("SnacksDashboardDesc", { bg = p.color800, fg = p.color400 })
-		hl("SnacksDashboardIcon", { bg = p.color800, fg = p.color400 })
-		hl("SnacksDashboardKey", { bg = p.color800, fg = p.color400 })
-		hl("SnacksInputBorder", { bg = p.color700, fg = p.color700 })
-		hl("SnacksInputNormal", { bg = p.color700, fg = p.color200 })
-		hl("SnacksInputTitle", { bg = p.color600, fg = p.color200 })
-		hl("SnacksInputIcon", { bg = p.color700, fg = p.primary })
-
-		hl("NormalFloat", { bg = p.color700, fg = p.color200 })
-		hl("FloatBorder", { bg = p.color700, fg = p.color700 })
-
-		-- Ícones do nvim-tree
-		local devicons = require("nvim-web-devicons")
-		local icons = devicons.get_icons()
-		for _, icon in pairs(icons) do
-			icon.color = p.primary
-		end
-		devicons.set_icon(icons)
+		vim.o.background = "light"
+		vim.g.everforest_background = "soft"
+		vim.g.everforest_better_performance = 1
+		vim.cmd.colorscheme("everforest")
 	end,
 }

@@ -79,3 +79,6 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
 # Shopify Hydrogen alias to local projects
 alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
+
+# opencode
+export PATH=/Users/marcosoliveira/.opencode/bin:$PATH
