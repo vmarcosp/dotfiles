@@ -34,5 +34,6 @@
       }
     ]
   },
-  "alwaysThinkingEnabled": false
+  "alwaysThinkingEnabled": false,
+  "effortLevel": "medium"
 }
