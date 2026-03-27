@@ -2,3 +2,4 @@ test/
 rename.sh
 kitty/kitty-local.conf
 .DS_Store
+.claude/settings.local.json

@@ -1,14 +1,14 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
-// Everforest Light Soft palette
+// Everforest palette
 const colors = {
-  bg0: '#F3EAD3',
-  bg1: '#EAE4CA',
-  bg2: '#E5DFC5',
-  fg: '#5C6A72',
-  grey0: '#A6B0A0',
-  grey1: '#939F91',
-  grey2: '#829181',
+  bg0: '#272E33',
+  bg1: '#2E383C',
+  bg2: '#374145',
+  fg: '#D3C6AA',
+  grey0: '#859289',
+  grey1: '#9DA9A0',
+  grey2: '#D3C6AA',
 }
 
 const Window = ({ type, number, name }: WindowConfig) => {

@@ -1,5 +1,5 @@
-local yugen = require("themes/yugen")
+local everforest = require("themes/everforest")
 
 return {
-	yugen,
+	everforest,
 }

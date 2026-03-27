@@ -42,8 +42,8 @@ ln -s -f $PWD/env/.zshrc ~/
 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 
 # -- kitty --------------------------------
-ln -s $PWD/kitty/yugen.conf ~/.config/kitty
 ln -s $PWD/kitty/kitty.conf ~/.config/kitty
+ln -s $PWD/kitty/current-theme.conf ~/.config/kitty
 
 # -- tmux --------------------------------
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
@@ -59,14 +59,6 @@ ln -s -f $PWD/.claude/settings.json ~/.claude/settings.json
 ln -sfn $PWD/.claude/agents ~/.claude/agents
 ln -sfn $PWD/.claude/skills ~/.claude/skills
 ln -sfn $PWD/.claude/commands ~/.claude/commands
-
-# Add MCP servers globally (user scope)
-for server in $(jq -r 'keys[]' $PWD/claude/mcp-servers.json); do
-    claude mcp remove -s user "$server" 2>/dev/null || true
-    cmd=$(jq -r ".\"$server\".command" $PWD/claude/mcp-servers.json)
-    args=$(jq -r ".\"$server\".args | join(\" \")" $PWD/claude/mcp-servers.json)
-    claude mcp add -s user "$server" -- $cmd $args
-done
 
 # -- global scripts (bin) --------------------
 mkdir -p ~/bin
