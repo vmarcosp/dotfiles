@@ -16,3 +16,5 @@ Skills are auto-discovered by Claude. Commands (`/cmd`) invoke them manually.
 | `/human-writing` | human-writing | default | Rewrite/write docs with natural, human-readable prose |
 | `/review` | review-pr | default | Code review com triagem — `/review [low\|mid\|high] <pr>` |
 | `/review-submit` | review-submit | default | Envia comments do review para o PR via gh CLI |
+| `/pr-respond` | pr-respond | default | Responde comments de review e endereça feedback em PRs |
+| *(auto)* | my-voice | -- | Estilo de comunicação do usuário (building block) |

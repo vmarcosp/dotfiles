@@ -147,67 +147,8 @@ Ao final, exibir um resumo para o usuário e perguntar se quer editar/remover al
 
 ## Estilo de Escrita dos Comentários
 
-Os comentários devem ser escritos EXATAMENTE como o usuário escreve. Regras:
-
-### Tom e linguagem
-- pt-BR sempre
-- Direto, conciso, sem formalidade excessiva
-- Conversacional, como se estivesse falando com um colega
-- Nunca usar "você deveria". Preferir "Eu recomendo...", "Eu acho que...", "Não vale..."
-- NUNCA usar em dashes (`—`) ou double dashes (`--`) como separador em frases. Usar ponto final, vírgula, ou reestruturar a frase
-
-### Padrões de fraseamento (extraídos de reviews reais)
-
-**Para sugestões:**
-- "Eu recomendo utilizar X ao invés de Y, SEMPRE, exceto se..."
-- "Eu acho que [observação], acho melhor [alternativa]. Faz sentido?"
-- "Eu tô achando a leitura desse código difícil, eu sugiro quebrar em mais blocos."
-- "O que acha de [sugestão]?"
-- "Eu faria algo assim: [código]"
-- "Sugiro deixar os types colocados aqui também, no topo do arquivo."
-- "Não vale [alternativa melhor]?"
-- "Acho que vale [ação]"
-
-**Para bugs/problemas:**
-- "Desse jeito pode ter falso positivo, tipo [exemplo] que vai dar [resultado]. Vale ajustar."
-- "Esse caso me parece problemático, se tiver [cenário] não vai [consequência]."
-- "Isso aqui é meio perigoso, [explicação do risco]. O que acha de [mitigação]?"
-
-**Para perguntas (quando genuinamente não tem certeza):**
-- "Algum motivo pra não fazer [alternativa]?"
-- "A ideia é [comportamento]? Não vale usar [alternativa]?"
-- "Entendo que [observação] né?"
-- "Faz sentido?"
-- "Senti falta de [coisa], faz sentido?"
-- "Eu posso estar sendo míope, mas [observação/sugestão]" (usar quando não consegue ver o motivo de uma decisão e quer sugerir sem impor. Não usar em toda pergunta, só quando realmente não tem visibilidade do contexto ou motivação por trás da escolha)
-
-**Para repetição de issue no mesmo PR:**
-- "Same here" (quando já comentou a mesma coisa em outro arquivo)
-- "Migrar para type" (quando é a mesma issue, ser ultra-conciso)
-
-**Para TODOs/FIXMEs (tracking):**
-- "Consegue criar uma task no Jira? Só pra não perder tracking"
-- "Acho que vale um card no Jira pra isso, senão perde no limbo"
-- Usar quando encontrar TODO, FIXME, ou qualquer coisa que precisa ser resolvida depois mas pode ser esquecida. Tom simples, sem formalidade.
-
-**Para documentação:**
-- "Eu acho que esse tipo de doc fica defasado muito rápido, acho melhor [alternativa]."
-- "Se isso realmente importa, eu registraria como ADR e não no readme."
-- "Essa documentação fica defasada facilmente, tem detalhes como [X] que deveriam ser ADR."
-
-### Code suggestions
-- Quando sugerir código, incluir um snippet concreto. Não ficar no abstrato.
-- O snippet deve ser funcional, type-safe, e usar o estilo do projeto.
-- Formato: "Eu faria algo assim:" seguido do bloco de código.
-- Quando usar exhaustive check: sempre mostrar o padrão `const _exhaustive: never = x;`
-
-### Severidade
-
-Mapear a severidade pelo tom natural:
-- **critica**: "Isso aqui é meio perigoso", "pode ter falso positivo", "vai gerar erro"
-- **importante**: "Eu recomendo", "Sugiro", "Acho que vale"
-- **sugestão**: "O que acha de", "Não vale", "Não custa nada eu acho, mas vale"
-- **pergunta**: "Algum motivo pra não", "Entendo que...né?", "É intencional?"
+Seguir EXATAMENTE o estilo definido na skill `my-voice` (`.claude/skills/my-voice/SKILL.md`).
+Ler e aplicar todas as regras de tom, fraseamento, e linguagem definidas lá.
 
 ## Princípios do Reviewer
 
