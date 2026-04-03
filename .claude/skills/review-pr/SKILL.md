@@ -5,7 +5,7 @@ description: Code review skill that analyzes PRs and generates an issues list fo
 
 # Code Review
 
-Skill de code review que pensa como o usuário. Programação funcional, type-safety, simplicidade, e comentários em pt-BR direto ao ponto.
+Code review skill that thinks like the user. Functional programming, type-safety, simplicity, and comments that are direct and to the point.
 
 ## Invocation
 
@@ -13,153 +13,153 @@ Skill de code review que pensa como o usuário. Programação funcional, type-sa
 /review [low|mid|high] <pr-url-or-number>
 ```
 
-- Se o nível não for especificado, usar `mid` como padrão.
-- Se a URL/número não for passada, perguntar.
-- O argumento pode ser uma URL completa do GitHub ou `owner/repo#number`.
+- If the level is not specified, default to `mid`.
+- If the URL/number is not provided, ask for it.
+- The argument can be a full GitHub URL or `owner/repo#number`.
 
 ## Review Levels
 
-### low — Bug fixes e PRs pequenos
-- Foco em bugs, erros de lógica, typos, regressões óbvias.
-- Não comentar sobre estilo, organização ou naming.
-- Máximo ~5 issues. Ser rápido e pragmático.
+### low: Bug fixes and small PRs
+- Focus on bugs, logic errors, typos, obvious regressions.
+- Don't comment on style, organization, or naming.
+- Max ~5 issues. Be fast and pragmatic.
 
-### mid — Qualidade + velocidade (padrão)
-- Tudo do `low` +
-- Type-safety: uso de `any`, castings ruins, `interface` onde `type` bastaria.
-- Simplicidade: código imperativo que poderia ser funcional, mutabilidade desnecessária.
-- Colocation: tipos separados sem necessidade, imports desnecessários.
-- Testes: cobertura faltando, testes que poderiam ser mais eficientes.
-- Não rushar, mas não ser perfeccionista. Bom senso.
+### mid: Quality + speed (default)
+- Everything from `low` +
+- Type-safety: usage of `any`, bad castings, `interface` where `type` would suffice.
+- Simplicity: imperative code that could be functional, unnecessary mutability.
+- Colocation: types in separate files without need, unnecessary imports.
+- Tests: missing coverage, tests that could be more efficient.
+- Don't rush, but don't be a perfectionist. Use good judgment.
 
-### high — Qualidade máxima
-- Tudo do `mid` +
-- Arquitetura: acoplamento, responsabilidade, organização de módulos.
-- Performance: loops desnecessários, Promise.all vs allSettled, alocações dentro de loops.
-- Segurança: path traversal, input validation em boundaries.
-- Documentação: README vs ADR vs JSDoc, docs que envelhecem mal.
-- Exhaustive checks com `never` em switches.
-- Sugestões de bibliotecas leves se resolverem o problema melhor.
-- Cobertura de edge cases nos testes.
+### high: Maximum quality
+- Everything from `mid` +
+- Architecture: coupling, responsibility, module organization.
+- Performance: unnecessary loops, Promise.all vs allSettled, allocations inside loops.
+- Security: path traversal, input validation at boundaries.
+- Documentation: README vs ADR vs JSDoc, docs that age poorly.
+- Exhaustive checks with `never` in switches.
+- Suggestions for lightweight libraries if they solve the problem better.
+- Edge case coverage in tests.
 
-## Contexto de execução
+## Execution context
 
-A skill é SEMPRE chamada dentro do repositório do PR, na branch que será revisada. Ou seja:
-- O código está disponível localmente. Ler arquivos diretamente com Read ao invés de depender só do diff.
-- Não é necessário clonar, fazer checkout, ou mudar de branch.
-- Isso permite análise mais profunda: entender o contexto ao redor do código alterado, verificar se tipos existem, se convenções do projeto estão sendo seguidas, etc.
+The skill is ALWAYS called from within the PR's repository, on the branch being reviewed. This means:
+- The code is available locally. Read files directly with Read instead of relying only on the diff.
+- No need to clone, checkout, or switch branches.
+- This allows deeper analysis: understanding the context around changed code, verifying that types exist, checking if project conventions are being followed, etc.
 
 ## Workflow
 
-### Step 1 — Fetch PR metadata and identify changes
+### Step 1: Fetch PR metadata and identify changes
 
-Usar `gh` CLI para buscar metadata e lista de arquivos alterados:
+Use `gh` CLI to fetch metadata and list of changed files:
 
 ```bash
-# PR metadata (título, descrição, base branch)
+# PR metadata (title, description, base branch)
 gh pr view --json title,body,baseRefName,number,url
 
-# Lista de arquivos alterados com status (added/modified/removed)
+# List of changed files with status (added/modified/removed)
 gh pr diff --name-only
 
-# Diff completo para mapear linhas alteradas
+# Full diff to map changed lines
 gh pr diff
 ```
 
-Extrair: título, descrição, arquivos alterados, diff completo.
+Extract: title, description, changed files, full diff.
 
-### Step 2 — Read and analyze changed files
+### Step 2: Read and analyze changed files
 
-Para cada arquivo alterado:
-1. **Ler o arquivo completo localmente** com Read — não só o diff. Isso dá contexto do código ao redor.
-2. **Ler o diff do arquivo** para focar nas linhas que mudaram.
-3. **Analisar aplicando o checklist** do nível selecionado.
+For each changed file:
+1. **Read the full file locally** with Read, not just the diff. This gives context of the surrounding code.
+2. **Read the file's diff** to focus on the lines that changed.
+3. **Analyze applying the checklist** for the selected level.
 
-Ler o arquivo local permite:
-- Verificar se tipos/imports referenciados existem de fato
-- Entender o padrão do projeto (convenções, estilo existente)
-- Checar se há código duplicado que poderia ser reutilizado (ou vice-versa)
-- Avaliar o contexto completo de funções alteradas
+Reading the local file allows:
+- Verifying that referenced types/imports actually exist
+- Understanding the project's pattern (existing conventions, style)
+- Checking for duplicate code that could be reused (or vice-versa)
+- Evaluating the full context of changed functions
 
-#### Checklist universal (todos os níveis)
+#### Universal checklist (all levels)
 
-- [ ] Bugs, erros de lógica, off-by-one, null/undefined não tratado
-- [ ] Regressões óbvias
+- [ ] Bugs, logic errors, off-by-one, unhandled null/undefined
+- [ ] Obvious regressions
 
-#### Checklist mid+
+#### mid+ checklist
 
-- [ ] `interface` usada onde `type` bastaria. Preferir `type` SEMPRE, exceto para interface augmentation
-- [ ] `any` ou castings ruins (`as unknown as X`, etc.)
-- [ ] Código imperativo que seria mais limpo como funcional (map/filter/reduce vs for loops)
-- [ ] Mutabilidade desnecessária (let onde const basta, push em array que poderia ser map)
-- [ ] Tipos em arquivo separado sem necessidade. Colocation é melhor
-- [ ] Testes faltando para código novo
-- [ ] Testes que chamam a mesma função N vezes quando uma chamada + N expects bastaria
+- [ ] `interface` used where `type` would suffice. Prefer `type` ALWAYS, except for interface augmentation
+- [ ] `any` or bad castings (`as unknown as X`, etc.)
+- [ ] Imperative code that would be cleaner as functional (map/filter/reduce vs for loops)
+- [ ] Unnecessary mutability (let where const suffices, push on array that could be map)
+- [ ] Types in separate file without need. Colocation is better
+- [ ] Missing tests for new code
+- [ ] Tests that call the same function N times when one call + N expects would suffice
 
-#### Checklist high
+#### high checklist
 
-- [ ] Switch sem exhaustive check (`default: { const _exhaustive: never = x; }`)
-- [ ] Tipagem ampla demais (string onde union type bastaria)
-- [ ] Promise.all onde Promise.allSettled faria mais sentido
-- [ ] Path traversal ou input não validado em system boundaries
-- [ ] Instanciação de objetos dentro de loops (TextDecoder, RegExp, etc.)
-- [ ] README com informação que envelhece rápido. Sugerir ADR ou JSDoc
-- [ ] Documentação de decisão técnica que deveria ser ADR
-- [ ] Acoplamento desnecessário, às vezes duplicar é melhor que acoplar
-- [ ] Biblioteca leve que resolveria o problema sem reinventar
+- [ ] Switch without exhaustive check (`default: { const _exhaustive: never = x; }`)
+- [ ] Overly broad typing (string where union type would suffice)
+- [ ] Promise.all where Promise.allSettled would make more sense
+- [ ] Path traversal or unvalidated input at system boundaries
+- [ ] Object instantiation inside loops (TextDecoder, RegExp, etc.)
+- [ ] README with information that gets stale fast. Suggest ADR or JSDoc
+- [ ] Technical decision docs that should be an ADR
+- [ ] Unnecessary coupling, sometimes duplicating is better than coupling
+- [ ] Lightweight library that would solve the problem without reinventing
 
-### Step 3 — Generate issues list
+### Step 3: Generate issues list
 
-Gerar um arquivo `.md` com as issues encontradas, formatado para triagem:
+Generate a `.md` file with the issues found, formatted for triage:
 
 ```markdown
-# Code Review — PR #{number}: {title}
+# Code Review: PR #{number}: {title}
 
-**Nível**: {low|mid|high}
-**Arquivos analisados**: {count}
+**Level**: {low|mid|high}
+**Files analyzed**: {count}
 
 ## Issues
 
-### 1. [arquivo:linha] — Título curto da issue
-**Severidade**: critica | importante | sugestão | pergunta
-**Comentário**:
-> {comentário no estilo do usuário, em pt-BR}
+### 1. [file:line]: Short issue title
+**Severity**: critical | important | suggestion | question
+**Comment**:
+> {comment in the user's style}
 
-**Sugestão de código** (se aplicável):
+**Code suggestion** (if applicable):
 \`\`\`typescript
-// código sugerido
+// suggested code
 \`\`\`
 
 ---
 
-### 2. [arquivo:linha] — ...
+### 2. [file:line]: ...
 
 ---
 
-## Resumo
-- {N} issues encontradas
-- {N} criticas, {N} importantes, {N} sugestões, {N} perguntas
+## Summary
+- {N} issues found
+- {N} critical, {N} important, {N} suggestions, {N} questions
 ```
 
-Salvar o arquivo como `review-pr-{number}.md` no diretório atual.
+Save the file as `review-pr-{number}.md` in the current directory.
 
-Ao final, exibir um resumo para o usuário e perguntar se quer editar/remover alguma issue antes de submeter com `/review-submit`.
+At the end, display a summary and ask if the user wants to edit/remove any issues before submitting with `/review-submit`.
 
-## Estilo de Escrita dos Comentários
+## Comment writing style
 
-Seguir EXATAMENTE o estilo definido na skill `my-voice` (`.claude/skills/my-voice/SKILL.md`).
-Ler e aplicar todas as regras de tom, fraseamento, e linguagem definidas lá.
+Follow EXACTLY the style defined in the `my-voice` skill (`.claude/skills/my-voice/SKILL.md`).
+Read and apply all tone, phrasing, and language rules defined there.
 
-## Princípios do Reviewer
+## Reviewer principles
 
-Estes são os valores técnicos que guiam o review:
+These are the technical values that guide the review:
 
-1. **FP > OO/Imperativo**: Preferir map/filter/reduce, imutabilidade, composição de funções. Evitar classes, loops imperativos, mutação.
-2. **Type-safety**: `type` > `interface`. Exhaustive checks. Evitar `any`. Tipagem precisa (union types > string).
-3. **Simplicidade**: Código deve ser fácil de ler. Quebrar funções grandes. Colocation de tipos.
-4. **Duplicar > Acoplar**: Quando fizer sentido, duplicar é melhor que criar abstração prematura.
-5. **Bibliotecas leves**: Se uma lib leve resolve o problema sem pesar o bundle, adotar.
-6. **Convenções do projeto**: Seguir o que o projeto já faz. Não impor estilo externo.
-7. **Testes eficientes**: Uma chamada + N expects > N chamadas redundantes.
-8. **Documentação que dura**: JSDoc > README para APIs. ADR para decisões. Evitar docs que envelhecem.
-9. **Segurança em boundaries**: Validar em system boundaries, não em código interno.
+1. **FP > OO/Imperative**: Prefer map/filter/reduce, immutability, function composition. Avoid classes, imperative loops, mutation.
+2. **Type-safety**: `type` > `interface`. Exhaustive checks. Avoid `any`. Precise typing (union types > string).
+3. **Simplicity**: Code should be easy to read. Break up large functions. Colocate types.
+4. **Duplicate > Couple**: When it makes sense, duplicating is better than premature abstraction.
+5. **Lightweight libraries**: If a light library solves the problem without bloating the bundle, adopt it.
+6. **Project conventions**: Follow what the project already does. Don't impose external style.
+7. **Efficient tests**: One call + N expects > N redundant calls.
+8. **Documentation that lasts**: JSDoc > README for APIs. ADR for decisions. Avoid docs that age poorly.
+9. **Security at boundaries**: Validate at system boundaries, not in internal code.

@@ -6,6 +6,12 @@ You are an expert engineering consultant.
 
 ---
 
+## Language
+
+All skills, docs, and generated content in this project MUST be written in English (en-US). This includes skill descriptions, CLAUDE.md, memory files, and any prose output.
+
+---
+
 ## Skills & Commands
 
 Skills are auto-discovered by Claude. Commands (`/cmd`) invoke them manually.
@@ -14,7 +20,10 @@ Skills are auto-discovered by Claude. Commands (`/cmd`) invoke them manually.
 |---------|-------|-------|---------|
 | `/commit` | commit | haiku | Stage, commit (conventional), push |
 | `/human-writing` | human-writing | default | Rewrite/write docs with natural, human-readable prose |
-| `/review` | review-pr | default | Code review com triagem — `/review [low\|mid\|high] <pr>` |
-| `/review-submit` | review-submit | default | Envia comments do review para o PR via gh CLI |
-| `/pr-respond` | pr-respond | default | Responde comments de review e endereça feedback em PRs |
-| *(auto)* | my-voice | -- | Estilo de comunicação do usuário (building block) |
+| `/review` | review-pr | default | Code review with triage. `/review [low\|mid\|high] <pr>` |
+| `/review-submit` | review-submit | default | Submit review comments to the PR via gh CLI |
+| `/pr-respond` | pr-respond | default | Respond to review comments and address feedback on PRs |
+| `/worktree` | worktree | default | Create worktree with .env copy and dependency install |
+| *(auto)* | context7-mcp | -- | Fetch current docs via Context7 MCP for libs/frameworks |
+| *(auto)* | grill-me | -- | Relentless interview about the user's plan/design |
+| *(auto)* | my-voice | -- | User's communication style (building block) |

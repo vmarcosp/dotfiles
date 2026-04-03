@@ -1,17 +1,17 @@
 ---
 name: pr-respond
-description: Responde comentários de review e endereça feedback em PRs. Lê comments pendentes, categoriza, ajuda a escrever respostas na voz do usuário, faz mudanças de código/docs quando necessário, e posta via gh CLI. Funciona com PRs de código e de documentos (RFCs, ADRs). Usage - /pr-respond <pr-url-or-number>
+description: Responds to review comments and addresses feedback on PRs. Reads pending comments, categorizes them, helps write responses in the user's voice, makes code/doc changes when needed, and posts via gh CLI. Works with code PRs and document PRs (RFCs, ADRs). Usage - /pr-respond <pr-url-or-number>
 user-invocable: true
 ---
 
 # PR Respond
 
-Skill para responder comentários de review e endereçar feedback em PRs do usuário. Funciona com PRs de código e de documentos (RFCs, ADRs).
+Skill for responding to review comments and addressing feedback on the user's PRs. Works with code PRs and document PRs (RFCs, ADRs).
 
-## Voz
+## Voice
 
-Todas as respostas DEVEM seguir o estilo definido na skill `my-voice` (`.claude/skills/my-voice/SKILL.md`).
-Ler e aplicar todas as regras de tom, fraseamento e linguagem definidas lá.
+All responses MUST follow the style defined in the `my-voice` skill (`.claude/skills/my-voice/SKILL.md`).
+Read and apply all tone, phrasing, and language rules defined there.
 
 ## Invocation
 
@@ -19,171 +19,171 @@ Ler e aplicar todas as regras de tom, fraseamento e linguagem definidas lá.
 /pr-respond <pr-url-or-number>
 ```
 
-- Aceita URL completa do GitHub ou `owner/repo#number`.
-- Se não for passado, perguntar.
+- Accepts a full GitHub URL or `owner/repo#number`.
+- If not provided, ask for it.
 
-## Contexto de execução
+## Execution context
 
-A skill é SEMPRE chamada dentro do repositório do PR, na branch do PR. Ou seja:
-- O código está disponível localmente. Ler arquivos diretamente com Read.
-- Não é necessário clonar, fazer checkout, ou mudar de branch.
+The skill is ALWAYS called from within the PR's repository, on the PR's branch. This means:
+- The code is available locally. Read files directly with Read.
+- No need to clone, checkout, or switch branches.
 
 ## Workflow
 
 ### Step 1: Fetch PR context
 
-Buscar metadata e todos os comentários pendentes:
+Fetch metadata and all pending comments:
 
 ```bash
-# Metadata do PR
+# PR metadata
 gh pr view <number> --json title,body,baseRefName,number,url,state,headRefName
 
-# Comentários de review inline (com threads)
+# Inline review comments (with threads)
 gh api repos/{owner}/{repo}/pulls/{number}/comments --paginate
 
-# Comentários gerais do PR (conversation tab)
+# General PR comments (conversation tab)
 gh api repos/{owner}/{repo}/issues/{number}/comments --paginate
 
 # Reviews (summaries)
 gh api repos/{owner}/{repo}/pulls/{number}/reviews --paginate
 ```
 
-Coletar: todos os comentários de review, threads de discussão, comments inline.
+Collect: all review comments, discussion threads, inline comments.
 
-### Step 2: Categorizar comments
+### Step 2: Categorize comments
 
-Para cada comentário/thread, classificar:
+For each comment/thread, classify:
 
-| Tag | Descrição | Ação esperada |
-|-----|-----------|---------------|
-| `[CODE]` | Pedido de mudança em código | Alterar código + responder |
-| `[DOC]` | Pedido de mudança em documento (RFC/ADR/README) | Alterar doc + responder |
-| `[DISCUSS]` | Ponto que precisa de resposta/discussão | Responder com reasoning |
-| `[QUESTION]` | Pergunta que precisa de resposta | Responder diretamente |
-| `[NIT]` | Estilo, formatação, minor | Fix rápido + "Feito" |
+| Tag | Description | Expected action |
+|-----|-------------|-----------------|
+| `[CODE]` | Code change request | Change code + respond |
+| `[DOC]` | Document change request (RFC/ADR/README) | Change doc + respond |
+| `[DISCUSS]` | Point that needs a response/discussion | Respond with reasoning |
+| `[QUESTION]` | Question that needs an answer | Respond directly |
+| `[NIT]` | Style, formatting, minor | Quick fix + "Done" |
 
-Ignorar:
-- Comentários já respondidos pelo usuário
-- Threads já resolvidas
-- Comentários do próprio usuário
+Ignore:
+- Comments already responded to by the user
+- Already resolved threads
+- Comments from the user themselves
 
-### Step 3: Apresentar triagem ao usuário
+### Step 3: Present triage to the user
 
 ```
 PR #{number} - {title}
 
-Comentários pendentes:
+Pending comments:
 
-[CODE] 1. @reviewer em arquivo.ts:42
-       "Sugiro usar X ao invés de Y"
-       -> Ação: mudar código
+[CODE] 1. @reviewer in file.ts:42
+       "I'd suggest using X instead of Y"
+       -> Action: change code
 
-[DISCUSS] 2. @reviewer em arquivo.ts:10
-          "Não entendi a motivação..."
-          -> Ação: responder explicando
+[DISCUSS] 2. @reviewer in file.ts:10
+          "I don't understand the motivation..."
+          -> Action: respond with explanation
 
-[NIT] 3. @reviewer em styles.css:5
-      "Faltou ponto e vírgula"
-      -> Ação: fix rápido
+[NIT] 3. @reviewer in styles.css:5
+      "Missing semicolon"
+      -> Action: quick fix
 
-Como quer proceder? (todos / lista de números / pular)
+How do you want to proceed? (all / list of numbers / skip)
 ```
 
-Aguardar resposta do usuário.
+Wait for user response.
 
-### Step 4: Endereçar cada item selecionado
+### Step 4: Address each selected item
 
-Para cada item, na ordem:
+For each item, in order:
 
-**`[CODE]` e `[DOC]`**: Mudanças em arquivos
-1. Ler o arquivo completo localmente com Read
-2. Entender o contexto ao redor da mudança pedida
-3. Fazer a alteração
-4. Draftar uma resposta breve confirmando a mudança
-5. Mostrar o draft pro usuário
+**`[CODE]` and `[DOC]`**: File changes
+1. Read the full file locally with Read
+2. Understand the context around the requested change
+3. Make the change
+4. Draft a brief response confirming the change
+5. Show the draft to the user
 
-**`[DISCUSS]` e `[QUESTION]`**: Respostas textuais
-1. Ler o contexto completo da thread
-2. Se for sobre código, ler o arquivo relevante
-3. Draftar a resposta na voz do usuário
-4. Mostrar o draft pro usuário aprovar/editar antes de postar
+**`[DISCUSS]` and `[QUESTION]`**: Text responses
+1. Read the full thread context
+2. If it's about code, read the relevant file
+3. Draft the response in the user's voice
+4. Show the draft for the user to approve/edit before posting
 
-**`[NIT]`**: Fixes rápidos
-1. Fazer o fix
-2. Resposta automática: "Feito" ou "Ajustado"
+**`[NIT]`**: Quick fixes
+1. Make the fix
+2. Automatic response: "Done" or "Fixed"
 
-### Step 5: Postar respostas
+### Step 5: Post responses
 
-Para cada item endereçado, responder na thread específica:
+For each addressed item, reply in the specific thread:
 
 ```bash
-# Reply em thread de review comment inline
+# Reply to inline review comment thread
 gh api repos/{owner}/{repo}/pulls/{number}/comments/{comment_id}/replies \
   --method POST \
   -f body="{response}"
 
-# Reply em comment geral do PR
+# Reply to general PR comment
 gh api repos/{owner}/{repo}/issues/{number}/comments \
   --method POST \
   -f body="{response}"
 ```
 
-Nunca postar respostas de `[DISCUSS]` ou `[QUESTION]` sem aprovação explícita do usuário.
+Never post `[DISCUSS]` or `[QUESTION]` responses without explicit user approval.
 
-### Step 6: Commit e push
+### Step 6: Commit and push
 
-Se houve mudanças de código/doc:
-1. Mostrar ao usuário os arquivos alterados
-2. Perguntar se quer commitar e pushar agora
-3. Se sim, usar o flow de commit (stage, commit com mensagem descritiva, push)
+If code/doc changes were made:
+1. Show the user the changed files
+2. Ask if they want to commit and push now
+3. If yes, use the commit flow (stage, commit with descriptive message, push)
 
-### Step 7: Resumo
+### Step 7: Summary
 
 ```
-PR #{number} atualizado:
-- {N} mudanças de código/doc feitas
-- {N} respostas postadas
-- {N} items pulados
+PR #{number} updated:
+- {N} code/doc changes made
+- {N} responses posted
+- {N} items skipped
 
 Link: {pr_url}
 ```
 
-## Padrões de resposta para PRs
+## Response patterns for PRs
 
-Complementam as regras gerais de `my-voice` com padrões específicos de resposta a feedback:
+Complement the general `my-voice` rules with patterns specific to responding to feedback:
 
-### Concordando com feedback
-- "Faz sentido, ajustei."
-- "Boa, mudei."
-- "Concordo, feito."
+### Agreeing with feedback
+- "Makes sense, fixed."
+- "Good call, changed."
+- "Agreed, done."
 
-### Concordando parcialmente
-- "Entendo o ponto, mas [razão]. Ajustei [parte que faz sentido] e mantive [parte] porque [motivo]."
-- "Faz sentido pra [caso X], ajustei. Pra [caso Y] eu preferi manter porque [razão]."
+### Partially agreeing
+- "I see the point, but [reason]. I fixed [part that makes sense] and kept [part] because [reason]."
+- "Makes sense for [case X], fixed. For [case Y] I preferred to keep it because [reason]."
 
-### Pushback (discordando respeitosamente)
-- "Eu pensei nisso, mas [razão para a escolha atual]. O que acha?"
-- "Nesse caso eu prefiro manter porque [razão]. Mas se insistir eu mudo."
-- "Entendo a preocupação, mas [contexto que o reviewer talvez não tenha]. Faz sentido?"
+### Pushback (respectfully disagreeing)
+- "I thought about that, but [reason for the current choice]. What do you think?"
+- "In this case I'd prefer to keep it because [reason]. But if you insist I'll change it."
+- "I understand the concern, but [context the reviewer might not have]. Does that make sense?"
 
-### Oversight (reviewer pegou algo que escapou)
-- "Boa catch, corrigido."
-- "Escapou, valeu. Ajustado."
-- "Boa, nem tinha visto. Feito."
+### Oversight (reviewer caught something that slipped)
+- "Good catch, fixed."
+- "Slipped through, thanks. Fixed."
+- "Good one, hadn't noticed. Done."
 
 ### Nits
-- "Feito."
-- "Ajustado."
+- "Done."
+- "Fixed."
 
-### Para RFCs e ADRs
-Respostas tendem a ser mais longas e com mais reasoning:
-- "Bom ponto. A motivação era [X]. Uma alternativa seria [Y], mas eu descartei porque [Z]. Faz sentido ou tu vê algo que eu não tô vendo?"
-- "Concordo que [observação do reviewer]. Atualizei a seção [X] pra refletir isso."
-- "Isso é uma trade-off consciente. [Explicação]. Se quiser eu documento melhor na seção de trade-offs."
+### For RFCs and ADRs
+Responses tend to be longer with more reasoning:
+- "Good point. The motivation was [X]. An alternative would be [Y], but I discarded it because [Z]. Does that make sense or do you see something I'm missing?"
+- "Agreed that [reviewer's observation]. Updated section [X] to reflect that."
+- "That's a conscious trade-off. [Explanation]. If you want I can document it better in the trade-offs section."
 
 ## Error handling
 
-- Se `gh` não estiver autenticado, informar o usuário.
-- Se um comment thread não for encontrado (deletado/outdated), pular e reportar.
-- Se houver conflito com mudanças recentes, avisar o usuário.
-- Nunca postar resposta de discussão sem aprovação do usuário.
+- If `gh` is not authenticated, inform the user.
+- If a comment thread is not found (deleted/outdated), skip and report.
+- If there are conflicts with recent changes, warn the user.
+- Never post a discussion response without user approval.

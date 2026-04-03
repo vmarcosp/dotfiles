@@ -120,11 +120,6 @@ A good doc alternates between: context (why), mechanism (how), example (show me)
 - Use contractions naturally: "don't", "it's", "won't". Not using them sounds stiff.
 - Prefer active voice: "The agent validates the schema" not "The schema is validated by the agent."
 
-### Portuguese (pt-BR)
-- Avoid "outrossim", "destarte", "mister", "necessariamente". Use everyday Portuguese.
-- Avoid calques from English: "enderecar o problema" (use "resolver"), "alavancar" (use "usar", "aproveitar").
-- Contractions are natural: "do", "no", "na", "pelo". Use them.
-- Keep the same direct, clear tone. Portuguese technical writing tends to be wordier than English. Fight that tendency.
 
 ## Quality bar
 
