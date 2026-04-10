@@ -1,14 +1,14 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
-// Everforest palette
+// Catppuccin Mocha palette
 const colors = {
-  bg0: '#272E33',
-  bg1: '#2E383C',
-  bg2: '#374145',
-  fg: '#D3C6AA',
-  grey0: '#859289',
-  grey1: '#9DA9A0',
-  grey2: '#D3C6AA',
+  bg0: '#1E1E2E',
+  bg1: '#181825',
+  bg2: '#313244',
+  fg: '#CDD6F4',
+  grey0: '#6C7086',
+  grey1: '#9399B2',
+  grey2: '#BAC2DE',
 }
 
 const Window = ({ type, number, name }: WindowConfig) => {

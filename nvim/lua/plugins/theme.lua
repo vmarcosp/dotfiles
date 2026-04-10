@@ -1,5 +1,5 @@
-local everforest = require("themes/everforest")
+local catppuccin = require("themes/catppuccin")
 
 return {
-	everforest,
+	catppuccin,
 }
