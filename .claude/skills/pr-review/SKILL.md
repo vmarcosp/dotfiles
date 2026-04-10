@@ -1,6 +1,6 @@
 ---
-name: review
-description: Code review skill that analyzes PRs and generates an issues list for triage. Supports three review levels (low, mid, high). Triggers when the user wants to review a PR, says "/review", or asks for code review. Usage - /review [low|mid|high] <pr-url-or-number>
+name: pr-review
+description: Code review skill that analyzes PRs and generates an issues list for triage. Supports three review levels (low, mid, high). Triggers when the user wants to review a PR, says "/pr-review", or asks for code review. Usage - /pr-review [low|mid|high] <pr-url-or-number>
 ---
 
 # Code Review
@@ -10,7 +10,7 @@ Code review skill that thinks like the user. Functional programming, type-safety
 ## Invocation
 
 ```
-/review [low|mid|high] <pr-url-or-number>
+/pr-review [low|mid|high] <pr-url-or-number>
 ```
 
 - If the level is not specified, default to `mid`.
@@ -51,13 +51,19 @@ The skill is ALWAYS called from within the PR's repository, on the branch being 
 
 ## Workflow
 
-### Step 1: Fetch PR metadata and identify changes
+### Step 1: Fetch PR metadata, existing comments, and identify changes
 
-Use `gh` CLI to fetch metadata and list of changed files:
+Use `gh` CLI to fetch metadata, existing review comments, and list of changed files:
 
 ```bash
 # PR metadata (title, description, base branch)
 gh pr view --json title,body,baseRefName,number,url
+
+# Existing review comments from other reviewers
+gh api repos/{owner}/{repo}/pulls/{number}/comments --jq '[.[] | {id, user: .user.login, body, path, line}]'
+
+# General PR comments (issue-style)
+gh api repos/{owner}/{repo}/issues/{number}/comments --jq '[.[] | {id, user: .user.login, body}]'
 
 # List of changed files with status (added/modified/removed)
 gh pr diff --name-only
@@ -66,7 +72,25 @@ gh pr diff --name-only
 gh pr diff
 ```
 
-Extract: title, description, changed files, full diff.
+Extract: title, description, changed files, full diff, and existing comments.
+
+**React to existing comments**: After reading comments from other reviewers, react with 👍 to any comment you agree with:
+
+```bash
+gh api repos/{owner}/{repo}/pulls/comments/{comment_id}/reactions \
+  --method POST \
+  --field content='+1'
+```
+
+For general PR comments:
+
+```bash
+gh api repos/{owner}/{repo}/issues/comments/{comment_id}/reactions \
+  --method POST \
+  --field content='+1'
+```
+
+Only react if you genuinely agree after evaluating the comment against your reviewer principles. Don't react to every comment — only the ones you'd have made yourself.
 
 ### Step 2: Read and analyze changed files
 
@@ -143,7 +167,46 @@ Generate a `.md` file with the issues found, formatted for triage:
 
 Save the file as `review-pr-{number}.md` in the current directory.
 
-At the end, display a summary and ask if the user wants to edit/remove any issues before submitting with `/review-submit`.
+At the end, display a summary and ask if the user wants to edit/remove any issues before submitting with `/pr-submit`.
+
+### Step 4: Post a top-level PR comment with the review conclusion
+
+After generating the issues list, post a single top-level comment on the PR summarizing the verdict. Use `gh` CLI:
+
+```bash
+gh pr comment {number} --body "..."
+```
+
+The comment body depends on what was found:
+
+#### No issues (or only nitpicks you chose not to file)
+
+```
+LGTM
+```
+
+#### Only minor, non-blocking issues
+
+Vary the phrasing naturally. Examples that match the voice:
+
+- `LGTM, just a couple of small things. Nothing blocking.`
+- `LGTM. Left a comment or two, but nothing that should hold this up.`
+- `LGTM. Left a minor note, feel free to take it or leave it.`
+
+#### Blocking issues (critical or important severity)
+
+Vary the phrasing naturally. Examples that match the voice:
+
+- `Left some comments. A couple of things I'd want addressed before this lands.`
+- `I left a few change requests. Nothing too wild, but worth a look before merging.`
+- `Left some comments. There are a few things I'd fix before this goes in.`
+
+#### Rules for this comment
+
+- Always in **en-US**, regardless of the PR language.
+- Write in the voice defined in `my-voice`: direct, conversational, no corporate language.
+- Do not repeat the full list of issues here. This is a verdict, not a report.
+- Keep it to one or two sentences max.
 
 ## Comment writing style
 

@@ -16,11 +16,11 @@ Read and apply all tone, phrasing, and language rules defined there.
 ## Invocation
 
 ```
-/pr-respond <pr-url-or-number>
+/pr-respond [pr-url-or-number]
 ```
 
 - Accepts a full GitHub URL or `owner/repo#number`.
-- If not provided, ask for it.
+- If not provided, auto-detect the PR from the current branch by running `gh pr view --json number,url` in the working directory. If that succeeds, proceed with the detected PR without asking the user. If it fails (no PR found), ask for the PR number/URL.
 
 ## Execution context
 
@@ -67,46 +67,50 @@ Ignore:
 - Already resolved threads
 - Comments from the user themselves
 
-### Step 3: Present triage to the user
+### Step 3: Plan and execute autonomously
+
+Do NOT ask the user how to proceed. Process all pending comments automatically.
+
+Before starting, print a brief plan:
 
 ```
 PR #{number} - {title}
 
-Pending comments:
+Pending comments ({N} total):
 
-[CODE] 1. @reviewer in file.ts:42
-       "I'd suggest using X instead of Y"
-       -> Action: change code
+[CODE] 1. @reviewer in file.ts:42 — change X to Y
+[DISCUSS] 2. @reviewer in file.ts:10 — explain motivation
+[NIT] 3. @reviewer in styles.css:5 — missing semicolon
 
-[DISCUSS] 2. @reviewer in file.ts:10
-          "I don't understand the motivation..."
-          -> Action: respond with explanation
-
-[NIT] 3. @reviewer in styles.css:5
-      "Missing semicolon"
-      -> Action: quick fix
-
-How do you want to proceed? (all / list of numbers / skip)
+Processing all now...
 ```
 
-Wait for user response.
+Then execute immediately.
 
-### Step 4: Address each selected item
+### When to consult the user (exceptions)
+
+Stop and ask the user only when:
+- The request is **ambiguous**: the right fix is genuinely unclear and a wrong guess could introduce bugs or break behavior.
+- The change is **architecturally significant**: it would affect more than the current PR scope or require a design decision.
+- The feedback is **contradictory**: two reviewers disagree and there is no obvious right answer.
+- The required change is **destructive or risky**: deletes important logic, changes a public API contract, or could break other callers.
+
+For everything else — use judgment and proceed. If you're reasonably confident in what the reviewer wants, do it.
+
+### Step 4: Address each item
 
 For each item, in order:
 
 **`[CODE]` and `[DOC]`**: File changes
 1. Read the full file locally with Read
 2. Understand the context around the requested change
-3. Make the change
+3. Make the change using your best judgment
 4. Draft a brief response confirming the change
-5. Show the draft to the user
 
 **`[DISCUSS]` and `[QUESTION]`**: Text responses
 1. Read the full thread context
 2. If it's about code, read the relevant file
-3. Draft the response in the user's voice
-4. Show the draft for the user to approve/edit before posting
+3. Draft the response in the user's voice — post it directly
 
 **`[NIT]`**: Quick fixes
 1. Make the fix
@@ -128,14 +132,14 @@ gh api repos/{owner}/{repo}/issues/{number}/comments \
   -f body="{response}"
 ```
 
-Never post `[DISCUSS]` or `[QUESTION]` responses without explicit user approval.
+Post all responses automatically. No approval needed.
 
 ### Step 6: Commit and push
 
-If code/doc changes were made:
-1. Show the user the changed files
-2. Ask if they want to commit and push now
-3. If yes, use the commit flow (stage, commit with descriptive message, push)
+If code/doc changes were made, commit and push automatically:
+1. Stage changed files
+2. Commit with a descriptive conventional commit message
+3. Push to the PR branch
 
 ### Step 7: Summary
 

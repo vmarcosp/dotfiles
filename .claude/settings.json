@@ -13,6 +13,7 @@
       "Bash(rm -rf :*)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "Notification": [
       {
@@ -42,6 +43,5 @@
   },
   "alwaysThinkingEnabled": false,
   "effortLevel": "high",
-  "voiceEnabled": true,
-  "model": "sonnet"
+  "voiceEnabled": true
 }
