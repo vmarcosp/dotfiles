@@ -13,7 +13,7 @@
       "Bash(rm -rf :*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {

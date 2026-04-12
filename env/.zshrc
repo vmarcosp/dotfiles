@@ -82,3 +82,9 @@ alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
 
 # opencode
 export PATH=/Users/marcosoliveira/.opencode/bin:$PATH
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/marcosoliveira/.worktrees/faststore-ai-native-wt-docs-migrate-docs/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/marcosoliveira/.worktrees/faststore-ai-native-wt-docs-migrate-docs/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/marcosoliveira/.worktrees/faststore-ai-native-wt-docs-migrate-docs/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/marcosoliveira/.worktrees/faststore-ai-native-wt-docs-migrate-docs/google-cloud-sdk/completion.zsh.inc'; fi

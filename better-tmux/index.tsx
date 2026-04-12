@@ -2,18 +2,15 @@ import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
 // Catppuccin Mocha palette
 const colors = {
-  bg0: '#1E1E2E',
-  bg1: '#181825',
-  bg2: '#313244',
-  fg: '#CDD6F4',
-  grey0: '#6C7086',
-  grey1: '#9399B2',
-  grey2: '#BAC2DE',
+  bg0: '#000000',
+  fg0: '#fafafa',
+  fg1: '#878787',
+  fg2: '#3D3D3D'
 }
 
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
-    <Box padding={1} bg={'default'} fg={type === 'active' ? colors.fg : colors.grey1} bold>
+    <Box padding={1} bg={'default'} fg={type === 'active' ? colors.fg1 : colors.fg2} bold>
       {number}: {name}
     </Box>
   )

@@ -1,5 +1,5 @@
-local catppuccin = require("themes/catppuccin")
+local theme = require("themes/yugen")
 
 return {
-	catppuccin,
+	theme,
 }

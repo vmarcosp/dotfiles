@@ -13,11 +13,7 @@ return {
 	enabled = true,
 	width = 32,
 	preset = {
-		header = [[
-██▀▀▀▀▀▀▀▀▀▀▀▀▀██
-                
-██▄▄▄▄▄▄▄▄▄▄▄▄▄██
-]],
+		header = [[]],
 		keys = {
 			{ icon = "", key = "f", desc = "Find File", action = ":Telescope find_files" },
 			{
