@@ -1,0 +1,187 @@
+#!/usr/bin/env bash
+#
+# worktree - Create or remove git worktrees with automatic .env copy and dependency installation
+# Usage: worktree <branch-name> | worktree remove <branch-name>
+#
+
+set -e
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Get repo info
+get_repo_info() {
+    local repo_root repo_name
+    repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+        echo -e "${RED}Error: Not in a git repository${NC}" >&2
+        exit 1
+    }
+    repo_name=$(basename "$repo_root")
+    echo "$repo_root $repo_name"
+}
+
+# Get worktree path
+get_worktree_path() {
+    local repo_name="$1"
+    local branch_name="$2"
+    local sanitized_branch
+    sanitized_branch=$(echo "$branch_name" | tr '/' '-')
+    echo "$HOME/.worktrees/${repo_name}-wt-${sanitized_branch}"
+}
+
+# Copy .env files
+copy_env_files() {
+    local source_root="$1"
+    local worktree_path="$2"
+    local copied=()
+
+    # Find all .env* files recursively
+    while IFS= read -r -d '' envfile; do
+        local rel_path="${envfile#$source_root/}"
+        local target="$worktree_path/$rel_path"
+        local target_dir
+        target_dir=$(dirname "$target")
+
+        mkdir -p "$target_dir"
+        cp "$envfile" "$target"
+        copied+=("$rel_path")
+    done < <(find "$source_root" -type f -name ".env*" -print0 2>/dev/null)
+
+    if [ ${#copied[@]} -gt 0 ]; then
+        echo -e "${GREEN}Copied .env files:${NC}"
+        printf '  - %s\n' "${copied[@]}"
+    else
+        echo -e "${YELLOW}No .env files found to copy${NC}"
+    fi
+}
+
+# Install dependencies
+install_dependencies() {
+    local worktree_path="$1"
+    local package_manager=""
+
+    if [ -f "$worktree_path/pnpm-lock.yaml" ]; then
+        package_manager="pnpm"
+    elif [ -f "$worktree_path/package-lock.json" ]; then
+        package_manager="npm"
+    elif [ -f "$worktree_path/yarn.lock" ]; then
+        package_manager="yarn"
+    elif [ -f "$worktree_path/bun.lockb" ] || [ -f "$worktree_path/bun.lock" ]; then
+        package_manager="bun"
+    fi
+
+    if [ -n "$package_manager" ]; then
+        echo -e "${GREEN}Installing dependencies with $package_manager...${NC}"
+        (cd "$worktree_path" && $package_manager install)
+    else
+        echo -e "${YELLOW}No lockfile found, skipping dependency installation${NC}"
+    fi
+}
+
+# Create worktree
+create_worktree() {
+    local branch_name="$1"
+    local repo_info worktree_base worktree_path
+
+    read -r repo_root repo_name <<< "$(get_repo_info)"
+    worktree_base="$HOME/.worktrees"
+    worktree_path=$(get_worktree_path "$repo_name" "$branch_name")
+
+    # Create base directory
+    mkdir -p "$worktree_base"
+
+    # Check if worktree already exists
+    if [ -d "$worktree_path" ]; then
+        echo -e "${YELLOW}Worktree already exists at $worktree_path${NC}"
+        exit 1
+    fi
+
+    # Determine if branch exists
+    local git_ref
+    if git show-ref --verify --quiet "refs/heads/$branch_name" || \
+       git show-ref --verify --quiet "refs/remotes/origin/$branch_name"; then
+        git_ref="$branch_name"
+    else
+        git_ref="-b $branch_name"
+    fi
+
+    # Create worktree
+    echo -e "${GREEN}Creating worktree at $worktree_path...${NC}"
+    if ! git worktree add "$worktree_path" $git_ref 2>/dev/null; then
+        # Try with -b flag if it failed
+        if ! git worktree add -b "$branch_name" "$worktree_path"; then
+            echo -e "${RED}Failed to create worktree${NC}" >&2
+            exit 1
+        fi
+    fi
+
+    # Copy .env files
+    copy_env_files "$repo_root" "$worktree_path"
+
+    # Install dependencies
+    install_dependencies "$worktree_path"
+
+    echo ""
+    echo -e "${GREEN}Worktree created successfully!${NC}"
+    echo "  Path: $worktree_path"
+    echo "  Branch: $branch_name"
+}
+
+# Remove worktree
+remove_worktree() {
+    local branch_name="$1"
+    local repo_info worktree_path
+
+    read -r repo_root repo_name <<< "$(get_repo_info)"
+    worktree_path=$(get_worktree_path "$repo_name" "$branch_name")
+
+    if [ ! -d "$worktree_path" ]; then
+        echo -e "${RED}Worktree not found at $worktree_path${NC}" >&2
+        exit 1
+    fi
+
+    # Try to remove normally first
+    if git worktree remove "$worktree_path" 2>/dev/null; then
+        echo -e "${GREEN}Worktree removed:${NC} $worktree_path"
+        return 0
+    fi
+
+    # Check for uncommitted changes
+    echo -e "${YELLOW}Worktree has uncommitted changes.${NC}"
+    read -rp "Force remove? [y/N] " response
+    if [[ "$response" =~ ^[Yy]$ ]]; then
+        git worktree remove --force "$worktree_path"
+        echo -e "${GREEN}Worktree force-removed:${NC} $worktree_path"
+    else
+        echo "Aborted"
+        exit 1
+    fi
+}
+
+# Main
+case "${1:-}" in
+    --help|-h)
+        echo "Usage: worktree <branch-name>         Create a new worktree"
+        echo "       worktree remove <branch-name>  Remove a worktree"
+        exit 0
+        ;;
+    remove)
+        if [ -z "${2:-}" ]; then
+            echo -e "${RED}Error: branch name required${NC}" >&2
+            echo "Usage: worktree remove <branch-name>" >&2
+            exit 1
+        fi
+        remove_worktree "$2"
+        ;;
+    "")
+        echo -e "${RED}Error: branch name required${NC}" >&2
+        echo "Usage: worktree <branch-name> | worktree remove <branch-name>" >&2
+        exit 1
+        ;;
+    *)
+        create_worktree "$1"
+        ;;
+esac
