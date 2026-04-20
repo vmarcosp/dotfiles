@@ -119,6 +119,7 @@ Reading the local file allows:
 - [ ] Types in separate file without need. Colocation is better
 - [ ] Missing tests for new code
 - [ ] Tests that call the same function N times when one call + N expects would suffice
+- [ ] Functions with 2+ parameters that could use an options object instead (suggestion only — improves readability, named args, and easier future extension without position confusion)
 
 #### high checklist
 
@@ -226,3 +227,4 @@ These are the technical values that guide the review:
 7. **Efficient tests**: One call + N expects > N redundant calls.
 8. **Documentation that lasts**: JSDoc > README for APIs. ADR for decisions. Avoid docs that age poorly.
 9. **Security at boundaries**: Validate at system boundaries, not in internal code.
+10. **Options object over positional params**: Functions with 2+ parameters benefit from receiving a single options object. Named arguments eliminate position confusion, improve readability at call sites, and make future extension cheaper. Flag this as a suggestion, never a blocker.

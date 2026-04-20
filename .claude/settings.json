@@ -42,6 +42,6 @@
     "figma@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "voiceEnabled": true
 }
