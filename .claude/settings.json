@@ -13,7 +13,7 @@
       "Bash(rm -rf :*)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -39,9 +39,12 @@
     ]
   },
   "enabledPlugins": {
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
-  "effortLevel": "medium",
+  "effortLevel": "high",
+  "theme": "dark-ansi",
+  "editorMode": "vim",
   "voiceEnabled": true
 }
