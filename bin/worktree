@@ -128,6 +128,12 @@ create_worktree() {
     echo -e "${GREEN}Worktree created successfully!${NC}"
     echo "  Path: $worktree_path"
     echo "  Branch: $branch_name"
+
+    # Open a new tmux window for the worktree if inside a tmux session
+    if [ -n "${TMUX:-}" ]; then
+        tmux new-window -n "$branch_name" -c "$worktree_path"
+        echo -e "${GREEN}Switched to tmux window:${NC} $branch_name"
+    fi
 }
 
 # Remove worktree

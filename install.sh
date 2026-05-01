@@ -63,6 +63,7 @@ ln -sfn $PWD/.claude/commands ~/.claude/commands
 # -- global scripts (bin) --------------------
 mkdir -p ~/bin
 ln -s -f $PWD/bin/ai-notify ~/bin/ai-notify
+ln -s -f $PWD/bin/worktree ~/bin/worktree
 
 # -- nvm + custom nvm config for zsh ------
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
