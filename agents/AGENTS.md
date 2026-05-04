@@ -7,14 +7,15 @@ Personal macOS development environment for Marcos Oliveira. Everything is symlin
 ```
 dotfiles/
 ├── install.sh          # Bootstrap script
-├── CLAUDE.md           # Symlink to .agents/AGENTS.md
+├── CLAUDE.md           # Symlink to agents/AGENTS.md
 ├── env/                # Shell and git config
 ├── nvim/               # Neovim configuration
 ├── kitty/              # Kitty terminal config
 ├── tmux/               # tmux config
 ├── better-tmux/        # Custom tmux status bar (TypeScript + React)
 ├── bin/                # Utility scripts installed to ~/bin
-├── .agents/            # AI agent config (skills, rules, commands)
+├── agents/             # AI agent config (skills, rules, commands) — shared across tools
+├── .agents/            # Claude Code project-level agent config (dotfiles-specific)
 ├── .claude/            # Claude Code project-level settings
 ├── claude/             # Claude Code global settings
 ├── wallpapers/         # Desktop wallpapers
@@ -36,12 +37,12 @@ dotfiles/
 | `kitty/current-theme.conf` | `~/.config/kitty/current-theme.conf` |
 | `tmux/.tmux.conf` | `~/.tmux.conf` |
 | `better-tmux/` | `~/.config/better-tmux` |
-| `.agents/` | `~/.agents` |
-| `.agents/AGENTS.md` | `~/.claude/CLAUDE.md` |
-| `.agents/agents` | `~/.claude/agents` |
-| `.agents/skills` | `~/.claude/skills` |
-| `.agents/commands` | `~/.claude/commands` |
-| `.agents/rules` | `~/.claude/rules` |
+| `agents/` | `~/.agents` |
+| `agents/AGENTS.md` | `~/.claude/CLAUDE.md` |
+| `agents/agents` | `~/.claude/agents` |
+| `agents/skills` | `~/.claude/skills` |
+| `agents/commands` | `~/.claude/commands` |
+| `agents/rules` | `~/.claude/rules` |
 | `claude/settings.json` | `~/.claude/settings.json` |
 | `bin/ai-notify` | `~/bin/ai-notify` |
 | `bin/worktree` | `~/bin/worktree` |
@@ -111,26 +112,30 @@ Scripts installed to `~/bin` and available system-wide.
 
 `worktree` is a git worktree manager. It creates a worktree at `~/.worktrees/<repo>-wt-<branch>`, copies `.env*` files from the main repo, auto-detects the package manager (pnpm/npm/yarn/bun) and installs dependencies, and opens a new tmux window if inside a tmux session. Usage: `worktree <branch>` to create, `worktree remove <branch>` to delete.
 
-### .agents/
+### agents/
 
-The central config for AI tooling, shared across Claude Code and any other agent that follows the convention.
+The central config for AI tooling, shared across Claude Code and any other agent that follows the convention. Symlinked to `~/.agents` and its subdirectories to `~/.claude/`.
 
 ```
-.agents/
-├── AGENTS.md       # This file. Also the project CLAUDE.md via symlink.
+agents/
+├── AGENTS.md       # This file. Also the global ~/.claude/CLAUDE.md via symlink.
 ├── agents/         # Agent definitions (currently empty)
 ├── commands/       # Custom slash commands (currently empty)
 ├── rules/          # Always-applied rules
 └── skills/         # Reusable skills invoked via /skill-name
 ```
 
-**Rules** apply automatically to every conversation in this project:
+**Rules** apply automatically to every conversation:
 
 - `commit.md` — always use the `commit` skill; use conventional commits format; never amend published commits
 - `context7.md` — use Context7 MCP for any library or API documentation instead of relying on training data
 - `human-writing.md` — use the `human-writing` skill for any prose or document writing
 
 **Skills** are a mix of local implementations and symlinks to an external VTEX agents repo (for `implementing` and `specification`). Local skills include `commit`, `human-writing`, `worktree`, `my-voice`, `grill-me`, and `context7-mcp`.
+
+### .agents/
+
+Claude Code project-level agent config, scoped to the dotfiles repo. Claude Code reads this folder when working inside this project, allowing dotfiles-specific rules, skills, and commands that don't belong in the shared `agents/` folder.
 
 ### .claude/
 
@@ -161,8 +166,9 @@ Versioned screenshots used in `README.md`. Each version gets its own subfolder (
 - **Kitty theme**: update `kitty/current-theme.conf`
 - **Claude Code global settings**: edit `claude/settings.json`
 - **Claude Code project settings**: edit `.claude/settings.local.json`
-- **AI rules**: edit or add files in `.agents/rules/`
-- **New skills**: add a folder to `.agents/skills/`
+- **AI rules (global)**: edit or add files in `agents/rules/`
+- **New skills (global)**: add a folder to `agents/skills/`
+- **Dotfiles-specific rules or skills**: add to `.agents/` (project-scoped, not symlinked)
 - **Install script**: edit `install.sh` — symlinks and Homebrew packages are both here
 
 ## Prerequisites
