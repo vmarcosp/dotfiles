@@ -43,7 +43,7 @@
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
-  "effortLevel": "high",
+  "effortLevel": "medium",
   "theme": "dark-ansi",
   "editorMode": "vim",
   "voiceEnabled": true
