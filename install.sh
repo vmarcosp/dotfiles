@@ -51,14 +51,19 @@ ln -s -f $PWD/tmux/.tmux.conf ~/.tmux.conf
 ln -s -f $PWD/better-tmux ~/.config
 bun install --cwd ./better-tmux
 
+# -- agents (shared across AI tools) -------
+rm -rf ~/.agents
+ln -sfn $PWD/.agents ~/.agents
+
 # -- claude code ---------------------------
-rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands
+rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands ~/.claude/rules
 rm -f ~/.claude/CLAUDE.md ~/.claude/settings.json
 ln -s -f $PWD/.claude/CLAUDE.md ~/.claude/CLAUDE.md
 ln -s -f $PWD/.claude/settings.json ~/.claude/settings.json
-ln -sfn $PWD/.claude/agents ~/.claude/agents
-ln -sfn $PWD/.claude/skills ~/.claude/skills
-ln -sfn $PWD/.claude/commands ~/.claude/commands
+ln -sfn $PWD/.agents/agents ~/.claude/agents
+ln -sfn $PWD/.agents/skills ~/.claude/skills
+ln -sfn $PWD/.agents/commands ~/.claude/commands
+ln -sfn $PWD/.agents/rules ~/.claude/rules
 
 # -- global scripts (bin) --------------------
 mkdir -p ~/bin
