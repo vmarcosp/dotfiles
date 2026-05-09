@@ -21,7 +21,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/ai-notify waiting \"$CLAUDE_NOTIFICATION_MESSAGE\""
+            "command": "~/bin/ai-notify waiting \"$CLAUDE_NOTIFICATION_MESSAGE\" claude"
           }
         ]
       }
@@ -32,7 +32,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/bin/ai-notify done"
+            "command": "~/bin/ai-notify done \"\" claude"
           }
         ]
       }
