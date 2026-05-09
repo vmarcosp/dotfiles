@@ -2,11 +2,11 @@ local hour = tonumber(os.date("%H"))
 
 local greeting
 if hour < 12 then
-	greeting = "Good evening 󰖨"
+	greeting = "Good morning 󰖨"
 elseif hour < 18 then
 	greeting = "Good afternoon "
 else
-	greeting = "Good morning 󰖨"
+	greeting = "Good evening 󰖨"
 end
 
 return {
