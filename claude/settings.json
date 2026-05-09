@@ -14,30 +14,6 @@
     ]
   },
   "model": "opus",
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/bin/ai-notify waiting \"$CLAUDE_NOTIFICATION_MESSAGE\" claude"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/bin/ai-notify done \"\" claude"
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
