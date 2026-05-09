@@ -18,6 +18,7 @@ dotfiles/
 ├── .agents/            # Claude Code project-level agent config (dotfiles-specific)
 ├── .claude/            # Claude Code project-level settings
 ├── claude/             # Claude Code global settings
+├── opencode/           # Opencode config (plugins)
 ├── wallpapers/         # Desktop wallpapers
 ├── __assets/           # Versioned screenshots for README
 └── cs/                 # Counter-Strike autoexec (unrelated to dev setup)
@@ -44,9 +45,8 @@ dotfiles/
 | `agents/commands` | `~/.claude/commands` |
 | `agents/rules` | `~/.claude/rules` |
 | `claude/settings.json` | `~/.claude/settings.json` |
-| `bin/ai-notify` | `~/bin/ai-notify` |
 | `bin/worktree` | `~/bin/worktree` |
-| `.opencode/plugins` | `~/.opencode/plugins` |
+| `opencode/plugins` | `~/.opencode/plugins` |
 
 ## Theme: Yugen 幽玄
 
@@ -109,8 +109,6 @@ After editing `index.tsx`, pnpm rebuilds and tmux picks up the changes on next s
 
 Scripts installed to `~/bin` and available system-wide.
 
-`ai-notify` is a macOS notification helper used by Claude Code hooks. It accepts a type (`done`, `waiting`, `error`, `info`) and plays a corresponding system sound alongside a native notification. It's called automatically by the hooks in `claude/settings.json`.
-
 `worktree` is a git worktree manager. It creates a worktree at `~/.worktrees/<repo>-wt-<branch>`, copies `.env*` files from the main repo, auto-detects the package manager (pnpm/npm/yarn/bun) and installs dependencies, and opens a new tmux window if inside a tmux session. Usage: `worktree <branch>` to create, `worktree remove <branch>` to delete.
 
 ### agents/
@@ -148,7 +146,7 @@ Claude Code project-level settings. Not symlinked to `~/.claude` — this is the
 
 Global Claude Code settings symlinked to `~/.claude/settings.json`.
 
-Configures: Opus as the default model, vim editor mode, dark-ansi theme, and two hooks — a `Notification` hook that calls `ai-notify waiting` during long operations, and a `Stop` hook that calls `ai-notify done` when Claude finishes. Permissions allow Bash, Read, Write, and Edit while blocking destructive operations like `rm -rf`.
+Configures: Opus as the default model, vim editor mode, dark-ansi theme. Permissions allow Bash, Read, Write, and Edit while blocking destructive operations like `rm -rf`.
 
 ### wallpapers/
 
