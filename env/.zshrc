@@ -62,8 +62,10 @@ function commit-changelog() {
 
 alias vim="nvim"
 alias avante='NVIM_AVANTE_MODE=1 nvim -c "lua vim.defer_fn(function() require(\"avante.api\").zen_mode() end, 100)"'
+
 alias claudio="claude --model opus"
-alias claudin="claude --model sonnet"
+alias claude="claude --model sonnet"
+alias claudin="claude --model haiku"
 
 # pnpm
 export PNPM_HOME="/Users/marcosoliveira/Library/pnpm"
