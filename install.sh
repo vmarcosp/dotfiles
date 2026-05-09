@@ -114,6 +114,11 @@ ln -sfn "$DOTFILES/agents/skills" ~/.claude/skills
 ln -sfn "$DOTFILES/agents/commands" ~/.claude/commands
 ln -sfn "$DOTFILES/agents/rules" ~/.claude/rules
 
+# -- opencode -----------------------------------
+log "Linking opencode plugins"
+mkdir -p ~/.opencode
+ln -sfn "$DOTFILES/.opencode/plugins" ~/.opencode/plugins
+
 # -- global scripts (bin) --------------------
 log "Linking bin scripts"
 mkdir -p ~/bin

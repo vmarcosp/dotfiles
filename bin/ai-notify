@@ -13,33 +13,42 @@
 
 TYPE="${1:-done}"
 MESSAGE="${2:-}"
+AGENT="${3:-}"
+
+# Resolve display name for agent
+case "$AGENT" in
+  claude)   AGENT_NAME="Claude" ;;
+  cursor)   AGENT_NAME="Cursor" ;;
+  opencode) AGENT_NAME="OpenCode" ;;
+  *)        AGENT_NAME="${AGENT:-Agent}" ;;
+esac
 
 # Default messages per type
 case "$TYPE" in
   done)
     SOUND="/System/Library/Sounds/Blow.aiff"
     DEFAULT_MSG="Task completed"
-    TITLE="Claude Code ✅"
+    TITLE="$AGENT_NAME ✅"
     ;;
   waiting)
     SOUND="/System/Library/Sounds/Blow.aiff"
     DEFAULT_MSG="Need your attention"
-    TITLE="Claude Code ⏳"
+    TITLE="$AGENT_NAME ⏳"
     ;;
   error)
     SOUND="/System/Library/Sounds/Basso.aiff"
     DEFAULT_MSG="Something went wrong"
-    TITLE="Claude Code ❌"
+    TITLE="$AGENT_NAME ❌"
     ;;
   info)
     SOUND="/System/Library/Sounds/Pop.aiff"
     DEFAULT_MSG="FYI"
-    TITLE="Claude Code 💡"
+    TITLE="$AGENT_NAME 💡"
     ;;
   *)
     SOUND="/System/Library/Sounds/Blow.aiff"
     DEFAULT_MSG="Notification"
-    TITLE="Claude Code"
+    TITLE="$AGENT_NAME"
     ;;
 esac
 

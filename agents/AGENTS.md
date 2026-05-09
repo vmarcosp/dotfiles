@@ -46,6 +46,7 @@ dotfiles/
 | `claude/settings.json` | `~/.claude/settings.json` |
 | `bin/ai-notify` | `~/bin/ai-notify` |
 | `bin/worktree` | `~/bin/worktree` |
+| `.opencode/plugins` | `~/.opencode/plugins` |
 
 ## Theme: Yugen 幽玄
 
