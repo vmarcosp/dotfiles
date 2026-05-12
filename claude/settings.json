@@ -13,13 +13,13 @@
       "Bash(rm -rf :*)"
     ]
   },
-  "model": "opus",
+  "model": "opus[1m]",
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true
   },
   "alwaysThinkingEnabled": false,
-  "effortLevel": "medium",
+  "effortLevel": "xhigh",
   "theme": "dark-ansi",
   "editorMode": "vim",
   "voiceEnabled": true
