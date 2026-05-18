@@ -1,0 +1,683 @@
+/*
+ * to-html.css — the framework for /to-html artifacts.
+ *
+ * Class prefix is `th-` (to-html) to avoid collisions with Tailwind.
+ * All colors are hex literals. No var(), no @apply, no preprocessor.
+ *
+ * Palette (6 colors + grays):
+ *   #FAFAFA paper · #0A0A0A ink · #F8C8D8 pink / #FDE7EE pink-soft
+ *   #C8E6D0 mint · #FCE8B2 butter · #F5C2C2 blush
+ *   #F2F2F2 / #D6D6D6 / #8A8A8A / #3A3A3A grays
+ */
+
+/* ---------- typography scale ----------
+ *
+ * The model picks Tailwind sizes too freely; we fix the scale here so
+ * artifacts read with consistent hierarchy. Use these classes on every
+ * heading — do NOT set text-* utilities on headings inline.
+ */
+
+.th-h1 {
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 38px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #0A0A0A;
+}
+.th-h2 {
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 26px;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: #0A0A0A;
+}
+.th-h3 {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0A0A0A;
+  margin-bottom: 14px;
+}
+.th-h4 {
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #0A0A0A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.th-h5 {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-weight: 500;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #8A8A8A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.th-lede {
+  font-size: 15.5px;
+  color: #6B6A66;
+  max-width: 720px;
+  line-height: 1.55;
+}
+
+/* ---------- body baseline ----------
+ *
+ * Single muted gray for all running prose. Applied via .th-body on
+ * <main>. Tailwind's text-gray-700 (#3A3A3A) is too dark and makes
+ * body copy look heavier than section intros, breaking visual unity.
+ */
+
+.th-body {
+  color: #6B6A66;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.th-body p,
+.th-body li,
+.th-body dd {
+  color: #6B6A66;
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.th-body strong,
+.th-body b { color: #0A0A0A; font-weight: 600; }
+.th-body code {
+  color: #B85A3E;
+  font-weight: 500;
+  font-size: 0.95em;
+  background: #F5EDE9;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+}
+
+/* ---------- section / subsection rhythm ----------
+ *
+ * Centralised vertical spacing. NEVER set mb-* utilities on a section
+ * wrapper — wrap content in these classes instead. This is the single
+ * biggest source of inconsistent rhythm in generated artifacts.
+ */
+
+.th-section { margin-bottom: 64px; }
+.th-subsection {
+  margin-bottom: 40px;
+  padding-top: 28px;
+  border-top: 1px solid #D6D6D6;
+}
+/* The first subsection inside a section sits flush against the section
+ * intro — no top fence needed. */
+.th-section > .th-subsection:first-of-type,
+.th-sec-intro + .th-subsection {
+  padding-top: 0;
+  border-top: none;
+}
+
+.th-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+.th-sec-num {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 12px;
+  background: #FDE7EE;
+  color: #0A0A0A;
+  padding: 3px 9px;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+.th-sec-intro {
+  font-size: 14.5px;
+  color: #6B6A66;
+  max-width: 720px;
+  margin-bottom: 28px;
+  line-height: 1.55;
+}
+
+/* Vertical stack: gives every direct child a top margin. Use on
+ * containers where children are paragraphs/cards/blocks of mixed type. */
+.th-stack > * + * { margin-top: 16px; }
+.th-stack-tight > * + * { margin-top: 8px; }
+.th-stack-loose > * + * { margin-top: 24px; }
+
+/* ---------- prompt box ---------- */
+
+.th-prompt-box {
+  background: #F2F2F2;
+  border: 1.5px solid #D6D6D6;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-size: 14.5px;
+  color: #3A3A3A;
+}
+.th-prompt-box .th-prompt-label {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8A8A8A;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ---------- summary strip cells ---------- */
+
+.th-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .th-summary { grid-template-columns: repeat(2, 1fr); }
+}
+
+.th-cell {
+  background: #FFFFFF;
+  border: 1.5px solid #D6D6D6;
+  border-radius: 12px;
+  padding: 18px 20px;
+}
+.th-k {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8A8A8A;
+  margin-bottom: 6px;
+}
+.th-v {
+  font-size: 17px;
+  color: #0A0A0A;
+  font-weight: 600;
+}
+.th-v-accent { color: #D97757; }
+
+/* Underline accent — only safe for words of 4+ characters. For short
+ * values (e.g. single digits), use .th-v-accent (color change) instead. */
+.th-accent {
+  border-bottom: 3px solid #F8C8D8;
+  padding-bottom: 2px;
+  display: inline-block;
+}
+
+/* ---------- milestone timeline ----------
+ *
+ * Two variants:
+ *  - .th-milestone           (3-col: when | dot-col | body) — needs all 3 children
+ *  - .th-milestone-simple    (2-col: dot-col | body)        — when no date column
+ *
+ * Body MUST be a <div> wrapping a heading (th-h3), an optional <p>, and
+ * an optional .th-tags row. Do not collapse body into a single <div>.
+ */
+
+.th-milestones { display: flex; flex-direction: column; }
+
+.th-milestone {
+  display: grid;
+  grid-template-columns: 120px 28px 1fr;
+  gap: 0 18px;
+  position: relative;
+}
+.th-milestone-simple {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 0 18px;
+  position: relative;
+}
+.th-when {
+  text-align: right;
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 12px;
+  color: #8A8A8A;
+  padding-top: 4px;
+}
+.th-dot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.th-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 3px solid #F8C8D8;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.th-dot-done { background: #C8E6D0; border-color: #C8E6D0; }
+.th-dot-todo { background: #FFFFFF; border-color: #D6D6D6; }
+.th-line {
+  width: 2px;
+  flex: 1;
+  background: #D6D6D6;
+  margin: 4px 0;
+}
+.th-milestone:last-child .th-line,
+.th-milestone-simple:last-child .th-line { display: none; }
+.th-milestone-body { padding-bottom: 32px; }
+.th-milestone-body > p { font-size: 14.5px; line-height: 1.6; color: #6B6A66; margin-top: 4px; max-width: 620px; }
+.th-milestone-body > .th-tags { margin-top: 10px; }
+/* Card titles (inside .th-milestone-body, .th-cell, .th-q) override the
+ * eyebrow .th-h3 back to a serif card heading. The card border already
+ * provides demarcation, so we want a proper title here, not an eyebrow. */
+.th-milestone-body > .th-h3,
+.th-cell > .th-h3,
+.th-q > .th-h3 {
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  margin-bottom: 4px;
+}
+
+/* ---------- tag pills / label rows ---------- */
+
+.th-tag {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11.5px;
+  background: #FDE7EE;
+  color: #0A0A0A;
+  border-radius: 6px;
+  padding: 3px 8px;
+  display: inline-block;
+}
+.th-tag-happy { background: #C8E6D0; }
+.th-tag-warn  { background: #FCE8B2; }
+.th-tag-error { background: #F5C2C2; }
+.th-tag-mute  { background: #F2F2F2; color: #3A3A3A; border: 1px solid #D6D6D6; }
+
+.th-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* Label row: pill + identifier on a single baseline. Use for FRs,
+ * decisions, validator cards, anywhere a tag prefixes a code label. */
+.th-label-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.th-label-row > code,
+.th-label-row > .th-h3,
+.th-label-row > .th-h4 { font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace; }
+
+/* Tag-prefixed list: tag column is a fixed width so all tag right-edges
+ * align. Use instead of free-floating pills in front of list items. */
+.th-tag-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+.th-tag-list > li {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 14px;
+  align-items: baseline;
+  font-size: 14.5px;
+}
+.th-tag-list > li > .th-tag { justify-self: start; }
+
+/* Inline code emphasis — for error codes / identifiers mentioned in
+ * running prose. Subdued tint so it doesn't break baseline rhythm. */
+.th-code-em {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 0.9em;
+  background: rgba(245, 194, 194, 0.35);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #0A0A0A;
+}
+.th-code-em-warn { background: rgba(252, 232, 178, 0.55); }
+.th-code-em-info { background: rgba(253, 231, 238, 0.85); }
+
+/* ---------- callouts ---------- */
+
+.th-callout {
+  border-left: 4px solid #D6D6D6;
+  background: #F2F2F2;
+  padding: 14px 18px;
+  border-radius: 0 12px 12px 0;
+  font-size: 14.5px;
+}
+.th-callout-info  { border-left-color: #F8C8D8; }
+.th-callout-warn  { border-left-color: #FCE8B2; }
+.th-callout-error { border-left-color: #F5C2C2; }
+.th-callout-good  { border-left-color: #C8E6D0; }
+
+/* ---------- term list (glossaries, definition lists) ---------- */
+
+.th-term-list {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 14px 24px;
+  margin: 12px 0;
+}
+.th-term-list dt {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8A8A8A;
+  padding-top: 2px;
+}
+.th-term-list dd { margin: 0; font-size: 14.5px; color: #0A0A0A; }
+@media (max-width: 640px) {
+  .th-term-list { grid-template-columns: 1fr; gap: 4px 0; }
+  .th-term-list dd { margin-bottom: 10px; }
+}
+
+/* Stacked variant — for entries with wildly varying dt lengths or where
+ * dd is a wide block (code, table). dt becomes an eyebrow above dd. */
+.th-term-list-stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 12px 0;
+}
+.th-term-list-stacked dt {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8A8A8A;
+  margin-bottom: 6px;
+}
+.th-term-list-stacked dd { margin: 0; font-size: 14.5px; color: #0A0A0A; }
+
+/* ---------- scenarios (collapsible) ---------- */
+
+details.th-scenario {
+  border: 1px solid #D6D6D6;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #FFFFFF;
+}
+details.th-scenario summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+  color: #0A0A0A;
+}
+details.th-scenario summary::-webkit-details-marker { display: none; }
+details.th-scenario summary::before {
+  content: "\25B8"; /* ▸ */
+  font-size: 11px;
+  color: #8A8A8A;
+  transition: transform 0.15s ease;
+}
+details.th-scenario[open] summary::before { transform: rotate(90deg); }
+.th-scenario-body {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 18px;
+  padding: 14px 16px 16px;
+  border-top: 1px solid #D6D6D6;
+}
+@media (max-width: 760px) {
+  .th-scenario-body { grid-template-columns: 1fr; }
+}
+
+/* ---------- diagram wrapper ----------
+ *
+ * Use for hand-authored SVG flowcharts. min-height keeps the wrapper from
+ * collapsing when its child auto-shrinks. overflow-x lets wide SVGs scroll
+ * on small screens.
+ */
+
+.th-diagram {
+  background: #FFFFFF;
+  border: 1.5px solid #D6D6D6;
+  border-radius: 12px;
+  padding: 28px;
+  overflow-x: auto;
+  min-height: 360px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.th-diagram svg { display: block; min-width: 720px; max-width: 100%; height: auto; }
+.th-diagram text { font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace; }
+.th-caption { font-size: 13px; color: #8A8A8A; margin-top: 12px; }
+
+/* ---------- diff lines ---------- */
+
+.th-diff-line { display: block; padding: 1px 8px; margin: 0 -8px; }
+.th-diff-add { background: color-mix(in srgb, #C8E6D0 55%, transparent); }
+.th-diff-rem { background: color-mix(in srgb, #F5C2C2 55%, transparent); }
+.th-diff-line .ln {
+  color: #8A8A8A;
+  display: inline-block;
+  width: 28px;
+  user-select: none;
+}
+
+/* ---------- code blocks ----------
+ *
+ * Code is dark by default. highlight.js applies token classes on init
+ * (see to-html.js). The .th-code wrapper handles padding, scroll, and
+ * the copy button position. The token colors below match the palette.
+ */
+
+.th-code-wrap { position: relative; }
+.th-code-label {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  color: #8A8A8A;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+pre.th-code {
+  background: #141413;
+  color: #E8E6DE;
+  border-radius: 12px;
+  padding: 18px 20px;
+  overflow-x: auto;
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin: 0;
+}
+pre.th-code code {
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+
+/* highlight.js token colors — palette-matched. */
+.hljs-keyword,
+.hljs-built_in,
+.hljs-type,
+.hljs-literal { color: #F8C8D8; }
+.hljs-string,
+.hljs-regexp,
+.hljs-addition { color: #C8E6D0; }
+.hljs-comment,
+.hljs-quote { color: #8A8A8A; font-style: italic; }
+.hljs-function,
+.hljs-title,
+.hljs-section,
+.hljs-name { color: #FCE8B2; }
+.hljs-number,
+.hljs-symbol,
+.hljs-attr { color: #DCD0F0; }
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag { color: #E8E6DE; }
+.hljs-attribute,
+.hljs-meta { color: #CDE3F2; }
+.hljs-deletion { color: #F5C2C2; }
+.hljs-emphasis { font-style: italic; }
+.hljs-strong { font-weight: 600; }
+
+.th-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 6px;
+  padding: 3px 8px;
+  cursor: pointer;
+  color: #E8E6DE;
+}
+.th-copy-btn:hover { background: rgba(248, 200, 216, 0.18); border-color: #F8C8D8; }
+.th-copy-btn.copied { background: #C8E6D0; border-color: #C8E6D0; color: #0A0A0A; }
+
+/* ---------- tables ---------- */
+
+.th-table-wrap {
+  border: 1.5px solid #D6D6D6;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #FFFFFF;
+}
+.th-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+.th-table thead th {
+  background: #F2F2F2;
+  color: #0A0A0A;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+}
+.th-table tbody td { padding: 12px 16px; border-top: 1.5px solid #D6D6D6; vertical-align: top; }
+.th-table tbody tr:hover { background: #FAFAFA; }
+
+/* ---------- open-question cards ---------- */
+
+.th-q {
+  background: #FFFFFF;
+  border: 1.5px solid #D6D6D6;
+  border-left: 4px solid #F8C8D8;
+  border-radius: 10px;
+  padding: 16px 20px;
+}
+.th-q-title { font-weight: 600; font-size: 15px; color: #0A0A0A; margin-bottom: 4px; }
+.th-q-body { font-size: 14.5px; line-height: 1.6; color: #6B6A66; }
+.th-q-owner {
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+  font-size: 11.5px;
+  color: #8A8A8A;
+  margin-top: 8px;
+}
+
+/* ---------- provenance footer ---------- */
+
+.th-provenance {
+  margin-top: 80px;
+  padding-top: 24px;
+  border-top: 1px solid #D6D6D6;
+  font-size: 12px;
+  color: #8A8A8A;
+  font-family: ui-monospace, 'SF Mono', Menlo, Monaco, monospace;
+}
+.th-provenance a {
+  color: #8A8A8A;
+  text-decoration-color: #D6D6D6;
+}
+
+/* ---------- interactive SVG nodes ----------
+ *
+ * Pair with the interactiveNodes Alpine component (to-html.js). Each
+ * clickable group is <g class="th-node" data-th-node="key">. The active
+ * group also receives the .th-node-active class via :class binding.
+ * Variant classes .th-node-ok / .th-node-bad tint the resting fill.
+ */
+
+.th-node { cursor: pointer; transition: transform 120ms ease; }
+.th-node:hover { transform: translateY(-1px); }
+.th-node-rect,
+.th-node-shape { fill: #FFFFFF; stroke: #D6D6D6; stroke-width: 1.5; }
+.th-node-ok .th-node-rect,
+.th-node-ok .th-node-shape { fill: #EEF6F0; stroke: #9CC4A8; }
+.th-node-bad .th-node-rect,
+.th-node-bad .th-node-shape { fill: #FCEDED; stroke: #F5C2C2; }
+.th-node-active .th-node-rect,
+.th-node-active .th-node-shape {
+  stroke: #F8C8D8;
+  stroke-width: 2.5;
+}
+
+/* ---------- jump flash ----------
+ *
+ * Applied transiently by the jumpFlash component to highlight the target
+ * card after an anchor jump. The transition softens the appear/disappear.
+ */
+
+.th-flash {
+  box-shadow: 0 0 0 3px rgba(248, 200, 216, 0.7);
+  transition: box-shadow 180ms ease;
+}
+
+/* ---------- checklist ----------
+ *
+ * Native <input type="checkbox"> styled with the framework's mint accent.
+ * Use for "suggested next steps", actionable follow-ups, or any list a
+ * reader is expected to walk down and tick off.
+ */
+
+.th-checklist { list-style: none; padding: 0; margin: 0; }
+.th-checklist li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 8px 0;
+  font-size: 14.5px;
+  color: #0A0A0A;
+}
+.th-checklist input[type="checkbox"] {
+  width: 17px;
+  height: 17px;
+  margin-top: 2px;
+  accent-color: #9CC4A8;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.th-checklist label { cursor: pointer; flex: 1; line-height: 1.55; }
+.th-checklist input:checked + label { color: #8A8A8A; text-decoration: line-through; }
+
+/* ---------- print ---------- */
+
+@media print {
+  button,
+  .th-copy-btn,
+  input,
+  textarea,
+  select,
+  label { display: none !important; }
+  /* Keep checklist legible on paper: show labels and convert the input to
+   * an inline box drawn in CSS rather than relying on the form control. */
+  .th-checklist input[type="checkbox"],
+  .th-checklist label { display: inline !important; }
+  .th-checklist li::before {
+    content: "\2610"; /* ☐ */
+    margin-right: 8px;
+    color: #8A8A8A;
+  }
+  .th-checklist input[type="checkbox"] { display: none !important; }
+  details.th-scenario { break-inside: avoid; }
+  details.th-scenario .th-scenario-body,
+  details.th-scenario[open] .th-scenario-body { display: grid !important; }
+  main { max-width: 100% !important; }
+  pre, .th-cell, .th-table-wrap, .th-q, .th-diagram { break-inside: avoid; }
+}

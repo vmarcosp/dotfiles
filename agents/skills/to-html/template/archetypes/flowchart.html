@@ -1,0 +1,243 @@
+<!--
+  flowchart.html — annotated, interactive flowchart archetype.
+  For artifacts whose primary content IS a diagram: deploy pipelines,
+  validation flows, request paths, decision trees. Hand-authored SVG.
+  Paste between <header> and <footer> in template.html.
+
+  Layout: diagram on the left, side panel on the right. The diagram is
+  driven by the interactiveNodes Alpine component — each <g> node carries
+  data-th-node="key" and @click="set('key')"; the aside renders one
+  <template x-if="is('key')"> block per node so only the active step's
+  detail is mounted. The initial argument to interactiveNodes(...) sets
+  the step that's selected when the artifact opens.
+
+  When adding a node:
+    1. Draw the <g class="th-node" data-th-node="newkey" …> in the SVG
+       with @click="set('newkey')" and :class="is('newkey') && 'th-node-active'"
+    2. Append a matching <template x-if="is('newkey')"> block in the aside
+    3. Add edges in the bottom <g> blocks (solid for happy path, dashed
+       red marker for failure / alternate edges)
+
+  Variant node classes (resting tint):
+    .th-node-ok   — mint, terminal success
+    .th-node-bad  — blush, failure / rollback path
+-->
+
+<section class="th-section" x-data="interactiveNodes('push')">
+  <p class="th-sec-intro">{{CHART_INTRO}}</p>
+
+  <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+
+    <!-- ───────── diagram column ───────── -->
+    <div class="th-stack-tight">
+      <div class="th-diagram" style="min-height: 600px;">
+        <svg viewBox="0 0 640 720" xmlns="http://www.w3.org/2000/svg" style="min-width: 480px;">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8A8A8A"/>
+            </marker>
+            <marker id="arErr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#C84B4B"/>
+            </marker>
+          </defs>
+
+          <!-- ── trigger ── -->
+          <g class="th-node" data-th-node="push"
+             @click="set('push')"
+             :class="is('push') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="20" width="200" height="48" rx="22"/>
+            <text x="320" y="50" text-anchor="middle" font-size="13" font-weight="600">{{TRIGGER_LABEL}}</text>
+          </g>
+
+          <!-- ── step 1 ── -->
+          <g class="th-node" data-th-node="step1"
+             @click="set('step1')"
+             :class="is('step1') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="110" width="200" height="56" rx="10"/>
+            <text x="320" y="134" text-anchor="middle" font-size="13" font-weight="600">{{STEP_1_LABEL}}</text>
+            <text x="320" y="152" text-anchor="middle" font-size="11" fill="#8A8A8A">{{STEP_1_SUB}}</text>
+          </g>
+
+          <!-- ── step 2 ── -->
+          <g class="th-node" data-th-node="step2"
+             @click="set('step2')"
+             :class="is('step2') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="200" width="200" height="56" rx="10"/>
+            <text x="320" y="224" text-anchor="middle" font-size="13" font-weight="600">{{STEP_2_LABEL}}</text>
+            <text x="320" y="242" text-anchor="middle" font-size="11" fill="#8A8A8A">{{STEP_2_SUB}}</text>
+          </g>
+
+          <!-- ── failure branch ── -->
+          <g class="th-node th-node-bad" data-th-node="failure"
+             @click="set('failure')"
+             :class="is('failure') && 'th-node-active'">
+            <rect class="th-node-rect" x="20" y="200" width="170" height="56" rx="10"/>
+            <text x="105" y="224" text-anchor="middle" font-size="13" font-weight="600">{{FAILURE_BRANCH}}</text>
+            <text x="105" y="242" text-anchor="middle" font-size="11" fill="#8A8A8A">{{FAILURE_SUB}}</text>
+          </g>
+
+          <!-- ── decision diamond ── -->
+          <g class="th-node" data-th-node="gate"
+             @click="set('gate')"
+             :class="is('gate') && 'th-node-active'">
+            <polygon class="th-node-shape" points="320,290 380,330 320,370 260,330"/>
+            <text x="320" y="334" text-anchor="middle" font-size="12" font-weight="600">{{DECISION_LABEL}}</text>
+          </g>
+
+          <!-- ── step 3 ── -->
+          <g class="th-node" data-th-node="step3"
+             @click="set('step3')"
+             :class="is('step3') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="400" width="200" height="56" rx="10"/>
+            <text x="320" y="424" text-anchor="middle" font-size="13" font-weight="600">{{STEP_3_LABEL}}</text>
+            <text x="320" y="442" text-anchor="middle" font-size="11" fill="#8A8A8A">{{STEP_3_SUB}}</text>
+          </g>
+
+          <!-- ── step 4 ── -->
+          <g class="th-node" data-th-node="step4"
+             @click="set('step4')"
+             :class="is('step4') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="490" width="200" height="56" rx="10"/>
+            <text x="320" y="514" text-anchor="middle" font-size="13" font-weight="600">{{STEP_4_LABEL}}</text>
+            <text x="320" y="532" text-anchor="middle" font-size="11" fill="#8A8A8A">{{STEP_4_SUB}}</text>
+          </g>
+
+          <!-- ── terminal success ── -->
+          <g class="th-node th-node-ok" data-th-node="done"
+             @click="set('done')"
+             :class="is('done') && 'th-node-active'">
+            <rect class="th-node-rect" x="220" y="600" width="200" height="48" rx="22"/>
+            <text x="320" y="630" text-anchor="middle" font-size="13" font-weight="600">✓ {{TERMINAL_LABEL}}</text>
+          </g>
+
+          <!-- ── edges ── -->
+          <g stroke="#8A8A8A" stroke-width="1.5" fill="none">
+            <path d="M320 68  L320 110" marker-end="url(#ar)"/>
+            <path d="M320 166 L320 200" marker-end="url(#ar)"/>
+            <path d="M320 256 L320 290" marker-end="url(#ar)"/>
+            <path d="M320 370 L320 400" marker-end="url(#ar)"/>
+            <path d="M320 456 L320 490" marker-end="url(#ar)"/>
+            <path d="M320 546 L320 600" marker-end="url(#ar)"/>
+          </g>
+          <g stroke="#C84B4B" stroke-width="1.5" fill="none" stroke-dasharray="5 4">
+            <path d="M260 330 L195 250" marker-end="url(#arErr)"/>
+          </g>
+
+          <!-- ── edge labels ── -->
+          <g font-size="11" fill="#8A8A8A">
+            <text x="328" y="386">pass</text>
+            <text x="200" y="295" fill="#C84B4B">fail</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Legend -->
+      <div class="flex flex-wrap gap-4 mt-4 text-xs text-gray-500">
+        <div class="flex items-center gap-2"><span class="inline-block w-4 h-4 rounded border border-gray-300 bg-white"></span> process step</div>
+        <div class="flex items-center gap-2"><span class="inline-block w-3 h-3 rotate-45 border border-gray-300 bg-white"></span> decision</div>
+        <div class="flex items-center gap-2"><span class="inline-block w-4 h-4 rounded bg-mint border border-mint"></span> terminal success</div>
+        <div class="flex items-center gap-2"><span class="inline-block w-4 h-4 rounded border border-blush bg-white"></span> failure path</div>
+        <div class="ml-auto text-gray-500">Click a step to explain it →</div>
+      </div>
+    </div>
+
+    <!-- ───────── side panel ─────────
+         One <template x-if="is('k')"> block per node. Only the active
+         block is mounted, so per-step <pre> code blocks stay isolated.
+    -->
+    <aside class="th-cell sticky top-6 self-start">
+      <div class="th-k">Step</div>
+
+      <template x-if="is('push')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{PUSH_TITLE}}</h3>
+          <p class="th-h5">{{PUSH_META}}</p>
+          <p>{{PUSH_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{PUSH_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('step1')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{STEP_1_TITLE}}</h3>
+          <p class="th-h5">{{STEP_1_META}}</p>
+          <p>{{STEP_1_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{STEP_1_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('step2')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{STEP_2_TITLE}}</h3>
+          <p class="th-h5">{{STEP_2_META}}</p>
+          <p>{{STEP_2_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{STEP_2_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('failure')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{FAILURE_TITLE}}</h3>
+          <p class="th-h5">{{FAILURE_META}}</p>
+          <p>{{FAILURE_BODY}}</p>
+          <div class="th-callout th-callout-error">
+            <strong>Short-circuits.</strong> {{FAILURE_NOTE}}
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('gate')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{GATE_TITLE}}</h3>
+          <p class="th-h5">{{GATE_META}}</p>
+          <p>{{GATE_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{GATE_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('step3')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{STEP_3_TITLE}}</h3>
+          <p class="th-h5">{{STEP_3_META}}</p>
+          <p>{{STEP_3_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{STEP_3_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('step4')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{STEP_4_TITLE}}</h3>
+          <p class="th-h5">{{STEP_4_META}}</p>
+          <p>{{STEP_4_BODY}}</p>
+          <div class="th-code-wrap" x-data="codeBlock">
+            <pre class="th-code"><code class="language-yaml">{{STEP_4_CODE}}</code></pre>
+            <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+          </div>
+        </div>
+      </template>
+
+      <template x-if="is('done')">
+        <div class="th-stack-tight">
+          <h3 class="th-h3">{{DONE_TITLE}}</h3>
+          <p class="th-h5">{{DONE_META}}</p>
+          <p>{{DONE_BODY}}</p>
+        </div>
+      </template>
+    </aside>
+  </div>
+</section>

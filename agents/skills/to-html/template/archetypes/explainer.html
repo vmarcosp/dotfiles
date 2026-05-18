@@ -1,0 +1,155 @@
+<!--
+  explainer.html — concept explainer archetype.
+  For artifacts that walk through how something works: a feature, an
+  algorithm, a system flow. Paste between <header> and <footer>.
+
+  Layout: optional side ToC → numbered steps → tabbed config example
+  → callouts → FAQ.
+-->
+
+<div class="grid grid-cols-1 lg:grid-cols-[180px_1fr] gap-10">
+
+  <!-- ───────── side ToC ───────── -->
+  <aside class="hidden lg:block sticky top-8 self-start text-sm">
+    <div class="th-h5 mb-3">On this page</div>
+    <nav class="th-stack-tight">
+      <a href="#step-by-step" class="block text-gray-500 hover:text-ink">{{TOC_1}}</a>
+      <a href="#config"       class="block text-gray-500 hover:text-ink">{{TOC_2}}</a>
+      <a href="#gotchas"      class="block text-gray-500 hover:text-ink">{{TOC_3}}</a>
+      <a href="#faq"          class="block text-gray-500 hover:text-ink">FAQ</a>
+    </nav>
+  </aside>
+
+  <!-- ───────── main content ───────── -->
+  <div>
+
+    <!-- Step-by-step -->
+    <section class="th-section" id="step-by-step">
+      <div class="th-sec-head">
+        <span class="th-sec-num">01</span>
+        <h2 class="th-h2">{{STEPS_TITLE}}</h2>
+      </div>
+      <p class="th-sec-intro">{{STEPS_INTRO}}</p>
+
+      <div class="th-stack">
+        <details class="th-scenario" open>
+          <summary><span class="th-tag">1</span><span>{{STEP_1_TITLE}}</span></summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <div class="th-stack-tight">
+              <p>{{STEP_1_BODY}}</p>
+              <div class="th-code-wrap" x-data="codeBlock">
+                <pre class="th-code"><code class="language-ts">{{STEP_1_CODE}}</code></pre>
+                <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+              </div>
+            </div>
+          </div>
+        </details>
+
+        <details class="th-scenario">
+          <summary><span class="th-tag">2</span><span>{{STEP_2_TITLE}}</span></summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <p>{{STEP_2_BODY}}</p>
+          </div>
+        </details>
+
+        <details class="th-scenario">
+          <summary><span class="th-tag">3</span><span>{{STEP_3_TITLE}}</span></summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <p>{{STEP_3_BODY}}</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Config / configuration (tabs) -->
+    <section class="th-section" id="config">
+      <div class="th-sec-head">
+        <span class="th-sec-num">02</span>
+        <h2 class="th-h2">{{CONFIG_TITLE}}</h2>
+      </div>
+      <p class="th-sec-intro">{{CONFIG_INTRO}}</p>
+
+      <div x-data="tabs('global')">
+        <div class="flex gap-1 border-b border-gray-300 mb-4">
+          <button data-th-tab="global"
+                  @click="set('global')"
+                  :class="is('global') ? 'border-pink text-ink' : 'border-transparent text-gray-500'"
+                  class="px-4 py-2 text-sm border-b-2 -mb-px transition">
+            Global
+          </button>
+          <button data-th-tab="route"
+                  @click="set('route')"
+                  :class="is('route')  ? 'border-pink text-ink' : 'border-transparent text-gray-500'"
+                  class="px-4 py-2 text-sm border-b-2 -mb-px transition">
+            Per-route
+          </button>
+          <button data-th-tab="client"
+                  @click="set('client')"
+                  :class="is('client') ? 'border-pink text-ink' : 'border-transparent text-gray-500'"
+                  class="px-4 py-2 text-sm border-b-2 -mb-px transition">
+            Per-client
+          </button>
+        </div>
+
+        <div x-show="is('global')" class="th-code-wrap" x-data="codeBlock">
+          <pre class="th-code"><code class="language-ts">{{CONFIG_GLOBAL}}</code></pre>
+          <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+        </div>
+        <div x-show="is('route')" class="th-code-wrap" x-data="codeBlock" x-cloak>
+          <pre class="th-code"><code class="language-ts">{{CONFIG_ROUTE}}</code></pre>
+          <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+        </div>
+        <div x-show="is('client')" class="th-code-wrap" x-data="codeBlock" x-cloak>
+          <pre class="th-code"><code class="language-ts">{{CONFIG_CLIENT}}</code></pre>
+          <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+        </div>
+      </div>
+
+      <div class="th-callout th-callout-info mt-4">
+        <strong>Heads up.</strong> {{CONFIG_NOTE}}
+      </div>
+    </section>
+
+    <!-- Gotchas -->
+    <section class="th-section" id="gotchas">
+      <div class="th-sec-head">
+        <span class="th-sec-num">03</span>
+        <h2 class="th-h2">{{GOTCHAS_TITLE}}</h2>
+      </div>
+      <ul class="th-tag-list">
+        <li><span class="th-tag th-tag-warn">limit</span><span>{{GOTCHA_1}}</span></li>
+        <li><span class="th-tag th-tag-warn">burst</span><span>{{GOTCHA_2}}</span></li>
+        <li><span class="th-tag th-tag-error">stream</span><span>{{GOTCHA_3}}</span></li>
+      </ul>
+    </section>
+
+    <!-- FAQ -->
+    <section class="th-section" id="faq">
+      <div class="th-sec-head">
+        <span class="th-sec-num">04</span>
+        <h2 class="th-h2">FAQ</h2>
+      </div>
+      <div class="th-stack">
+        <details class="th-scenario">
+          <summary>{{FAQ_Q_1}}</summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <p>{{FAQ_A_1}}</p>
+          </div>
+        </details>
+        <details class="th-scenario">
+          <summary>{{FAQ_Q_2}}</summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <p>{{FAQ_A_2}}</p>
+          </div>
+        </details>
+        <details class="th-scenario">
+          <summary>{{FAQ_Q_3}}</summary>
+          <div class="th-scenario-body" style="grid-template-columns: 1fr;">
+            <p>{{FAQ_A_3}}</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </div>
+</div>

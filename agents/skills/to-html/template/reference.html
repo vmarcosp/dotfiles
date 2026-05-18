@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>to-html framework reference</title>
+
+  <!-- 1. Tailwind Play CDN (must load before the inline config below). -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- 2. Palette + tokens. Inline, AFTER the CDN script. -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper: '#FAFAFA',
+            ink: '#0A0A0A',
+            pink: { DEFAULT: '#F8C8D8', soft: '#FDE7EE' },
+            mint: '#C8E6D0',
+            butter: '#FCE8B2',
+            blush: '#F5C2C2',
+            gray: { 100: '#F2F2F2', 300: '#D6D6D6', 500: '#8A8A8A', 700: '#3A3A3A' },
+          },
+          fontFamily: {
+            serif: ['ui-serif', 'Georgia', "'Times New Roman'", 'serif'],
+            sans:  ['system-ui', '-apple-system', "'Segoe UI'", 'Roboto', 'sans-serif'],
+            mono:  ['ui-monospace', "'SF Mono'", 'Menlo', 'Monaco', 'monospace'],
+          },
+          fontSize: {
+            base: ['14.5px', { lineHeight: '1.6' }],
+            sm:   ['13.5px', { lineHeight: '1.55' }],
+            xs:   ['12px',   { lineHeight: '1.5' }],
+          },
+          maxWidth: { page: '1120px' },
+        },
+      },
+    };
+  </script>
+
+  <!-- 3. Framework local files. -->
+  <link rel="stylesheet" href="file:///Users/marcosoliveira/.claude/skills/to-html/template/to-html.css" />
+  <script src="file:///Users/marcosoliveira/.claude/skills/to-html/template/to-html.js"></script>
+
+  <!-- 4. Alpine.js + collapse plugin. -->
+  <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/collapse@3.x.x/dist/cdn.min.js"></script>
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+
+  <!-- 6. highlight.js auto-detect. Theme tokens live in to-html.css. -->
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.10.0/build/highlight.min.js"></script>
+
+  <style>
+    /* Gallery-only styles. Not part of the framework. */
+    .gallery-section { scroll-margin-top: 96px; }
+    .gallery-source pre { position: relative; }
+  </style>
+</head>
+<body class="bg-paper text-gray-700 font-sans">
+
+  <nav class="sticky top-0 bg-paper border-b border-gray-300 py-3 z-10">
+    <div class="max-w-page mx-auto px-8 flex flex-wrap gap-x-5 gap-y-1 text-xs font-mono text-gray-500">
+      <span class="text-ink font-semibold">reference</span>
+      <a href="#typography" class="hover:text-ink">typography</a>
+      <a href="#section-rhythm" class="hover:text-ink">rhythm</a>
+      <a href="#header" class="hover:text-ink">header</a>
+      <a href="#summary" class="hover:text-ink">summary</a>
+      <a href="#section-heading" class="hover:text-ink">section-heading</a>
+      <a href="#timeline" class="hover:text-ink">timeline</a>
+      <a href="#callouts" class="hover:text-ink">callouts</a>
+      <a href="#term-list" class="hover:text-ink">term-list</a>
+      <a href="#tag-list" class="hover:text-ink">tag-list</a>
+      <a href="#tags" class="hover:text-ink">tags</a>
+      <a href="#code-em" class="hover:text-ink">code-em</a>
+      <a href="#label-row" class="hover:text-ink">label-row</a>
+      <a href="#diagram" class="hover:text-ink">diagram</a>
+      <a href="#table" class="hover:text-ink">table</a>
+      <a href="#diff" class="hover:text-ink">diff</a>
+      <a href="#provenance" class="hover:text-ink">provenance</a>
+      <span class="text-gray-300">|</span>
+      <a href="#code-block" class="hover:text-ink">codeBlock</a>
+      <a href="#copy-value" class="hover:text-ink">copyValue</a>
+      <a href="#config-block" class="hover:text-ink">configBlock</a>
+      <a href="#prompt-box" class="hover:text-ink">promptBox</a>
+      <a href="#scenario" class="hover:text-ink">scenario</a>
+      <a href="#state-export" class="hover:text-ink">stateExport</a>
+      <a href="#tabs" class="hover:text-ink">tabs</a>
+      <span class="text-gray-300">|</span>
+      <a href="#filterable-table" class="hover:text-ink">filterableTable</a>
+      <a href="#searchable-cards" class="hover:text-ink">searchableCards</a>
+      <a href="#sparkline" class="hover:text-ink">sparkline</a>
+    </div>
+  </nav>
+
+  <main class="max-w-page mx-auto px-8 py-14 pb-32">
+
+    <header class="mb-16 max-w-[820px]">
+      <div class="uppercase tracking-widest text-xs text-gray-500 mb-3">framework reference</div>
+      <h1 class="font-serif text-4xl text-ink leading-tight mb-4 tracking-tight">to-html living gallery</h1>
+      <p class="text-base text-gray-700">Every block below shows the live rendering on the left and its source on the right. Copy the source as-is into a new artifact. Layout primitives are CSS-only; interactive components require an <code class="font-mono text-sm bg-gray-100 px-1 rounded">x-data</code> directive.</p>
+    </header>
+
+    <!-- ====================================================================
+         ARCHETYPE STARTERS
+    ===================================================================== -->
+
+    <div class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6">Archetype starters</div>
+
+    <p class="text-sm text-gray-700 mb-4 max-w-[820px]">Pre-styled body skeletons under <code class="font-mono text-xs bg-gray-100 px-1 rounded">template/archetypes/</code>. Pick one before composing — fill content into the placeholders instead of inventing layout from scratch.</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-16">
+      <div class="th-cell">
+        <div class="th-label-row"><span class="th-tag th-tag-mute">fallback</span><code>base.html</code></div>
+        <p class="text-sm text-gray-700">Neutral body skeleton with one example of every layout primitive. Use when no other archetype fits.</p>
+      </div>
+      <div class="th-cell">
+        <div class="th-label-row"><span class="th-tag">default</span><code>plan.html</code></div>
+        <p class="text-sm text-gray-700">Plan / RFC / spec. Summary strip, milestones, architecture, technical contract, risks, open questions.</p>
+      </div>
+      <div class="th-cell">
+        <div class="th-label-row"><span class="th-tag th-tag-warn">diagram</span><code>flowchart.html</code></div>
+        <p class="text-sm text-gray-700">Annotated flowchart. Big hand-authored SVG on the left, side panel with step detail, legend below.</p>
+      </div>
+      <div class="th-cell">
+        <div class="th-label-row"><span class="th-tag th-tag-happy">walkthrough</span><code>explainer.html</code></div>
+        <p class="text-sm text-gray-700">Concept walkthrough. Side ToC, numbered steps, tabbed config, callouts, FAQ.</p>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         LAYOUT PRIMITIVES (CSS only)
+    ===================================================================== -->
+
+    <div class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6">Layout primitives</div>
+
+    <!-- ============ typography ============ -->
+    <section id="typography" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Typography scale</h2>
+      <p class="text-sm text-gray-700 mb-4 max-w-[820px]">Use these classes on every heading. Never set Tailwind <code class="font-mono text-xs bg-gray-100 px-1 rounded">text-*</code> utilities on headings directly — that's how hierarchy gets flattened across artifacts.</p>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="space-y-3 border border-gray-300 rounded-xl p-6 bg-white">
+          <div class="th-h1">th-h1 — 38px serif</div>
+          <div class="th-h2">th-h2 — 26px serif</div>
+          <div class="th-h3">th-h3 — 19px serif</div>
+          <div class="th-h4">th-h4 — 14px uppercase</div>
+          <div class="th-h5">th-h5 — 11px mono uppercase</div>
+          <p class="th-lede mt-2">th-lede — 15.5px body lede, used right under H1.</p>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;h1 class="th-h1"&gt;Title&lt;/h1&gt;
+&lt;p  class="th-lede"&gt;One-sentence headline.&lt;/p&gt;
+&lt;h2 class="th-h2"&gt;Section&lt;/h2&gt;
+&lt;h3 class="th-h3"&gt;Subsection&lt;/h3&gt;
+&lt;h4 class="th-h4"&gt;EYEBROW LABEL&lt;/h4&gt;
+&lt;div class="th-h5"&gt;mono eyebrow&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ section rhythm ============ -->
+    <section id="section-rhythm" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Section rhythm</h2>
+      <p class="text-sm text-gray-700 mb-4 max-w-[820px]">Wrap top-level sections in <code class="font-mono text-xs bg-gray-100 px-1 rounded">.th-section</code>. Wrap each H3 subsection in <code class="font-mono text-xs bg-gray-100 px-1 rounded">.th-subsection</code>. Use <code class="font-mono text-xs bg-gray-100 px-1 rounded">.th-stack</code> to space mixed children. Never set Tailwind margin utilities on section wrappers — spacing is centralised here so artifacts have a consistent vertical rhythm.</p>
+      <details class="gallery-source">
+        <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+        <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;section class="th-section"&gt;
+  &lt;div class="th-sec-head"&gt;
+    &lt;span class="th-sec-num"&gt;01&lt;/span&gt;
+    &lt;h2 class="th-h2"&gt;Section title&lt;/h2&gt;
+  &lt;/div&gt;
+  &lt;p class="th-sec-intro"&gt;One-sentence orientation for the section.&lt;/p&gt;
+
+  &lt;div class="th-subsection"&gt;
+    &lt;h3 class="th-h3"&gt;Subsection&lt;/h3&gt;
+    &lt;div class="th-stack"&gt;
+      &lt;p&gt;Paragraph one.&lt;/p&gt;
+      &lt;p&gt;Paragraph two.&lt;/p&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+      </details>
+    </section>
+
+    <!-- ============ inline code emphasis ============ -->
+    <section id="code-em" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Inline code emphasis</h2>
+      <p class="text-sm text-gray-700 mb-4 max-w-[820px]">For error codes or identifiers mentioned in running prose. Use this instead of full <code class="font-mono text-xs bg-gray-100 px-1 rounded">.th-tag</code> pills — pills inside paragraphs break baseline rhythm.</p>
+      <div class="grid grid-cols-2 gap-6 items-start">
+        <p class="text-sm text-gray-700">When DFS from root re-enters a node on the current path, the validator emits <span class="th-code-em">CYCLE_DETECTED</span>. Missing roots get <span class="th-code-em">MISSING_ROOT_IN_TREE</span>; warnings ride on <span class="th-code-em th-code-em-warn">DANGLING_CHILD_REFERENCE</span>.</p>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;span class="th-code-em"&gt;CYCLE_DETECTED&lt;/span&gt;
+&lt;span class="th-code-em th-code-em-warn"&gt;…&lt;/span&gt;
+&lt;span class="th-code-em th-code-em-info"&gt;…&lt;/span&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ label row ============ -->
+    <section id="label-row" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Label row</h2>
+      <p class="text-sm text-gray-700 mb-4 max-w-[820px]">A pill + identifier on a single baseline. Use for FR cards, decisions, validator contracts — anywhere a tag prefixes a code label.</p>
+      <div class="grid grid-cols-2 gap-6 items-start">
+        <div class="th-cell">
+          <div class="th-label-row"><span class="th-tag">Tier 1</span><code>elementTypeExists</code></div>
+          <pre class="th-code text-xs"><code>(schema: PageSchema) =&gt; ValidationError[]</code></pre>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="th-label-row"&gt;
+  &lt;span class="th-tag"&gt;Tier 1&lt;/span&gt;
+  &lt;code&gt;elementTypeExists&lt;/code&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ diagram wrapper ============ -->
+    <section id="diagram" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Diagram wrapper</h2>
+      <p class="text-sm text-gray-700 mb-4 max-w-[820px]">Use <code class="font-mono text-xs bg-gray-100 px-1 rounded">.th-diagram</code> for hand-authored SVG flowcharts. min-height keeps the box from collapsing; overflow-x lets wide SVGs scroll on phones.</p>
+      <div class="th-diagram">
+        <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg">
+          <defs><marker id="ref-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8A8A8A"/></marker></defs>
+          <g font-size="13" fill="#0A0A0A">
+            <rect x="40"  y="70" width="140" height="56" rx="10" fill="#FFFFFF" stroke="#D6D6D6" stroke-width="1.5"/>
+            <text x="110" y="104" text-anchor="middle" font-weight="600">input</text>
+            <rect x="240" y="70" width="140" height="56" rx="10" fill="#FDE7EE" stroke="#F8C8D8" stroke-width="1.5"/>
+            <text x="310" y="104" text-anchor="middle" font-weight="600">validator</text>
+            <rect x="440" y="70" width="140" height="56" rx="10" fill="#FFFFFF" stroke="#D6D6D6" stroke-width="1.5"/>
+            <text x="510" y="104" text-anchor="middle" font-weight="600">output</text>
+          </g>
+          <g stroke="#8A8A8A" stroke-width="1.5" fill="none">
+            <path d="M180 98 L240 98" marker-end="url(#ref-ar)"/>
+            <path d="M380 98 L440 98" marker-end="url(#ref-ar)"/>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <!-- ============ header ============ -->
+    <section id="header" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Page header</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="border border-gray-300 rounded-xl p-6 bg-white">
+          <div class="uppercase tracking-widest text-xs text-gray-500 mb-3">design exploration</div>
+          <h1 class="font-serif text-3xl text-ink leading-tight mb-4 tracking-tight">A short, calm title</h1>
+          <p class="text-base text-gray-700 mb-5">One sentence that says what this artifact is for and who should read it.</p>
+          <div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm">
+            <span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold mb-1">From prompt</span>
+            Show me what the to-html framework can do.
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;header class="mb-12 max-w-[820px]"&gt;
+  &lt;div class="uppercase tracking-widest text-xs text-gray-500 mb-3"&gt;design exploration&lt;/div&gt;
+  &lt;h1 class="font-serif text-3xl text-ink leading-tight mb-4 tracking-tight"&gt;A short, calm title&lt;/h1&gt;
+  &lt;p class="text-base text-gray-700 mb-5"&gt;One sentence that says what this artifact is for.&lt;/p&gt;
+  &lt;div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm"&gt;
+    &lt;span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold mb-1"&gt;From prompt&lt;/span&gt;
+    Show me what the to-html framework can do.
+  &lt;/div&gt;
+&lt;/header&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ summary strip ============ -->
+    <section id="summary" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Summary strip</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div class="th-cell">
+              <div class="th-k">status</div>
+              <div class="th-v"><span class="th-accent">draft</span></div>
+            </div>
+            <div class="th-cell">
+              <div class="th-k">owner</div>
+              <div class="th-v">marcos</div>
+            </div>
+            <div class="th-cell">
+              <div class="th-k">due</div>
+              <div class="th-v">jun 12</div>
+            </div>
+            <div class="th-cell">
+              <div class="th-k">scope</div>
+              <div class="th-v">phase 2</div>
+            </div>
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;!-- 2 cols on mobile, 4 cols on md+ --&gt;
+&lt;div class="grid grid-cols-2 md:grid-cols-4 gap-3"&gt;
+  &lt;div class="th-cell"&gt;
+    &lt;div class="th-k"&gt;status&lt;/div&gt;
+    &lt;div class="th-v"&gt;&lt;span class="th-accent"&gt;draft&lt;/span&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="th-cell"&gt;
+    &lt;div class="th-k"&gt;owner&lt;/div&gt;
+    &lt;div class="th-v"&gt;marcos&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class="th-cell"&gt;&lt;div class="th-k"&gt;due&lt;/div&gt;&lt;div class="th-v"&gt;jun 12&lt;/div&gt;&lt;/div&gt;
+  &lt;div class="th-cell"&gt;&lt;div class="th-k"&gt;scope&lt;/div&gt;&lt;div class="th-v"&gt;phase 2&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">Use <code class="font-mono">grid-cols-2 md:grid-cols-4</code> so the strip stays readable on 375px screens.</aside>
+    </section>
+
+    <!-- ============ section heading ============ -->
+    <section id="section-heading" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Section number heading</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <div class="flex items-baseline gap-3 mb-3">
+            <span class="font-mono text-xs bg-pink-soft text-ink rounded-full px-2.5 py-1">01</span>
+            <h2 class="font-serif text-2xl text-ink tracking-tight">First principle</h2>
+          </div>
+          <p class="text-gray-700">A sentence or two of intro that explains what this section is about and why it matters.</p>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="flex items-baseline gap-3 mb-3"&gt;
+  &lt;span class="font-mono text-xs bg-pink-soft text-ink rounded-full px-2.5 py-1"&gt;01&lt;/span&gt;
+  &lt;h2 class="font-serif text-2xl text-ink tracking-tight"&gt;First principle&lt;/h2&gt;
+&lt;/div&gt;
+&lt;p class="text-gray-700"&gt;Intro paragraph.&lt;/p&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ milestone timeline ============ -->
+    <section id="timeline" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Milestone timeline</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <div class="th-milestone">
+            <div class="th-when">mar 03</div>
+            <div class="th-dot-col"><div class="th-dot th-dot-done"></div><div class="th-line"></div></div>
+            <div>
+              <div class="text-ink font-medium">Spec approved</div>
+              <div class="text-sm text-gray-500">RFC merged, stakeholders signed off.</div>
+            </div>
+          </div>
+          <div class="th-milestone">
+            <div class="th-when">may 15</div>
+            <div class="th-dot-col"><div class="th-dot"></div><div class="th-line"></div></div>
+            <div>
+              <div class="text-ink font-medium">Phase 2 in flight</div>
+              <div class="text-sm text-gray-500">Three more Alpine components plus the gallery page.</div>
+            </div>
+          </div>
+          <div class="th-milestone">
+            <div class="th-when">jun 12</div>
+            <div class="th-dot-col"><div class="th-dot th-dot-todo"></div><div class="th-line"></div></div>
+            <div>
+              <div class="text-ink font-medium">Phase 4 docs</div>
+              <div class="text-sm text-gray-500">SKILL.md rewrite and final cleanup.</div>
+            </div>
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="th-milestone"&gt;
+  &lt;div class="th-when"&gt;mar 03&lt;/div&gt;
+  &lt;div class="th-dot-col"&gt;&lt;div class="th-dot th-dot-done"&gt;&lt;/div&gt;&lt;div class="th-line"&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;
+    &lt;div class="text-ink font-medium"&gt;Spec approved&lt;/div&gt;
+    &lt;div class="text-sm text-gray-500"&gt;RFC merged, stakeholders signed off.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="th-milestone"&gt;
+  &lt;div class="th-when"&gt;may 15&lt;/div&gt;
+  &lt;div class="th-dot-col"&gt;&lt;div class="th-dot"&gt;&lt;/div&gt;&lt;div class="th-line"&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;div class="text-ink font-medium"&gt;Phase 2 in flight&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="th-milestone"&gt;
+  &lt;div class="th-when"&gt;jun 12&lt;/div&gt;
+  &lt;div class="th-dot-col"&gt;&lt;div class="th-dot th-dot-todo"&gt;&lt;/div&gt;&lt;div class="th-line"&gt;&lt;/div&gt;&lt;/div&gt;
+  &lt;div&gt;&lt;div class="text-ink font-medium"&gt;Phase 4 docs&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">Use <code class="font-mono">.th-dot-done</code> for completed, plain <code class="font-mono">.th-dot</code> for in-progress, <code class="font-mono">.th-dot-todo</code> for upcoming.</aside>
+    </section>
+
+    <!-- ============ callouts ============ -->
+    <section id="callouts" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Callouts</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <div class="th-callout th-callout-info">Info callout. Use for neutral asides and context.</div>
+          <div class="th-callout th-callout-warn">Warn callout. Use for things the reader should think about before acting.</div>
+          <div class="th-callout th-callout-error">Error callout. Use for hard failures or breaking changes.</div>
+          <div class="th-callout th-callout-good">Good callout. Use for confirmation, success, or recommended paths.</div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="th-callout th-callout-info"&gt;Info callout.&lt;/div&gt;
+&lt;div class="th-callout th-callout-warn"&gt;Warn callout.&lt;/div&gt;
+&lt;div class="th-callout th-callout-error"&gt;Error callout.&lt;/div&gt;
+&lt;div class="th-callout th-callout-good"&gt;Good callout.&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ term list ============ -->
+    <section id="term-list" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Term list (glossary)</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <dl class="th-term-list">
+            <dt>Foundation draft</dt>
+            <dd>The in-progress brand-identity content during a run. Stored as a CP singleton on the run's branch; promoted by merging into <code class="font-mono text-sm bg-gray-100 px-1 rounded">main</code>.</dd>
+            <dt>Active run</dt>
+            <dd>The run currently surfaced by the front-end. MVP exposes exactly one; back-end allows N concurrent.</dd>
+            <dt>Spec draft</dt>
+            <dd>The multi-page generation plan produced by the agent before any schema is emitted, scoped per run.</dd>
+          </dl>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;dl class="th-term-list"&gt;
+  &lt;dt&gt;Foundation draft&lt;/dt&gt;
+  &lt;dd&gt;The in-progress brand-identity content during a run...&lt;/dd&gt;
+  &lt;dt&gt;Active run&lt;/dt&gt;
+  &lt;dd&gt;The run currently surfaced by the front-end...&lt;/dd&gt;
+&lt;/dl&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">Use for glossaries, definition lists, and any "label + definition" shape. Stacks single-column under 640px.</aside>
+    </section>
+
+    <!-- ============ tag-prefixed list ============ -->
+    <section id="tag-list" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Tag-prefixed list</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <ul class="space-y-2 text-sm text-gray-700">
+            <li class="flex gap-3"><span class="th-tag th-tag-happy shrink-0">happy</span><span>Default path: merchant uploads brand book, agent extracts Foundation, PDP renders.</span></li>
+            <li class="flex gap-3"><span class="th-tag th-tag-warn shrink-0">deferred</span><span>Multi-run UI surface. Back-end is multi-run-ready; MVP front-end shows one active run.</span></li>
+            <li class="flex gap-3"><span class="th-tag th-tag-warn shrink-0">cut</span><span>Figma <code class="font-mono text-xs bg-gray-100 px-1 rounded">.fig</code> input. Out of scope until the core loop is proven.</span></li>
+            <li class="flex gap-3"><span class="th-tag th-tag-mute shrink-0">deps</span><span>Multimodal extraction provider (Claude vision via LiteLLM is the working assumption).</span></li>
+          </ul>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;ul class="space-y-2 text-sm text-gray-700"&gt;
+  &lt;li class="flex gap-3"&gt;
+    &lt;span class="th-tag th-tag-happy shrink-0"&gt;happy&lt;/span&gt;
+    &lt;span&gt;Default path: merchant uploads brand book...&lt;/span&gt;
+  &lt;/li&gt;
+  &lt;li class="flex gap-3"&gt;
+    &lt;span class="th-tag th-tag-warn shrink-0"&gt;deferred&lt;/span&gt;
+    &lt;span&gt;Multi-run UI surface...&lt;/span&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">A pure composition of tag pills + flex list. Useful for non-goals, success metrics, dependencies — anything where each bullet has a category label. <code class="font-mono">shrink-0</code> on the tag keeps it from being squished by long content.</aside>
+    </section>
+
+    <!-- ============ tags ============ -->
+    <section id="tags" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Tag pills</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="flex flex-wrap gap-2 items-start">
+          <span class="th-tag">default</span>
+          <span class="th-tag th-tag-happy">happy</span>
+          <span class="th-tag th-tag-warn">warn</span>
+          <span class="th-tag th-tag-error">error</span>
+          <span class="th-tag th-tag-mute">mute</span>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;span class="th-tag"&gt;default&lt;/span&gt;
+&lt;span class="th-tag th-tag-happy"&gt;happy&lt;/span&gt;
+&lt;span class="th-tag th-tag-warn"&gt;warn&lt;/span&gt;
+&lt;span class="th-tag th-tag-error"&gt;error&lt;/span&gt;
+&lt;span class="th-tag th-tag-mute"&gt;mute&lt;/span&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ table ============ -->
+    <section id="table" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Table</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-gray-300">
+                <th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">field</th>
+                <th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">type</th>
+                <th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td class="py-2 font-mono text-xs">id</td>
+                <td class="py-2">string</td>
+                <td class="py-2 text-gray-500">UUID v7, server-assigned</td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td class="py-2 font-mono text-xs">name</td>
+                <td class="py-2">string</td>
+                <td class="py-2 text-gray-500">1-80 chars, trimmed</td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td class="py-2 font-mono text-xs">created_at</td>
+                <td class="py-2">timestamp</td>
+                <td class="py-2 text-gray-500">ISO 8601 UTC</td>
+              </tr>
+              <tr class="hover:bg-pink-soft">
+                <td class="py-2 font-mono text-xs">archived</td>
+                <td class="py-2">boolean</td>
+                <td class="py-2 text-gray-500">defaults to false</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;table class="w-full text-sm border-collapse"&gt;
+  &lt;thead&gt;
+    &lt;tr class="border-b border-gray-300"&gt;
+      &lt;th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2"&gt;field&lt;/th&gt;
+      &lt;th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2"&gt;type&lt;/th&gt;
+      &lt;th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2"&gt;notes&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr class="border-b border-gray-300 hover:bg-pink-soft"&gt;
+      &lt;td class="py-2 font-mono text-xs"&gt;id&lt;/td&gt;
+      &lt;td class="py-2"&gt;string&lt;/td&gt;
+      &lt;td class="py-2 text-gray-500"&gt;UUID v7, server-assigned&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;!-- ... --&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">Use <code class="font-mono">hover:bg-pink-soft</code> on rows for the row-hover affordance.</aside>
+    </section>
+
+    <!-- ============ diff block ============ -->
+    <section id="diff" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Diff block</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <pre class="bg-white border border-gray-300 rounded-lg p-4 text-xs font-mono overflow-auto"><span class="th-diff-line"><span class="ln">12</span>function greet(name) {</span><span class="th-diff-line th-diff-rem"><span class="ln">13</span>  return "hi " + name;</span><span class="th-diff-line th-diff-add"><span class="ln">13</span>  return `hi ${name}`;</span><span class="th-diff-line"><span class="ln">14</span>}</span></pre>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;pre class="bg-white border border-gray-300 rounded-lg p-4 text-xs font-mono overflow-auto"&gt;
+&lt;span class="th-diff-line"&gt;&lt;span class="ln"&gt;12&lt;/span&gt;function greet(name) {&lt;/span&gt;
+&lt;span class="th-diff-line th-diff-rem"&gt;&lt;span class="ln"&gt;13&lt;/span&gt;  return "hi " + name;&lt;/span&gt;
+&lt;span class="th-diff-line th-diff-add"&gt;&lt;span class="ln"&gt;13&lt;/span&gt;  return `hi ${name}`;&lt;/span&gt;
+&lt;span class="th-diff-line"&gt;&lt;span class="ln"&gt;14&lt;/span&gt;}&lt;/span&gt;
+&lt;/pre&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ provenance ============ -->
+    <section id="provenance" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-4">Provenance footer</h2>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <footer class="th-provenance" style="margin-top: 0;">
+            Generated by /to-html from specs/example.md on 2026-05-15.
+          </footer>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;footer class="th-provenance"&gt;
+  Generated by /to-html from specs/example.md on 2026-05-15.
+&lt;/footer&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         INTERACTIVE COMPONENTS (Alpine)
+    ===================================================================== -->
+
+    <div class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6 mt-20">Interactive components</div>
+
+    <!-- ============ codeBlock ============ -->
+    <section id="code-block" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">codeBlock</h2>
+      <aside class="text-sm text-gray-500 mb-4">Place <code class="font-mono">x-data="codeBlock"</code> on the wrapper around <code class="font-mono">&lt;pre&gt;&lt;code&gt;</code>. The component auto-highlights via highlight.js on init (if loaded) and exposes a <code class="font-mono">copy()</code> method. Use <code class="font-mono">language-X</code> on the <code class="font-mono">&lt;code&gt;</code> for explicit language hints.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="th-code-wrap" x-data="codeBlock">
+          <div class="th-code-label">example.ts</div>
+          <pre class="th-code"><code class="language-ts">type ValidationResult =
+  | { ok: true;  value: ValidatedPageSchema }
+  | { ok: false; errors: ValidationError[] };
+
+function validatePageSchema(
+  schema: unknown,
+  catalog: Record&lt;string, CatalogEntry&gt;,
+): ValidationResult {
+  // ...
+}</code></pre>
+          <button class="th-copy-btn" @click="copy()" x-text="copied ? 'Copied' : 'Copy'">Copy</button>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="th-code-wrap" x-data="codeBlock"&gt;
+  &lt;div class="th-code-label"&gt;example.ts&lt;/div&gt;
+  &lt;pre class="th-code"&gt;&lt;code class="language-ts"&gt;
+    type ValidationResult = …
+  &lt;/code&gt;&lt;/pre&gt;
+  &lt;button class="th-copy-btn" @click="copy()"
+          x-text="copied ? 'Copied' : 'Copy'"&gt;Copy&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ copyValue ============ -->
+    <section id="copy-value" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">copyValue</h2>
+      <aside class="text-sm text-gray-500 mb-4">A standalone "copy this string" button. Use when the value isn't visible (a token, a UUID) or when you don't want a full code block.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-sm bg-gray-100 border border-gray-300 rounded px-2 py-1">sk_live_abc123...</span>
+          <button x-data="copyValue('sk_live_abc123xyz789', 'Copy token')"
+                  @click="copy"
+                  x-text="copied ? 'Copied' : label"
+                  class="bg-ink text-white px-3 py-1.5 rounded-lg text-sm"></button>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;button x-data="copyValue('sk_live_abc123xyz789', 'Copy token')"
+        @click="copy"
+        x-text="copied ? 'Copied' : label"
+        class="bg-ink text-white px-3 py-1.5 rounded-lg text-sm"&gt;&lt;/button&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ configBlock ============ -->
+    <section id="config-block" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">configBlock</h2>
+      <aside class="text-sm text-gray-500 mb-4">A live form scope. Each key in the initial object becomes a reactive property — bind inputs with <code class="font-mono">x-model</code> and reference them in <code class="font-mono">x-text</code> spans or in a <code class="font-mono">copy()</code> template string with <code class="font-mono">{{key}}</code> placeholders.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div x-data="configBlock({port: '5432', user: 'postgres', db: 'app'})" class="border border-gray-300 rounded-xl p-5 bg-white">
+          <div class="grid grid-cols-3 gap-3 mb-4">
+            <label class="block">
+              <span class="block text-xs font-mono text-gray-500 mb-1">port</span>
+              <input x-model="port" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+            </label>
+            <label class="block">
+              <span class="block text-xs font-mono text-gray-500 mb-1">user</span>
+              <input x-model="user" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+            </label>
+            <label class="block">
+              <span class="block text-xs font-mono text-gray-500 mb-1">db</span>
+              <input x-model="db" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+            </label>
+          </div>
+          <pre class="bg-gray-100 border border-gray-300 rounded p-3 text-xs font-mono mb-3">postgresql://<span x-text="user"></span>@localhost:<span x-text="port"></span>/<span x-text="db"></span></pre>
+          <button @click="copy('postgresql://{{user}}@localhost:{{port}}/{{db}}')"
+                  x-text="copied ? 'Copied' : 'Copy connection string'"
+                  class="bg-ink text-white px-3 py-1.5 rounded-lg text-sm"></button>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div x-data="configBlock({port: '5432', user: 'postgres', db: 'app'})"&gt;
+  &lt;input x-model="port" /&gt;
+  &lt;input x-model="user" /&gt;
+  &lt;input x-model="db" /&gt;
+
+  &lt;pre&gt;postgresql://&lt;span x-text="user"&gt;&lt;/span&gt;@localhost:&lt;span x-text="port"&gt;&lt;/span&gt;/&lt;span x-text="db"&gt;&lt;/span&gt;&lt;/pre&gt;
+
+  &lt;button @click="copy('postgresql://{{user}}@localhost:{{port}}/{{db}}')"
+          x-text="copied ? 'Copied' : 'Copy connection string'"&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ promptBox ============ -->
+    <section id="prompt-box" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">promptBox</h2>
+      <aside class="text-sm text-gray-500 mb-4">Auto-collapses when its text content exceeds 200 characters. Short prompts stay expanded; long ones get a toggle. Use in the page header to show the original prompt that generated the artifact.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div class="space-y-3">
+          <div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm">
+            <span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold mb-1">From prompt</span>
+            Make me a quick status page.
+          </div>
+          <div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm">
+            <div class="flex items-baseline justify-between mb-1">
+              <span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold">From prompt</span>
+              <button @click="toggle" x-text="expanded ? 'collapse' : 'expand'" class="text-xs font-mono text-gray-500 hover:text-ink"></button>
+            </div>
+            <div x-show="expanded" x-collapse>
+              Generate a comprehensive HTML artifact that documents every component in our design system, including layout primitives, interactive controls, form fields, navigation patterns, callout variants, table styles, diff blocks, milestone timelines, and the various tag pill states. Each component should appear twice — rendered live and as raw HTML source beside it — so a future reader can copy any snippet into a new artifact without guessing. Include a sticky nav at the top with anchor links to every section and keep the visual style consistent with the rest of the framework: paper background, ink headings, pink accents.
+            </div>
+            <div x-show="!expanded" class="text-gray-500 italic">prompt collapsed — click expand to read</div>
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;!-- short: stays expanded --&gt;
+&lt;div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm"&gt;
+  &lt;span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold mb-1"&gt;From prompt&lt;/span&gt;
+  Make me a quick status page.
+&lt;/div&gt;
+
+&lt;!-- long: auto-collapses, exposes toggle --&gt;
+&lt;div x-data="promptBox" class="bg-gray-100 border border-gray-300 rounded-xl p-4 text-sm"&gt;
+  &lt;div class="flex items-baseline justify-between mb-1"&gt;
+    &lt;span class="block text-xs font-mono text-pink uppercase tracking-wider font-semibold"&gt;From prompt&lt;/span&gt;
+    &lt;button @click="toggle" x-text="expanded ? 'collapse' : 'expand'"&gt;&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div x-show="expanded" x-collapse&gt;...long prompt text...&lt;/div&gt;
+  &lt;div x-show="!expanded" class="text-gray-500 italic"&gt;prompt collapsed&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ scenario ============ -->
+    <section id="scenario" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">scenario</h2>
+      <aside class="text-sm text-gray-500 mb-4">A collapsible test-scenario card with a 3-column body (precondition / steps / expected). The Alpine scope is currently empty — the native <code class="font-mono">&lt;details&gt;</code> element handles open/close. Wrap a list of these to document acceptance tests.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <details class="th-scenario" x-data="scenario" open>
+            <summary>
+              <span class="th-tag th-tag-happy">happy</span>
+              <span>User submits valid credentials</span>
+            </summary>
+            <div class="th-scenario-body">
+              <div>
+                <div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1">precondition</div>
+                <div class="text-sm">Account exists, password hash matches.</div>
+              </div>
+              <div>
+                <div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1">steps</div>
+                <ol class="text-sm list-decimal pl-4 space-y-1">
+                  <li>POST /login with email + password</li>
+                  <li>Receive 200 with session cookie</li>
+                  <li>Follow redirect to /dashboard</li>
+                </ol>
+              </div>
+              <div>
+                <div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1">expected</div>
+                <div class="text-sm">Dashboard renders. Session valid for 30 days.</div>
+              </div>
+            </div>
+          </details>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;details class="th-scenario" x-data="scenario" open&gt;
+  &lt;summary&gt;
+    &lt;span class="th-tag th-tag-happy"&gt;happy&lt;/span&gt;
+    &lt;span&gt;User submits valid credentials&lt;/span&gt;
+  &lt;/summary&gt;
+  &lt;div class="th-scenario-body"&gt;
+    &lt;div&gt;
+      &lt;div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1"&gt;precondition&lt;/div&gt;
+      &lt;div class="text-sm"&gt;Account exists, password hash matches.&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1"&gt;steps&lt;/div&gt;
+      &lt;ol class="text-sm list-decimal pl-4 space-y-1"&gt;
+        &lt;li&gt;POST /login&lt;/li&gt;
+        ...
+      &lt;/ol&gt;
+    &lt;/div&gt;
+    &lt;div&gt;
+      &lt;div class="font-mono text-xs uppercase tracking-wider text-gray-500 mb-1"&gt;expected&lt;/div&gt;
+      &lt;div class="text-sm"&gt;Dashboard renders.&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/details&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ stateExport ============ -->
+    <section id="state-export" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">stateExport</h2>
+      <aside class="text-sm text-gray-500 mb-4">Walks descendant <code class="font-mono">[x-data]</code> scopes and copies the union as JSON. Useful for throwaway editors where the user tweaks values and wants to dump the result. Name each nested scope with <code class="font-mono">data-th-key="..."</code>.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div x-data="stateExport" class="border border-gray-300 rounded-xl p-5 bg-white">
+          <div class="grid grid-cols-2 gap-4 mb-4">
+            <div x-data="configBlock({host: 'db.example.com', port: '5432'})" data-th-key="db" class="border border-gray-300 rounded p-3">
+              <div class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">db</div>
+              <label class="block mb-2">
+                <span class="block text-xs font-mono text-gray-500 mb-1">host</span>
+                <input x-model="host" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+              </label>
+              <label class="block">
+                <span class="block text-xs font-mono text-gray-500 mb-1">port</span>
+                <input x-model="port" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+              </label>
+            </div>
+            <div x-data="configBlock({region: 'us-east-1', bucket: 'app-prod'})" data-th-key="s3" class="border border-gray-300 rounded p-3">
+              <div class="text-xs font-mono uppercase tracking-wider text-gray-500 mb-2">s3</div>
+              <label class="block mb-2">
+                <span class="block text-xs font-mono text-gray-500 mb-1">region</span>
+                <input x-model="region" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+              </label>
+              <label class="block">
+                <span class="block text-xs font-mono text-gray-500 mb-1">bucket</span>
+                <input x-model="bucket" class="w-full border border-gray-300 rounded px-2 py-1 text-sm font-mono" />
+              </label>
+            </div>
+          </div>
+          <button @click="exportJSON"
+                  x-text="copied ? 'Copied' : 'Copy as JSON'"
+                  class="bg-ink text-white px-3 py-1.5 rounded-lg text-sm"></button>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div x-data="stateExport"&gt;
+  &lt;div x-data="configBlock({host: 'db.example.com', port: '5432'})" data-th-key="db"&gt;
+    &lt;input x-model="host" /&gt;
+    &lt;input x-model="port" /&gt;
+  &lt;/div&gt;
+  &lt;div x-data="configBlock({region: 'us-east-1', bucket: 'app-prod'})" data-th-key="s3"&gt;
+    &lt;input x-model="region" /&gt;
+    &lt;input x-model="bucket" /&gt;
+  &lt;/div&gt;
+  &lt;button @click="exportJSON" x-text="copied ? 'Copied' : 'Copy as JSON'"&gt;&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ tabs ============ -->
+    <section id="tabs" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">tabs</h2>
+      <aside class="text-sm text-gray-500 mb-4">Single-active-tab state. Pass the initial active tab as an argument, or omit it to default to the first <code class="font-mono">[data-th-tab]</code> child. Tab triggers call <code class="font-mono">set('name')</code>; panels use <code class="font-mono">x-show="is('name')"</code>.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div x-data="tabs('overview')" class="border border-gray-300 rounded-xl p-5 bg-white">
+          <div class="flex gap-2 border-b border-gray-300 mb-4">
+            <button data-th-tab="overview" @click="set('overview')"
+                    :class="is('overview') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+                    class="px-3 py-2 text-sm">Overview</button>
+            <button data-th-tab="code" @click="set('code')"
+                    :class="is('code') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+                    class="px-3 py-2 text-sm">Code</button>
+            <button data-th-tab="notes" @click="set('notes')"
+                    :class="is('notes') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+                    class="px-3 py-2 text-sm">Notes</button>
+          </div>
+          <div x-show="is('overview')">
+            <p class="text-sm text-gray-700">A short summary of what this thing does and why it exists.</p>
+          </div>
+          <div x-show="is('code')" style="display:none">
+            <pre class="bg-gray-100 border border-gray-300 rounded p-3 text-xs font-mono">const result = compute(input);
+return result;</pre>
+          </div>
+          <div x-show="is('notes')" style="display:none">
+            <ul class="text-sm text-gray-700 list-disc pl-5 space-y-1">
+              <li>Edge case: empty input returns null.</li>
+              <li>Performance: O(n log n) on the input length.</li>
+            </ul>
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div x-data="tabs('overview')"&gt;
+  &lt;div class="flex gap-2 border-b border-gray-300 mb-4"&gt;
+    &lt;button data-th-tab="overview" @click="set('overview')"
+            :class="is('overview') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+            class="px-3 py-2 text-sm"&gt;Overview&lt;/button&gt;
+    &lt;button data-th-tab="code" @click="set('code')"
+            :class="is('code') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+            class="px-3 py-2 text-sm"&gt;Code&lt;/button&gt;
+    &lt;button data-th-tab="notes" @click="set('notes')"
+            :class="is('notes') ? 'border-b-2 border-pink text-ink' : 'text-gray-500'"
+            class="px-3 py-2 text-sm"&gt;Notes&lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div x-show="is('overview')"&gt;Overview content&lt;/div&gt;
+  &lt;div x-show="is('code')" style="display:none"&gt;Code content&lt;/div&gt;
+  &lt;div x-show="is('notes')" style="display:none"&gt;Notes content&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         DATA COMPONENTS (Alpine)
+    ===================================================================== -->
+
+    <div class="font-mono text-xs text-gray-500 uppercase tracking-widest mb-6 mt-20">Data components</div>
+
+    <!-- ============ filterableTable ============ -->
+    <section id="filterable-table" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">filterableTable</h2>
+      <aside class="text-sm text-gray-500 mb-4">Free-text filter over <code class="font-mono">&lt;tbody&gt;</code> rows plus sort-by-column when a <code class="font-mono">&lt;th&gt;</code> carries <code class="font-mono">data-th-sort</code>. Numeric columns set <code class="font-mono">data-th-value</code> on the cell so 5 sorts before 12.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <table x-data="filterableTable" class="w-full text-sm border-collapse">
+            <caption class="text-left mb-3">
+              <input x-model="q" @input="applyFilter" placeholder="Filter rows…"
+                     class="border border-gray-300 rounded px-2 py-1 text-sm font-mono w-full max-w-xs" />
+            </caption>
+            <thead>
+              <tr class="border-b border-gray-300">
+                <th data-th-sort @click="sortBy('name', 'string')"
+                    class="cursor-pointer text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2 pr-3">
+                  name<span x-text="arrow('name')"></span>
+                </th>
+                <th data-th-sort @click="sortBy('team', 'string')"
+                    class="cursor-pointer text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2 pr-3">
+                  team<span x-text="arrow('team')"></span>
+                </th>
+                <th data-th-sort @click="sortBy('count', 'number')"
+                    class="cursor-pointer text-right font-mono text-xs uppercase tracking-wider text-gray-500 py-2 pr-3">
+                  count<span x-text="arrow('count')"></span>
+                </th>
+                <th data-th-sort @click="sortBy('status', 'string')"
+                    class="cursor-pointer text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">
+                  status<span x-text="arrow('status')"></span>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Apples</td>
+                <td data-th-cell="team" class="py-2 pr-3">Produce</td>
+                <td data-th-cell="count" data-th-value="12" class="py-2 pr-3 text-right font-mono">12</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-happy">stocked</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Oranges</td>
+                <td data-th-cell="team" class="py-2 pr-3">Produce</td>
+                <td data-th-cell="count" data-th-value="5" class="py-2 pr-3 text-right font-mono">5</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-warn">low</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Bananas</td>
+                <td data-th-cell="team" class="py-2 pr-3">Produce</td>
+                <td data-th-cell="count" data-th-value="120" class="py-2 pr-3 text-right font-mono">120</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-happy">stocked</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Sourdough</td>
+                <td data-th-cell="team" class="py-2 pr-3">Bakery</td>
+                <td data-th-cell="count" data-th-value="8" class="py-2 pr-3 text-right font-mono">8</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-happy">stocked</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Croissants</td>
+                <td data-th-cell="team" class="py-2 pr-3">Bakery</td>
+                <td data-th-cell="count" data-th-value="0" class="py-2 pr-3 text-right font-mono">0</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-error">out</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Cheddar</td>
+                <td data-th-cell="team" class="py-2 pr-3">Dairy</td>
+                <td data-th-cell="count" data-th-value="34" class="py-2 pr-3 text-right font-mono">34</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-happy">stocked</span></td>
+              </tr>
+              <tr class="border-b border-gray-300 hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Milk</td>
+                <td data-th-cell="team" class="py-2 pr-3">Dairy</td>
+                <td data-th-cell="count" data-th-value="3" class="py-2 pr-3 text-right font-mono">3</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-warn">low</span></td>
+              </tr>
+              <tr class="hover:bg-pink-soft">
+                <td data-th-cell="name" class="py-2 pr-3">Yogurt</td>
+                <td data-th-cell="team" class="py-2 pr-3">Dairy</td>
+                <td data-th-cell="count" data-th-value="17" class="py-2 pr-3 text-right font-mono">17</td>
+                <td data-th-cell="status" class="py-2"><span class="th-tag th-tag-happy">stocked</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;table x-data="filterableTable" class="w-full"&gt;
+  &lt;caption&gt;
+    &lt;input x-model="q" @input="applyFilter" placeholder="Filter…" /&gt;
+  &lt;/caption&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th data-th-sort @click="sortBy('name', 'string')"&gt;
+        name&lt;span x-text="arrow('name')"&gt;&lt;/span&gt;
+      &lt;/th&gt;
+      &lt;th data-th-sort @click="sortBy('count', 'number')"&gt;
+        count&lt;span x-text="arrow('count')"&gt;&lt;/span&gt;
+      &lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td data-th-cell="name"&gt;Apples&lt;/td&gt;
+      &lt;td data-th-cell="count" data-th-value="12"&gt;12&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td data-th-cell="name"&gt;Oranges&lt;/td&gt;
+      &lt;td data-th-cell="count" data-th-value="5"&gt;5&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+        </details>
+      </div>
+      <aside class="text-sm text-gray-500 mt-3">Set <code class="font-mono">data-th-value</code> on numeric cells for true numeric sort. Strings fall back to <code class="font-mono">textContent</code>.</aside>
+    </section>
+
+    <!-- ============ searchableCards ============ -->
+    <section id="searchable-cards" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">searchableCards</h2>
+      <aside class="text-sm text-gray-500 mb-4">Same filter idea as <code class="font-mono">filterableTable</code>, but for any container of <code class="font-mono">[data-th-card]</code> children. Use <code class="font-mono">data-th-search</code> for keyword aliases the visible text doesn't carry.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div x-data="searchableCards">
+          <input x-model="q" @input="applyFilter" placeholder="Search cards…"
+                 class="border border-gray-300 rounded px-2 py-1 text-sm font-mono mb-3 w-full max-w-xs" />
+          <div class="grid grid-cols-3 gap-3">
+            <div data-th-card data-th-search="apples fruit red produce" class="th-cell">
+              <div class="th-k">produce</div>
+              <div class="th-v">Apples</div>
+            </div>
+            <div data-th-card data-th-search="bananas fruit yellow produce" class="th-cell">
+              <div class="th-k">produce</div>
+              <div class="th-v">Bananas</div>
+            </div>
+            <div data-th-card data-th-search="oranges fruit citrus produce" class="th-cell">
+              <div class="th-k">produce</div>
+              <div class="th-v">Oranges</div>
+            </div>
+            <div data-th-card data-th-search="sourdough bread bakery" class="th-cell">
+              <div class="th-k">bakery</div>
+              <div class="th-v">Sourdough</div>
+            </div>
+            <div data-th-card data-th-search="cheddar cheese dairy" class="th-cell">
+              <div class="th-k">dairy</div>
+              <div class="th-v">Cheddar</div>
+            </div>
+            <div data-th-card data-th-search="yogurt dairy" class="th-cell">
+              <div class="th-k">dairy</div>
+              <div class="th-v">Yogurt</div>
+            </div>
+          </div>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div x-data="searchableCards"&gt;
+  &lt;input x-model="q" @input="applyFilter" placeholder="Search…" /&gt;
+  &lt;div class="grid grid-cols-3 gap-3"&gt;
+    &lt;div data-th-card data-th-search="apples fruit red"
+         class="th-cell"&gt;Apples&lt;/div&gt;
+    &lt;div data-th-card data-th-search="bananas fruit yellow"
+         class="th-cell"&gt;Bananas&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ sparkline ============ -->
+    <section id="sparkline" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">sparkline</h2>
+      <aside class="text-sm text-gray-500 mb-4">Inline SVG line chart. Reads comma-separated numbers from <code class="font-mono">data-th-values</code>. Default size 80×20, pink stroke. Override with <code class="font-mono">data-th-width</code> / <code class="font-mono">data-th-height</code>.</aside>
+      <div class="grid grid-cols-2 gap-6">
+        <div>
+          <table class="w-full text-sm border-collapse">
+            <thead>
+              <tr class="border-b border-gray-300">
+                <th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">metric</th>
+                <th class="text-right font-mono text-xs uppercase tracking-wider text-gray-500 py-2 pr-3">latest</th>
+                <th class="text-left font-mono text-xs uppercase tracking-wider text-gray-500 py-2">trend</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-gray-300">
+                <td class="py-2">Daily signups</td>
+                <td class="py-2 pr-3 text-right font-mono">24</td>
+                <td class="py-2"><span x-data="sparkline" data-th-values="3,5,8,12,9,14,18,22,19,24"></span></td>
+              </tr>
+              <tr class="border-b border-gray-300">
+                <td class="py-2">Error rate (%)</td>
+                <td class="py-2 pr-3 text-right font-mono">0.4</td>
+                <td class="py-2"><span x-data="sparkline" data-th-values="2.1,1.8,2.4,1.5,0.9,1.2,0.7,0.5,0.4,0.4"></span></td>
+              </tr>
+              <tr>
+                <td class="py-2">Checkout latency (ms)</td>
+                <td class="py-2 pr-3 text-right font-mono">182</td>
+                <td class="py-2"><span x-data="sparkline" data-th-values="210,205,198,220,215,190,185,178,180,182" data-th-width="120" data-th-height="24"></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <details class="gallery-source">
+          <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+          <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;td&gt;
+  Daily signups
+  &lt;span x-data="sparkline"
+        data-th-values="3,5,8,12,9,14,18,22,19,24"&gt;&lt;/span&gt;
+&lt;/td&gt;
+
+&lt;!-- custom size --&gt;
+&lt;span x-data="sparkline"
+      data-th-values="210,205,198,220,215,190,185,178,180,182"
+      data-th-width="120"
+      data-th-height="24"&gt;&lt;/span&gt;</code></pre>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ interactiveNodes ============ -->
+    <section id="interactive-nodes" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">interactiveNodes</h2>
+      <aside class="text-sm text-gray-500 mb-4">Click-to-explore SVG diagrams. Each <code class="font-mono">&lt;g class="th-node" data-th-node="key"&gt;</code> wires itself with <code class="font-mono">@click="set('key')"</code> and <code class="font-mono">:class="is('key') &amp;&amp; 'th-node-active'"</code>. The side panel renders one <code class="font-mono">&lt;template x-if="is('key')"&gt;</code> per node. Pre-activate the most-asked-about node by passing it to <code class="font-mono">interactiveNodes('key')</code>.</aside>
+      <div x-data="interactiveNodes('build')" class="grid grid-cols-[1fr_240px] gap-6 border border-gray-300 rounded-xl p-5 bg-white">
+        <svg viewBox="0 0 360 220" style="min-width: 320px;">
+          <defs>
+            <marker id="ref-node-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#8A8A8A"/>
+            </marker>
+          </defs>
+          <g class="th-node" data-th-node="build" @click="set('build')" :class="is('build') && 'th-node-active'">
+            <rect class="th-node-rect" x="100" y="20" width="160" height="44" rx="10"/>
+            <text x="180" y="46" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace">build</text>
+          </g>
+          <g class="th-node" data-th-node="test" @click="set('test')" :class="is('test') && 'th-node-active'">
+            <rect class="th-node-rect" x="100" y="90" width="160" height="44" rx="10"/>
+            <text x="180" y="116" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace">test</text>
+          </g>
+          <g class="th-node th-node-ok" data-th-node="ship" @click="set('ship')" :class="is('ship') && 'th-node-active'">
+            <rect class="th-node-rect" x="100" y="160" width="160" height="44" rx="22"/>
+            <text x="180" y="186" text-anchor="middle" font-size="12" font-family="ui-monospace,monospace">✓ ship</text>
+          </g>
+          <g stroke="#8A8A8A" stroke-width="1.5" fill="none">
+            <path d="M180 64 L180 90" marker-end="url(#ref-node-ar)"/>
+            <path d="M180 134 L180 160" marker-end="url(#ref-node-ar)"/>
+          </g>
+        </svg>
+        <aside class="th-cell" style="padding: 14px 16px;">
+          <div class="th-k">Step</div>
+          <template x-if="is('build')">
+            <div class="th-stack-tight">
+              <h3 class="th-h3">build</h3>
+              <p class="text-sm">Compile and bundle the assets.</p>
+            </div>
+          </template>
+          <template x-if="is('test')">
+            <div class="th-stack-tight">
+              <h3 class="th-h3">test</h3>
+              <p class="text-sm">Unit + integration suites.</p>
+            </div>
+          </template>
+          <template x-if="is('ship')">
+            <div class="th-stack-tight">
+              <h3 class="th-h3">ship</h3>
+              <p class="text-sm">Promote the green build.</p>
+            </div>
+          </template>
+        </aside>
+      </div>
+      <details class="gallery-source mt-4">
+        <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+        <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;section x-data="interactiveNodes('build')"&gt;
+  &lt;svg …&gt;
+    &lt;g class="th-node" data-th-node="build"
+       @click="set('build')"
+       :class="is('build') &amp;&amp; 'th-node-active'"&gt;
+      &lt;rect class="th-node-rect" …/&gt;
+      &lt;text …&gt;build&lt;/text&gt;
+    &lt;/g&gt;
+    &lt;!-- repeat for test, ship --&gt;
+  &lt;/svg&gt;
+  &lt;aside class="th-cell"&gt;
+    &lt;template x-if="is('build')"&gt;
+      &lt;div&gt;…build detail…&lt;/div&gt;
+    &lt;/template&gt;
+    &lt;!-- one template per node --&gt;
+  &lt;/aside&gt;
+&lt;/section&gt;</code></pre>
+      </details>
+    </section>
+
+    <!-- ============ jumpFlash ============ -->
+    <section id="jump-flash" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">jumpFlash</h2>
+      <aside class="text-sm text-gray-500 mb-4">Wraps a region containing in-page anchor links. Any <code class="font-mono">&lt;a data-th-jump href="#id"&gt;</code> click adds <code class="font-mono">.th-flash</code> (a soft pink box-shadow ring) to the target for 1.4 s, drawing the eye after the smooth scroll. Use on risk maps, summary chips, and side ToCs.</aside>
+      <div class="border border-gray-300 rounded-xl p-5 bg-white">
+        <div class="th-tags" x-data="jumpFlash">
+          <a href="#ref-target-a" data-th-jump class="th-tag th-tag-error">jump to a</a>
+          <a href="#ref-target-b" data-th-jump class="th-tag th-tag-warn">jump to b</a>
+          <a href="#ref-target-c" data-th-jump class="th-tag th-tag-happy">jump to c</a>
+        </div>
+        <div class="th-stack mt-6">
+          <div id="ref-target-a" class="th-cell" style="scroll-margin-top: 80px;">
+            <div class="th-k">Target A</div>
+            <p class="text-sm mt-1">Highlighted when the first chip is clicked.</p>
+          </div>
+          <div id="ref-target-b" class="th-cell" style="scroll-margin-top: 80px;">
+            <div class="th-k">Target B</div>
+            <p class="text-sm mt-1">Highlighted when the second chip is clicked.</p>
+          </div>
+          <div id="ref-target-c" class="th-cell" style="scroll-margin-top: 80px;">
+            <div class="th-k">Target C</div>
+            <p class="text-sm mt-1">Highlighted when the third chip is clicked.</p>
+          </div>
+        </div>
+      </div>
+      <details class="gallery-source mt-4">
+        <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+        <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;div class="th-tags" x-data="jumpFlash"&gt;
+  &lt;a href="#file-1" data-th-jump class="th-tag th-tag-error"&gt;file-1.ts&lt;/a&gt;
+  &lt;a href="#file-2" data-th-jump class="th-tag th-tag-warn"&gt;file-2.ts&lt;/a&gt;
+&lt;/div&gt;
+
+&lt;article id="file-1" class="th-cell" style="scroll-margin-top: 20px"&gt;…&lt;/article&gt;
+&lt;article id="file-2" class="th-cell" style="scroll-margin-top: 20px"&gt;…&lt;/article&gt;</code></pre>
+      </details>
+    </section>
+
+    <!-- ============ checklist ============ -->
+    <section id="checklist" class="gallery-section mb-16">
+      <h2 class="font-serif text-2xl text-ink mb-2">checklist</h2>
+      <aside class="text-sm text-gray-500 mb-4">Native <code class="font-mono">&lt;input type="checkbox"&gt;</code> styled with the framework's mint accent. Checked items get a gray strikethrough so the reader can see what's left at a glance. Use for "suggested next steps" or any list the reader is expected to walk down.</aside>
+      <div class="border border-gray-300 rounded-xl p-5 bg-white">
+        <ul class="th-checklist">
+          <li><input type="checkbox" id="ref-chk-1"><label for="ref-chk-1">Cancel in-flight queries before writing optimistic state.</label></li>
+          <li><input type="checkbox" id="ref-chk-2" checked><label for="ref-chk-2">Roll back on error and surface a toast.</label></li>
+          <li><input type="checkbox" id="ref-chk-3"><label for="ref-chk-3">Move idempotency key generation into <code>onMutate</code>.</label></li>
+        </ul>
+      </div>
+      <details class="gallery-source mt-4">
+        <summary class="text-xs font-mono text-gray-500 cursor-pointer mb-2">source</summary>
+        <pre x-data="codeBlock" class="bg-gray-100 border border-gray-300 rounded-lg p-4 text-xs overflow-auto"><button @click="copy" class="th-copy-btn" :class="{copied}" x-text="copied ? 'Copied' : 'Copy'"></button><code>&lt;ul class="th-checklist"&gt;
+  &lt;li&gt;&lt;input type="checkbox" id="step-1"&gt;&lt;label for="step-1"&gt;Cancel in-flight queries.&lt;/label&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;input type="checkbox" id="step-2"&gt;&lt;label for="step-2"&gt;Roll back on error.&lt;/label&gt;&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+      </details>
+    </section>
+
+    <footer class="th-provenance">
+      to-html framework reference. Open this file whenever you need to remember what the framework offers.
+    </footer>
+  </main>
+</body>
+</html>
