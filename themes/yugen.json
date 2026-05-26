@@ -1,0 +1,18 @@
+{
+  "name": "yugen",
+  "background": "dark",
+  "kitty": {
+    "mode": "include",
+    "file": "yugen.conf"
+  },
+  "nvim": {
+    "module": "themes.yugen",
+    "background": "dark"
+  },
+  "tmux": {
+    "bg0": "#000000",
+    "fg0": "#fafafa",
+    "fg1": "#878787",
+    "fg2": "#3D3D3D"
+  }
+}
