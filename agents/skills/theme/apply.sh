@@ -63,6 +63,17 @@ else
   echo "  (tmux not running; will pick up theme on next start)"
 fi
 
+# --- opencode ---
+opencode_theme=$(jq -r '.opencode // empty' "$src")
+if [ -n "$opencode_theme" ]; then
+  tui_json="$HOME/.config/opencode/tui.json"
+  if [ -f "$tui_json" ] || [ -L "$tui_json" ]; then
+    tmp=$(mktemp)
+    jq --arg t "$opencode_theme" '.theme = $t' "$tui_json" > "$tmp" && mv "$tmp" "$tui_json"
+    echo "→ opencode theme set to $opencode_theme"
+  fi
+fi
+
 # --- neovim ---
 reloaded_any=0
 for sock in $(ls /tmp/nvim.*/0 2>/dev/null; ls "${XDG_RUNTIME_DIR:-/tmp}"/nvim.*/0 2>/dev/null); do

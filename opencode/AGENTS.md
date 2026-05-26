@@ -1,0 +1,1 @@
+/Users/marcosoliveira/projects/dotfiles/agents/AGENTS.md
