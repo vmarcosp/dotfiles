@@ -12,6 +12,7 @@
       "everforest_background": "soft"
     }
   },
+  "opencode": "everforest",
   "tmux": {
     "bg0": "#F3EAD3",
     "fg0": "#5c6a72",

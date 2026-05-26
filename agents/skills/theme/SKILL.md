@@ -32,9 +32,18 @@ The script:
    - `mode: "kitten"` → dumps the bundled theme via `kitten themes --dump-theme`
 3. Reloads kitty via `kitten @ --to <socket> load-config` (no-op if not running)
 4. Reloads tmux: rebuilds `tmux/.tmux.conf` from better-tmux and `tmux source-file`
-5. Reloads neovim in any running instance via `nvim --server <addr> --remote-send` (best-effort)
+5. Updates opencode `tui.json` with the `opencode` field value (skipped if field absent)
+6. Reloads neovim in any running instance via `nvim --server <addr> --remote-send` (best-effort)
 
-If the user just asks "switch to X", call the script with that name and report what changed. If the name is ambiguous or unknown, list available themes and ask.
+After the script runs successfully, commit the changes by running:
+
+```bash
+commit-sync
+```
+
+This command does add + commit + push in one shot. Do not use the `commit` skill, do not create manual commits, and do not describe or name the commit yourself — `commit-sync` handles everything.
+
+If the user just asks "switch to X", call the script with that name, run `commit-sync`, and report what changed. If the name is ambiguous or unknown, list available themes and ask.
 
 ## Adding a new theme
 

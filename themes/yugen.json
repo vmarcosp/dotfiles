@@ -9,6 +9,7 @@
     "module": "themes.yugen",
     "background": "dark"
   },
+  "opencode": "yugen",
   "tmux": {
     "bg0": "#000000",
     "fg0": "#fafafa",
