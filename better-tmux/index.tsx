@@ -1,12 +1,7 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
+import theme from '../themes/current.json'
 
-// Catppuccin Mocha palette
-const colors = {
-  bg0: '#000000',
-  fg0: '#fafafa',
-  fg1: '#878787',
-  fg2: '#3D3D3D'
-}
+const colors = theme.tmux
 
 const Window = ({ type, number, name }: WindowConfig) => {
   return (
@@ -78,7 +73,7 @@ export default {
   },
   status: {
     bg: colors.bg0,
-    fg: colors.fg,
+    fg: colors.fg0,
     position: "bottom"
   },
   window: (window) => <Window {...window} />
