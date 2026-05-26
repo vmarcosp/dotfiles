@@ -1,0 +1,36 @@
+{
+  "hooks": {
+    "afterFileEdit": [
+      {
+        "command": "/usr/local/bin/aicodemetricsd hook cursor --hook-input stdin",
+        "timeout": 2
+      }
+    ],
+    "afterTabFileEdit": [
+      {
+        "command": "/usr/local/bin/aicodemetricsd hook cursor --hook-input stdin",
+        "timeout": 2
+      }
+    ],
+    "preCompact": [
+      {
+        "command": "/usr/local/bin/aicodemetricsd hook cursor --hook-input stdin",
+        "timeout": 2
+      }
+    ],
+    "preToolUse": [
+      {
+        "command": "/usr/local/bin/aicodemetricsd hook cursor --hook-input stdin",
+        "matcher": "Write|TabWrite",
+        "timeout": 2
+      }
+    ],
+    "sessionEnd": [
+      {
+        "command": "/usr/local/bin/aicodemetricsd hook cursor --hook-input stdin",
+        "timeout": 2
+      }
+    ]
+  },
+  "version": 1
+}
