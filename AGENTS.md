@@ -129,6 +129,7 @@ agents/
 - `commit.md` — always use the `commit` skill; use conventional commits format; never amend published commits
 - `context7.md` — use Context7 MCP for any library or API documentation instead of relying on training data
 - `human-writing.md` — use the `human-writing` skill for any prose or document writing
+- `spec-implement-flow.md` — `/specification` and `/implementing` share one branch and one draft PR (spec opens it, implementing fills it out and marks ready)
 
 **Skills** are a mix of local implementations and symlinks to an external VTEX agents repo (for `implementing` and `specification`). Local skills include `commit`, `human-writing`, `worktree`, `my-voice`, `grill-me`, and `context7-mcp`.
 
