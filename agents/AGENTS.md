@@ -10,3 +10,12 @@ Do not use for: refactoring, writing scripts from scratch, debugging business lo
 3. `query-docs` with the selected library ID and the user's full question (not single words)
 4. Answer using the fetched docs
 <!-- context7 -->
+
+<!-- rules -->
+Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read the file when relevant:
+
+- `~/.agents/rules/commit.md` — commit workflow (use the `commit` skill, conventional commits)
+- `~/.agents/rules/context7.md` — use Context7 MCP for library docs
+- `~/.agents/rules/human-writing.md` — natural prose, no AI-generated patterns
+- `~/.agents/rules/spec-implement-flow.md` — `/specification` and `/implementing` share one branch and one draft PR
+<!-- rules -->
