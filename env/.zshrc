@@ -65,20 +65,20 @@ function ssh-vps() {
   if [ -n "$TMUX" ]; then
     tmux set-option -g prefix C-a
     tmux bind-key C-a send-prefix
-    trap 'tmux set-option -g prefix C-b; tmux bind-key C-b send-prefix' EXIT INT
+    trap 'tmux set-option -g prefix C-d; tmux bind-key C-d send-prefix' EXIT INT
   fi
   ssh "$host"
   if [ -n "$TMUX" ]; then
-    tmux set-option -g prefix C-b
-    tmux bind-key C-b send-prefix
+    tmux set-option -g prefix C-d
+    tmux bind-key C-d send-prefix
     trap - EXIT INT
   fi
 }
 
 function tmux-revert-prefix() {
-  tmux set-option -g prefix C-b
-  tmux bind-key C-b send-prefix
-  echo "Prefix revertido para C-b"
+  tmux set-option -g prefix C-d
+  tmux bind-key C-d send-prefix
+  echo "Prefix revertido para C-d"
 }
 
 alias vim="nvim"
