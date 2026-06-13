@@ -45,6 +45,7 @@ dotfiles/
 | `agents/commands` | `~/.claude/commands` |
 | `agents/rules` | `~/.claude/rules` |
 | `claude/settings.json` | `~/.claude/settings.json` |
+| `claude/statusline.sh` | `~/.claude/statusline.sh` |
 | `bin/worktree` | `~/bin/worktree` |
 | `opencode/plugins` | `~/.opencode/plugins` |
 
@@ -149,6 +150,8 @@ Global Claude Code settings symlinked to `~/.claude/settings.json`.
 
 Configures: Opus as the default model, vim editor mode, dark-ansi theme. Permissions allow Bash, Read, Write, and Edit while blocking destructive operations like `rm -rf`.
 
+`statusline.sh` is the custom status line (symlinked to `~/.claude/statusline.sh` and referenced by the `statusLine` field in `settings.json`). It reads the session JSON from stdin and prints model, git branch, and context token usage, colored with the yugen palette.
+
 ### wallpapers/
 
 Four dark JPEG wallpapers that match the yugen theme. Not symlinked — set manually via macOS System Settings.
@@ -165,6 +168,7 @@ Versioned screenshots used in `README.md`. Each version gets its own subfolder (
 - **tmux keybindings or status bar**: edit `better-tmux/index.tsx`, then let pnpm rebuild
 - **Kitty theme**: update `kitty/current-theme.conf`
 - **Claude Code global settings**: edit `claude/settings.json`
+- **Claude Code status line**: edit `claude/statusline.sh`
 - **Claude Code project settings**: edit `.claude/settings.local.json`
 - **AI rules (global)**: edit or add files in `agents/rules/`
 - **New skills (global)**: add a folder to `agents/skills/`
