@@ -66,6 +66,20 @@ Act on what it returns:
 - **awaiting clarification** → it already notified me. Stop and report the open question to me.
 - **blocked** (conflicting dependency, scope that contradicts the epic) → it already notified me. Stop and report to me.
 
+## 6.5. Spec gate (wait for approval)
+
+Run the `/notification` skill:
+- title: `fs-planner ✅`
+- tone: `info`
+- message: `Spec pronta. Revise via @agent: no PR e comente "@agent: Spec Aprovada" na raiz quando quiser seguir. PR: <url>`
+
+Then enter a polling loop (`/loop 15m`) that checks the PR's root comments on every tick:
+- For each root comment containing `@agent:` that is **not** the approval phrase, route it through `/pr-agent` so the spec gets adjusted.
+- When you see a root comment from the PR owner containing exactly **`@agent: Spec Aprovada`**, exit the loop and continue to step 7.
+- If the PR is closed or the branch is merged before approval, stop and report to me.
+
+Do **not** proceed to implement until you receive the approval comment.
+
 ## 7. Implement (subagent fs-implementer)
 
 Fire the **`fs-implementer`** subagent (`subagent_type: "fs-implementer"`). Pass the spec (`specs/<id>.md`) plus the task block. It runs `/implementing`: follows the styleguide, writes the tests (each acceptance criterion + BDD/NFR), doesn't touch what's **Out**, leaves `pnpm lint`/`test`/`typecheck` green, and updates the existing PR to **ready** with the full body (Summary, Tests, Assumptions, Deviations, Follow-ups, spec link).
