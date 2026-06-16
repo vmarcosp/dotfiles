@@ -95,9 +95,15 @@ Via the Jira MCP: move the current task to **In Review** (`transitionJiraIssue` 
 
 ## 11. Notify
 
-Slack message via MCP (`slack_send_message`) to `#fs-mission-team`:
+Slack message via MCP (`slack_send_message`) to `#fs-mission-team`. Pick one of the three variations below (rotate — don't always use the first):
 ```
-Hey folks, I need a review on this PR: <PR url>
+PR pronto pra review: <PR url>
+```
+```
+Alguém consegue dar uma olhada nesse PR? <PR url>
+```
+```
+Novo PR aberto, precisa de review: <PR url>
 ```
 
 Then run the `/notification` skill:
