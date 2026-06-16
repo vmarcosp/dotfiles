@@ -18,6 +18,7 @@ When using the `specification` or `implementing` skills — stay on the current 
 1. Do not create a new branch — use the current branch (the same one the spec PR is on)
 2. Run the normal implementing loop (tests, code, commits)
 3. When done, push to the existing branch and **update the existing PR** instead of opening a new one:
-   - Replace the temporary description with the full body (Summary, Tests, Assumptions, Deviations, Follow-ups, Spec link)
-   - Mark it ready for review (out of draft)
+   - Run `/open-pr` to produce the final title and body — it handles Jira linking, conventional commit title, and the standard body template
+   - Apply via `gh pr edit --title "..." --body "..."` (do NOT run `gh pr create`)
+   - Mark it ready for review: `gh pr ready`
 4. Update the spec status to `Done` as usual
