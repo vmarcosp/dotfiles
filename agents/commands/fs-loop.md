@@ -8,6 +8,8 @@ The control file is `specs/epics/<epic>.loop.json` (produced by `/json-from-epic
 
 You are **one tick** of a loop. Run via `/loop <interval> /fs-loop <epic>`. Long interval — merge approval is human-paced; **20–30 min** is right, not 30s. Each trigger does at most one action and goes back to sleep.
 
+**Resume is free.** The `.loop.json` is the durable state and the guard is stateless, so killing the session and re-running `/fs-loop <epic>` always picks up where you left off — merged tasks stay merged, a `ready` PR goes back to waiting for merge, the next `pending` gets opened. The one case that needs care is an orphaned `in_progress` task (its session died); the `BUSY` handling below detects and reopens it. Don't run two `/fs-loop` for the same epic at once — there's no lock; that's on you.
+
 ## 0. Preconditions (cheap, no subagent)
 
 - **Inside tmux.** If `$TMUX` is unset, stop: tell me to start a tmux session first (`tmux new -s fs`), then run the loop inside it. You open a window per task; outside tmux there's nowhere to host them.
@@ -22,7 +24,12 @@ bash ~/.agents/commands/fs-loop-check.sh <epic>
 Read the **first line**:
 
 - **`NEXT_TASK <id>`** → go to step 2 (open the next task).
-- **`BUSY <id>`** → a `/fs-task` session is running this task. Say "Task `<id>` em andamento." and do nothing else. The loop sleeps.
+- **`BUSY <id>`** → the task is `in_progress`. Before sleeping, **verify the session is actually alive** (resume safety): check for its tmux window:
+  ```
+  tmux list-windows -F '#{window_name}' | grep -qx fs-<lowercase-id>
+  ```
+  - **Window present** → a real `/fs-task` session is running. Say "Task `<id>` em andamento." and sleep.
+  - **Window absent (orphan)** → the session died (you killed/restarted the loop, or the machine rebooted). The task is `in_progress` in the JSON but nothing is running it. **Reopen it** (step 2's window command), then notify (`/notification`, tone `info`, `Retomando <id> — sessão anterior caiu.`) and sleep. The reopened `/fs-task` resumes from the real state — it finds the existing branch/PR/spec and continues from where it stopped (it doesn't restart from scratch). Don't re-claim or touch the status; it's already `in_progress`.
 - **`WAIT <id> pr=<n>`** → the ready PR has no merge approval yet. Say "Aguardando aprovação de merge no PR #`<n>`." Sleep.
 - **`MERGE <id> pr=<n>`** → go to step 3 (merge).
 - **`DONE`** → every task is merged. Say "Épico concluído — todas as tasks mergeadas." **Stop the loop** (don't reschedule). No notification.

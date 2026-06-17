@@ -12,9 +12,17 @@ Resolve `<epic>` and the task `<id>` from `$ARGUMENTS` (e.g. `generate-store FSP
 
 Context principle: each heavy stage (research, spec, implement, smoke, review) runs in a **pre-created subagent** (Agent tool, its own `subagent_type`). The main window only orchestrates and holds the summaries the subagents return.
 
-## 0. Context guard + drain Jira
+## 0. Context guard + resume check + drain Jira
 
 Confirm `specs/epics/<epic>.md` and `specs/epics/<epic>.loop.json` exist in the current repo. If not, **stop** — tell me to run inside a project with an epic and to run `/json-from-epic <epic>` first.
+
+**Resume check (you may be a relaunch).** `/fs-loop` reopens you if your previous session died mid-task, so don't assume a clean start. Before doing anything destructive, look at what already exists for this task and **pick up from there** — never redo a step whose artifact is already present:
+- **Task branch `feat/<id>-<slug>` already exists** (local or remote)? → check it out instead of creating it (step 2's `git checkout -b` would fail). 
+- **A spec `specs/<id>.md` already exists**? → skip the research+spec stages (3–4); the spec is done.
+- **A PR already exists for the branch** (`gh pr view`)? → it's either still **draft** (resume at the spec gate, step 5) or **ready** (resume at the post-ready watch, step 10). Don't open a second PR.
+- **No branch / no PR yet**? → fresh start, proceed normally from step 1.
+
+Resolve the resume point from those artifacts, jump to the right step, and continue. The control file's `status` is a hint (`in_progress` = mid-flight, `ready` = PR is up), but the git/PR artifacts are the ground truth.
 
 **Drain Jira (safety net).** Read the control file. If the most-recently-`merged` task hasn't been moved to **Done** in Jira yet, move it now (`transitionJiraIssue`, Done transition). The `/fs-loop` already does this at merge; this is the backstop for standalone runs. (Skip if there's no merged task, or you can't tell whether it was already moved — don't double-transition.)
 
