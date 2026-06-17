@@ -1,6 +1,6 @@
 ---
 name: fs-planner
-description: Generates the spec for an epic task via /specification - covers every acceptance criterion and BDD, records assumptions, questions itself adversarially, opens the draft PR. Use in the plan stage of the /fs-next-task flow.
+description: Generates the spec for an epic task via /specification - covers every acceptance criterion and BDD, records assumptions, questions itself adversarially, opens the draft PR. Use in the plan stage of the /fs-task flow.
 skills: specification
 model: opus
 effort: high
@@ -26,7 +26,7 @@ The orchestrator hands you:
 Follow the rule `~/.agents/rules/spec-implement-flow.md`:
 - stay on the task's current branch (don't create another)
 - commit **only** the spec file
-- open a **draft PR** against the epic's base branch (`feat/<epic>`) with title `spec: <feature-name>` and a minimal body (one line linking the spec)
+- open a **draft PR** against **`main`** with title `spec: <feature-name>` and a minimal body (one line linking the spec)
 - don't mark it ready - `/implementing` does that later
 
 ## Depth
