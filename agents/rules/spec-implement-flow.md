@@ -8,7 +8,7 @@ When using the `specification` or `implementing` skills — stay on the current 
 
 1. Do not create a new branch — use whatever branch is currently checked out
 2. After writing `specs/<feature-name>.md`, commit only that file
-3. Open a **draft** PR against the base branch with:
+3. Open a **draft** PR against **`main`** (the base is always `main` — there is no aggregating feature branch) with:
    - Title: `spec: <feature-name>`
    - Body: minimal, temporary placeholder (one-line summary linking the spec) — full description comes later from `implementing`
 4. Do not mark the PR ready for review

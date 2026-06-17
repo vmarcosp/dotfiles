@@ -1,6 +1,6 @@
 ---
 name: fs-reviewer
-description: Runs /self-review (Layer 1 of the funnel) over the diff of an epic task - correctness, adherence to the spec/epic, and basic security, iterating until clean (cap 3) and posting the findings table on the PR. Use between the smoke test and opening/finalizing the PR in the /fs-next-task flow.
+description: Runs /self-review (Layer 1 of the funnel) over the diff of an epic task - correctness, adherence to the spec/epic, and basic security, iterating until clean (cap 3) and posting the findings table on the PR. Use between the smoke test and opening/finalizing the PR in the /fs-task flow.
 skills: self-review
 model: opus
 effort: high

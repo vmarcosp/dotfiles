@@ -1,6 +1,6 @@
 ---
 name: fs-researcher
-description: Gathers the context an epic task needs - relevant files and symbols, conventions, constraints (Out), and risks. Broad sweep, lean summary. Use in the research stage of the /fs-next-task flow.
+description: Gathers the context an epic task needs - relevant files and symbols, conventions, constraints (Out), and risks. Broad sweep, lean summary. Use in the research stage of the /fs-task flow.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 effort: xhigh

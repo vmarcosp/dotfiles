@@ -1,6 +1,6 @@
 ---
 name: fs-tester
-description: Real smoke of a freshly-implemented epic task - proves the thing actually runs and produces its real artifact, not just that the suite passes. Works against a rubric and discovers how to test from the spec, the diff, and whatever test tooling the project provides. Use between implement and review in the /fs-next-task flow.
+description: Real smoke of a freshly-implemented epic task - proves the thing actually runs and produces its real artifact, not just that the suite passes. Works against a rubric and discovers how to test from the spec, the diff, and whatever test tooling the project provides. Use between implement and review in the /fs-task flow.
 tools: Read, Grep, Glob, Bash, mcp__playwright__browser_navigate, mcp__playwright__browser_snapshot, mcp__playwright__browser_take_screenshot, mcp__playwright__browser_console_messages, mcp__playwright__browser_wait_for, mcp__playwright__browser_close
 model: sonnet
 effort: medium
