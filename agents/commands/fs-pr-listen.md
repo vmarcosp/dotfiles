@@ -17,7 +17,7 @@ bash ~/.agents/commands/fs-pr-listen-check.sh $ARGUMENTS
 The script reads the owner login (whose `@agent:` comments trigger RESOLVE) from `FS_AGENT_LOGIN`, with fallback `vmarcosp`. Read the **first line** of the output:
 
 - **`MERGED`** → `/fs-loop` merged the PR (the task is done). Say "PR merged, stopping the loop." and **don't reschedule** — let the loop end. **Exit silently — do NOT notify**: `/fs-loop` already notified the merge, and a second notification would be noise.
-- **`CLOSED`** → the PR was closed unmerged. Say "PR closed unmerged, stopping the loop." and **don't reschedule**. Notify via `/notification` (title `fs-pr-listen`, tone `alert`, message `PR fechado sem merge - watch encerrado.`) — this one is unexpected and worth flagging.
+- **`CLOSED`** → the PR was closed unmerged. Say "PR closed unmerged, stopping the loop." and **don't reschedule**. Notify via `/notification` (title `fs-pr-listen`, message `PR fechado sem merge — watch encerrado.`, tone `alert`) — this one is unexpected and worth flagging.
 - **`NO_NEW`** → there are no pending comments. Say "No new comments." and do nothing else this round. The loop goes back to sleep.
 - **`RESOLVE`** → the **second line** is a JSON array of `@agent:` comments from the owner. The implementer drives `/pr-agent`. Go to step 2.
 - **`FEEDBACK`** → the **second line** is a JSON array of comments from other reviewers. The implementer drives `/pr-feedback`. Go to step 2.
@@ -38,7 +38,7 @@ If you can't resolve it (no matching control file — e.g. a standalone run with
 
 With the task entry located, for each comment in the JSON array from the script:
 - If it already has `skip` set → **drop it** from this round's list (you gave up on it; don't re-treat).
-- Else read `rounds` (0 if absent). If `rounds >= 3` → set `skip` to a short reason ("não resolvido em 3 rounds"), notify me once via `/notification` (tone `alert`, naming the comment), and **drop it** from the list.
+- Else read `rounds` (0 if absent). If `rounds >= 3` → set `skip` to a short reason ("não resolvido em 3 rounds"), notify me once via `/notification` (title `fs-pr-listen`, message `Comentário <comment-id> descartado após 3 rounds sem resolução.`, tone `alert`), and **drop it** from the list.
 - Else this comment proceeds; you'll bump its `rounds` by 1 in the apply round (step 3).
 
 If every comment got dropped, treat the round as `NO_NEW` — nothing left to do; the loop sleeps. Otherwise continue with the surviving comments. The watch stays alive regardless — capping a single comment never kills the loop.
@@ -50,7 +50,7 @@ Fire the **`fs-implementer`** subagent (`subagent_type: "fs-implementer"`) in **
 - which skill it should drive: `RESOLVE` → `/pr-agent` (owner `@agent:` comments); `FEEDBACK` → `/pr-feedback` (third-party reviewers)
 - the spec path (`specs/<id>.md`) and task block, for scope
 
-In plan mode the implementer fetches the items via that skill, builds a fix plan, **applies nothing**, notifies me via `/notification`, and returns the plan to you. Show me the plan and **stop this round** — wait for my ok. Don't relaunch on your own; the next trigger of the loop won't apply anything either, because the comments are still pending. The apply only happens once I say ok in the session.
+In plan mode the implementer fetches the items via that skill, builds a fix plan, **applies nothing**, notifies me via `/notification` (title `fs-implementer`, message `Plano de fix das reviews pronto. Revise e me dê o ok pra aplicar.`, tone `info`), and returns the plan to you. Show me the plan and **stop this round** — wait for my ok. Don't relaunch on your own; the next trigger of the loop won't apply anything either, because the comments are still pending. The apply only happens once I say ok in the session.
 
 ## 3. Round 2 - apply (subagent fs-implementer, apply mode)
 
@@ -58,7 +58,7 @@ Once I reply ok to the plan, fire the **`fs-implementer`** subagent again in **a
 
 **Bump the counter.** For each comment worked this round, increment its `runtime.comments[<id>].rounds` in the control file (so a comment that keeps coming back trips the cap at step 1.5 on a later round).
 
-Notify on finish via `/notification` (title `fs-pr-listen`, message `PR comments resolved. Check them and approve if they look good.`).
+Notify on finish via `/notification` (title `fs-pr-listen`, message `PR comments resolved. Check them and approve if they look good.`, tone `info`).
 
 Then stop this round. The loop goes back to sleep.
 

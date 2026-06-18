@@ -29,7 +29,7 @@ Read the **first line**:
   tmux list-windows -F '#{window_name}' | grep -qx fs-<lowercase-id>
   ```
   - **Window present** → a real `/fs-task` session is running. Say "Task `<id>` em andamento." and sleep.
-  - **Window absent (orphan)** → the session died (you killed/restarted the loop, or the machine rebooted). The task is `in_progress` in the JSON but nothing is running it. **Reopen it** (step 2's window command), then notify (`/notification`, tone `info`, `Retomando <id> — sessão anterior caiu.`) and sleep. The reopened `/fs-task` resumes from the real state — it finds the existing branch/PR/spec and continues from where it stopped (it doesn't restart from scratch). Don't re-claim or touch the status; it's already `in_progress`.
+  - **Window absent (orphan)** → the session died (you killed/restarted the loop, or the machine rebooted). The task is `in_progress` in the JSON but nothing is running it. **Reopen it** (step 2's window command), then notify via `/notification` (title `fs-loop`, message `Retomando <id> — sessão anterior caiu.`, tone `info`) and sleep. The reopened `/fs-task` resumes from the real state — it finds the existing branch/PR/spec and continues from where it stopped (it doesn't restart from scratch). Don't re-claim or touch the status; it's already `in_progress`.
 - **`WAIT <id> pr=<n>`** → the ready PR has no merge approval yet. Say "Aguardando aprovação de merge no PR #`<n>`." Sleep.
 - **`MERGE <id> pr=<n>`** → go to step 3 (merge).
 - **`DONE`** → every task is merged. Say "Épico concluído — todas as tasks mergeadas." **Stop the loop** (don't reschedule). No notification.
@@ -45,7 +45,7 @@ Order matters — claim before you boot, so the next tick sees `BUSY` and never 
    tmux new-window -d -n fs-<id> -c "$PWD" 'claude "/fs-task <epic> <id>"'
    ```
    (lowercase the `<id>` for the window name, e.g. `fs-fspg-765`). If a window by that name already exists, kill the stale one first.
-3. **Notify** via `/notification` (tone `info`): title `fs-loop`, message `Iniciando <id> numa nova janela.`
+3. **Notify** via `/notification` (title `fs-loop`, message `Iniciando <id> numa nova janela.`, tone `info`).
 
 Then stop this tick. The `/fs-task` session takes it from here (research → spec → … → ready → its own post-ready watch).
 
@@ -61,7 +61,7 @@ You saw `@agent: lgtm` / `@agent: pr approved` from me on the **ready** PR. Do t
    If `gh` still refuses after `--admin`, **stop the loop** and report the error to me — don't force it.
 3. **Mark merged + prune.** Set the task `status: merged` in the control file and **delete its `runtime` block** (keep the file from inflating). You own the `ready → merged` write.
 4. **Close the task's window:** `tmux kill-window -t fs-<id>` (the `/fs-task` session there sees the PR merged and exits silently on its own; killing the window is the clean teardown).
-5. **Notify** via `/notification` (tone `info`): title `fs-loop`, message `PR #<n> mergeado — <id> concluída.`
+5. **Notify** via `/notification` (title `fs-loop`, message `PR #<n> mergeado — <id> concluída.`, tone `info`).
 
 Then stop this tick. The next trigger reads `NEXT_TASK` for whatever the merge just unblocked.
 

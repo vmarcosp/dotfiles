@@ -32,8 +32,8 @@ Resolve the resume point from those artifacts, jump to the right step, and conti
 git checkout main && git pull --rebase
 ```
 
-- Uncommitted local changes → stop and warn me via `/notification` (tone `alert`). Don't proceed over unsaved work.
-- A **rebase conflict** → stop and notify (tone `alert`) with the conflicting paths. Don't try to resolve it blind.
+- Uncommitted local changes → stop and warn me via `/notification` (title `fs-task`, message `Mudanças locais não commitadas detectadas. Resolva antes de continuar.`, tone `alert`). Don't proceed over unsaved work.
+- A **rebase conflict** → stop and notify via `/notification` (title `fs-task`, message `Conflito de rebase detectado. Resolva manualmente.`, tone `alert`) with the conflicting paths. Don't try to resolve it blind.
 
 ## 2. Find the task, claim it
 
@@ -59,7 +59,7 @@ Act on what it returns:
 
 ## 5. Spec gate (PR is in DRAFT — wait for approval)
 
-Run `/notification` (tone `info`): title `fs-task · spec`, message `Spec pronta no PR <url>. Comente @agent: spec approved (ou @agent: plan approved) na raiz pra liberar a implementação; outros @agent: ajustam a spec.`
+Run `/notification` (title `fs-task · spec`, message `Spec pronta no PR <url>. Comente @agent: spec approved (ou @agent: plan approved) na raiz pra liberar a implementação; outros @agent: ajustam a spec.`, tone `info`).
 
 Then poll the PR's **root comments** (`/loop 15m`, or whatever interval). On each tick:
 - For each root comment from me containing `@agent:`, match it with the **spec-approval matcher** — explicit, two accepted forms only (case/spacing tolerant):
@@ -94,7 +94,13 @@ Fire **`fs-reviewer`** (`subagent_type: "fs-reviewer"`). It runs `/self-review` 
 
 ## 9. Ready
 
-- `/open-pr` to produce the final title + body (Jira link, conventional title, standard body with Summary, Tests, Assumptions, Deviations, Follow-ups, spec link). Apply with `gh pr edit --title "..." --body "..."`. Mark ready: `gh pr ready`.
+- `/open-pr` to produce the final title + body (Jira link, conventional title, standard body with Summary, Tests, Assumptions, Deviations, Follow-ups, spec link). Apply via the REST API (avoids the classic-Projects GraphQL deprecation warning that makes `gh pr edit` silently fail):
+  ```bash
+  REPO=$(gh repo view --json owner,name -q '"repos/" + .owner.login + "/" + .name')
+  PR_NUMBER=$(gh pr view --json number -q '.number')
+  gh api "$REPO/pulls/$PR_NUMBER" --method PATCH --field title="$TITLE" --field body="$BODY" -q '.title'
+  ```
+  Mark ready: `gh pr ready`.
 - Update the spec status to `Done`.
 - **Jira** → move `<id>` to **In Review**.
 - **Control file**: set the task's `status` to `ready` and `pr` to the PR number. (You own the `in_progress → ready` write; `/fs-loop` reads this to know the task is up for merge.)
@@ -108,7 +114,7 @@ Fire **`fs-reviewer`** (`subagent_type: "fs-reviewer"`). It runs `/self-review` 
   ```
   Novo PR aberto, precisa de review: <url>
   ```
-- `/notification` (tone `info`): title `fs-task ✅`, message `PR pronto pra review: <id>. Comente @agent: pra ajustar, @agent: lgtm (ou @agent: pr approved) pra eu mergear.`
+- `/notification` (title `fs-task ✅`, message `PR pronto pra review: <id>. Comente @agent: pra ajustar, @agent: lgtm (ou @agent: pr approved) pra eu mergear.`, tone `info`).
 
 Tell me the PR number and a one-line summary. **Don't merge** — that's `/fs-loop`'s job (it watches for `@agent: lgtm` / `pr approved`).
 
