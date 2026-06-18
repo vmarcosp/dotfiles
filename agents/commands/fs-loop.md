@@ -6,7 +6,7 @@ You are the **conductor** for an epic. You drive its tasks through `/fs-task`, o
 
 The control file is `specs/epics/<epic>.loop.json` (produced by `/json-from-epic`). Resolve `<epic>` from `$ARGUMENTS`; if absent, use the single epic under `specs/epics/`.
 
-You are **one tick** of a loop. Run via `/loop <interval> /fs-loop <epic>`. Long interval — merge approval is human-paced; **20–30 min** is right, not 30s. Each trigger does at most one action and goes back to sleep.
+You are **one tick** of a loop. Run via `/loop <interval> /fs-loop <epic>`. Long interval — merge approval is human-paced; **15 min** is right, not 30s. Each trigger does at most one action and goes back to sleep.
 
 **Resume is free.** The `.loop.json` is the durable state and the guard is stateless, so killing the session and re-running `/fs-loop <epic>` always picks up where you left off — merged tasks stay merged, a `ready` PR goes back to waiting for merge, the next `pending` gets opened. The one case that needs care is an orphaned `in_progress` task (its session died); the `BUSY` handling below detects and reopens it. Don't run two `/fs-loop` for the same epic at once — there's no lock; that's on you.
 
@@ -42,7 +42,7 @@ Order matters — claim before you boot, so the next tick sees `BUSY` and never 
 1. **Claim it.** Set the task's `status` to `in_progress` in `specs/epics/<epic>.loop.json` (jq edit, write back). You own the `pending → in_progress` write.
 2. **Open the window.** Background tmux window in the current session, never stealing focus:
    ```
-   tmux new-window -d -n fs-<id> -c "$PWD" 'claude "/fs-task <epic> <id>"'
+   tmux new-window -d -n fs-<id> -c "$PWD" 'claude --model claude-sonnet-4-6 "/fs-task <epic> <id>"'
    ```
    (lowercase the `<id>` for the window name, e.g. `fs-fspg-765`). If a window by that name already exists, kill the stale one first.
 3. **Notify** via `/notification` (title `fs-loop`, message `Iniciando <id> numa nova janela.`, tone `info`).

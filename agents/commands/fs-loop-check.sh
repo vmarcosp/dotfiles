@@ -66,10 +66,8 @@ if [[ -n "$ready_id" && -n "$ready_pr" ]]; then
     # Owner root-conversation comments matching the merge regex.
     owner_repo="$(gh repo view --json owner,name -q '.owner.login + "/" + .name')"
     owner="${owner_repo%/*}"; repo="${owner_repo#*/}"
-    approved="$(gh api "repos/$owner/$repo/issues/$ready_pr/comments" \
-      --jq --arg me "$OWNER_LOGIN" '
-        [ .[] | select(.user.login == $me) | .body ] | .[]
-      ' 2>/dev/null \
+    approved="$(gh api "repos/$owner/$repo/issues/$ready_pr/comments" 2>/dev/null \
+      | jq -r --arg me "$OWNER_LOGIN" '[ .[] | select(.user.login == $me) | .body ] | .[]' \
       | grep -iqE "$MERGE_RE" && echo yes || echo no)"
     if [[ "$approved" == "yes" ]]; then
       echo "MERGE $ready_id pr=$ready_pr"
