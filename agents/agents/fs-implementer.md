@@ -27,8 +27,7 @@ The orchestrator hands you:
 Follow `~/.agents/rules/spec-implement-flow.md`:
 - stay on the task's current branch (the same one as the spec PR)
 - commits following conventional commits (use the `/commit` skill, no `--no-verify`)
-- when done, push to the existing branch and **update the existing PR** (don't open another): run `/open-pr` to produce the final title and body (it handles Jira linking, conventional commit title, and the standard body template), then apply with `gh pr edit --title "..." --body "..."` and mark it ready with `gh pr ready`
-- update the spec status to `Done`
+- when done, push to the existing branch — **do not** run `/open-pr`, `gh pr edit`, or `gh pr ready`; the orchestrator (step 9 of `fs-task`) owns the final PR update after smoke and review
 
 ## Fix reviews
 
