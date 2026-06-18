@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+#
+# notification - Fire a macOS notification via terminal-notifier, with Kitty focus on click
+# Usage: notification <title> <message> [--tone info|alert] [--subtitle <text>] [--group <id>] [--remove]
+
+set -e
+
+TITLE=""
+MESSAGE=""
+TONE="info"
+SUBTITLE=""
+GROUP="claude-code"
+REMOVE=false
+KITTY_BUNDLE="net.kovidgoyal.kitty"
+
+# Parse args
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --tone)
+            TONE="$2"; shift 2 ;;
+        --subtitle)
+            SUBTITLE="$2"; shift 2 ;;
+        --group)
+            GROUP="$2"; shift 2 ;;
+        --remove)
+            REMOVE=true; shift ;;
+        --help|-h)
+            echo "Usage: notification <title> <message> [options]"
+            echo ""
+            echo "Options:"
+            echo "  --tone info|alert     Sound: Glass (default) or Basso"
+            echo "  --subtitle <text>     Subtitle below the title"
+            echo "  --group <id>          Group ID for update/remove (default: claude-code)"
+            echo "  --remove              Remove active notification for the group"
+            exit 0 ;;
+        *)
+            if [[ -z "$TITLE" ]]; then
+                TITLE="$1"
+            elif [[ -z "$MESSAGE" ]]; then
+                MESSAGE="$1"
+            fi
+            shift ;;
+    esac
+done
+
+# Remove mode
+if [[ "$REMOVE" == "true" ]]; then
+    if command -v terminal-notifier &>/dev/null; then
+        terminal-notifier -remove "$GROUP"
+    fi
+    exit 0
+fi
+
+# Require title
+if [[ -z "$TITLE" ]]; then
+    echo "Error: title is required" >&2
+    echo "Usage: notification <title> <message> [options]" >&2
+    exit 1
+fi
+
+# Sound by tone
+if [[ "$TONE" == "alert" ]]; then
+    SOUND="Basso"
+    # Default subtitle for alert if not set
+    if [[ -z "$SUBTITLE" ]]; then
+        SUBTITLE="Atenção necessária"
+    fi
+else
+    SOUND="Glass"
+fi
+
+# Fire notification
+if command -v terminal-notifier &>/dev/null; then
+    ARGS=(
+        -title "$TITLE"
+        -message "${MESSAGE:-}"
+        -sound "$SOUND"
+        -group "$GROUP"
+        -activate "$KITTY_BUNDLE"
+    )
+    [[ -n "$SUBTITLE" ]] && ARGS+=(-subtitle "$SUBTITLE")
+    terminal-notifier "${ARGS[@]}"
+elif [[ "$(uname)" == "Darwin" ]]; then
+    # Fallback: osascript banner (no Kitty focus, no group)
+    osascript -e "display notification \"${MESSAGE:-}\" with title \"$TITLE\" sound name \"$SOUND\""
+else
+    # Non-macOS fallback
+    echo "🔔 $TITLE${SUBTITLE:+: $SUBTITLE}: ${MESSAGE:-}"
+fi
