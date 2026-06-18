@@ -101,23 +101,25 @@ inline_agent="$(gh api graphql -f query='
         }
       }
     }
-  }' -F owner="$owner" -F repo="$repo" -F pr="$PR" --jq --arg me "$AUTHOR_LOGIN" --arg merge "$MERGE_RE" '
+  }' -F owner="$owner" -F repo="$repo" -F pr="$PR" 2>/dev/null \
+  | jq --arg me "$AUTHOR_LOGIN" --arg merge "$MERGE_RE" '
     [ .data.repository.pullRequest.reviewThreads.nodes[]
       | select(.isResolved == false)
       | .comments.nodes[]
       | select(.author.login == $me and (.body | startswith("@agent:")))
       | select(.body | test($merge; "i") | not)
       | { id: .databaseId, kind: "inline", path: .path, line: .line, body: .body } ]
-  ' 2>/dev/null || echo "[]")"
+  ' || echo "[]")"
 
 # 3. General PR conversation comments starting with @agent: from the owner,
 #    excluding merge-approval phrases (those drive /fs-loop, not this watch).
-general_agent="$(gh api "repos/$owner/$repo/issues/$PR/comments" --jq --arg me "$AUTHOR_LOGIN" --arg merge "$MERGE_RE" '
+general_agent="$(gh api "repos/$owner/$repo/issues/$PR/comments" 2>/dev/null \
+  | jq --arg me "$AUTHOR_LOGIN" --arg merge "$MERGE_RE" '
     [ .[]
       | select(.user.login == $me and (.body | startswith("@agent:")))
       | select(.body | test($merge; "i") | not)
       | { id: .id, kind: "general", path: null, line: null, body: .body } ]
-  ' 2>/dev/null || echo "[]")"
+  ' || echo "[]")"
 
 combined_agent="$(jq -n --argjson a "$inline_agent" --argjson b "$general_agent" '$a + $b')"
 agent_count="$(jq 'length' <<<"$combined_agent")"
@@ -137,7 +139,8 @@ inline_feedback="$(gh api graphql -f query='
         }
       }
     }
-  }' -F owner="$owner" -F repo="$repo" -F pr="$PR" --jq --arg me "$AUTHOR_LOGIN" '
+  }' -F owner="$owner" -F repo="$repo" -F pr="$PR" 2>/dev/null \
+  | jq --arg me "$AUTHOR_LOGIN" '
     [ .data.repository.pullRequest.reviewThreads.nodes[]
       | select(.isResolved == false)
       | .comments.nodes[]
@@ -146,7 +149,7 @@ inline_feedback="$(gh api graphql -f query='
           and (.author.login | endswith("[bot]") | not)
         )
       | { id: .databaseId, kind: "inline", path: .path, line: .line, body: .body, author: .author.login } ]
-  ' 2>/dev/null || echo "[]")"
+  ' || echo "[]")"
 
 # 5. (Intentionally no general third-party comments.) Root-conversation comments
 #    from reviewers don't trigger the watch — real review lands on the diff as
