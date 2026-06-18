@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 #
 # worktree - Create or remove git worktrees with automatic .env copy and dependency installation
-# Usage: worktree <branch-name> | worktree remove <branch-name>
+# Usage: worktree [--detached] <branch-name> | worktree remove <branch-name>
 #
 
 set -e
+
+DETACHED=false
 
 # Colors for output
 RED='\033[0;31m'
@@ -84,6 +86,7 @@ install_dependencies() {
 # Create worktree
 create_worktree() {
     local branch_name="$1"
+    local detached="${2:-false}"
     local repo_info worktree_base worktree_path
 
     read -r repo_root repo_name <<< "$(get_repo_info)"
@@ -131,8 +134,13 @@ create_worktree() {
 
     # Open a new tmux window for the worktree if inside a tmux session
     if [ -n "${TMUX:-}" ]; then
-        tmux new-window -n "$branch_name" -c "$worktree_path"
-        echo -e "${GREEN}Switched to tmux window:${NC} $branch_name"
+        if [ "$detached" = "true" ]; then
+            tmux new-window -d -n "$branch_name" -c "$worktree_path"
+            echo -e "${GREEN}Tmux window created (background):${NC} $branch_name"
+        else
+            tmux new-window -n "$branch_name" -c "$worktree_path"
+            echo -e "${GREEN}Switched to tmux window:${NC} $branch_name"
+        fi
     fi
 }
 
@@ -168,10 +176,22 @@ remove_worktree() {
 }
 
 # Main
+# Parse --detached flag (position-independent, before the branch/subcommand)
+ARGS=()
+for arg in "$@"; do
+    case "$arg" in
+        --detached) DETACHED=true ;;
+        *) ARGS+=("$arg") ;;
+    esac
+done
+set -- "${ARGS[@]+"${ARGS[@]}"}"
+
 case "${1:-}" in
     --help|-h)
-        echo "Usage: worktree <branch-name>         Create a new worktree"
-        echo "       worktree remove <branch-name>  Remove a worktree"
+        echo "Usage: worktree [--detached] <branch-name>  Create a new worktree"
+        echo "       worktree remove <branch-name>        Remove a worktree"
+        echo ""
+        echo "  --detached  Create tmux window in background (no focus switch)"
         exit 0
         ;;
     remove)
@@ -184,10 +204,10 @@ case "${1:-}" in
         ;;
     "")
         echo -e "${RED}Error: branch name required${NC}" >&2
-        echo "Usage: worktree <branch-name> | worktree remove <branch-name>" >&2
+        echo "Usage: worktree [--detached] <branch-name> | worktree remove <branch-name>" >&2
         exit 1
         ;;
     *)
-        create_worktree "$1"
+        create_worktree "$1" "$DETACHED"
         ;;
 esac
