@@ -68,7 +68,13 @@ Then poll the PR's **root comments** (`/loop 15m`, or whatever interval). On eac
 
   The matching regex (case-insensitive): `^@agent:[[:space:]]*(spec|plan)[[:space:]]+approved`. A bare `@agent: approved` does **not** count (avoids any overlap with the merge channel's `lgtm`/`pr approved`).
 - Any **other** `@agent:` comment (including a bare `@agent: approved`) → route it through `/pr-agent` so the spec gets adjusted; keep looping.
-- On approval → **stop and exit this `/loop` cleanly — do not reschedule** (the spec-gate poll must be fully terminated before step 10's post-ready watch starts; the two `/loop`s never overlap). Continue to step 6.
+- On approval → delete the comment immediately so `/fs-pr-listen` never sees it as a pending adjustment:
+  ```bash
+  REPO=$(gh repo view --json owner,name -q '.owner.login + "/" + .name')
+  gh api "repos/$REPO/issues/comments/<comment-id>" --method DELETE
+  ```
+  (Use the `.id` from the guard script's JSON output — delete only the matched approval comment.)
+  Then **stop and exit this `/loop` cleanly — do not reschedule** (the spec-gate poll must be fully terminated before step 10's post-ready watch starts; the two `/loop`s never overlap). Continue to step 6.
 - PR closed before approval → stop and report.
 
 Don't implement until you see the approval comment.
