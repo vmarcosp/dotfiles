@@ -100,7 +100,7 @@ Fire **`fs-reviewer`** (`subagent_type: "fs-reviewer"`). It runs `/self-review` 
 
 ## 9. Ready
 
-- `/open-pr` to produce the final title + body (Jira link, conventional title, standard body with Summary, Tests, Assumptions, Deviations, Follow-ups, spec link). Apply via the REST API (avoids the classic-Projects GraphQL deprecation warning that makes `gh pr edit` silently fail):
+- Generate the final PR title and body yourself (don't call `/open-pr` — that skill runs `gh pr create` and would open a duplicate). Title: `type(scope): short description - <JIRA_ID>`. Body: Summary, Tests, Assumptions, Deviations, Follow-ups, spec link. Update the existing PR via the REST API (avoids the classic-Projects GraphQL deprecation warning that makes `gh pr edit` silently fail):
   ```bash
   REPO=$(gh repo view --json owner,name -q '"repos/" + .owner.login + "/" + .name')
   PR_NUMBER=$(gh pr view --json number -q '.number')
