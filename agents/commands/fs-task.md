@@ -37,7 +37,7 @@ git checkout main && git pull --rebase
 
 ## 2. Find the task, claim it
 
-Read the task's block in `specs/epics/<epic>.md` (`## <id>. ...` up to the next `---`): objective, scope (In/Out), BDD, acceptance criteria, definition of done. That block is the contract — hold it for the subagents.
+Read the task's block in `specs/epics/<epic>.md` (`## <id>. ...` up to the next `---`): objective, scope (In/Out), source, touchpoints, notes for the spec. That block is the task's brief — the seed the spec will expand, not the full contract; hold it for the subagents. The acceptance criteria, BDD/NFR, and Definition of Done are authored by the spec (step 4), not the epic.
 
 Then claim:
 - **Jira** → move `<id>` to **In Progress** (`transitionJiraIssue`).
@@ -50,7 +50,7 @@ Fire **`fs-researcher`** (`subagent_type: "fs-researcher"`). Give it the task bl
 
 ## 4. Spec (subagent fs-planner)
 
-Fire **`fs-planner`** (`subagent_type: "fs-planner"`). Pass the research summary + the task block. It runs `/specification`, produces `specs/<id>.md` covering each acceptance criterion and BDD/NFR, records explicit assumptions, and opens the **draft PR against `main`** per the spec-implement-flow rule.
+Fire **`fs-planner`** (`subagent_type: "fs-planner"`). Pass the research summary + the task block. It runs `/specification`, produces `specs/<id>.md` that authors the full breakdown from the seed and its **Source** — problem, user stories, functional/non-functional requirements, acceptance criteria, BDD/NFR scenarios, technical contract, test plan, and Definition of Done — records explicit assumptions, and opens the **draft PR against `main`** per the spec-implement-flow rule.
 
 Act on what it returns:
 - **spec ready + draft PR** → hold the spec path, the PR URL, and the assumptions. Continue.
@@ -75,13 +75,13 @@ Don't implement until you see the approval comment.
 
 ## 6. Implement (subagent fs-implementer)
 
-Fire **`fs-implementer`** (`subagent_type: "fs-implementer"`). Pass `specs/<id>.md` + the task block. It runs `/implementing`: follows the styleguide, writes tests (each acceptance criterion + BDD/NFR), doesn't touch what's **Out**, covers error branches, leaves `pnpm lint`/`test`/`typecheck` green. PR stays against `main`.
+Fire **`fs-implementer`** (`subagent_type: "fs-implementer"`). Pass `specs/<id>.md` + the task block. It runs `/implementing`: follows the styleguide, writes tests (each acceptance criterion + BDD/NFR in the spec), doesn't touch what's **Out**, covers error branches, leaves `pnpm lint`/`test`/`typecheck` green. PR stays against `main`.
 
 If it's stuck after 3 attempts, it notified me. **Stop** and report; don't smoke.
 
 ## 7. Real smoke (subagent fs-tester)
 
-Fire **`fs-tester`** (`subagent_type: "fs-tester"`). Pass the task ID, the epic block (acceptance criteria), and the implementation summary. It proves the thing actually runs and produces its real artifact (rubric-based), with its own autofix loop (cap 3).
+Fire **`fs-tester`** (`subagent_type: "fs-tester"`). Pass the task ID, the spec's acceptance criteria (`specs/<id>.md`), and the implementation summary. It proves the thing actually runs and produces its real artifact (rubric-based), with its own autofix loop (cap 3).
 
 Act on the verdict:
 - **passed** → review.

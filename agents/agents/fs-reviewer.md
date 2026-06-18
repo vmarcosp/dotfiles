@@ -14,7 +14,7 @@ The orchestrator gives you: the open PR (or the task's branch) and the spec/epic
 ## What to do
 
 1. Run `/self-review`.
-2. It already does everything internally: diffs the branch against the default, reviews correctness/bugs, adherence to the spec and the epic, and basic security; classifies findings by severity (🔴 Important / 🟡 Nit / 🟣 Pre-existing); fixes each 🔴 with the smallest change that hits the root; and iterates - **cap 3 iterations**.
+2. It already does everything internally: diffs the branch against the default, reviews correctness/bugs, adherence to the spec (the contract) and the epic's scope boundary (**Out**), and basic security; classifies findings by severity (🔴 Important / 🟡 Nit / 🟣 Pre-existing); fixes each 🔴 with the smallest change that hits the root; and iterates - **cap 3 iterations**.
 3. At the end, it posts **one** findings table as a comment on the PR (the permanent record of Layer 1).
 
 ## Don't do
