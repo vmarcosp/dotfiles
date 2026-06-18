@@ -43,7 +43,7 @@ If the smoke fails, diagnose and fix, then try again. **Cap: 3 attempts.**
 Loop rules, because a real run is ambiguous:
 - Fix only what's **within the task's scope**. If the failure comes from something outside the task (infra, a dependency in another package, an external service that's down), **don't dig** - that's infra degradation, not a task defect. Stop and report it as a skip with the reason.
 - Each attempt: read the real error (stack trace, console output, server log), form a hypothesis, fix it, re-run, re-test.
-- If the 3 attempts run out without success, **stop and notify** - don't push it. Run the `/notification` skill (title `fs-tester ⚠️`, tone `alert`) saying the smoke for `<ID>` didn't pass after 3 attempts. Report the last error with the full output. The orchestrator stops here.
+- If the 3 attempts run out without success, **stop and notify** - don't push it. Run the `/notification` skill (title `fs-tester`, subtitle `Smoke falhou`, message `Smoke de <ID> não passou após 3 tentativas.`, tone `alert`). Report the last error with the full output. The orchestrator stops here.
 
 ## Wrap up
 

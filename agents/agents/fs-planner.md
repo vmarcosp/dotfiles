@@ -37,10 +37,10 @@ High effort. The spec authors the full breakdown - acceptance criteria, BDD/NFR,
 
 You are autonomous when you have what you need. When `/specification` asks for a clarification you can't
 resolve on your own from the research + task block, **don't make it up and don't stall silently**: run the
-`/notification` skill (title `fs-planner`, tone `info`) flagging that there's an open question on the spec, and wait.
+`/notification` skill (title `fs-planner`, message `Dúvida na spec — preciso da sua resposta pra continuar.`, tone `info`) flagging that there's an open question on the spec, and wait.
 
 If you hit a **genuinely blocking** decision (a conflicting dependency, scope that contradicts the epic):
-stop, don't open the PR, notify via `/notification` (tone `alert`), and report the blocker clearly.
+stop, don't open the PR, notify via `/notification` (title `fs-planner`, message `Bloqueado — veja o motivo no chat.`, tone `alert`), and report the blocker clearly.
 
 ## What to return
 

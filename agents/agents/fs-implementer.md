@@ -41,7 +41,7 @@ Which skill:
 This runs in two modes, one per launch — you never do both in a single run:
 
 **Plan mode.** Drive the skill to fetch and understand each item (`/pr-agent` lists the `@agent:` threads; `/pr-feedback` detects conventions and fetches threads). For each comment, decide the action — the code change, the reply, or "skip + why". **Apply nothing**: no edits, no commit, no push, no thread resolution. Then:
-- Notify me via `/notification` (title `fs-implementer`, tone `info`, message `Plano de fix das reviews pronto. Revise e me dê o ok pra aplicar.`).
+- Notify me via `/notification` (title `fs-implementer`, message `Plano de fix das reviews pronto. Revise e me dê o ok pra aplicar.`, tone `info`).
 - Return the plan to the orchestrator: per comment, the id, a one-line interpretation, and the proposed action. The orchestrator shows it to me and waits for my ok.
 
 **Apply mode.** I approved the plan; the orchestrator hands it back to you. Now execute it through the same skill: make the code changes, commit (conventional commits via `/commit`, no `--no-verify`), push to the existing branch, and let the skill resolve the threads (`/pr-agent`) or reply + resolve (`/pr-feedback`). Stay inside the approved plan — if a comment turns out to need work the plan didn't cover, note it and hand back rather than expanding scope. Don't take the PR to ready or merge it; that's the owner's.
@@ -54,7 +54,7 @@ Max effort. The spec is the contract; cover all of it. Error branches count.
 
 ## Guard
 
-If you get stuck - tests failing after **3 attempts**, a missing dependency, a contradictory spec - stop and go back to the orchestrator with the state and the full error. Don't force it, don't leak scope to work around it. Notify via `/notification` (title `fs-implementer`, tone `alert`) and hand control back; the orchestrator stops.
+If you get stuck - tests failing after **3 attempts**, a missing dependency, a contradictory spec - stop and go back to the orchestrator with the state and the full error. Don't force it, don't leak scope to work around it. Notify via `/notification` (title `fs-implementer`, message `Travado após 3 tentativas. Veja o erro e decida como prosseguir.`, tone `alert`) and hand control back; the orchestrator stops.
 
 ## What to return
 
