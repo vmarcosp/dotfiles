@@ -18,4 +18,6 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 - `~/.agents/rules/context7.md` — use Context7 MCP for library docs
 - `~/.agents/rules/human-writing.md` — natural prose, no AI-generated patterns
 - `~/.agents/rules/spec-implement-flow.md` — `/specification` and `/implementing` share one branch and one draft PR
+
+- If you need to clarify something, ask for permission or needs my attention because you're working on a important thing, use the `/notification` skill.
 <!-- rules -->
