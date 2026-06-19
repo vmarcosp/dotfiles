@@ -59,21 +59,43 @@ Act on what it returns:
 
 ## 5. Spec gate (PR is in DRAFT — wait for approval)
 
-Run `/notification` (title `fs-task · spec`, message `Spec pronta no PR <url>. Comente @agent: spec approved (ou @agent: plan approved) na raiz pra liberar a implementação; outros @agent: ajustam a spec.`, tone `info`).
+Run `/notification` (title `fs-task · spec`, message `Spec pronta no PR <url>. Comente @agent: spec approved (ou @agent: plan approved) em qualquer lugar do PR pra liberar a implementação; outros @agent: ajustam a spec.`, tone `info`).
 
-Then poll the PR's **root comments** (`/loop 15m`, or whatever interval). On each tick:
-- For each root comment from me containing `@agent:`, match it with the **spec-approval matcher** — explicit, two accepted forms only (case/spacing tolerant):
+Then poll **all three GitHub comment sources** (`/loop 15m`, or whatever interval). On each tick, fetch and union them:
+
+```bash
+REPO=$(gh repo view --json owner,name -q '.owner.login + "/" + .name')
+PR_NUMBER=$(gh pr view --json number -q '.number')
+
+# Source 1: root Conversation comments
+ROOT=$(gh api "repos/$REPO/issues/$PR_NUMBER/comments" \
+  --jq '.[] | {id: .id, kind: "root", body: .body, user: .user.login}' 2>/dev/null || true)
+
+# Source 2: submitted review bodies (APPROVED, COMMENTED, etc.)
+REVIEW_BODIES=$(gh api "repos/$REPO/pulls/$PR_NUMBER/reviews" \
+  --jq '.[] | {id: .id, kind: "review", body: .body, user: .user.login}' 2>/dev/null || true)
+
+# Source 3: inline/diff comments
+INLINE=$(gh api "repos/$REPO/pulls/$PR_NUMBER/comments" \
+  --jq '.[] | {id: .id, kind: "inline", body: .body, user: .user.login}' 2>/dev/null || true)
+
+ALL_COMMENTS=$(printf '%s\n' "$ROOT" "$REVIEW_BODIES" "$INLINE" | jq -s '.')
+```
+
+For each comment in `ALL_COMMENTS` that contains `@agent:`, match it with the **spec-approval matcher** — explicit, two accepted forms only (case/spacing tolerant):
   - `@agent: spec approved`
   - `@agent: plan approved`
 
   The matching regex (case-insensitive): `^@agent:[[:space:]]*(spec|plan)[[:space:]]+approved`. A bare `@agent: approved` does **not** count (avoids any overlap with the merge channel's `lgtm`/`pr approved`).
-- Any **other** `@agent:` comment (including a bare `@agent: approved`) → route it through `/pr-agent` so the spec gets adjusted; keep looping.
-- On approval → delete the comment immediately so `/fs-pr-listen` never sees it as a pending adjustment:
-  ```bash
-  REPO=$(gh repo view --json owner,name -q '.owner.login + "/" + .name')
-  gh api "repos/$REPO/issues/comments/<comment-id>" --method DELETE
-  ```
-  (Use the `.id` from the guard script's JSON output — delete only the matched approval comment.)
+
+- Any **other** `@agent:` comment from any source (including a bare `@agent: approved`) → route it through `/pr-agent` so the spec gets adjusted; keep looping.
+- On approval → delete the comment where the API allows it, then continue to step 6:
+  - **Source 1 (root):** delete via `gh api "repos/$REPO/issues/comments/<id>" --method DELETE`
+  - **Source 3 (inline):** delete via `gh api "repos/$REPO/pulls/comments/<id>" --method DELETE`
+  - **Source 2 (review body):** GitHub's API does not support deleting a submitted review body — skip deletion and proceed.
+
+  Use the `id` and `kind` fields from the matched comment object to route the deletion correctly.
+
   Then **stop and exit this `/loop` cleanly — do not reschedule** (the spec-gate poll must be fully terminated before step 10's post-ready watch starts; the two `/loop`s never overlap). Continue to step 6.
 - PR closed before approval → stop and report.
 

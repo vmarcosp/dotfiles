@@ -121,7 +121,18 @@ general_agent="$(gh api "repos/$owner/$repo/issues/$PR/comments" 2>/dev/null \
       | { id: .id, kind: "general", path: null, line: null, body: .body } ]
   ' || echo "[]")"
 
-combined_agent="$(jq -n --argjson a "$inline_agent" --argjson b "$general_agent" '$a + $b')"
+# 3b. Submitted review bodies starting with @agent: from the owner (APPROVED,
+#     COMMENTED, etc.). Deletion via the API is not possible for review bodies,
+#     but we surface them so the agent can act on them.
+review_agent="$(gh api "repos/$owner/$repo/pulls/$PR/reviews" 2>/dev/null \
+  | jq --arg me "$AUTHOR_LOGIN" --arg merge "$MERGE_RE" '
+    [ .[]
+      | select(.user.login == $me and (.body | startswith("@agent:")))
+      | select(.body | test($merge; "i") | not)
+      | { id: .id, kind: "review", path: null, line: null, body: .body } ]
+  ' || echo "[]")"
+
+combined_agent="$(jq -n --argjson a "$inline_agent" --argjson b "$general_agent" --argjson c "$review_agent" '$a + $b + $c')"
 agent_count="$(jq 'length' <<<"$combined_agent")"
 
 # 4. Unresolved inline review-thread comments from third-party reviewers (not the owner, not bots).

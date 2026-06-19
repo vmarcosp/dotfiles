@@ -63,11 +63,16 @@ if [[ -n "$ready_id" && -n "$ready_pr" ]]; then
     is_draft="true"
   fi
   if [[ "$is_draft" == "false" ]]; then
-    # Owner root-conversation comments matching the merge regex.
+    # Owner comments matching the merge regex — check all three sources.
     owner_repo="$(gh repo view --json owner,name -q '.owner.login + "/" + .name')"
     owner="${owner_repo%/*}"; repo="${owner_repo#*/}"
-    approved="$(gh api "repos/$owner/$repo/issues/$ready_pr/comments" 2>/dev/null \
-      | jq -r --arg me "$OWNER_LOGIN" '[ .[] | select(.user.login == $me) | .body ] | .[]' \
+    # Source 1: root Conversation comments
+    root_bodies="$(gh api "repos/$owner/$repo/issues/$ready_pr/comments" 2>/dev/null \
+      | jq -r --arg me "$OWNER_LOGIN" '[ .[] | select(.user.login == $me) | .body ] | .[]' || true)"
+    # Source 2: submitted review bodies
+    review_bodies="$(gh api "repos/$owner/$repo/pulls/$ready_pr/reviews" 2>/dev/null \
+      | jq -r --arg me "$OWNER_LOGIN" '[ .[] | select(.user.login == $me) | .body ] | .[]' || true)"
+    approved="$(printf '%s\n' "$root_bodies" "$review_bodies" \
       | grep -iqE "$MERGE_RE" && echo yes || echo no)"
     if [[ "$approved" == "yes" ]]; then
       echo "MERGE $ready_id pr=$ready_pr"
