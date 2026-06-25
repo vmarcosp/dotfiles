@@ -97,7 +97,7 @@ esac
 # pnpm end
 #
 
-export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$HOME/bin:$HOME/projects/dotfiles/bin:$PATH"
 
 # bun completions
 [ -s "/Users/marcosoliveira/.bun/_bun" ] && source "/Users/marcosoliveira/.bun/_bun"
