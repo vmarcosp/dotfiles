@@ -132,7 +132,7 @@ Fire **`fs-reviewer`** (`subagent_type: "fs-reviewer"`). It runs `/self-review` 
 - Update the spec status to `Done`.
 - **Jira** → move `<id>` to **In Review**.
 - **Control file**: set the task's `status` to `ready` and `pr` to the PR number. (You own the `in_progress → ready` write; `/fs-loop` reads this to know the task is up for merge.)
-- **Slack** to `#fs-mission-team` (rotate, don't always use the first):
+- **Slack** to channel `C0A83Q8HFDK` (`#fs-mission-team`) using `mcp__slack__slack_send_message` (rotate, don't always use the first). If `slack_send_message` returns a 500 Internal Server Error, try `slack_send_message_draft` with the same args as a fallback. If both fail, skip silently and note it in the notification message so the user can post manually:
   ```
   PR pronto pra review: <url>
   ```
