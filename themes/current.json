@@ -1,22 +1,19 @@
 {
-  "name": "everforest-light-soft",
-  "background": "light",
+  "name": "yugen",
+  "background": "dark",
   "kitty": {
-    "mode": "kitten",
-    "theme": "Everforest Light Soft"
+    "mode": "include",
+    "file": "yugen.conf"
   },
   "nvim": {
-    "module": "themes.everforest",
-    "background": "light",
-    "options": {
-      "everforest_background": "soft"
-    }
+    "module": "themes.yugen",
+    "background": "dark"
   },
-  "opencode": "everforest",
+  "opencode": "yugen",
   "tmux": {
-    "bg0": "#F3EAD3",
-    "fg0": "#5c6a72",
-    "fg1": "#829181",
-    "fg2": "#bec5b2"
+    "bg0": "#000000",
+    "fg0": "#fafafa",
+    "fg1": "#878787",
+    "fg2": "#3D3D3D"
   }
 }
