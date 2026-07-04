@@ -1,7 +1,11 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
-import theme from '../themes/current.json'
 
-const colors = theme.tmux
+const colors = {
+  bg0: '#000000',
+  fg0: '#fafafa',
+  fg1: '#878787',
+  fg2: '#3D3D3D',
+}
 
 const Window = ({ type, number, name }: WindowConfig) => {
   return (

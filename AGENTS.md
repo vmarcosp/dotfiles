@@ -35,7 +35,6 @@ dotfiles/
 | `nvim/` | `~/.config/nvim` |
 | `kitty/kitty.conf` | `~/.config/kitty/kitty.conf` |
 | `kitty/yugen.conf` | `~/.config/kitty/yugen.conf` |
-| `kitty/current-theme.conf` | `~/.config/kitty/current-theme.conf` |
 | `tmux/.tmux.conf` | `~/.tmux.conf` |
 | `better-tmux/` | `~/.config/better-tmux` |
 | `agents/` | `~/.agents` |
@@ -45,13 +44,12 @@ dotfiles/
 | `agents/commands` | `~/.claude/commands` |
 | `agents/rules` | `~/.claude/rules` |
 | `claude/settings.json` | `~/.claude/settings.json` |
-| `claude/statusline.sh` | `~/.claude/statusline.sh` |
 | `bin/worktree` | `~/bin/worktree` |
 | `opencode/plugins` | `~/.opencode/plugins` |
 
 ## Theme: Yugen 幽玄
 
-A consistent dark theme applied across Neovim, Kitty, tmux, and Claude Code. Colors are defined per-tool but kept in sync manually. The Catppuccin-inspired palette used in `better-tmux/index.tsx` is the reference point.
+A consistent dark theme applied across Neovim, Kitty, tmux, and Claude Code. Colors are defined per-tool and kept in sync manually.
 
 ## Folders
 
@@ -77,15 +75,15 @@ Notable aliases: `vim` maps to `nvim`; `claudio` and `claudin` launch Claude in 
 
 Neovim config using lazy.nvim. `init.lua` is minimal — it just loads three modules from `lua/config/`: `options`, `keymaps`, and `lazy` (plugin manager bootstrap).
 
-Plugin specs live in `lua/plugins/`. Each plugin has its own file. Key plugins: telescope (file search + grep), nvim-tree (file browser), lualine (status bar), treesitter, LSP via mason, conform (formatting), toggleterm (floating terminals), gitsigns, and the yugen theme.
+Plugin specs live in `lua/plugins/`. Each plugin has its own file. Key plugins: telescope (file search + grep), nvim-tree (file browser), lualine (status bar), treesitter, LSP via mason, conform (formatting), toggleterm (floating terminals), gitsigns, and yugen (colorscheme).
 
 Key keymaps: `Ctrl-p` for file search, `Ctrl-f` for live grep, `Ctrl-n` for file tree, `\gt` for lazygit in a floating terminal, `\t` for a plain floating terminal. Window navigation uses `Ctrl-h/j/k/l`.
 
 ### kitty/
 
-Kitty terminal config. `kitty.conf` is the main file; it sources `yugen.conf` for colors and `current-theme.conf` for the active theme override. Font is Space Mono 14pt with Operator Mono for italics. Background blur is set to 25 with full opacity.
+Kitty terminal config. `kitty.conf` is the main file; it sources `yugen.conf` for colors. Font is Space Mono 14pt with Operator Mono for italics. Background blur is set to 25 with full opacity.
 
-To change the theme, update `current-theme.conf`.
+To change colors, edit `yugen.conf`.
 
 ### tmux/
 
@@ -150,8 +148,6 @@ Global Claude Code settings symlinked to `~/.claude/settings.json`.
 
 Configures: Opus as the default model, vim editor mode, dark-ansi theme. Permissions allow Bash, Read, Write, and Edit while blocking destructive operations like `rm -rf`.
 
-`statusline.sh` is the custom status line (symlinked to `~/.claude/statusline.sh` and referenced by the `statusLine` field in `settings.json`). It reads the session JSON from stdin and prints model, git branch, and context token usage, colored with the yugen palette.
-
 ### wallpapers/
 
 Four dark JPEG wallpapers that match the yugen theme. Not symlinked — set manually via macOS System Settings.
@@ -166,9 +162,8 @@ Versioned screenshots used in `README.md`. Each version gets its own subfolder (
 - **Neovim plugins**: add a file to `nvim/lua/plugins/`, lazy.nvim picks it up on next launch
 - **Neovim options or keymaps**: edit `nvim/lua/config/options.lua` or `keymaps.lua`
 - **tmux keybindings or status bar**: edit `better-tmux/index.tsx`, then let pnpm rebuild
-- **Kitty theme**: update `kitty/current-theme.conf`
+- **Kitty theme**: update `kitty/yugen.conf`
 - **Claude Code global settings**: edit `claude/settings.json`
-- **Claude Code status line**: edit `claude/statusline.sh`
 - **Claude Code project settings**: edit `.claude/settings.local.json`
 - **AI rules (global)**: edit or add files in `agents/rules/`
 - **New skills (global)**: add a folder to `agents/skills/`

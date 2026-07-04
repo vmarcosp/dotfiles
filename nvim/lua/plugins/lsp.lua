@@ -209,8 +209,20 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				typescript = { "biome" },
+				typescriptreact = { "biome" },
+				javascript = { "biome" },
+				javascriptreact = { "biome" },
+				json = { "biome" },
 			},
 		},
+		config = function(_, opts)
+			require("conform").setup(opts)
+
+			vim.api.nvim_create_user_command("Format", function()
+				require("conform").format({ async = true, lsp_format = "fallback" })
+			end, { desc = "Format buffer with conform.nvim" })
+		end,
 	},
 
 	{

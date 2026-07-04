@@ -14,10 +14,6 @@
     ]
   },
   "model": "opus[1m]",
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "rust-analyzer-lsp@claude-plugins-official": true

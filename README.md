@@ -32,7 +32,6 @@
 
 ### nvim
 - My nvim config
-- My own theme ([yugen 幽玄](https://github.com/bettervim/yugen))
 
 ### zsh
   - `.zshrc`
@@ -42,14 +41,12 @@
 
 ### kitty
  - My custom configs
- - My own theme (yugen 幽玄)
 
 ### tmux
   - My custom `tmux` config
   - Support for `tpm` (tmux plugins manager)
       - `tmux-sensible` config.
       -  `tmux-ressurrect` config
-  -  My own theme (yugen 幽玄)
 
 ### misc
   - `.editorconfig`

@@ -10,12 +10,9 @@
   },
   "model": "amazon-bedrock/global.anthropic.claude-sonnet-4-6",
   "mcp": {
-"playwright": {
+    "playwright": {
       "type": "local",
-      "command": [
-        "npx",
-        "@playwright/mcp@latest"
-      ],
+      "command": ["npx", "@playwright/mcp@latest"],
       "enabled": true
     },
     "context7": {

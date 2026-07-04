@@ -77,7 +77,6 @@ log "Linking kitty config"
 mkdir -p ~/.config/kitty
 ln -sfn "$DOTFILES/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 ln -sfn "$DOTFILES/kitty/yugen.conf" ~/.config/kitty/yugen.conf
-ln -sfn "$DOTFILES/kitty/current-theme.conf" ~/.config/kitty/current-theme.conf
 
 # -- neovim ----------------------------------
 log "Linking neovim config"
@@ -109,7 +108,6 @@ mkdir -p ~/.claude
 rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands ~/.claude/rules
 ln -sfn "$DOTFILES/agents/AGENTS.md" ~/.claude/CLAUDE.md
 ln -sfn "$DOTFILES/claude/settings.json" ~/.claude/settings.json
-ln -sfn "$DOTFILES/claude/statusline.sh" ~/.claude/statusline.sh
 ln -sfn "$DOTFILES/agents/agents" ~/.claude/agents
 ln -sfn "$DOTFILES/agents/skills" ~/.claude/skills
 ln -sfn "$DOTFILES/agents/commands" ~/.claude/commands
