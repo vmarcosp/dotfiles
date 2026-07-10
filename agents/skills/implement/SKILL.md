@@ -4,15 +4,17 @@ description: >-
   Executes an implementation plan (from /spec) end to end: turns its
   Steps into a tracked checklist, works through them one at a time —
   implement, run the Step's Verify, check it off, commit — then runs the
-  plan's overall Verification and delivers a PR. Invoking /implement is
-  itself the go-ahead to execute; there's no separate approval gate. Use
-  when the user wants to execute, build, or ship a plan that already
-  exists, or invokes /implement.
+  plan's overall Verification and delivers a PR. When the plan is one
+  phase of a /phasing roadmap, delivery also writes the phase's
+  carry-over fragment and flips its status in the roadmap. Invoking
+  /implement is itself the go-ahead to execute; there's no separate
+  approval gate. Use when the user wants to execute, build, or ship a
+  plan that already exists, or invokes /implement.
 disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Implement — Plan to Code
@@ -28,9 +30,11 @@ Executes a plan (see /spec) by turning its Steps into a tracked checklist and wo
 
 Read the plan file in full — invoking this skill is itself the go-ahead to execute it; there's no status to check before starting. Extract the Goal, the Recon table, any ADRs referenced (still binding during execution), the Approach, the ordered Steps with their Verify lines, and the overall Verification section.
 
+If the plan's References link a roadmap (`/phasing`), this run is executing one phase of it: open the roadmap, note the phase number and the reserved carry-over path from its `Carry-over Paths` table. Both are used at delivery (Step 6) — nothing changes about how the Steps run.
+
 If a Step is too vague to implement or verify unambiguously — no concrete target, no runnable Verify — stop and ask via the AskQuestion tool before writing code; don't fill the gap with a guess.
 
-**Completion criterion:** every Step's target and Verify line is unambiguous and in hand before touching code.
+**Completion criterion:** every Step's target and Verify line is unambiguous and in hand before touching code; if the plan is a roadmap phase, its number and carry-over path are noted.
 
 ## Step 2: Refresh recon
 
@@ -80,12 +84,17 @@ Once every Step is checked off, run the plan's Verification section as a whole �
 ## Step 6: Deliver
 
 1. Update the plan's status to `Done`.
-2. Open or update the PR:
+2. **Roadmap phase only** (detected in Step 1):
+   - Write the carry-over fragment at the reserved path, following the shape of the /phasing skill's `references/carryover-template.md` — facts a downstream phase's `/spec` needs, dependency corrections, new scope discovered. Skip the file entirely if the run produced none of the three; an empty fragment is noise.
+   - Update this phase's row in the roadmap's Phases table: status → `Done` (or `Spec'd` if the run stopped on a blocker). This one row is the only roadmap edit allowed here — everything else goes in the fragment, so parallel streams never write the same lines.
+   - If any fragment files now exist in the roadmap folder (this one or from other phases), mention in the summary that a `/phasing` Sync is pending to absorb them.
+3. Open or update the PR:
    - **Summary** — what changed, one line per Step.
    - **Verification** — what was run and the result.
    - **Assumptions** — from Step 4 tie-breaks, if any (omit if none).
    - **Blockers** — if the run stopped early (omit if the run completed).
    - **Plan** — link to the plan file.
+   - **Carry-over** — link to the fragment written, if any (omit if none).
 
 ## Rules
 
@@ -96,3 +105,4 @@ Once every Step is checked off, run the plan's Verification section as a whole �
 5. Never edit the plan's Steps or Verify lines to make the run look successful — fix the code, or stop and report.
 6. Ask explicitly via AskQuestion whenever a Step is too ambiguous to implement or verify with confidence, in an interactive session — never guess past it.
 7. A blocked run ends without claiming the change is done — no PR that overstates what actually passed.
+8. When executing a roadmap phase, findings for other phases go in this phase's carry-over fragment, never edited into the roadmap directly — the only roadmap edit this skill makes is its own phase's status cell. Absorbing fragments is `/phasing` Sync's job, never this skill's.

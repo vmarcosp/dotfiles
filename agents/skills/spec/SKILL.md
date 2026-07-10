@@ -14,7 +14,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Spec — Implementation Plan
@@ -26,6 +26,7 @@ Turns a change — feature, bugfix, or refactor — into an ordered list of Step
 - The ask is about **what users experience**, not how the change is built — that's a PRD.
 - The ask is about **how a whole system fits together**, beyond this one change — that's a TDD.
 - The ask is about **justifying one already-settled technical decision** — that's an ADR.
+- The ask wants **one document bundling business context, requirements, and technical contract** — that's a specification/SDD skill, if the environment has one; this plan is the execution-ready breakdown of a single change, downstream of those decisions.
 - The change is **trivial and unambiguous** (one file, no real decision to record) — just make it, planning adds no value.
 
 ## Step 1: Frame the change
@@ -42,20 +43,23 @@ Read the actual code relevant to the change — the files, functions, tests, and
 
 ## Step 3: Gather anchor docs
 
-Search the repo for ADRs, PRDs, and TDDs that touch this change's boundary — ADRs in `docs/adrs/`, `docs/adr/`, or `decisions/`; PRDs in `docs/prds/`, `docs/prd/`, or `prds/`; TDDs in `docs/tdds/`, `docs/tdd/`, `docs/design/`, `docs/designs/`, or `docs/architecture/`. Read anything relevant in full — these are inputs, not content to duplicate.
+Search the repo for ADRs, PRDs, TDDs, and roadmaps that touch this change's boundary — ADRs in `docs/adrs/`, `docs/adr/`, or `decisions/`; PRDs in `docs/prds/`, `docs/prd/`, or `prds/`; TDDs in `docs/tdds/`, `docs/tdd/`, `docs/design/`, `docs/designs/`, or `docs/architecture/`; roadmaps in `docs/roadmaps/<slug>/roadmap.md`, `docs/roadmap/<slug>/roadmap.md`, or `roadmaps/<slug>/roadmap.md`. Read anything relevant in full — these are inputs, not content to duplicate.
 
-The two kinds carry different weight:
+The three kinds carry different weight:
 
 - **ADR — binding.** Its decision is a contract on the Approach, not a suggestion. If the change would contradict an Accepted ADR, that's a conflict: surface it now, and ask the user explicitly via AskQuestion how to resolve it (amend the approach, or flag that the ADR itself needs revisiting) — never quietly work around it and never quietly follow it without telling the user the tension exists.
 - **PRD / TDD — reference.** They inform the Goal and Recon (intended behavior, current architecture) but don't constrain the Approach the way an ADR does.
+- **Roadmap — reference, plus a dependency check.** If this change is one phase of a roadmap (`/phasing`), read that phase's row (Goal, `depends on`) and, for every phase it depends on, check for a `carryover-phase-<n>.md` fragment in that same roadmap's folder — a fact or correction left there takes priority over what the roadmap's Phases table says, since it reflects what actually got built.
 
-**Completion criterion:** every ADR touching this boundary is either satisfied by the Approach or flagged as a conflict the user has resolved; PRDs/TDDs found are noted as context.
+**Completion criterion:** every ADR touching this boundary is either satisfied by the Approach or flagged as a conflict the user has resolved; PRDs/TDDs/roadmap found are noted as context; if this change is a roadmap phase, every dependency's carry-over fragment (if any) has been checked.
 
 ## Step 4: Decide the approach
 
 Pick the technical approach in a short paragraph. It must comply with every ADR from Step 3 — if compliance is impossible, that conflict should already be resolved with the user, not decided here unilaterally. Mention a rejected alternative only if it explains a non-obvious choice in the Steps that follow — one line, not a pros/cons table; the plan states the decision, it doesn't build a case for it.
 
-**Completion criterion:** the approach is stated, complies with every binding ADR (or documents why it can't, per Step 3), and any surviving trade-off is one sentence, not a debate.
+If the approach settles a decision whose scope outlives this change — something future changes will have to comply with, like a storage choice, a protocol, or a boundary between components — don't leave it buried in a plan that gets archived: record it with the /adr skill and cite it under References as binding, same as any pre-existing ADR. A decision that only matters inside this change stays in the Approach paragraph.
+
+**Completion criterion:** the approach is stated, complies with every binding ADR (or documents why it can't, per Step 3), any surviving trade-off is one sentence, not a debate, and any decision that outlives the change has its own ADR.
 
 ## Step 5: Pick the output location
 
@@ -94,7 +98,9 @@ Writing rules:
 
 ## Step 8: Save and present
 
-Save the file, then summarize:
+Save the file. If this change is a phase of a roadmap (found in Step 3), also update that phase's row in the roadmap's Phases table: status → `Spec'd`. That one cell is the only roadmap edit this skill makes — corrections and discoveries belong to the phase's carry-over fragment, written later by `/implement`.
+
+Then summarize:
 
 - Path written (or updated), and what changed if updating.
 - Number of Steps and what each Verify checks, at a glance.

@@ -44,3 +44,4 @@
 |---|---|---|
 | {adr-NNNN, linked} | Binding (ADR) | {The specific constraint the Approach complies with} |
 | {prd-slug / tdd-slug, linked} | Reference | {What this plan takes from it} |
+| {roadmap, linked} | Roadmap (Phase #{N}) | {Required when this change is a roadmap phase — /implement reads the phase number and carry-over path from here} |
