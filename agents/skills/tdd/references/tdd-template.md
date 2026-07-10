@@ -76,11 +76,11 @@ erDiagram
 
 ## References
 
-{The ADRs and PRDs this design depends on. Link, don't restate their content.}
+{The anchor docs this design depends on — PRDs, ADRs, brainstorm convergence docs. Link, don't restate their content. If no written anchor exists and this design came from the user's own description, say so instead of leaving the table empty.}
 
 | Doc | Why it matters here |
 |---|---|
-| {ADR-NNNN / PRD title, linked} | {One line: what this design takes from it} |
+| {adr-NNNN / prd-slug / brainstorm-slug, linked} | {One line: what this design takes from it} |
 
 ## Open Questions
 

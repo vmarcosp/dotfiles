@@ -1,6 +1,6 @@
 # {Title}
 
-- **Status**: {Proposed | Accepted | Rejected | Deprecated | Superseded by [NNNN](NNNN-slug.md)}
+- **Status**: {Proposed | Accepted | Rejected | Deprecated | Superseded by [adr-NNNN](adr-NNNN-slug.md)}
 - **Date**: {YYYY-MM-DD}
 
 ## Context

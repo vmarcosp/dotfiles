@@ -5,7 +5,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Brainstorm
@@ -44,13 +44,17 @@ Consolidate what Phase 3 surfaced: name the invariant or principle discovered, r
 
 Offer formalization. Check what's available in the environment for turning this into a durable artifact:
 
-1. Look for an existing skill in this environment suited to formalizing the outcome — a spec, ADR, or RFC skill (match by name/description, don't assume a fixed name).
-2. If one or more exist, ask the user via whatever question-asking capability this agent has available (not tied to any one tool) which one to hand off to, and with what summary.
-3. If none exist, offer to write a `<topic>-brainstorm.md` at the project root as a plain convergence artifact instead.
+1. Look for an existing skill in this environment suited to formalizing the outcome — a PRD, TDD, ADR, spec, or RFC skill (match by name/description, don't assume a fixed name).
+2. If one or more exist, use the AskQuestion tool to ask the user which one to hand off to, and with what summary.
+3. If none exist, offer to write the convergence artifact yourself:
+   - Search the repo for an existing brainstorm directory, in order: `docs/brainstorms/`, `docs/brainstorm/`, `brainstorms/`.
+   - **Found** → use it.
+   - **Not found** → propose `docs/brainstorms/` as the default location, and use the AskQuestion tool so the user can confirm it or name a different path. Do not create any file or directory before they answer.
+   - Filename: `brainstorm-<topic-slug>.md`, kebab-case.
 
 Do not formalize without asking — this is the one point in the session where the user chooses the next system, not you.
 
-**Completion criterion:** the user has either accepted a handoff, accepted the fallback file, or explicitly declined both.
+**Completion criterion:** the user has either accepted a handoff, accepted the fallback file with its directory confirmed, or explicitly declined both.
 
 ## Reference: rules for every phase
 

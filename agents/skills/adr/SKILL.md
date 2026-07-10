@@ -8,7 +8,7 @@ description: >-
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # ADR — Architecture Decision Record
@@ -39,9 +39,9 @@ Skip alternatives entirely unless the user names a rejected option — an ADR st
 
 ## Step 3: Number and name the file
 
-List the ADR directory for files matching `NNNN-*.md`; take the highest number and add one (`0001` if the directory is empty). Slugify the title into kebab-case.
+List the ADR directory for files matching `adr-NNNN-*.md`; take the highest number and add one (`0001` if the directory is empty). Slugify the title into kebab-case.
 
-Filename: `NNNN-<title-in-kebab-case>.md` (e.g. `0007-use-postgres-for-orders.md`).
+Filename: `adr-NNNN-<title-in-kebab-case>.md` (e.g. `adr-0007-use-postgres-for-orders.md`).
 
 **Completion criterion:** filename decided, no collision with an existing file.
 
@@ -49,7 +49,7 @@ Filename: `NNNN-<title-in-kebab-case>.md` (e.g. `0007-use-postgres-for-orders.md
 
 Follow `references/template.md` exactly — no extra sections. Status defaults to `Accepted` unless the user says otherwise (`Proposed`, `Rejected`, `Deprecated`, `Superseded by <link>`). Write in the same language the user used in the conversation.
 
-If this ADR supersedes an earlier one, update that file's Status line to `Superseded by [NNNN](NNNN-slug.md)`.
+If this ADR supersedes an earlier one, update that file's Status line to `Superseded by [adr-NNNN](adr-NNNN-slug.md)`.
 
 ## Step 5: Report
 
