@@ -124,13 +124,20 @@ Standalone skills, no pipeline attached.
 **User-invoked**
 
 - **[worktree](agents/skills/worktree/SKILL.md)** — Creates or removes a git worktree from a branch name, copying `.env` files and installing dependencies automatically.
-- **[writing-great-skills](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-great-skills/SKILL.md)** — Matt Pocock's reference for writing and editing skills well. Installed via the skills lock file; not mine.
+- **[review](agents/skills/review/SKILL.md)** — Reviews a delivered change against its contracts — the `/spec` plan, the roadmap phase's boundary, binding ADRs, and test authenticity — and returns a verdict with blocking and advisory findings.
 
 **Model-invoked**
 
 - **[notification](agents/skills/notification/SKILL.md)** — Fires a native macOS notification when an autonomous flow needs me — a pending question, a human gate, a failure. Clicking it focuses the terminal.
 - **[context7-mcp](agents/skills/context7-mcp/SKILL.md)** — Routes library and framework questions through Context7 for current docs instead of stale training data.
-- **[todoist-cli](agents/skills/todoist-cli/SKILL.md)** — Manages Todoist (tasks, projects, labels, filters) through the `td` CLI.
+
+**3rdparty / installed**
+
+Skills I installed from elsewhere; not mine.
+
+- **[writing-great-skills](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-great-skills/SKILL.md)** — Matt Pocock's reference for writing and editing skills well.
+- **[todoist-cli](https://github.com/Doist/todoist-cli)** — Doist's skill for managing Todoist through the `td` CLI.
+- **[richview](agents/skills/richview/SKILL.md)** — VTEX's skill for generating rich, self-contained HTML artifacts from prompts and referenced files.
 
 ### Rules
 
