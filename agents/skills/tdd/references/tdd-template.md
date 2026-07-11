@@ -1,6 +1,5 @@
 # {System, Subsystem, or Component Name}
 
-> **Mode**: {As-Is | To-Be}
 > **Last updated**: {date}
 
 ## Overview
@@ -20,11 +19,12 @@ flowchart LR
 
 ## Building Blocks
 
-{Every component/service/module with a one-line responsibility. One row each — no prose padding.}
+{Every component/service/module with a one-line responsibility. One row each — no prose padding. Tag any component that isn't built yet with `(planned, not yet implemented)`.}
 
 | Component | Responsibility | Owns |
 |---|---|---|
 | {Component} | {What it does, one line} | {Data/resource it owns, if any} |
+| {Component} (planned, not yet implemented) | {What it will do, one line} | {Data/resource it will own, if any} |
 
 ```mermaid
 flowchart TB
@@ -38,7 +38,7 @@ flowchart TB
 
 {One subsection per flow that matters — the ones a reader needs to understand the system, not every possible path.}
 
-### {Flow Name}
+### {Flow Name} {— append "(planned, not yet implemented)" only if the flow isn't built yet}
 
 {One-paragraph walkthrough, then the diagram.}
 
@@ -64,7 +64,7 @@ erDiagram
 
 ## Interfaces
 
-{APIs, events, or contracts this system exposes or consumes.}
+{APIs, events, or contracts this system exposes or consumes. Tag any interface that isn't built yet with `(planned, not yet implemented)`.}
 
 | Interface | Direction | Contract |
 |---|---|---|

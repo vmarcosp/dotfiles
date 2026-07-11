@@ -1,6 +1,5 @@
 # {Feature / System Name}
 
-> **Status**: {Draft | Approved | Done}
 > **Last updated**: {date}
 
 ## Overview

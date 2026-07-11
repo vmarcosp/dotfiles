@@ -2,23 +2,26 @@
 name: tdd
 description: >-
   Writes or updates a Technical Design Document (TDD) — a description of how
-  a system, subsystem, or component is put together, either As-Is (current
-  state) or To-Be (target design). Not a proposal: states the design rather
-  than building a case for it, and references the ADRs, PRDs, or brainstorm
-  docs that justify it instead of restating them. Use when the user asks for
-  a technical design document, architecture document, or system design doc, or wants a
-  system's (or part of a system's) current or target architecture written
-  down with diagrams.
+  a system, subsystem, or component is put together. Not a proposal: states
+  the design rather than building a case for it, and references the ADRs,
+  PRDs, or brainstorm docs that justify it instead of restating them. Grounds
+  every part in the most reliable source available — code where it's built,
+  anchor docs where it isn't yet — and flags unbuilt pieces inline instead of
+  labeling the whole document. Use when the user asks for a technical design
+  document, architecture document, or system design doc, or wants a system's
+  (or part of a system's) architecture written down with diagrams.
 disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.2.0"
+  version: "2.0.0"
 ---
 
 # TDD — Technical Design Document
 
-Describes how a system, subsystem, or component fits together — As-Is or To-Be — without building a case for it: states what the design *is* or *will be*, and links to the anchor docs that justify it instead of re-explaining them. An anchor doc is whatever settled the decisions this design rests on — a PRD, an ADR, a brainstorm's convergence doc — or, when none exists, the user's own description in conversation. Mentioning a rejected shape is fine when it clarifies why the current one looks the way it does; weighing options for someone to choose between is not — that's a proposal. Invoke explicitly: "TDD" collides with Test-Driven Development, so this skill never fires on its own.
+Describes how a system, subsystem, or component fits together, without building a case for it: states what the design *is*, and links to the anchor docs that justify it instead of re-explaining them. An anchor doc is whatever settled the decisions this design rests on — a PRD, an ADR, a brainstorm's convergence doc — or, when none exists, the user's own description in conversation. Mentioning a rejected shape is fine when it clarifies why the current one looks the way it does; weighing options for someone to choose between is not — that's a proposal. Invoke explicitly: "TDD" collides with Test-Driven Development, so this skill never fires on its own.
+
+There's no As-Is/To-Be mode to pick. A doc labeled "To-Be" goes stale the day the system gets built and nobody remembers to relabel it. Instead, every building block and flow is grounded in whichever source is more reliable right now — code if it exists, an anchor doc if it doesn't — and any piece that isn't built yet gets a `(planned, not yet implemented)` note inline rather than a mode tag on the whole document.
 
 ## When NOT to apply
 
@@ -27,20 +30,20 @@ Describes how a system, subsystem, or component fits together — As-Is or To-Be
 - The audience is **product/business stakeholders**, not engineers — that's a requirements doc.
 - The ask is about **writing tests, test strategy, or red-green-refactor** — this skill's name collides with that on purpose, but has nothing to do with it.
 
-## Step 1: Determine scope and mode
+## Step 1: Determine scope
 
-Name the boundary — the whole system, a subsystem, or a component — and the mode: **As-Is** (runs today) or **To-Be** (should be built). Ask if either is unclear.
+Name the boundary — the whole system, a subsystem, or a component. Ask if it's unclear.
 
-**Completion criterion:** boundary and mode stated in one sentence.
+**Completion criterion:** boundary stated in one sentence.
 
 ## Step 2: Locate inputs
 
 - Check whether a TDD already exists for this boundary (search the output directory from Step 3). If it does, read it fully and update in place — a system gets one TDD, not several. Re-check each building block and flow against the current sources, fix drift, leave sections that still hold untouched, and note what changed in Step 6's summary.
-- **To-Be only:** search for anchor docs, in this order — PRDs (`docs/prds/`, `docs/prd/`, `prds/`), ADRs (`docs/adrs/`, `docs/adr/`, `decisions/`), brainstorm convergence docs (`docs/brainstorms/`, or a `brainstorm-*.md` at the repo root for older sessions). These are inputs to reference, not content to duplicate.
-- **As-Is:** no anchor-doc search is required, but link any you find relevant for context.
-- **Nothing found, or the user already gave the design as a summary in chat** (e.g. a brainstorm handoff with no file, or an ad-hoc description): that's a valid third case — treat the conversation itself as the anchor and say so in Step 6 instead of citing a doc that doesn't exist.
+- Look for code that implements this boundary — entry points, service/module boundaries, data stores, external calls. Whatever is actually built is the ground truth for those parts.
+- Search for anchor docs regardless of how much is built, in this order — PRDs (`docs/prds/`, `docs/prd/`, `prds/`), ADRs (`docs/adrs/`, `docs/adr/`, `decisions/`), brainstorm convergence docs (`docs/brainstorms/`, or a `brainstorm-*.md` at the repo root for older sessions). These are inputs to reference, not content to duplicate, and they're what cover any part that isn't built yet.
+- **Nothing found, or the user already gave the design as a summary in chat** (e.g. a brainstorm handoff with no file, or an ad-hoc description): that's a valid case — treat the conversation itself as the anchor and say so in Step 6 instead of citing a doc that doesn't exist.
 
-**Completion criterion:** you know whether you're creating or updating, and which anchor docs — or lack thereof — this TDD will cite.
+**Completion criterion:** you know whether you're creating or updating, which parts have code to ground them, and which anchor docs — or lack thereof — cover the rest.
 
 ## Step 3: Pick the output location
 
@@ -55,10 +58,11 @@ Filename: `tdd-<system-slug>.md`, kebab-case.
 
 ## Step 4: Gather the architecture
 
-- **As-Is:** read the actual code — entry points, service/module boundaries, data stores, external calls. Ground every building block and flow in a file or config you actually opened.
-- **To-Be:** read the anchor docs located in Step 2 — the PRD for goals and scope, ADRs and the brainstorm doc for decisions already settled. Fill remaining gaps from the user's own input in conversation (the third case from Step 2). If a needed decision isn't recorded anywhere, don't invent it — list it under Open Questions in the template instead.
+- For parts that are built: read the actual code you found in Step 2 — entry points, service/module boundaries, data stores, external calls. Ground every such building block and flow in a file or config you actually opened.
+- For parts that aren't built yet: read the anchor docs located in Step 2 — the PRD for goals and scope, ADRs and the brainstorm doc for decisions already settled. Fill remaining gaps from the user's own input in conversation. If a needed decision isn't recorded anywhere, don't invent it — list it under Open Questions in the template instead.
+- Mark each unbuilt component, flow, or interface with `(planned, not yet implemented)` right where it's introduced, so the reader knows without needing a document-wide label.
 
-**Completion criterion:** every component and flow you're about to write down has a traceable source — a file, an anchor doc, or an explicit note that it came from the user's own input.
+**Completion criterion:** every component and flow you're about to write down has a traceable source — a file, an anchor doc, or an explicit note that it came from the user's own input — and every unbuilt one is flagged inline.
 
 ## Step 5: Write the document
 
@@ -74,7 +78,7 @@ Writing rules:
   | "Modern microservices architecture" | "Three services communicate over gRPC; the catalog service owns the `products` table" |
   | "Data flows through several layers" | *(a sequence diagram, not a sentence)* |
 
-- **Present tense for As-Is.** Declarative "will" / "must" for To-Be. Never switch tense within a section without a label.
+- **Present tense throughout.** Describe the design as it stands, built or not. For a planned piece, keep the sentence in present tense and let the `(planned, not yet implemented)` tag carry the distinction — don't switch the whole section to "will"/"must".
 - **No persuasion.** No "we recommend", no pros/cons table weighing options. A rejected shape can get a sentence of context inline; the full argument, if it happened, lives in an ADR you link to.
 - **Short sentences, no filler.** If a sentence would work in a PRD's marketing copy, cut it.
 
@@ -83,7 +87,7 @@ Writing rules:
 Save the file, then summarize:
 
 - Path written (or updated).
-- Sections thin on detail, and why (missing anchor doc, code not yet written for To-Be, etc.).
+- Sections thin on detail, and why (missing anchor doc, code not yet written, etc.).
 - Diagrams skipped, and why.
 - Anchor docs referenced, with links — or, if there were none, a note that the design came from the user's own input instead of a written source.
 

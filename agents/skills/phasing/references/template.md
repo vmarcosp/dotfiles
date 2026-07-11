@@ -9,9 +9,22 @@
 
 ## Phases
 
-| # | Phase | Goal (one sentence) | Depends on | Status |
-|---|---|---|---|---|
-| 1 | {Title} | {What changes when this ships} | {— or #N, #M} | {Pending \| Spec'd \| Done} |
+| # | Phase | Depends on | Status |
+|---|---|---|---|
+| 1 | {Short title, 4–10 words} | {— or #N, #M} | {Pending \| Spec'd \| Done} |
+
+### Phase 1 — {Short title}
+
+**Goal:** {One or two sentences: what changes when this ships.}
+
+**In:** {capabilities this phase delivers, plain language}
+**Out:** {what it deliberately leaves to a sibling — name the owning phase, e.g. "the real adapter (#8)"}
+
+**Source:** {doc, linked} — {`Top > Section > Subsection` heading paths this phase implements}
+
+**Notes for the spec:** {optional — facts the phase's /spec cannot infer; omit the line when empty}
+
+{Repeat one block per phase, in table order.}
 
 ## Dependency Graph
 
@@ -37,7 +50,7 @@ flowchart LR
 
 | Type | From | Affects | Note | Link |
 |---|---|---|---|---|
-| {Fact \| Dependency correction \| New scope} | {#N} | {#M / roadmap} | {one line} | {PR/commit} |
+| {Fact \| Dependency correction \| New scope \| Doc correction} | {#N} | {#M / roadmap / doc} | {one line} | {PR/commit} |
 
 ## Carry-over Paths (reserved)
 

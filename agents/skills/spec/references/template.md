@@ -7,6 +7,14 @@
 
 {One sentence: what's different once this ships.}
 
+## Success Criteria
+
+{3–6 verifiable statements: what must be true when this ships, each traced to the section that demands it. Every criterion is covered by at least one Step and exercised in Verification.}
+
+| # | Criterion | Traces to |
+|---|---|---|
+| C1 | {Observable outcome, checkable} | {doc, heading path — or roadmap phase Source} |
+
 ## Recon
 
 {Findings grounded in files/commands actually inspected — not assumptions.}
@@ -30,7 +38,9 @@
 
 ## Verification
 
-{How the whole change is confirmed done end-to-end, beyond the per-Step checks — e.g. full test suite, a specific command, a manual smoke-test walkthrough.}
+{How the whole change is confirmed done end-to-end, beyond the per-Step checks: one check per success criterion, plus the full test suite.}
+
+- **C1** — {exact test/command/manual walkthrough that exercises this criterion}
 
 ## Risks & Open Questions
 

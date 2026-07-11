@@ -124,7 +124,7 @@ Standalone skills, no pipeline attached.
 **User-invoked**
 
 - **[worktree](agents/skills/worktree/SKILL.md)** — Creates or removes a git worktree from a branch name, copying `.env` files and installing dependencies automatically.
-- **[writing-great-skills](agents/skills/writing-great-skills/SKILL.md)** — The reference I load when writing or editing skills: the vocabulary and principles that make a skill predictable.
+- **[writing-great-skills](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-great-skills/SKILL.md)** — Matt Pocock's reference for writing and editing skills well. Installed via the skills lock file; not mine.
 
 **Model-invoked**
 

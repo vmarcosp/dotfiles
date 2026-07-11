@@ -11,7 +11,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # PRD — Product Requirements Document

@@ -14,7 +14,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Implement — Plan to Code
@@ -28,7 +28,7 @@ Executes a plan (see /spec) by turning its Steps into a tracked checklist and wo
 
 ## Step 1: Load the plan
 
-Read the plan file in full — invoking this skill is itself the go-ahead to execute it; there's no status to check before starting. Extract the Goal, the Recon table, any ADRs referenced (still binding during execution), the Approach, the ordered Steps with their Verify lines, and the overall Verification section.
+Read the plan file in full — invoking this skill is itself the go-ahead to execute it; there's no status to check before starting. Extract the Goal, the Success Criteria, the Recon table, any ADRs referenced (still binding during execution), the Approach, the ordered Steps with their Verify lines, and the overall Verification section.
 
 If the plan's References link a roadmap (`/phasing`), this run is executing one phase of it: open the roadmap, note the phase number and the reserved carry-over path from its `Carry-over Paths` table. Both are used at delivery (Step 6) — nothing changes about how the Steps run.
 
@@ -77,15 +77,15 @@ Never mark a todo completed, or force a Verify to "pass," by weakening the Verif
 
 ## Step 5: Run the overall Verification
 
-Once every Step is checked off, run the plan's Verification section as a whole — not just the per-Step checks, which only prove each piece in isolation.
+Once every Step is checked off, run the plan's Verification section as a whole — not just the per-Step checks, which only prove each piece in isolation. Verification is where the plan's Success Criteria get exercised: the change is done when each criterion demonstrably holds, not when the Steps ran out.
 
-**Completion criterion:** the plan's Verification passed, or a documented blocker explains why it didn't.
+**Completion criterion:** every check in the plan's Verification ran and passed — each Success Criterion demonstrably holds — or a documented blocker explains why it didn't.
 
 ## Step 6: Deliver
 
 1. Update the plan's status to `Done`.
 2. **Roadmap phase only** (detected in Step 1):
-   - Write the carry-over fragment at the reserved path, following the shape of the /phasing skill's `references/carryover-template.md` — facts a downstream phase's `/spec` needs, dependency corrections, new scope discovered. Skip the file entirely if the run produced none of the three; an empty fragment is noise.
+   - Write the carry-over fragment at the reserved path, following the shape of the /phasing skill's `references/carryover-template.md` — facts a downstream phase's `/spec` needs, dependency corrections, new scope discovered, and doc corrections (an anchor doc the build disproved). Skip the file entirely if the run produced none of the four; an empty fragment is noise.
    - Update this phase's row in the roadmap's Phases table: status → `Done` (or `Spec'd` if the run stopped on a blocker). This one row is the only roadmap edit allowed here — everything else goes in the fragment, so parallel streams never write the same lines.
    - If any fragment files now exist in the roadmap folder (this one or from other phases), mention in the summary that a `/phasing` Sync is pending to absorb them.
 3. Open or update the PR:
@@ -95,6 +95,7 @@ Once every Step is checked off, run the plan's Verification section as a whole �
    - **Blockers** — if the run stopped early (omit if the run completed).
    - **Plan** — link to the plan file.
    - **Carry-over** — link to the fragment written, if any (omit if none).
+4. Name `/review` as the next gate in the delivery summary — merge follows its verdict, not this run's own claim of done.
 
 ## Rules
 

@@ -28,3 +28,11 @@
 | Candidate phase | Why it's needed |
 |---|---|
 | {Title} | {One line} |
+
+## Doc corrections
+
+{An anchor doc (TDD/PRD/ADR) said something the build disproved — downstream `/spec`s would read it and plan against a falsehood. Sync fixes the doc.}
+
+| Doc, section | What's wrong, what's true instead |
+|---|---|
+| {tdd-slug, heading path} | {One line} |

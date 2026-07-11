@@ -14,7 +14,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Spec — Implementation Plan
@@ -49,19 +49,27 @@ The three kinds carry different weight:
 
 - **ADR — binding.** Its decision is a contract on the Approach, not a suggestion. If the change would contradict an Accepted ADR, that's a conflict: surface it now, and ask the user explicitly via AskQuestion how to resolve it (amend the approach, or flag that the ADR itself needs revisiting) — never quietly work around it and never quietly follow it without telling the user the tension exists.
 - **PRD / TDD — reference.** They inform the Goal and Recon (intended behavior, current architecture) but don't constrain the Approach the way an ADR does.
-- **Roadmap — reference, plus a dependency check.** If this change is one phase of a roadmap (`/phasing`), read that phase's row (Goal, `depends on`) and, for every phase it depends on, check for a `carryover-phase-<n>.md` fragment in that same roadmap's folder — a fact or correction left there takes priority over what the roadmap's Phases table says, since it reflects what actually got built.
+- **Roadmap — reference, plus a dependency check.** If this change is one phase of a roadmap (`/phasing`), read that phase's contract block (Goal, In/Out, Source, Notes for the spec) — the Out line bounds this plan's scope, and Step 4's Success criteria derive from its Source sections. For every phase it depends on, check for a `carryover-phase-<n>.md` fragment in that same roadmap's folder — a fact or correction left there takes priority over what the roadmap says, since it reflects what actually got built.
 
 **Completion criterion:** every ADR touching this boundary is either satisfied by the Approach or flagged as a conflict the user has resolved; PRDs/TDDs/roadmap found are noted as context; if this change is a roadmap phase, every dependency's carry-over fragment (if any) has been checked.
 
-## Step 4: Decide the approach
+## Step 4: Fix the success criteria
 
-Pick the technical approach in a short paragraph. It must comply with every ADR from Step 3 — if compliance is impossible, that conflict should already be resolved with the user, not decided here unilaterally. Mention a rejected alternative only if it explains a non-obvious choice in the Steps that follow — one line, not a pros/cons table; the plan states the decision, it doesn't build a case for it.
+Before deciding how, pin down what must be true when this change ships: 3–6 verifiable statements, each traced to the section that demands it — the roadmap phase's Source, a PRD/TDD section, or the user's ask. A criterion states an observable outcome of the whole change ("a nested loop with a fake executor runs end to end and its state is visible over SSE"), never a step's mechanics. Together they are the change's definition of done: the Steps must cover them (Step 7) and the Verification must exercise them.
+
+If a criterion can't be traced or can't be checked, that's a scope gap — resolve it via AskQuestion, not by writing a vaguer criterion.
+
+**Completion criterion:** every criterion is checkable and traces to a named source section; together they cover the Goal with nothing owned by a sibling phase (the Out line).
+
+## Step 5: Decide the approach
+
+Pick the technical approach in a short paragraph — the shortest path through the success criteria that complies with every ADR from Step 3. If compliance is impossible, that conflict should already be resolved with the user, not decided here unilaterally. Mention a rejected alternative only if it explains a non-obvious choice in the Steps that follow — one line, not a pros/cons table; the plan states the decision, it doesn't build a case for it.
 
 If the approach settles a decision whose scope outlives this change — something future changes will have to comply with, like a storage choice, a protocol, or a boundary between components — don't leave it buried in a plan that gets archived: record it with the /adr skill and cite it under References as binding, same as any pre-existing ADR. A decision that only matters inside this change stays in the Approach paragraph.
 
 **Completion criterion:** the approach is stated, complies with every binding ADR (or documents why it can't, per Step 3), any surviving trade-off is one sentence, not a debate, and any decision that outlives the change has its own ADR.
 
-## Step 5: Pick the output location
+## Step 6: Pick the output location
 
 Search the repo for an existing plan directory, in order: `docs/plans/`, `docs/plan/`, `plans/`, `docs/tasks/`.
 
@@ -74,7 +82,7 @@ Check for an existing plan at that path first — a change gets one plan, not se
 
 **Completion criterion:** a confirmed directory path that exists on disk, and known whether this is a create or an update.
 
-## Step 6: Write the Steps
+## Step 7: Write the Steps
 
 Break the approach into an ordered list. Each Step:
 
@@ -84,9 +92,11 @@ Break the approach into an ordered list. Each Step:
 
 Order Steps so each one can be verified before the next depends on it — no forward references to a Step not yet done.
 
-**Completion criterion:** every Step has a concrete target and a Verify that names a real, runnable check.
+Then close the loop with the plan's **Verification** section: one check per success criterion, exercising the change as a whole — Verify lines prove each piece, Verification proves the promise.
 
-## Step 7: Write the document
+**Completion criterion:** every Step has a concrete target and a Verify that names a real, runnable check; every success criterion is covered by at least one Step and exercised by the Verification section.
+
+## Step 8: Write the document
 
 Follow `references/template.md` structure exactly.
 
@@ -96,7 +106,7 @@ Writing rules:
 - **No persuasion.** State the approach and the Steps, don't sell them — the case for a decision, if it needed one, lives in an ADR this plan may link to.
 - **Short sentences, no filler.** If a sentence doesn't change what gets built or how it's checked, cut it.
 
-## Step 8: Save and present
+## Step 9: Save and present
 
 Save the file. If this change is a phase of a roadmap (found in Step 3), also update that phase's row in the roadmap's Phases table: status → `Spec'd`. That one cell is the only roadmap edit this skill makes — corrections and discoveries belong to the phase's carry-over fragment, written later by `/implement`.
 
@@ -122,5 +132,5 @@ There's no separate approval step here — running `/implement` against this pla
 2. One plan per change — update in place, don't duplicate.
 3. Ground every recon finding in a file or command actually inspected — never assume existing behavior.
 4. An ADR is a contract — the Approach complies with every one found, or the conflict was resolved with the user, never silently.
-5. Ask explicitly via AskQuestion whenever a required piece — the Goal, the boundary, the Approach, an ADR conflict, a Step's Verify — can't be filled with confidence. Open Questions is for what's still unresolved after asking, not a substitute for asking.
+5. Ask explicitly via AskQuestion whenever a required piece — the Goal, the boundary, a success criterion, the Approach, an ADR conflict, a Step's Verify — can't be filled with confidence. Open Questions is for what's still unresolved after asking, not a substitute for asking.
 6. Write in the same language the user uses.

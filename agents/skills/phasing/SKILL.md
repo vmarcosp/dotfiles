@@ -12,7 +12,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.1.0"
+  version: "1.2.0"
 ---
 
 # Phasing — Roadmap from Anchor Docs
@@ -74,7 +74,14 @@ Apply `/spec`'s own boundary test to the gathered scope — reuse it, don't rein
 
 A phase that already passes all four can be a whole feature — don't split further just because it's called "a feature." Split only where the answer to one of these genuinely flips: a different Approach, a different Building Block, or a Verify that couldn't isolate what broke if bundled.
 
-**Completion criterion:** every phase, stated in one sentence, passes all four checks; nothing is split "for tidiness" without a check actually failing.
+Each phase that survives the test gets a **contract** — the material its block carries in Step 8:
+
+- **Goal** — one or two sentences: what changes when this ships.
+- **In / Out** — the boundary. The Out line names the sibling phase that owns each deferred piece ("the real adapter (#8)") — the seams between phases live here and nowhere else.
+- **Source** — the anchor-doc sections (full heading paths) this phase implements; the phase's `/spec` derives its Success criteria from exactly these.
+- **Notes for the spec** — optional: facts the `/spec` could not infer (a pending POC, a cross-phase constraint). Requirements, steps, and acceptance criteria stay out — the phase's `/spec` authors those.
+
+**Completion criterion:** every phase passes all four checks and carries Goal, In/Out, and Source; every deferred piece in an Out line names its owning phase; nothing is split "for tidiness" without a check actually failing.
 
 ## Step 4: Build the dependency graph
 
@@ -108,6 +115,7 @@ For each located fragment (Step 2): read it, apply its entries —
 - **Fact** → note it against the target phase's row in the Phases table (a one-line pointer, not the full fact — the fact itself stays in the fragment's git history via the link).
 - **Dependency correction** → update the `depends on` column for the affected phase(s); re-run Step 4's critical path / wave computation if any edge changed.
 - **New scope** → add a new phase row, run it through Step 3's boundary test before accepting it.
+- **Doc correction** → an anchor doc said something the build disproved. Fix the doc section directly (or via `/tdd`/`/adr` when the correction reopens a decision), and log it in the Carry-over Log.
 
 Once absorbed, delete the fragment file — its content now lives in the roadmap's `Carry-over Log`.
 
@@ -121,8 +129,8 @@ Follow `references/template.md` structure exactly.
 
 Writing rules:
 
-- **One phase, one row.** No prose paragraph per phase — the Phases table plus the dependency diagram should be enough to understand the shape.
-- **No persuasion.** State the cut and the graph, don't justify them — the reasoning behind a split, if worth keeping, is one line in the phase's own row, not a paragraph.
+- **One phase, one row plus one contract block.** The table is the index — short title (4–10 words), dependencies, status; the block carries the contract from Step 3, nothing more. Anything beyond the contract belongs to the phase's `/spec`.
+- **No persuasion.** State the cut and the graph, don't justify them — the reasoning behind a split, if worth keeping, is one line in the phase's contract, not a paragraph.
 - **Diagram required unless trivial.** Render the dependency graph as a mermaid `flowchart` — skip only if there's a single phase with no dependencies (and if so, reconsider whether `/phasing` was the right skill per "When NOT to apply").
 
 ## Step 9: Save and present
