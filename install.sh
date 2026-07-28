@@ -105,13 +105,14 @@ ln -sfn "$DOTFILES/agents" ~/.agents
 # -- claude code -----------------------------
 log "Linking Claude Code config"
 mkdir -p ~/.claude
-rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands ~/.claude/rules
+rm -rf ~/.claude/agents ~/.claude/skills ~/.claude/commands ~/.claude/rules ~/.claude/workflows
 ln -sfn "$DOTFILES/agents/AGENTS.md" ~/.claude/CLAUDE.md
 ln -sfn "$DOTFILES/claude/settings.json" ~/.claude/settings.json
 ln -sfn "$DOTFILES/agents/agents" ~/.claude/agents
 ln -sfn "$DOTFILES/agents/skills" ~/.claude/skills
 ln -sfn "$DOTFILES/agents/commands" ~/.claude/commands
 ln -sfn "$DOTFILES/agents/rules" ~/.claude/rules
+ln -sfn "$DOTFILES/claude/workflows" ~/.claude/workflows
 
 # -- opencode -----------------------------------
 log "Linking opencode plugins"
