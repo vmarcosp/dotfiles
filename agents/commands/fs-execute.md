@@ -1,6 +1,6 @@
 ---
 description: Drives a faststore roadmap task through spec, implement, and verify, then opens one PR.
-argument-hint: "[roadmap-path] [max-verify-rounds]"
+argument-hint: "[roadmap-path] [feature-branch] [max-verify-rounds]"
 model: sonnet
 ---
 
@@ -12,8 +12,9 @@ run acceptance tests yourself — that's the workflow's job. Watching CI and mer
 ## Parameters
 
 - Roadmap: `$0`
-- Root feature branch and remote: inferred from the branch checked out at session start
-- Max verify rounds: `$1` (default 3 if not provided)
+- Root feature branch: `$1` — required, every task PR is opened against this branch, never inferred
+  from whatever happens to be checked out. Remote: `origin` unless the roadmap says otherwise.
+- Max verify rounds: `$2` (default 3 if not provided)
 
 ## What you own vs. what the workflow owns
 

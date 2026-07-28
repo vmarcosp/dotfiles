@@ -33,9 +33,17 @@ branch instead of leaving it local.
 ## Action: `DELIVER`
 
 Only called after Verify passes with zero open findings. Push the branch and open exactly one
-non-draft PR against the root feature branch, with summary, tests, assumptions, deviations, and the
-spec link. If a matching PR already exists for this branch, update it instead of creating a
-duplicate — more than one is a blocker.
+non-draft PR against the root feature branch, with summary, tests, assumptions, and deviations.
+End the body with these two lines, exact format, each on its own line — `fs-finalize` greps for
+them verbatim to reconstruct task history, so don't paraphrase:
+
+```
+Task: <taskId>
+Spec: <specPath>
+```
+
+If a matching PR already exists for this branch, update it instead of creating a duplicate — more
+than one is a blocker.
 
 If the packet includes follow-ups, post one `gh pr comment` on the PR: a `- [ ]` checklist item per
 follow-up, opening with `@vmarcosp` so it surfaces for triage. Separate from the PR description.
