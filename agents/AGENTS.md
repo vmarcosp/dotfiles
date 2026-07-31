@@ -21,3 +21,5 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 
 - If you need to clarify something, ask for permission or needs my attention because you're working on a important thing, use the `/notification` skill.
 <!-- rules -->
+
+@RTK.md

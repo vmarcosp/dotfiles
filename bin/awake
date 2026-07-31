@@ -1,0 +1,438 @@
+#!/usr/bin/env bash
+#
+# awake - Keep the Mac awake while a Claude Code or Cursor Agent session runs
+# Usage: awake [--pid PID] [--list] [--help]
+#
+
+set -uo pipefail
+
+AWAKE_CHOICE=""
+KEY=""
+TTY_FD=3
+CAFFEINATE_BIN="${AWAKE_CAFFEINATE_BIN:-caffeinate}"
+
+if { exec 3<>/dev/tty; } 2>/dev/null; then
+  HAS_TTY=true
+else
+  HAS_TTY=false
+fi
+
+# ── Colors (native terminal via tput) ────────────────────────────────────────
+if command -v tput &>/dev/null; then
+  _color_count="$(tput colors 2>/dev/null || echo 0)"
+else
+  _color_count=0
+fi
+if [[ "$HAS_TTY" == true && "$_color_count" -ge 8 ]]; then
+  _bold="$(tput bold)"
+  _dim="$(tput dim)"
+  _reset="$(tput sgr0)"
+  _red="$(tput setaf 1)"
+  _green="$(tput setaf 2)"
+  _yellow="$(tput setaf 3)"
+  _blue="$(tput setaf 4)"
+  _magenta="$(tput setaf 5)"
+  _cyan="$(tput setaf 6)"
+  _white="$(tput setaf 7)"
+else
+  _bold="" _dim="" _reset="" _red="" _green="" _yellow="" _blue="" _magenta="" _cyan="" _white=""
+fi
+
+die() {
+  printf '%s✗ %s%s\n' "$_red" "$*" "$_reset" >&2
+  exit 1
+}
+
+info() {
+  printf '%s→ %s%s\n' "$_cyan" "$*" "$_reset"
+}
+
+success() {
+  printf '%s✓ %s%s\n' "$_green" "$*" "$_reset"
+}
+
+usage() {
+  cat <<EOF
+${_bold}awake${_reset} — keep your Mac awake while a coding agent is running
+
+${_bold}Usage:${_reset}
+  awake                 list sessions and open the interactive selector
+  awake --pid <PID>     run caffeinate for a specific PID
+  awake --list          list sessions without opening the selector
+  awake --help          show this help
+
+${_bold}Controls:${_reset}
+  ↑/↓ or j/k            move selection
+  Enter                 confirm selection
+  1–9                   select directly
+  q or Esc              quit
+
+EOF
+}
+
+require_macos() {
+  [[ "$(uname -s)" == "Darwin" ]] || die "This script only works on macOS (caffeinate)."
+}
+
+require_caffeinate() {
+  command -v "$CAFFEINATE_BIN" &>/dev/null || die "caffeinate was not found."
+}
+
+get_cwd_for_pid() {
+  local pid="$1"
+  local cwd=""
+  [[ "$pid" =~ ^[0-9]+$ ]] || { printf '%s' '?'; return 0; }
+  cwd="$(
+    lsof -a -d cwd -p "$pid" -Fn 2>/dev/null |
+      awk '/^n/ {sub(/^n/, ""); print; exit}'
+  )"
+  if [[ -z "$cwd" || ! -d "$cwd" ]]; then
+    cwd="?"
+  fi
+  printf '%s' "$cwd"
+}
+
+classify_process() {
+  local args="$1"
+  if [[ "$args" == *"cursor-agent/"* && "$args" == *"index.js"* ]]; then
+    printf 'cursor'
+    return 0
+  fi
+  if [[ "$args" =~ (^|[[:space:]/])claude([[:space:]]|$) ]] && [[ "$args" != *"CursorUIViewService"* ]]; then
+    printf 'claude'
+    return 0
+  fi
+  return 1
+}
+
+agent_label() {
+  local kind="$1"
+  local args="$2"
+  local model="" extra=""
+
+  case "$kind" in
+    claude)
+      if [[ "$args" =~ --model[[:space:]]+([^[:space:]]+) ]]; then
+        model="${BASH_REMATCH[1]}"
+      fi
+      if [[ -n "$model" ]]; then
+        printf 'Claude Code (%s)' "$model"
+      else
+        printf 'Claude Code'
+      fi
+      ;;
+    cursor)
+      if [[ "$args" == *"--resume"* ]]; then
+        extra=" · resume"
+      fi
+      printf 'Cursor Agent%s' "$extra"
+      ;;
+  esac
+}
+
+agent_color() {
+  local kind="$1"
+  case "$kind" in
+    claude) printf '%s' "$_magenta" ;;
+    cursor) printf '%s' "$_blue" ;;
+    *)      printf '%s' "$_white" ;;
+  esac
+}
+
+# Returns rows: pid<TAB>kind<TAB>label<TAB>folder<TAB>cwd
+discover_agents() {
+  local line pid args kind label folder cwd
+
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    pid="${line%% *}"
+    args="${line#"$pid "}"
+    pid="${pid//[[:space:]]/}"
+
+    [[ "$pid" =~ ^[0-9]+$ ]] || continue
+
+    # Skip our own pipeline / noise
+    [[ "$args" == *"bin/awake"* ]] && continue
+    [[ "$args" == *"rg "* || "$args" == *"grep "* ]] && continue
+
+    if ! kind="$(classify_process "$args")"; then
+      continue
+    fi
+
+    label="$(agent_label "$kind" "$args")"
+    cwd="$(get_cwd_for_pid "$pid")"
+    folder="$(basename "$cwd")"
+    [[ "$folder" == "?" ]] && folder="(unknown)"
+
+    printf '%s\t%s\t%s\t%s\t%s\n' "$pid" "$kind" "$label" "$folder" "$cwd"
+  done < <(
+    {
+      pgrep -fl 'cursor-agent/versions.*index\.js' 2>/dev/null || true
+      pgrep -fl '^claude ' 2>/dev/null || true
+    } | LC_ALL=C sort -n -k1
+  )
+}
+
+truncate() {
+  local text="$1"
+  local max="$2"
+  if ((${#text} <= max)); then
+    printf '%s' "$text"
+  else
+    printf '%s…' "${text:0:$((max - 1))}"
+  fi
+}
+
+# All interactive input and output goes through the controlling terminal.
+# This keeps the selector working even when stdin/stdout are redirected.
+ui_printf() {
+  printf "$@" >&"$TTY_FD"
+}
+
+ui_tput() {
+  tput "$@" <&"$TTY_FD" >&"$TTY_FD" 2>/dev/null || true
+}
+
+read_key() {
+  local first="" second="" third=""
+  KEY=""
+
+  IFS= read -r -s -n 1 first <&"$TTY_FD" || return 1
+
+  if [[ "$first" != $'\033' ]]; then
+    KEY="$first"
+    return 0
+  fi
+
+  # Bash 3.2 (macOS) only accepts integer values for read -t.
+  # Arrow-key bytes are already queued, so this does not delay normal use.
+  if ! IFS= read -r -s -n 1 -t 1 second <&"$TTY_FD"; then
+    KEY="ESC"
+    return 0
+  fi
+  if [[ "$second" != "[" && "$second" != "O" ]]; then
+    KEY="ESC"
+    return 0
+  fi
+  if ! IFS= read -r -s -n 1 -t 1 third <&"$TTY_FD"; then
+    KEY="ESC"
+    return 0
+  fi
+
+  case "$third" in
+    A) KEY="UP" ;;
+    B) KEY="DOWN" ;;
+    *) KEY="OTHER" ;;
+  esac
+}
+
+print_table() {
+  local -a rows=("$@")
+  local row pid kind label folder cwd color
+  local idx=1
+  local w_agent=23 w_pid=8 w_proj=34
+
+  printf '\n'
+  printf '%s  %-3s %-'"${w_agent}"'s %-'"${w_pid}"'s %s%s\n' \
+    "$_bold" "#" "AGENT" "PID" "PROJECT" "$_reset"
+  printf '%s  ─── ─────────────────────── ──────── ──────────────────────────────────%s\n' \
+    "$_dim" "$_reset"
+
+  for row in "${rows[@]}"; do
+    IFS=$'\t' read -r pid kind label folder cwd <<<"$row"
+    color="$(agent_color "$kind")"
+    printf '  %s%-3d%s %s%-'"${w_agent}"'s%s %s%-'"${w_pid}"'s%s %s%s%s\n' \
+      "$_dim" "$idx" "$_reset" \
+      "$color" "$(truncate "$label" "$w_agent")" "$_reset" \
+      "$_yellow" "$pid" "$_reset" \
+      "$_green" "$(truncate "$folder" "$w_proj")" "$_reset"
+    idx=$((idx + 1))
+  done
+  printf '\n'
+}
+
+pick_agent() {
+  local -a rows=("$@")
+  AWAKE_CHOICE=""
+
+  [[ "$HAS_TTY" == true ]] ||
+    die "No interactive terminal available. Use awake --list or awake --pid <PID>."
+
+  tui_pick "${rows[@]}"
+}
+
+restore_terminal() {
+  ui_tput cnorm
+}
+
+tui_pick() {
+  local -a rows=("$@")
+  local count=${#rows[@]}
+  local selected=0
+  local row pid kind label folder cwd color marker marker_color
+  local cols project_width i direct
+
+  ui_tput civis
+  trap restore_terminal EXIT INT TERM HUP
+
+  while true; do
+    cols="$(tput cols <&"$TTY_FD" 2>/dev/null || printf '80')"
+    project_width=$((cols - 46))
+    ((project_width < 18)) && project_width=18
+    ((project_width > 55)) && project_width=55
+
+    ui_printf '\033[2J\033[H'
+    ui_printf '  %s%sawake%s  %sselect a session to keep your Mac awake%s\n\n' \
+      "$_bold" "$_cyan" "$_reset" "$_dim" "$_reset"
+    ui_printf '    %s%-23s %-8s %s%s\n' \
+      "$_bold" "AGENT" "PID" "PROJECT" "$_reset"
+
+    i=0
+    for row in "${rows[@]}"; do
+      IFS=$'\t' read -r pid kind label folder cwd <<<"$row"
+      color="$(agent_color "$kind")"
+      if (( i == selected )); then
+        marker="▸"
+        marker_color="$_green$_bold"
+      else
+        marker=" "
+        marker_color="$_reset"
+      fi
+
+      ui_printf '  %s%s%s %s%-23s%s %s%-8s%s %s%-'"${project_width}"'s%s\n' \
+        "$marker_color" "$marker" "$_reset" \
+        "$color" "$(truncate "$label" 23)" "$_reset" \
+        "$_yellow" "$pid" "$_reset" \
+        "$_green" "$(truncate "$folder" "$project_width")" "$_reset"
+      i=$((i + 1))
+    done
+
+    ui_printf '\n  %s↑/↓ or j/k%s move   %sEnter%s confirm   %s1–9%s select   %sq%s quit\n' \
+      "$_cyan" "$_reset" "$_cyan" "$_reset" \
+      "$_cyan" "$_reset" "$_cyan" "$_reset"
+
+    read_key || break
+
+    case "$KEY" in
+      UP|k|K)
+        if ((selected > 0)); then
+          selected=$((selected - 1))
+        else
+          selected=$((count - 1))
+        fi
+        ;;
+      DOWN|j|J)
+        if ((selected < count - 1)); then
+          selected=$((selected + 1))
+        else
+          selected=0
+        fi
+        ;;
+      q|Q|ESC)
+        trap - EXIT
+        restore_terminal
+        ui_printf '\033[2J\033[H'
+        return 1
+        ;;
+      '')
+        AWAKE_CHOICE="$selected"
+        trap - EXIT
+        restore_terminal
+        ui_printf '\033[2J\033[H'
+        return 0
+        ;;
+      [1-9])
+        direct=$((KEY - 1))
+        if ((direct < count)); then
+          AWAKE_CHOICE="$direct"
+          trap - EXIT
+          restore_terminal
+          ui_printf '\033[2J\033[H'
+          return 0
+        fi
+        ;;
+    esac
+  done
+
+  trap - EXIT
+  restore_terminal
+  return 1
+}
+
+run_caffeinate() {
+  local pid="$1"
+  local kind="$2"
+  local label="$3"
+  local folder="$4"
+
+  kill -0 "$pid" 2>/dev/null || die "Process $pid is no longer running."
+
+  printf '\n'
+  success "Keeping your Mac awake while $label runs in $folder (PID $pid)"
+  info "Press Ctrl+C to stop caffeinate (the agent will keep running)."
+  printf '\n'
+
+  exec "$CAFFEINATE_BIN" -w "$pid"
+}
+
+main() {
+  local opt_pid=""
+  local list_only=false
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --pid|-p)
+        [[ $# -ge 2 ]] || die "Missing value for --pid."
+        opt_pid="$2"
+        shift 2
+        ;;
+      --list|-l)
+        list_only=true
+        shift
+        ;;
+      --help|-h)
+        usage
+        exit 0
+        ;;
+      *)
+        die "Unknown argument: $1 (use --help)"
+        ;;
+    esac
+  done
+
+  require_macos
+  require_caffeinate
+
+  if [[ -n "$opt_pid" ]]; then
+    [[ "$opt_pid" =~ ^[0-9]+$ ]] || die "Invalid PID: $opt_pid"
+    run_caffeinate "$opt_pid" "?" "agent" "?"
+  fi
+
+  local -a rows=()
+  local row
+  while IFS= read -r row; do
+    [[ -n "$row" ]] && rows+=("$row")
+  done < <(discover_agents)
+
+  if [[ ${#rows[@]} -eq 0 ]]; then
+    printf '\n%sNo Claude Code or Cursor Agent sessions found.%s\n\n' "$_yellow" "$_reset"
+    exit 1
+  fi
+
+  if [[ "$list_only" == true ]]; then
+    print_table "${rows[@]}"
+    exit 0
+  fi
+
+  local choice
+  if ! pick_agent "${rows[@]}"; then
+    info "Canceled."
+    exit 0
+  fi
+  choice="$AWAKE_CHOICE"
+
+  IFS=$'\t' read -r pid kind label folder cwd <<<"${rows[$choice]}"
+  run_caffeinate "$pid" "$kind" "$label" "$folder"
+}
+
+main "$@"

@@ -16,10 +16,14 @@ Read the task packet, spec, binding references, and repository test conventions.
 ## Action: `TEST`
 
 Map every acceptance criterion and required happy/error/edge scenario to an automated test,
-command-level smoke check, or justified `N/A` (valid only when e2e isn't required and another
-runnable check fully proves the criterion). Run focused checks, then required smoke/e2e suites.
-Use the repo's Playwright/Electron harness for UI work; reuse an existing server if one's already
-running, clean up only processes you started.
+manual Playwright MCP browser test, command-level smoke check, or justified `N/A` (valid only when
+e2e isn't required and another runnable check fully proves the criterion). Run focused checks,
+then required smoke/e2e suites.
+For UI work, always supplement automated checks with manual testing through Playwright MCP:
+navigate the real user flow, interact with the rendered UI, and verify visible happy, error, and
+edge states against the acceptance criteria. Use the repo's Playwright/Electron harness when
+available; reuse an existing server if one's already running, and clean up only processes you
+started. Report the manual steps and observed results as evidence.
 
 Return `pass` (every required scenario passes), `changes_requested` (reproducible failure, with
 expected/actual and repro steps), or `blocked` (environment/dependency prevents required evidence).
