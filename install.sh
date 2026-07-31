@@ -31,6 +31,7 @@ brew install \
   pidof \
   jq \
   lazygit \
+  uv \
   bun \
   neovim \
   pnpm
@@ -122,6 +123,7 @@ ln -sfn "$DOTFILES/opencode/plugins" ~/.opencode/plugins
 # -- global scripts (bin) --------------------
 log "Linking bin scripts"
 mkdir -p ~/bin
+ln -sfn "$DOTFILES/bin/gh-token-audit" ~/bin/gh-token-audit
 ln -sfn "$DOTFILES/bin/worktree" ~/bin/worktree
 
 # -- nvm + node ------------------------------

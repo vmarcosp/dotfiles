@@ -48,6 +48,14 @@ than one is a blocker.
 If the packet includes follow-ups, post one `gh pr comment` on the PR: a `- [ ]` checklist item per
 follow-up, opening with `@vmarcosp` so it surfaces for triage. Separate from the PR description.
 
+If the packet has a `Carry-over` path and this task leaves anything a later phase must pick up —
+a deferred decision, a resolved-but-worth-recording open question, a known limitation the spec
+scoped out, a note the next phase's spec should start from — write that file (short: what, why it
+carries forward, which phase consumes it) and commit it alongside the delivery commit. Distinct
+from follow-ups: follow-ups are PR-review triage items for this PR; carry-over is input the next
+phase's spec/implementer reads before starting. If nothing carries forward, leave the path
+untouched — don't create an empty placeholder.
+
 Return the PR URL.
 
 Never weaken tests, bypass hooks, force-push, or overwrite unrelated work.
