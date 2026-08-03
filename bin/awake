@@ -263,55 +263,82 @@ pick_agent() {
 
 restore_terminal() {
   ui_tput cnorm
+  if [[ "${ALT_SCREEN_ACTIVE:-false}" == true ]]; then
+    ui_tput rmcup
+    ALT_SCREEN_ACTIVE=false
+  fi
+}
+
+draw_tui_row() {
+  local index="$1"
+  local active="$2"
+  local project_width="$3"
+  local row pid kind label folder cwd color marker marker_color
+
+  row="${rows[$index]}"
+  IFS=$'\t' read -r pid kind label folder cwd <<<"$row"
+  color="$(agent_color "$kind")"
+
+  if [[ "$active" == true ]]; then
+    marker="▸"
+    marker_color="$_green$_bold"
+  else
+    marker=" "
+    marker_color="$_reset"
+  fi
+
+  ui_tput cup "$((index + 3))" 0
+  ui_tput el
+  ui_printf '  %s%s%s %s%-23s%s %s%-8s%s %s%-'"${project_width}"'s%s' \
+    "$marker_color" "$marker" "$_reset" \
+    "$color" "$(truncate "$label" 23)" "$_reset" \
+    "$_yellow" "$pid" "$_reset" \
+    "$_green" "$(truncate "$folder" "$project_width")" "$_reset"
 }
 
 tui_pick() {
   local -a rows=("$@")
   local count=${#rows[@]}
   local selected=0
-  local row pid kind label folder cwd color marker marker_color
-  local cols project_width i direct
+  local previous cols project_width i direct
 
+  ALT_SCREEN_ACTIVE=true
+  ui_tput smcup
+  ui_tput clear
   ui_tput civis
-  trap restore_terminal EXIT INT TERM HUP
+  trap restore_terminal EXIT
+  trap 'exit 130' INT TERM HUP
+
+  cols="$(tput cols <&"$TTY_FD" 2>/dev/null || printf '80')"
+  project_width=$((cols - 46))
+  ((project_width < 18)) && project_width=18
+  ((project_width > 55)) && project_width=55
+
+  ui_tput cup 0 0
+  ui_printf '  %s%sawake%s  %sselect a session to keep your Mac awake%s' \
+    "$_bold" "$_cyan" "$_reset" "$_dim" "$_reset"
+  ui_tput cup 2 0
+  ui_printf '    %s%-23s %-8s %s%s' \
+    "$_bold" "AGENT" "PID" "PROJECT" "$_reset"
+
+  i=0
+  while ((i < count)); do
+    if ((i == selected)); then
+      draw_tui_row "$i" true "$project_width"
+    else
+      draw_tui_row "$i" false "$project_width"
+    fi
+    i=$((i + 1))
+  done
+
+  ui_tput cup "$((count + 4))" 0
+  ui_printf '  %s↑/↓ or j/k%s move   %sEnter%s confirm   %s1–9%s select   %sq%s quit' \
+    "$_cyan" "$_reset" "$_cyan" "$_reset" \
+    "$_cyan" "$_reset" "$_cyan" "$_reset"
 
   while true; do
-    cols="$(tput cols <&"$TTY_FD" 2>/dev/null || printf '80')"
-    project_width=$((cols - 46))
-    ((project_width < 18)) && project_width=18
-    ((project_width > 55)) && project_width=55
-
-    ui_printf '\033[2J\033[H'
-    ui_printf '  %s%sawake%s  %sselect a session to keep your Mac awake%s\n\n' \
-      "$_bold" "$_cyan" "$_reset" "$_dim" "$_reset"
-    ui_printf '    %s%-23s %-8s %s%s\n' \
-      "$_bold" "AGENT" "PID" "PROJECT" "$_reset"
-
-    i=0
-    for row in "${rows[@]}"; do
-      IFS=$'\t' read -r pid kind label folder cwd <<<"$row"
-      color="$(agent_color "$kind")"
-      if (( i == selected )); then
-        marker="▸"
-        marker_color="$_green$_bold"
-      else
-        marker=" "
-        marker_color="$_reset"
-      fi
-
-      ui_printf '  %s%s%s %s%-23s%s %s%-8s%s %s%-'"${project_width}"'s%s\n' \
-        "$marker_color" "$marker" "$_reset" \
-        "$color" "$(truncate "$label" 23)" "$_reset" \
-        "$_yellow" "$pid" "$_reset" \
-        "$_green" "$(truncate "$folder" "$project_width")" "$_reset"
-      i=$((i + 1))
-    done
-
-    ui_printf '\n  %s↑/↓ or j/k%s move   %sEnter%s confirm   %s1–9%s select   %sq%s quit\n' \
-      "$_cyan" "$_reset" "$_cyan" "$_reset" \
-      "$_cyan" "$_reset" "$_cyan" "$_reset"
-
     read_key || break
+    previous="$selected"
 
     case "$KEY" in
       UP|k|K)
@@ -329,33 +356,35 @@ tui_pick() {
         fi
         ;;
       q|Q|ESC)
-        trap - EXIT
         restore_terminal
-        ui_printf '\033[2J\033[H'
+        trap - EXIT INT TERM HUP
         return 1
         ;;
       '')
         AWAKE_CHOICE="$selected"
-        trap - EXIT
         restore_terminal
-        ui_printf '\033[2J\033[H'
+        trap - EXIT INT TERM HUP
         return 0
         ;;
       [1-9])
         direct=$((KEY - 1))
         if ((direct < count)); then
           AWAKE_CHOICE="$direct"
-          trap - EXIT
           restore_terminal
-          ui_printf '\033[2J\033[H'
+          trap - EXIT INT TERM HUP
           return 0
         fi
         ;;
     esac
+
+    if ((selected != previous)); then
+      draw_tui_row "$previous" false "$project_width"
+      draw_tui_row "$selected" true "$project_width"
+    fi
   done
 
-  trap - EXIT
   restore_terminal
+  trap - EXIT INT TERM HUP
   return 1
 }
 
