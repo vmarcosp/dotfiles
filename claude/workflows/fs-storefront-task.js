@@ -21,11 +21,22 @@ const RESULT_SCHEMA = {
   required: ['status'],
 };
 
+const FINDING_SCHEMA = {
+  type: 'object',
+  properties: {
+    summary: { type: 'string' },
+    file: { type: 'string' },
+    line: { type: 'integer' },
+    repro: { type: 'string' },
+  },
+  required: ['summary'],
+};
+
 const REVIEW_SCHEMA = {
   type: 'object',
   properties: {
     verdict: { enum: ['pass', 'changes_requested', 'blocked'] },
-    findings: { type: 'array', items: { type: 'string' } },
+    findings: { type: 'array', items: FINDING_SCHEMA },
     followUps: { type: 'array', items: { type: 'string' } },
   },
   required: ['verdict'],
@@ -43,6 +54,13 @@ const DELIVER_SCHEMA = {
 
 function collectFollowUps(...results) {
   return results.flatMap((r) => r?.followUps || []);
+}
+
+function formatFinding(f) {
+  if (typeof f === 'string') return f;
+  const loc = f.file ? `${f.file}${f.line ? `:${f.line}` : ''} — ` : '';
+  const repro = f.repro ? ` (repro: ${f.repro})` : '';
+  return `${loc}${f.summary}${repro}`;
 }
 
 // Defensive: some callers stringify the packet before passing it as `args` to the
@@ -80,18 +98,22 @@ phase('Verify');
 let round = 0;
 let allFindings = [];
 const followUps = [];
+const priorFindings = [];
 while (round < maxRounds) {
   round++;
+  const delta = priorFindings.length
+    ? `Re-verification round ${round}. Findings below were already reported and fixed — do not re-report them or a reworded variant unless the fix is demonstrably wrong:\n${priorFindings.map((f) => `- ${f}`).join('\n')}\nFocus this round on (1) confirming each fixed finding is actually resolved and (2) regressions introduced by the fix commits since the last round. Don't re-review or re-test unchanged areas already covered in round 1.`
+    : '';
   const [review, smoke] = await parallel([
     () =>
-      agent(`${packet()}\n\nAction: REVIEW.`, {
+      agent(`${packet(delta)}\n\nAction: REVIEW.`, {
         label: `fs-reviewer-r${round}`,
         agentType: 'fs-reviewer',
         phase: 'Verify',
         schema: REVIEW_SCHEMA,
       }),
     () =>
-      agent(`${packet()}\n\nAction: TEST.`, {
+      agent(`${packet(delta)}\n\nAction: TEST.`, {
         label: `fs-smoke-r${round}`,
         agentType: 'fs-smoke-tester',
         phase: 'Verify',
@@ -106,6 +128,7 @@ while (round < maxRounds) {
       reason: [review, smoke]
         .filter((v) => v?.verdict === 'blocked')
         .flatMap((v) => v.findings || [])
+        .map(formatFinding)
         .join('; '),
     };
   }
@@ -119,12 +142,14 @@ while (round < maxRounds) {
   }
 
   allFindings = findings;
+  const formatted = findings.map(formatFinding);
   log(`Verify round ${round}: ${findings.length} finding(s), routing to implementer`);
 
   implResult = await agent(
-    `${packet(`Findings to fix:\n${findings.map((f) => `- ${f}`).join('\n')}`)}\n\nAction: FIX_FINDINGS.`,
+    `${packet(`Findings to fix:\n${formatted.map((f) => `- ${f}`).join('\n')}`)}\n\nAction: FIX_FINDINGS.`,
     { label: `fs-implementer-fix-r${round}`, agentType: 'fs-implementer', phase: 'Verify', schema: RESULT_SCHEMA },
   );
+  priorFindings.push(...formatted);
 
   if (!implResult || implResult.status === 'blocked') {
     return { status: 'blocked', stage: 'verify-fix', reason: implResult?.reason || 'fix attempt failed' };
@@ -135,17 +160,20 @@ if (allFindings.length > 0) {
   return {
     status: 'blocked',
     stage: 'verify',
-    reason: `Max verify rounds (${maxRounds}) reached with open findings: ${allFindings.join('; ')}`,
+    reason: `Max verify rounds (${maxRounds}) reached with open findings: ${allFindings.map(formatFinding).join('; ')}`,
   };
 }
 
 phase('Deliver');
-const deliverExtra = followUps.length
-  ? `\n\nFollow-ups to post as a PR comment (mention @vmarcosp):\n${followUps.map((f) => `- ${f}`).join('\n')}`
+const uniqueFollowUps = [...new Set(followUps)];
+const deliverExtra = uniqueFollowUps.length
+  ? `\n\nFollow-ups to post as a PR comment (mention @vmarcosp):\n${uniqueFollowUps.map((f) => `- ${f}`).join('\n')}`
   : '';
+// Deliver is mechanical (push, open PR, write body) — no need for the implementer's default model.
 const deliver = await agent(`${packet(deliverExtra)}\n\nAction: DELIVER.`, {
   label: 'fs-deliver',
   agentType: 'fs-implementer',
+  model: 'sonnet',
   schema: DELIVER_SCHEMA,
 });
 
@@ -153,4 +181,4 @@ if (!deliver || deliver.status === 'blocked') {
   return { status: 'blocked', stage: 'deliver', reason: deliver?.reason || 'delivery failed' };
 }
 
-return { status: 'delivered', prUrl: deliver.prUrl, taskId: task.taskId, followUps };
+return { status: 'delivered', prUrl: deliver.prUrl, taskId: task.taskId, followUps: uniqueFollowUps };

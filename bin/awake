@@ -397,11 +397,11 @@ run_caffeinate() {
   kill -0 "$pid" 2>/dev/null || die "Process $pid is no longer running."
 
   printf '\n'
-  success "Keeping your Mac awake while $label runs in $folder (PID $pid)"
+  success "Keeping your Mac (and display) awake while $label runs in $folder (PID $pid)"
   info "Press Ctrl+C to stop caffeinate (the agent will keep running)."
   printf '\n'
 
-  exec "$CAFFEINATE_BIN" -w "$pid"
+  exec "$CAFFEINATE_BIN" -di -w "$pid"
 }
 
 main() {
