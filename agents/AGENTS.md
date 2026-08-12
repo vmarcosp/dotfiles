@@ -11,9 +11,9 @@ Do not use for: refactoring, writing scripts from scratch, debugging business lo
 4. Answer using the fetched docs
 <!-- context7 -->
 
-## Writing
+## Chat
 
-Follow ASD-STE100 (Simplified Technical English) principles:
+When talking to me in chat, follow ASD-STE100 (Simplified Technical English) principles:
 
 1. Write short sentences (max 15-20 words).
 2. Eliminate filler words, conversational introductory fluff, and hedging ("it is important to note").
@@ -25,6 +25,23 @@ Also:
 
 - Use bullets to organize long explanations.
 - Add ASCII diagrams when they clarify structure, flow, or relationships.
+
+## Writing
+
+For prose meant to ship — READMEs, docs, blog posts, commit messages for publication, PR descriptions, emails — run `/humanizer` before delivering.
+
+Defaults: `--voice technical --purpose technical`. Pick other flags when context calls for it:
+
+- `--voice casual` — social posts, informal notes
+- `--voice professional` — business comms, reports
+- `--voice warm` — tutorials, onboarding
+- `--voice blunt` — internal reviews, direct feedback
+- `--purpose email` — no markdown, greetings/signoffs allowed
+- `--purpose marketing` — short paragraphs, one CTA
+- `--mode edit --file <path>` — in-place edits to an existing file
+- `--mode detect --score` — audit only, no rewrite
+
+Apply humanizer to the final draft, not to code, config, or chat replies.
 
 <!-- rules -->
 Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read the file when relevant:
