@@ -11,15 +11,26 @@ Do not use for: refactoring, writing scripts from scratch, debugging business lo
 4. Answer using the fetched docs
 <!-- context7 -->
 
+## Writing
+
+Follow ASD-STE100 (Simplified Technical English) principles:
+
+1. Write short sentences (max 15-20 words).
+2. Eliminate filler words, conversational introductory fluff, and hedging ("it is important to note").
+3. Use active voice and simple present tense.
+4. Use precise, standard technical vocabulary without unnecessary jargon.
+5. Provide the direct answer first.
+
+Also:
+
+- Use bullets to organize long explanations.
+- Add ASCII diagrams when they clarify structure, flow, or relationships.
+
 <!-- rules -->
 Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read the file when relevant:
 
-- `~/.agents/rules/commit.md` — commit workflow (use the `commit` skill, conventional commits)
 - `~/.agents/rules/context7.md` — use Context7 MCP for library docs
-- `~/.agents/rules/human-writing.md` — natural prose, no AI-generated patterns
-- `~/.agents/rules/spec-implement-flow.md` — `/specification` and `/implementing` share one branch and one draft PR
-
-- If you need to clarify something, ask for permission or needs my attention because you're working on a important thing, use the `/notification` skill.
+- `~/.agents/rules/notification.md` — when to notify the user via `/notification`
 <!-- rules -->
 
 @RTK.md
