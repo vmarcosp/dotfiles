@@ -1,0 +1,364 @@
+#!/usr/bin/env bash
+#
+# pr-artifact - Create a worktree + tmux window and generate a /richview HTML artifact for a PR
+# Usage: pr-artifact [--claude] <branch-name>
+#
+
+set -euo pipefail
+
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+USE_CLAUDE=false
+DETACHED=true
+BRANCH_NAME=""
+WORKTREE_PATH=""
+RUNNER=""
+
+usage() {
+    cat <<'EOF'
+Usage: pr-artifact [--claude] [--focus] <branch-name>
+
+Create a git worktree (if needed), open a tmux window, and run an AI agent
+in headless mode to generate a /richview HTML artifact for the branch's pull request.
+
+Options:
+  --claude  Use Claude Code instead of Cursor Agent (claude-sonnet-5-medium)
+  --focus   Switch to the pr-artifact tmux window after creating it
+  -h, --help  Show this help
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --claude)
+            USE_CLAUDE=true
+            shift
+            ;;
+        --focus)
+            DETACHED=false
+            shift
+            ;;
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -*)
+            echo -e "${RED}Error: unknown option $1${NC}" >&2
+            usage >&2
+            exit 1
+            ;;
+        *)
+            if [[ -n "$BRANCH_NAME" ]]; then
+                echo -e "${RED}Error: unexpected argument $1${NC}" >&2
+                usage >&2
+                exit 1
+            fi
+            BRANCH_NAME="$1"
+            shift
+            ;;
+    esac
+done
+
+if [[ -z "$BRANCH_NAME" ]]; then
+    echo -e "${RED}Error: branch name required${NC}" >&2
+    usage >&2
+    exit 1
+fi
+
+if ! command -v gh &>/dev/null; then
+    echo -e "${RED}Error: gh CLI is required${NC}" >&2
+    exit 1
+fi
+
+if [[ "$USE_CLAUDE" == true ]]; then
+    if ! command -v claude &>/dev/null; then
+        echo -e "${RED}Error: claude CLI is required for --claude${NC}" >&2
+        exit 1
+    fi
+else
+    if ! command -v agent &>/dev/null; then
+        echo -e "${RED}Error: agent (Cursor CLI) is required${NC}" >&2
+        exit 1
+    fi
+fi
+
+get_repo_info() {
+    local repo_root repo_name
+    repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || {
+        echo -e "${RED}Error: Not in a git repository${NC}" >&2
+        exit 1
+    }
+    repo_name=$(basename "$repo_root")
+    echo "$repo_root $repo_name"
+}
+
+get_worktree_path() {
+    local repo_name="$1"
+    local branch_name="$2"
+    local sanitized_branch
+    sanitized_branch=$(echo "$branch_name" | tr '/' '-')
+    echo "$HOME/.worktrees/${repo_name}-wt-${sanitized_branch}"
+}
+
+copy_env_files() {
+    local source_root="$1"
+    local worktree_path="$2"
+    local copied=()
+
+    while IFS= read -r -d '' envfile; do
+        local rel_path="${envfile#$source_root/}"
+        local target="$worktree_path/$rel_path"
+        local target_dir
+        target_dir=$(dirname "$target")
+
+        mkdir -p "$target_dir"
+        cp "$envfile" "$target"
+        copied+=("$rel_path")
+    done < <(find "$source_root" -type f -name ".env*" -print0 2>/dev/null)
+
+    if [[ ${#copied[@]} -gt 0 ]]; then
+        echo -e "${GREEN}Copied .env files:${NC}" >&2
+        printf '  - %s\n' "${copied[@]}" >&2
+    fi
+}
+
+install_dependencies() {
+    local worktree_path="$1"
+    local package_manager=""
+
+    if [[ -f "$worktree_path/pnpm-lock.yaml" ]]; then
+        package_manager="pnpm"
+    elif [[ -f "$worktree_path/package-lock.json" ]]; then
+        package_manager="npm"
+    elif [[ -f "$worktree_path/yarn.lock" ]]; then
+        package_manager="yarn"
+    elif [[ -f "$worktree_path/bun.lockb" ]] || [[ -f "$worktree_path/bun.lock" ]]; then
+        package_manager="bun"
+    fi
+
+    if [[ -n "$package_manager" ]]; then
+        echo -e "${GREEN}Installing dependencies with $package_manager...${NC}" >&2
+        (cd "$worktree_path" && "$package_manager" install) >&2
+    fi
+}
+
+ensure_worktree() {
+    local branch_name="$1"
+    local repo_root repo_name worktree_path git_ref
+
+    read -r repo_root repo_name <<< "$(get_repo_info)"
+    worktree_path=$(get_worktree_path "$repo_name" "$branch_name")
+
+    if [[ -d "$worktree_path" ]]; then
+        echo -e "${YELLOW}Using existing worktree at $worktree_path${NC}" >&2
+        WORKTREE_PATH="$worktree_path"
+        return 0
+    fi
+
+    mkdir -p "$HOME/.worktrees"
+
+    if git show-ref --verify --quiet "refs/heads/$branch_name" || \
+       git show-ref --verify --quiet "refs/remotes/origin/$branch_name"; then
+        git_ref="$branch_name"
+    else
+        git_ref="-b $branch_name"
+    fi
+
+    echo -e "${GREEN}Creating worktree at $worktree_path...${NC}" >&2
+    if ! git worktree add "$worktree_path" $git_ref >/dev/null 2>&1; then
+        if ! git worktree add -b "$branch_name" "$worktree_path" >/dev/null 2>&1; then
+            echo -e "${RED}Failed to create worktree${NC}" >&2
+            exit 1
+        fi
+    fi
+
+    copy_env_files "$repo_root" "$worktree_path"
+    install_dependencies "$worktree_path"
+
+    echo -e "${GREEN}Worktree ready:${NC} $worktree_path" >&2
+    WORKTREE_PATH="$worktree_path"
+}
+
+write_runner() {
+    local worktree_path="$1"
+    local branch_name="$2"
+    local use_claude="$3"
+    local runner="$worktree_path/.pr-artifact-run.sh"
+    local prompt_file="$worktree_path/.pr-artifact-prompt.txt"
+    local sanitized_branch
+    sanitized_branch=$(echo "$branch_name" | tr '/' '-')
+
+    cat > "$prompt_file" <<EOF
+Use the /richview skill to create a rich HTML artifact summarizing the pull request for branch ${branch_name}.
+
+1. Fetch PR context:
+   - gh pr view ${branch_name} --json number,title,body,url,baseRefName,headRefName,files,commits,additions,deletions,author,labels,reviews,statusCheckRollup
+   - If no PR exists, use the repo default branch and summarize the branch diff instead.
+2. Fetch the diff:
+   - gh pr diff ${branch_name}
+   - If no PR exists: git diff origin/\$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)...HEAD
+3. Read the richview skill (SKILL.md) before writing any HTML.
+4. Use the code-review archetype. Cover summary, risk map, key changes, and test plan.
+5. Write the artifact to .artifacts/html/pr-${sanitized_branch}-\$(date +%Y%m%d-%H%M).html
+6. Copy to-html.css and to-html.js next to the artifact per the skill.
+7. Run open on the artifact when done.
+8. When finished, run: notification "PR Artifact" "Artifact ready for ${branch_name}" --subtitle "<artifact-path>"
+   On failure, run: notification "PR Artifact" "Failed for ${branch_name}" --tone alert
+EOF
+
+    if [[ "$use_claude" == true ]]; then
+        cat > "$runner" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORKTREE="$(cd "$(dirname "$0")" && pwd)"
+PROMPT_FILE="$WORKTREE/.pr-artifact-prompt.txt"
+BRANCH="$(basename "$WORKTREE" | sed 's/.*-wt-//')"
+
+notify() {
+    if command -v notification &>/dev/null; then
+        notification "$@"
+    fi
+}
+
+cd "$WORKTREE"
+
+if claude -p \
+    --dangerously-skip-permissions \
+    --model claude-sonnet-5-medium \
+    "$(cat "$PROMPT_FILE")"; then
+    notify "PR Artifact" "Artifact ready for $BRANCH"
+else
+    notify "PR Artifact" "Failed for $BRANCH" --tone alert
+    exit 1
+fi
+EOF
+    else
+        cat > "$runner" <<'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+
+WORKTREE="$(cd "$(dirname "$0")" && pwd)"
+PROMPT_FILE="$WORKTREE/.pr-artifact-prompt.txt"
+BRANCH="$(basename "$WORKTREE" | sed 's/.*-wt-//')"
+
+notify() {
+    if command -v notification &>/dev/null; then
+        notification "$@"
+    fi
+}
+
+cd "$WORKTREE"
+
+if agent -p \
+    --force \
+    --trust \
+    --workspace "$WORKTREE" \
+    --model composer-2.5 \
+    "$(cat "$PROMPT_FILE")"; then
+    notify "PR Artifact" "Artifact ready for $BRANCH"
+else
+    notify "PR Artifact" "Failed for $BRANCH" --tone alert
+    exit 1
+fi
+EOF
+    fi
+
+    chmod +x "$runner"
+    RUNNER="$runner"
+}
+
+in_tmux() {
+    [[ -n "${TMUX:-}" ]] && tmux display-message -p '#S' &>/dev/null
+}
+
+pick_tmux_session() {
+    if in_tmux; then
+        tmux display-message -p '#S'
+        return 0
+    fi
+
+    tmux list-sessions -F '#{session_last_attached} #{session_name}' 2>/dev/null \
+        | sort -t' ' -k1 -rn \
+        | head -1 \
+        | awk '{print $2}'
+}
+
+launch_tmux() {
+    local window_name="$1"
+    local worktree_path="$2"
+    local runner="$3"
+    local sanitized_name window_label session_name window_target
+    sanitized_name=$(echo "$window_name" | tr '/' '-')
+    window_label="pr-$sanitized_name"
+
+    if ! command -v tmux &>/dev/null; then
+        echo -e "${YELLOW}tmux not available; running in background${NC}"
+        nohup "$runner" >"$worktree_path/.pr-artifact.log" 2>&1 &
+        echo -e "${GREEN}Log:${NC} $worktree_path/.pr-artifact.log"
+        return 0
+    fi
+
+    session_name=$(pick_tmux_session)
+    if [[ -z "$session_name" ]]; then
+        session_name="pr-artifact-$sanitized_name"
+        tmux new-session -d -s "$session_name" -c "$worktree_path" "$runner"
+        echo -e "${GREEN}Started in tmux session:${NC} $session_name"
+        echo "  Attach:  tmux attach -t \"$session_name\""
+        return 0
+    fi
+
+    window_target="${session_name}:=${window_label}"
+
+    if tmux list-windows -t "$session_name" -F '#{window_name}' 2>/dev/null | grep -Fqx "$window_label"; then
+        echo -e "${YELLOW}Reusing tmux window:${NC} $window_label" >&2
+        tmux respawn-window -k -t "$window_target" -c "$worktree_path" "$runner"
+    elif [[ "$DETACHED" == true ]]; then
+        tmux new-window -t "$session_name" -d -n "$window_label" -c "$worktree_path" "$runner"
+    else
+        tmux new-window -t "$session_name" -n "$window_label" -c "$worktree_path" "$runner"
+    fi
+
+    tmux set-window-option -t "$window_target" remain-on-exit on
+
+    if [[ "$DETACHED" == true ]]; then
+        echo -e "${GREEN}Tmux window running (background):${NC} $window_label"
+        echo "  Session: $session_name"
+        echo "  Switch:  tmux select-window -t \"$window_label\""
+        tmux display-message -t "$session_name" "pr-artifact running in window: $window_label"
+    else
+        if in_tmux; then
+            tmux select-window -t "$window_target"
+        fi
+        echo -e "${GREEN}Switched to tmux window:${NC} $window_label"
+        echo "  Session: $session_name"
+        if ! in_tmux; then
+            echo "  Attach:  tmux attach -t \"$session_name\""
+        fi
+    fi
+}
+
+read -r _repo_root _repo_name <<< "$(get_repo_info)"
+ensure_worktree "$BRANCH_NAME"
+write_runner "$WORKTREE_PATH" "$BRANCH_NAME" "$USE_CLAUDE"
+
+if [[ ! -x "$RUNNER" ]]; then
+    echo -e "${RED}Error: failed to create runner at $RUNNER${NC}" >&2
+    exit 1
+fi
+
+AGENT_NAME="Cursor Agent (composer-2.5)"
+if [[ "$USE_CLAUDE" == true ]]; then
+    AGENT_NAME="Claude Code (claude-sonnet-5-medium)"
+fi
+
+echo ""
+echo -e "${GREEN}Launching $AGENT_NAME to generate /richview artifact${NC}"
+echo "  Branch:   $BRANCH_NAME"
+echo "  Worktree: $WORKTREE_PATH"
+echo "  Runner:   $RUNNER"
+
+launch_tmux "$BRANCH_NAME" "$WORKTREE_PATH" "$RUNNER"
