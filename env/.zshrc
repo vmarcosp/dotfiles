@@ -105,6 +105,20 @@ export PATH="$HOME/.local/bin:$HOME/bin:$HOME/projects/dotfiles/bin:$PATH"
 # Shopify Hydrogen alias to local projects
 alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
 
+# Cursor agent — work (cursor) and personal (cursorp) via ~/env-vars.sh
+cursor() {
+  : "${CURSOR_API_KEY:?Set CURSOR_API_KEY in ~/env-vars.sh}"
+  CURSOR_CONFIG_DIR="${CURSOR_CONFIG_DIR:-$HOME/.cursor-cli/work}" \
+    command cursor agent "$@"
+}
+
+cursorp() {
+  : "${CURSORP_API_KEY:?Set CURSORP_API_KEY in ~/env-vars.sh}"
+  CURSOR_API_KEY="$CURSORP_API_KEY" \
+  CURSOR_CONFIG_DIR="${CURSOR_CONFIG_DIR:-$HOME/.cursor-cli/personal}" \
+    command cursor agent "$@"
+}
+
 # opencode
 export PATH=/Users/marcosoliveira/.opencode/bin:$PATH
 
