@@ -148,6 +148,7 @@ ln -sfn "$DOTFILES/bin/awake" ~/bin/awake
 ln -sfn "$DOTFILES/bin/gh-token-audit" ~/bin/gh-token-audit
 ln -sfn "$DOTFILES/bin/worktree" ~/bin/worktree
 ln -sfn "$DOTFILES/bin/pr-artifact" ~/bin/pr-artifact
+ln -sfn "$DOTFILES/bin/vps-tunnel" ~/bin/vps-tunnel
 
 # -- nvm + node ------------------------------
 log "Installing nvm + node"

@@ -1,18 +1,17 @@
 #!/usr/bin/env bash
 #
-# vps-tunnel - SSH SOCKS proxy to reach VPS localhost from your Mac (Mac only)
-# Usage: vps-tunnel [start|stop|status|open] [url]
+# vps-tunnel - SSH port forward to VPS localhost (Mac ↔ VPS)
+# Usage: vps-tunnel <port> | vps-tunnel stop <port> | vps-tunnel status
 #
 
 set -euo pipefail
 
 HOST="${VPS_TUNNEL_HOST:-vps}"
-SOCKS_PORT="${VPS_TUNNEL_PORT:-1080}"
-PID_FILE="${VPS_TUNNEL_PID_FILE:-${XDG_RUNTIME_DIR:-/tmp}/vps-tunnel-${SOCKS_PORT}.pid}"
+TIMEOUT="${VPS_TUNNEL_TIMEOUT:-7200}" # seconds; 0 = no limit
+PID_DIR="${VPS_TUNNEL_PID_DIR:-${XDG_RUNTIME_DIR:-/tmp}}"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
 CYAN='\033[0;36m'
 DIM='\033[2m'
 RESET='\033[0m'
@@ -30,174 +29,202 @@ success() {
   printf '%b✓ %s%b\n' "$GREEN" "$*" "$RESET"
 }
 
-require_macos() {
-  [[ "$(uname -s)" == "Darwin" ]] || die "vps-tunnel runs on macOS only (SSH client side)."
+pid_file() {
+  printf '%s/vps-tunnel-%s.pid\n' "$PID_DIR" "$1"
 }
 
 require_ssh() {
   command -v ssh >/dev/null || die "ssh not found."
 }
 
-tunnel_running() {
-  [[ -f "$PID_FILE" ]] || return 1
+valid_port() {
+  [[ "$1" =~ ^[0-9]+$ ]] && (( "$1" >= 1 && "$1" <= 65535 ))
+}
+
+read_pid() {
+  local file
+  file="$(pid_file "$1")"
+  [[ -f "$file" ]] || return 1
   local pid
-  pid="$(cat "$PID_FILE" 2>/dev/null)" || return 1
+  pid="$(cat "$file" 2>/dev/null)" || return 1
   [[ "$pid" =~ ^[0-9]+$ ]] || return 1
+  printf '%s' "$pid"
+}
+
+forward_running() {
+  local port="$1" pid
+  pid="$(read_pid "$port" 2>/dev/null || true)"
+  [[ -n "$pid" ]] || return 1
   kill -0 "$pid" 2>/dev/null
 }
 
-proxy_instructions() {
-  cat <<EOF
-
-${DIM}Browser proxy (Firefox):${RESET}
-  Settings → Network → Settings → Manual proxy
-  SOCKS Host: 127.0.0.1  Port: ${SOCKS_PORT}  SOCKS v5
-  ✓ Proxy DNS when using SOCKS v5
-
-${DIM}Safari (system proxy):${RESET}
-  System Settings → Network → Wi‑Fi → Details → Proxies → SOCKS Proxy
-  127.0.0.1:${SOCKS_PORT}
-
-${DIM}Then open VPS localhost in the browser, e.g.:${RESET}
-  http://localhost:8765
-
-${DIM}Terminal:${RESET}
-  curl --socks5-hostname 127.0.0.1:${SOCKS_PORT} http://localhost:8765/api/hello
-
-EOF
+listener_pid() {
+  lsof -ti "tcp:$1" -sTCP:LISTEN 2>/dev/null | head -1
 }
 
 usage() {
   cat <<EOF
-vps-tunnel — SOCKS proxy to VPS localhost (Mac ↔ ${HOST})
+vps-tunnel — forward localhost:<port> to VPS localhost:<port> via SSH
 
 Usage:
-  vps-tunnel              start tunnel (foreground)
-  vps-tunnel start        start tunnel in background
-  vps-tunnel stop         stop background tunnel
-  vps-tunnel status       show tunnel state
-  vps-tunnel open [url]   start (if needed) and open url in browser
+  vps-tunnel <port>        start forward (Ctrl+C to stop, auto-stop after 2h)
+  vps-tunnel stop <port>   stop forward on port
+  vps-tunnel status        list active forwards
+
+Examples:
+  vps-tunnel 8765
+  open http://localhost:8765
 
 Environment:
-  VPS_TUNNEL_HOST   SSH host (default: vps)
-  VPS_TUNNEL_PORT   local SOCKS port (default: 1080)
+  VPS_TUNNEL_HOST      SSH host (default: vps)
+  VPS_TUNNEL_TIMEOUT   auto-stop seconds (default: 7200; 0 = no limit)
 
 EOF
 }
 
-start_foreground() {
-  tunnel_running && die "Tunnel already running (PID $(cat "$PID_FILE")). Use: vps-tunnel stop"
-
-  info "SOCKS proxy on 127.0.0.1:${SOCKS_PORT} → ${HOST} (Ctrl+C to stop)"
-  proxy_instructions
-  exec ssh -N -D "127.0.0.1:${SOCKS_PORT}" "$HOST"
+format_duration() {
+  local s="$1"
+  if (( s >= 3600 )); then
+    printf '%dh %dm' $(( s / 3600 )) $(( (s % 3600) / 60 ))
+  elif (( s >= 60 )); then
+    printf '%dm' $(( s / 60 ))
+  else
+    printf '%ds' "$s"
+  fi
 }
 
-start_background() {
-  tunnel_running && die "Tunnel already running (PID $(cat "$PID_FILE")). Use: vps-tunnel stop"
+start_forward() {
+  local port="$1"
+  valid_port "$port" || die "Invalid port: $port"
 
-  info "Starting SOCKS tunnel to ${HOST} on 127.0.0.1:${SOCKS_PORT}…"
-  ssh -N -f -D "127.0.0.1:${SOCKS_PORT}" "$HOST"
-
-  local pid
-  pid="$(lsof -ti "tcp:${SOCKS_PORT}" -sTCP:LISTEN 2>/dev/null | head -1)"
-  [[ -n "$pid" ]] || die "Tunnel failed to start."
-  printf '%s\n' "$pid" >"$PID_FILE"
-
-  success "Tunnel running (PID ${pid})"
-  proxy_instructions
-}
-
-stop_tunnel() {
-  if tunnel_running; then
-    kill "$(cat "$PID_FILE")" 2>/dev/null || true
-    rm -f "$PID_FILE"
-    success "Tunnel stopped."
-    return 0
+  if forward_running "$port"; then
+    die "Port $port already forwarded (PID $(read_pid "$port")). Use: vps-tunnel stop $port"
   fi
 
-  rm -f "$PID_FILE"
-  local pid
-  pid="$(lsof -ti "tcp:${SOCKS_PORT}" -sTCP:LISTEN 2>/dev/null | head -1 || true)"
-  if [[ -n "$pid" ]]; then
+  local existing
+  existing="$(listener_pid "$port" || true)"
+  if [[ -n "$existing" ]]; then
+    die "Port $port already in use (PID $existing)."
+  fi
+
+  require_ssh
+
+  local timeout_msg="no limit"
+  if (( TIMEOUT > 0 )); then
+    timeout_msg="$(format_duration "$TIMEOUT")"
+  fi
+
+  info "Forwarding localhost:${port} → ${HOST}:localhost:${port}"
+  info "Open http://localhost:${port} in the browser (Ctrl+C to stop, timeout: ${timeout_msg})"
+
+  file="$(pid_file "$port")"
+  rm -f "$file"
+
+  local ssh_args=(
+    -o ExitOnForwardFailure=yes
+    -L "127.0.0.1:${port}:127.0.0.1:${port}"
+    -N
+    "$HOST"
+  )
+
+  ssh "${ssh_args[@]}" &
+  ssh_pid=$!
+  printf '%s\n' "$ssh_pid" >"$file"
+
+  timer_pid=""
+  if (( TIMEOUT > 0 )); then
+    (
+      sleep "$TIMEOUT"
+      if kill -0 "$ssh_pid" 2>/dev/null; then
+        info "Timeout ($(format_duration "$TIMEOUT")) — stopping forward on port ${port}"
+        kill "$ssh_pid" 2>/dev/null || true
+      fi
+    ) &
+    timer_pid=$!
+  fi
+
+  cleanup() {
+    kill "${ssh_pid:-}" "${timer_pid:-}" 2>/dev/null || true
+    rm -f "${file:-}"
+  }
+  trap cleanup EXIT INT TERM
+
+  wait "$ssh_pid" 2>/dev/null || true
+  info "Forward on port ${port} ended."
+}
+
+stop_forward() {
+  local port="$1"
+  valid_port "$port" || die "Invalid port: $port"
+
+  local file pid stopped=false
+  file="$(pid_file "$port")"
+  pid="$(read_pid "$port" 2>/dev/null || true)"
+
+  if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
     kill "$pid" 2>/dev/null || true
-    success "Stopped listener on port ${SOCKS_PORT} (PID ${pid})."
+    stopped=true
+  fi
+  rm -f "$file"
+
+  local listener
+  listener="$(listener_pid "$port" || true)"
+  if [[ -n "$listener" ]]; then
+    kill "$listener" 2>/dev/null || true
+    stopped=true
+  fi
+
+  if $stopped; then
+    success "Stopped forward on port ${port}."
   else
-    info "No tunnel running on port ${SOCKS_PORT}."
+    info "No forward running on port ${port}."
   fi
 }
 
 show_status() {
-  if tunnel_running; then
-    success "Tunnel active — 127.0.0.1:${SOCKS_PORT} → ${HOST} (PID $(cat "$PID_FILE"))"
-    return 0
-  fi
+  local found=false
 
-  local pid
-  pid="$(lsof -ti "tcp:${SOCKS_PORT}" -sTCP:LISTEN 2>/dev/null | head -1 || true)"
-  if [[ -n "$pid" ]]; then
-    success "Port ${SOCKS_PORT} in use (PID ${pid}) — not tracked by ${PID_FILE}"
-    return 0
-  fi
+  for file in "$PID_DIR"/vps-tunnel-*.pid; do
+    [[ -e "$file" ]] || continue
+    local port="${file##*/vps-tunnel-}"
+    port="${port%.pid}"
+    local pid
+    pid="$(cat "$file" 2>/dev/null || true)"
+    if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
+      success "Port ${port} → ${HOST} (PID ${pid}) — http://localhost:${port}"
+      found=true
+    else
+      rm -f "$file"
+    fi
+  done
 
-  info "No tunnel on 127.0.0.1:${SOCKS_PORT}."
-  return 1
-}
-
-open_url() {
-  local url="${1:-http://localhost:8765}"
-  if ! tunnel_running && [[ -z "$(lsof -ti "tcp:${SOCKS_PORT}" -sTCP:LISTEN 2>/dev/null | head -1 || true)" ]]; then
-    start_background
+  if ! $found; then
+    info "No active forwards."
+    return 1
   fi
-  info "Opening ${url} (browser must use SOCKS 127.0.0.1:${SOCKS_PORT})"
-  open "$url"
 }
 
 main() {
-  local cmd="${1:-start}"
-
-  case "$cmd" in
+  case "${1:-}" in
     -h|--help|help)
       usage
-      exit 0
-      ;;
-    start)
-      require_macos
-      require_ssh
-      if [[ "${2:-}" == "--fg" || "${VPS_TUNNEL_FG:-}" == "1" ]]; then
-        start_foreground
-      else
-        start_background
-      fi
       ;;
     stop)
-      require_macos
-      stop_tunnel
+      [[ $# -eq 2 ]] || die "Usage: vps-tunnel stop <port>"
+      stop_forward "$2"
       ;;
     status)
-      require_macos
       show_status
       ;;
-    open)
-      require_macos
-      open_url "${2:-http://localhost:8765}"
-      ;;
-    --fg)
-      require_macos
-      require_ssh
-      start_foreground
+    '')
+      usage
+      exit 1
       ;;
     *)
-      die "Unknown command: $cmd (try --help)"
+      [[ $# -eq 1 ]] || die "Usage: vps-tunnel <port>"
+      start_forward "$1"
       ;;
   esac
 }
-
-# Bare `vps-tunnel` → foreground (easy to stop with Ctrl+C)
-if [[ $# -eq 0 ]]; then
-  require_macos
-  require_ssh
-  start_foreground
-fi
 
 main "$@"
