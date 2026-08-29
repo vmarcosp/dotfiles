@@ -1,0 +1,12 @@
+adjust-cell-height = 32%
+background-opacity = 1
+background-blur = 25
+font-size = 16
+window-inherit-font-size = false
+macos-titlebar-style = hidden
+window-padding-x = 32
+window-padding-y = 32
+background-opacity-cells = false
+
+config-file = yugen.conf
+palette = 2=#000000

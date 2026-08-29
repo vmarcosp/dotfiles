@@ -16,6 +16,7 @@ This is the dotfiles repo for Marcos Oliveira's personal macOS dev environment. 
 | `env/` | `.zshrc` and `.gitconfig` |
 | `nvim/` | Neovim config (lazy.nvim) |
 | `kitty/` | Kitty terminal config |
+| `ghostty/` | Ghostty terminal config |
 | `tmux/` | Minimal `.tmux.conf` |
 | `better-tmux/` | TypeScript/React tmux status bar |
 | `bin/` | `ai-notify` and `worktree` scripts |

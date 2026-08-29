@@ -81,9 +81,16 @@ ln -sfn "$DOTFILES/kitty/yugen.conf" ~/.config/kitty/yugen.conf
 
 # -- ghostty ---------------------------------
 log "Linking ghostty config"
-mkdir -p ~/.config/ghostty
-ln -sfn "$DOTFILES/ghostty/config" ~/.config/ghostty/config
-ln -sfn "$DOTFILES/ghostty/yugen.conf" ~/.config/ghostty/yugen.conf
+if [[ "$(uname -s)" == "Darwin" ]]; then
+  GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
+  mkdir -p "$GHOSTTY_DIR"
+  ln -sfn "$DOTFILES/ghostty/config" "$GHOSTTY_DIR/config"
+  ln -sfn "$DOTFILES/ghostty/yugen.conf" "$GHOSTTY_DIR/yugen.conf"
+else
+  mkdir -p ~/.config/ghostty
+  ln -sfn "$DOTFILES/ghostty/config" ~/.config/ghostty/config
+  ln -sfn "$DOTFILES/ghostty/yugen.conf" ~/.config/ghostty/yugen.conf
+fi
 
 # -- neovim ----------------------------------
 log "Linking neovim config"

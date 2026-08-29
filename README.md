@@ -56,6 +56,7 @@ The script is idempotent. It installs Homebrew (formulae and casks), Nerd Fonts,
 | [`env/`](env/) | `.zshrc` (oh-my-zsh, nvm, aliases) and `.gitconfig` | `~/.zshrc`, `~/.gitconfig` |
 | [`nvim/`](nvim/) | Neovim config, lazy.nvim | `~/.config/nvim` |
 | [`kitty/`](kitty/) | Kitty terminal + `yugen` theme | `~/.config/kitty/` |
+| [`ghostty/`](ghostty/) | Ghostty terminal + `yugen` theme | `~/Library/Application Support/com.mitchellh.ghostty/` |
 | [`tmux/`](tmux/) | Minimal tmux config | `~/.tmux.conf` |
 | [`better-tmux/`](better-tmux/) | TypeScript/React tmux status bar | `~/.config/better-tmux` |
 | [`bin/`](bin/) | Utility scripts (`notification`, `worktree`) | `~/bin/` |

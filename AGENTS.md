@@ -13,6 +13,7 @@ dotfiles/
 ├── env/             # .zshrc and .gitconfig
 ├── nvim/            # Neovim config (lazy.nvim)
 ├── kitty/           # Kitty terminal config
+├── ghostty/         # Ghostty terminal config
 ├── tmux/            # Minimal tmux config
 ├── better-tmux/     # TypeScript/React status bar
 ├── bin/             # Utility scripts
@@ -37,6 +38,7 @@ dotfiles/
 | `env/.zshrc` | `~/.zshrc` |
 | `nvim/` | `~/.config/nvim` |
 | `kitty/kitty.conf`, `kitty/yugen.conf` | `~/.config/kitty/` |
+| `ghostty/config`, `ghostty/yugen.conf` | `~/Library/Application Support/com.mitchellh.ghostty/` (macOS) |
 | `tmux/.tmux.conf` | `~/.tmux.conf` |
 | `better-tmux/` | `~/.config/better-tmux` |
 | `agents/` | `~/.agents` |
