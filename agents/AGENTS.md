@@ -50,15 +50,4 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 - `~/.agents/rules/notification.md` — when to notify the user via `/notification`
 <!-- rules -->
 
-<!-- local -->
-## Machine-local overrides
-
-`~/.agents/AGENTS.local.md` holds per-machine instructions. It is not versioned and differs between hosts (Mac, VPS, etc.). When present, apply it as if inlined here. It overrides shared instructions when they conflict.
-
-- **Claude Code:** `@AGENTS.local.md` below inlines this file into global `CLAUDE.md`.
-- **Cursor:** does not read `agents/AGENTS.md` globally. Run `sync-agents-local` (or `./install.sh`) after editing `AGENTS.local.md` to sync it into `~/.cursor/rules/machine-local.mdc` with `alwaysApply: true`.
-
-@AGENTS.local.md
-<!-- local -->
-
 @RTK.md

@@ -128,7 +128,6 @@ rm -rf ~/.cursor/skills
 ln -sfn "$DOTFILES/agents/skills" ~/.cursor/skills
 ln -sfn "$DOTFILES/cursor/hooks.json" ~/.cursor/hooks.json
 ln -sfn "$DOTFILES/cursor/mcp.json" ~/.cursor/mcp.json
-"$DOTFILES/bin/sync-agents-local"
 
 # -- opencode -----------------------------------
 log "Linking opencode plugins"
@@ -142,7 +141,6 @@ ln -sfn "$DOTFILES/bin/awake" ~/bin/awake
 ln -sfn "$DOTFILES/bin/gh-token-audit" ~/bin/gh-token-audit
 ln -sfn "$DOTFILES/bin/worktree" ~/bin/worktree
 ln -sfn "$DOTFILES/bin/pr-artifact" ~/bin/pr-artifact
-ln -sfn "$DOTFILES/bin/sync-agents-local" ~/bin/sync-agents-local
 
 # -- nvm + node ------------------------------
 log "Installing nvm + node"
