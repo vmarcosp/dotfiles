@@ -4,7 +4,7 @@ This is the dotfiles repo for Marcos Oliveira's personal macOS dev environment. 
 
 ## Key facts
 
-- `agents/` contains shared AI tooling (rules, skills, commands) symlinked to `~/.agents` and `~/.claude/`
+- `agents/` contains shared AI tooling (rules, skills, commands) symlinked to `~/.agents`, `~/.claude/`, and `~/.cursor/skills`
 - `.agents/` (this folder) is scoped to this project only — rules and skills here apply only when Claude works inside the dotfiles repo
 - `install.sh` is the source of truth for all symlinks — edit it to add or change what gets linked
 - The repo uses `CLAUDE.md -> agents/AGENTS.md` at the root as the global CLAUDE.md for all projects

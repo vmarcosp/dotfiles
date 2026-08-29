@@ -42,7 +42,10 @@ dotfiles/
 | `agents/` | `~/.agents` |
 | `agents/AGENTS.md` | `~/.claude/CLAUDE.md` |
 | `claude/settings.json` | `~/.claude/settings.json` |
-| `agents/rules`, `agents/skills` | `~/.claude/rules`, `~/.claude/skills` |
+| `agents/agents`, `agents/skills`, `agents/commands`, `agents/rules` | `~/.claude/agents`, `~/.claude/skills`, `~/.claude/commands`, `~/.claude/rules` |
+| `claude/workflows` | `~/.claude/workflows` |
+| `agents/skills` | `~/.cursor/skills` |
+| `cursor/hooks.json`, `cursor/mcp.json` | `~/.cursor/hooks.json`, `~/.cursor/mcp.json` |
 | `bin/*` | `~/bin/` |
 | `opencode/plugins` | `~/.opencode/plugins` |
 

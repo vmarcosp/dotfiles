@@ -1,7 +1,6 @@
 import { Box, BetterTmuxConfig, WindowConfig, Bind } from 'better-tmux'
 
 const colors = {
-  bg0: '#000000',
   fg0: '#fafafa',
   fg1: '#878787',
   fg2: '#3D3D3D',
@@ -61,8 +60,8 @@ const bindings = [
 export default {
   bindings,
   options: {
-    defaultTerminal: "xterm-256color",
-    terminalOverrides: ",xterm-256color:Tc",
+    defaultTerminal: "tmux-256color",
+    terminalOverrides: ",xterm-ghostty:RGB",
     escapeTime: 0,
     baseIndex: 1,
     paneBaseIndex: 1,
@@ -76,7 +75,7 @@ export default {
     mouse: "on",
   },
   status: {
-    bg: colors.bg0,
+    bg: 'default',
     fg: colors.fg0,
     position: "bottom"
   },

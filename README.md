@@ -62,7 +62,7 @@ The script is idempotent. It installs Homebrew (formulae and casks), Nerd Fonts,
 | [`agents/`](agents/) | AI skills and rules, shared across tools | `~/.agents`, `~/.claude/*`, `~/.cursor/skills` |
 | [`claude/`](claude/) | Global Claude Code settings | `~/.claude/settings.json` |
 | [`opencode/`](opencode/) | Opencode config, plugins, themes | `~/.opencode/plugins` |
-| [`cursor/`](cursor/) | Cursor hooks and MCP servers | — |
+| [`cursor/`](cursor/) | Cursor hooks and MCP servers | `~/.cursor/hooks.json`, `~/.cursor/mcp.json` |
 | [`wallpapers/`](wallpapers/) | Desktop wallpapers | — |
 
 `install.sh` is the source of truth for the full symlink map.

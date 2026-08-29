@@ -79,6 +79,12 @@ mkdir -p ~/.config/kitty
 ln -sfn "$DOTFILES/kitty/kitty.conf" ~/.config/kitty/kitty.conf
 ln -sfn "$DOTFILES/kitty/yugen.conf" ~/.config/kitty/yugen.conf
 
+# -- ghostty ---------------------------------
+log "Linking ghostty config"
+mkdir -p ~/.config/ghostty
+ln -sfn "$DOTFILES/ghostty/config" ~/.config/ghostty/config
+ln -sfn "$DOTFILES/ghostty/yugen.conf" ~/.config/ghostty/yugen.conf
+
 # -- neovim ----------------------------------
 log "Linking neovim config"
 mkdir -p ~/.config
@@ -115,6 +121,15 @@ ln -sfn "$DOTFILES/agents/commands" ~/.claude/commands
 ln -sfn "$DOTFILES/agents/rules" ~/.claude/rules
 ln -sfn "$DOTFILES/claude/workflows" ~/.claude/workflows
 
+# -- cursor ----------------------------------
+log "Linking Cursor config"
+mkdir -p ~/.cursor
+rm -rf ~/.cursor/skills
+ln -sfn "$DOTFILES/agents/skills" ~/.cursor/skills
+ln -sfn "$DOTFILES/cursor/hooks.json" ~/.cursor/hooks.json
+ln -sfn "$DOTFILES/cursor/mcp.json" ~/.cursor/mcp.json
+"$DOTFILES/bin/sync-agents-local"
+
 # -- opencode -----------------------------------
 log "Linking opencode plugins"
 mkdir -p ~/.opencode
@@ -127,6 +142,7 @@ ln -sfn "$DOTFILES/bin/awake" ~/bin/awake
 ln -sfn "$DOTFILES/bin/gh-token-audit" ~/bin/gh-token-audit
 ln -sfn "$DOTFILES/bin/worktree" ~/bin/worktree
 ln -sfn "$DOTFILES/bin/pr-artifact" ~/bin/pr-artifact
+ln -sfn "$DOTFILES/bin/sync-agents-local" ~/bin/sync-agents-local
 
 # -- nvm + node ------------------------------
 log "Installing nvm + node"
