@@ -137,9 +137,13 @@ ln -sfn "$DOTFILES/cursor/hooks.json" ~/.cursor/hooks.json
 ln -sfn "$DOTFILES/cursor/mcp.json" ~/.cursor/mcp.json
 
 # -- opencode -----------------------------------
-log "Linking opencode plugins"
-mkdir -p ~/.opencode
+log "Linking opencode config"
+mkdir -p ~/.opencode ~/.config/opencode
 ln -sfn "$DOTFILES/opencode/plugins" ~/.opencode/plugins
+ln -sfn "$DOTFILES/opencode/tui.jsonc" ~/.config/opencode/tui.jsonc
+ln -sfn "$DOTFILES/opencode/tui.jsonc" ~/.config/opencode/tui.json
+ln -sfn "$DOTFILES/opencode/themes" ~/.config/opencode/themes
+ln -sfn "$DOTFILES/opencode/opencode.json" ~/.config/opencode/opencode.json
 
 # -- global scripts (bin) --------------------
 log "Linking bin scripts"

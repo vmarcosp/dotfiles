@@ -1,5 +1,22 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "small_model": "ollama/qwen2.5-coder:7b",
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:11434/v1",
+        "timeout": 600000
+      },
+      "models": {
+        "qwen2.5-coder:7b": {
+          "name": "Qwen2.5 Coder 7B",
+          "tools": true
+        }
+      }
+    }
+  },
   "mcp": {
     "playwright": {
       "type": "local",

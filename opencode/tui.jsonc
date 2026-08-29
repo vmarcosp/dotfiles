@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/tui.json",
+
+  // Themes to try — change this value or pick one with /theme in the TUI:
+  //
+  // Built-in:
+  //   "system"         inherit terminal background (#000000 with yugen)
+  //   "matrix"         built-in green-on-black
+  //   "opencode"       default palette (overridden by themes/opencode.json → pure black)
+  //
+  // Custom (opencode/themes/):
+  //   "yugen-terminal" transparent backgrounds — terminal shows through
+  //   "yugen-black"    forced #000000 on all surfaces
+
+  "theme": "system"
+}
