@@ -85,7 +85,7 @@ alias vim="nvim"
 alias avante='NVIM_AVANTE_MODE=1 nvim -c "lua vim.defer_fn(function() require(\"avante.api\").zen_mode() end, 100)"'
 
 alias claudio="claude --model fable"
-alias claude="claude --model sonnet"
+# alias claude="claude --model sonnet"  # disabled temporarily while debugging yokai hang
 alias claudin="claude --model haiku"
 
 # pnpm

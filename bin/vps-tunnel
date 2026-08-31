@@ -62,6 +62,29 @@ listener_pid() {
   lsof -ti "tcp:$1" -sTCP:LISTEN 2>/dev/null | head -1
 }
 
+# Node/Astro bind localhost to ::1 only. Probe so -L hits the live family.
+detect_remote_bind() {
+  local port="$1" listeners
+  listeners="$(ssh -o BatchMode=yes -o ConnectTimeout=8 "$HOST" "ss -lntH \"sport = :${port}\" 2>/dev/null || true")" || true
+
+  if [[ "$listeners" == *"127.0.0.1:${port}"* || "$listeners" == *"0.0.0.0:${port}"* || "$listeners" == *"*:${port}"* ]]; then
+    printf '127.0.0.1'
+  elif [[ "$listeners" == *"[::1]:${port}"* || "$listeners" == *"[::]:${port}"* ]]; then
+    printf '::1'
+  else
+    printf '127.0.0.1'
+  fi
+}
+
+forward_arg() {
+  local local_bind="$1" remote="$2" port="$3"
+  if [[ "$remote" == *:* ]]; then
+    printf '%s:%s:[%s]:%s' "$local_bind" "$port" "$remote" "$port"
+  else
+    printf '%s:%s:%s:%s' "$local_bind" "$port" "$remote" "$port"
+  fi
+}
+
 usage() {
   cat <<EOF
 vps-tunnel — forward localhost:<port> to VPS localhost:<port> via SSH
@@ -109,12 +132,13 @@ start_forward() {
 
   require_ssh
 
-  local timeout_msg="no limit"
+  local remote_bind timeout_msg="no limit"
+  remote_bind="$(detect_remote_bind "$port")"
   if (( TIMEOUT > 0 )); then
     timeout_msg="$(format_duration "$TIMEOUT")"
   fi
 
-  info "Forwarding localhost:${port} → ${HOST}:localhost:${port}"
+  info "Forwarding localhost:${port} → ${HOST}:${remote_bind}:${port}"
   info "Open http://localhost:${port} in the browser (Ctrl+C to stop, timeout: ${timeout_msg})"
 
   file="$(pid_file "$port")"
@@ -122,7 +146,8 @@ start_forward() {
 
   local ssh_args=(
     -o ExitOnForwardFailure=yes
-    -L "127.0.0.1:${port}:127.0.0.1:${port}"
+    -L "$(forward_arg "127.0.0.1" "$remote_bind" "$port")"
+    -L "$(forward_arg "[::1]" "$remote_bind" "$port")"
     -N
     "$HOST"
   )
