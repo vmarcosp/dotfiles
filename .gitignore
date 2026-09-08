@@ -1,6 +1,7 @@
 test/
 rename.sh
-kitty/kitty-local.conf
-agents/AGENTS.local.md
+macos/kitty/kitty-local.conf
+shared/agents/AGENTS.local.md
 .DS_Store
 .claude/settings.local.json
+*.bak.dotfiles.*

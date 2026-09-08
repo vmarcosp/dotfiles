@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+#
+# notification — Omarchy desktop toast
+# Usage: notification <title> <message> [--tone info|alert] [--subtitle <text>] [--group <id>] [--remove]
+#
+set -euo pipefail
+
+TITLE=""
+MESSAGE=""
+TONE="info"
+SUBTITLE=""
+REMOVE=false
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --tone) TONE="$2"; shift 2 ;;
+    --subtitle) SUBTITLE="$2"; shift 2 ;;
+    --group) shift 2 ;;
+    --remove) REMOVE=true; shift ;;
+    --help|-h)
+      echo "Usage: notification <title> <message> [--tone info|alert] [--subtitle <text>]"
+      exit 0
+      ;;
+    *)
+      if [[ -z "$TITLE" ]]; then TITLE="$1"
+      elif [[ -z "$MESSAGE" ]]; then MESSAGE="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+if [[ "$REMOVE" == true ]]; then
+  exit 0
+fi
+
+if [[ -z "$TITLE" ]]; then
+  echo "Error: title is required" >&2
+  exit 1
+fi
+
+BODY="$MESSAGE"
+[[ -n "$SUBTITLE" ]] && BODY="${SUBTITLE}${BODY:+ — $BODY}"
+
+URGENCY=low
+[[ "$TONE" == alert ]] && URGENCY=critical
+
+if command -v omarchy-notification-send >/dev/null; then
+  omarchy-notification-send -u "$URGENCY" "$TITLE" "${BODY:- }"
+elif command -v notify-send >/dev/null; then
+  notify-send -u "$URGENCY" "$TITLE" "${BODY:-}"
+else
+  echo "🔔 $TITLE${BODY:+: $BODY}"
+fi

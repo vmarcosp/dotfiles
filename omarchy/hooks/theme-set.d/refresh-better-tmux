@@ -1,0 +1,17 @@
+#!/bin/bash
+# Re-apply better-tmux after `omarchy theme set` so the bar tracks colors.toml.
+set -euo pipefail
+
+if ! tmux list-sessions >/dev/null 2>&1; then
+  exit 0
+fi
+
+cli="${HOME}/.local/bin/better-tmux"
+file="${HOME}/.config/better-tmux/index.tsx"
+if [[ -x $cli && -f $file ]]; then
+  "$cli" --file "$file"
+fi
+
+# Keep panes transparent; omarchy-theme-set-tmux otherwise sets a solid window-style.
+tmux set-option -g window-style default
+tmux set-option -g window-active-style default

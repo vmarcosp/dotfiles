@@ -1,34 +1,13 @@
-# Dotfiles Project
+# Dotfiles repo
 
-This is the dotfiles repo for Marcos Oliveira's personal macOS dev environment. Everything here is symlinked to its system location — editing a file is the same as editing it in place.
+This repository is **macOS and Omarchy**. Detect the host (`uname`, `/usr/share/omarchy`) before you edit. Layout and symlink map: root `AGENTS.md`.
 
-## Key facts
+- `shared/` — both machines
+- `macos/` — Darwin only (Kitty, yugen Ghostty)
+- `omarchy/` — Hyprland, Omarchy shell.json, Ghostty with Omarchy theme include
+- `install.sh` — ongoing bootstrap on both hosts
+- `mac-compliance.sh` — one-shot Mac rewrite of pre-`shared/` links
+- `.agents/` — this folder; only while working in this repo
+- `shared/agents/` — global skills/rules linked to `~/.agents`, `~/.claude`, `~/.cursor/skills`
 
-- `agents/` contains shared AI tooling (rules, skills, commands) symlinked to `~/.agents`, `~/.claude/`, and `~/.cursor/skills`
-- `.agents/` (this folder) is scoped to this project only — rules and skills here apply only when Claude works inside the dotfiles repo
-- `install.sh` is the source of truth for all symlinks — edit it to add or change what gets linked
-- The repo uses `CLAUDE.md -> agents/AGENTS.md` at the root as the global CLAUDE.md for all projects
-
-## Repo layout quick reference
-
-| Folder | Purpose |
-|--------|---------|
-| `env/` | `.zshrc` and `.gitconfig` |
-| `nvim/` | Neovim config (lazy.nvim) |
-| `kitty/` | Kitty terminal config |
-| `ghostty/` | Ghostty terminal config |
-| `tmux/` | Minimal `.tmux.conf` |
-| `better-tmux/` | TypeScript/React tmux status bar |
-| `bin/` | `ai-notify` and `worktree` scripts |
-| `agents/` | Shared AI tooling — symlinked globally |
-| `.agents/` | Dotfiles-specific Claude config (this folder) |
-| `.claude/` | Claude Code project settings |
-| `claude/` | Global Claude Code settings (symlinked to `~/.claude/settings.json`) |
-
-## Common tasks
-
-- Add a global AI rule: create a file in `agents/rules/`
-- Add a global skill: create a folder in `agents/skills/`
-- Add a dotfiles-specific rule or skill: add to `.agents/`
-- Change tmux status bar: edit `better-tmux/index.tsx`
-- Add a new symlink: edit `install.sh`, then re-run it
+Never edit `/usr/share/omarchy/`. Never point Omarchy Ghostty at `yugen.conf`.

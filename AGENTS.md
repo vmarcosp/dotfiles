@@ -1,69 +1,81 @@
 # Dotfiles
 
-Personal macOS development environment for Marcos Oliveira. Everything is symlinked to its system location by `install.sh`; editing a file here edits it in place.
+Personal development environment for macOS and Omarchy (Arch + Hyprland). One repo, equal hosts. `install.sh` is the only ongoing bootstrap.
 
-Run `./install.sh` to bootstrap a new machine or restore all symlinks.
+Detect the host before changing anything:
 
-## Repository layout
+- **macOS** — `uname -s` is `Darwin`
+- **Omarchy** — `/usr/share/omarchy` exists or `omarchy` is on `PATH`
+
+Never assume macOS because this repo used to be Mac-only. Never edit `/usr/share/omarchy/` (package-owned). User desktop config lives in `omarchy/` and is linked into `~/.config`.
 
 ```
 dotfiles/
-├── install.sh       # Bootstrap: Homebrew, symlinks, nvm
-├── AGENTS.md        # This file (also root CLAUDE.md)
-├── env/             # .zshrc and .gitconfig
-├── nvim/            # Neovim config (lazy.nvim)
-├── kitty/           # Kitty terminal config
-├── ghostty/         # Ghostty terminal config
-├── tmux/            # Minimal tmux config
-├── better-tmux/     # TypeScript/React status bar
-├── bin/             # Utility scripts
-├── agents/          # Shared AI rules and skills
-├── .agents/         # Dotfiles-only Claude config
-├── .claude/         # Claude Code project settings
-├── claude/          # Global Claude Code settings
-├── opencode/        # Opencode config
-├── cursor/          # Cursor hooks/MCP
-├── wallpapers/      # Desktop wallpapers
-├── __assets/        # README screenshots
-└── cs/              # Counter-Strike autoexec
+├── install.sh              # both hosts: packages + symlinks (idempotent)
+├── mac-compliance.sh       # one-shot Mac pass after this layout landed
+├── lib/platform.sh         # is_macos / is_omarchy / backup_then_link
+├── AGENTS.md               # this file (root CLAUDE.md points here)
+├── shared/                 # both hosts
+│   ├── git/.gitconfig
+│   ├── zsh/.zshrc          # sources macos/zsh.zsh or omarchy/zsh.zsh
+│   ├── nvim/               # this lazy.nvim config (not Omarchy LazyVim)
+│   ├── tmux/.tmux.conf
+│   ├── better-tmux/
+│   ├── agents/             # global AI skills/rules → ~/.agents, ~/.claude, ~/.cursor
+│   ├── claude/
+│   ├── cursor/
+│   ├── opencode/
+│   └── bin/
+├── macos/                  # Darwin only
+│   ├── zsh.zsh
+│   ├── packages.sh
+│   ├── kitty/
+│   ├── ghostty/            # yugen
+│   └── bin/                # awake, notification (terminal-notifier)
+├── omarchy/                # Omarchy only
+│   ├── zsh.zsh
+│   ├── packages.sh
+│   ├── ghostty/            # includes Omarchy theme file
+│   ├── hypr/               # → ~/.config/hypr
+│   ├── config/             # selected ~/.config/omarchy files
+│   └── bin/                # notification (desktop toast)
+└── .agents/                # rules for this repo only
 ```
 
-## Symlinks
+## Sync
 
-`install.sh` links these to their system locations:
+```
+git pull && ./install.sh
+```
 
-| Source | Destination |
-|--------|-------------|
-| `env/.gitconfig` | `~/.gitconfig` |
-| `env/.zshrc` | `~/.zshrc` |
-| `nvim/` | `~/.config/nvim` |
-| `kitty/kitty.conf`, `kitty/yugen.conf` | `~/.config/kitty/` |
-| `ghostty/config`, `ghostty/yugen.conf` | `~/Library/Application Support/com.mitchellh.ghostty/` (macOS) |
-| `tmux/.tmux.conf` | `~/.tmux.conf` |
-| `better-tmux/` | `~/.config/better-tmux` |
-| `agents/` | `~/.agents` |
-| `agents/AGENTS.md` | `~/.claude/CLAUDE.md` |
-| `claude/settings.json` | `~/.claude/settings.json` |
-| `agents/agents`, `agents/skills`, `agents/commands`, `agents/rules` | `~/.claude/agents`, `~/.claude/skills`, `~/.claude/commands`, `~/.claude/rules` |
-| `claude/workflows` | `~/.claude/workflows` |
-| `agents/skills` | `~/.cursor/skills` |
-| `cursor/hooks.json`, `cursor/mcp.json` | `~/.cursor/hooks.json`, `~/.cursor/mcp.json` |
-| `bin/*` | `~/bin/` |
-| `opencode/plugins` | `~/.opencode/plugins` |
+On the Mac, the first pull of this layout also needs:
 
-## Key facts
+```
+./mac-compliance.sh
+```
 
-- `install.sh` is the source of truth for packages and symlinks.
-- `agents/` is shared across AI tools; `.agents/` applies only inside this repo.
-- `CLAUDE.md` at the root is a symlink to this file.
-- The dark `yugen` theme is applied per-tool and kept in sync manually.
+After that, Mac and Omarchy both use `install.sh` only.
+
+## What this host should touch
+
+| Host | Own | Do not own |
+|------|-----|------------|
+| Both | `shared/**` | — |
+| macOS | `macos/**` (Kitty, yugen Ghostty, Homebrew) | `omarchy/**` |
+| Omarchy | `omarchy/**` (Hyprland, shell.json, Ghostty without yugen) | `macos/**`, `/usr/share/omarchy/**` |
+
+Omarchy still writes theme state under `~/.config/omarchy/themes`, `themed/`, `plugins/`, and `~/.local/state/omarchy/`. Those stay off git.
 
 ## Common tasks
 
-- **Shell config:** edit `env/.zshrc`, then run `exec zsh`.
-- **Neovim:** edit files under `nvim/lua/`; lazy.nvim picks them up on launch.
-- **tmux status bar:** edit `better-tmux/index.tsx`.
-- **Global AI rule:** add a file to `agents/rules/`.
-- **Global skill:** add a folder to `agents/skills/`.
-- **Repo-scoped AI rule/skill:** add to `.agents/`.
-- **New symlink:** edit `install.sh`, then re-run it.
+- Shell: edit `shared/zsh/` plus `macos/zsh.zsh` or `omarchy/zsh.zsh`, then `exec zsh`
+- Neovim: `shared/nvim/lua/`
+- tmux bar: `shared/better-tmux/` — `themes/macos.tsx` (yugen) vs `themes/omarchy.tsx` (reads live Omarchy `colors.toml`). `install.sh` fetches the GitHub release binary into `~/.local/bin`.
+- Global skill/rule: `shared/agents/skills/` or `shared/agents/rules/`
+- Omarchy desktop: `omarchy/hypr/`, `omarchy/config/shell.json` — then `hyprctl reload` / `hyprctl configerrors`
+- New symlink: `install.sh`, then re-run it
+
+## Packages
+
+- macOS: Homebrew lists in `macos/packages.sh` (casks, nvm, Kitty)
+- Omarchy: `omarchy pkg add` from `omarchy/packages.sh` only. Neovim, tmux, Ghostty, lazygit, jq, mise ship with Omarchy. Do not install `omarchy-zsh` (it would fight this `.zshrc`). Do not install nvm here (mise).
