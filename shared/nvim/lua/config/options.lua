@@ -14,7 +14,9 @@ vim.g.nvim_tree_git_hl = 1
 vim.o.compatible = false
 vim.cmd("set t_Co=256")
 vim.o.termguicolors = true
-vim.o.background = "dark"
+if not require("config.platform").is_omarchy() then
+	vim.o.background = "dark"
+end
 vim.o.cursorline = true
 vim.o.syntax = "on"
 vim.o.wrap = true

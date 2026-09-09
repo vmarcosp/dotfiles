@@ -12,7 +12,7 @@ macOS and Omarchy, same repo. Edit here, live via symlink.
 
 Shell, editor, tmux, terminals, AI skills, and (on Omarchy) Hyprland. `install.sh` detects the host and links the right tree.
 
-Ghostty on the Mac uses the `yugen` theme. Ghostty on Omarchy follows the active Omarchy theme. Neovim is this lazy.nvim config on both (yugen), not Omarchy's LazyVim.
+Ghostty on the Mac uses the `yugen` theme. Ghostty on Omarchy follows the active Omarchy theme. Neovim is this lazy.nvim config on both (not Omarchy's LazyVim): yugen on macOS, the live Omarchy theme on Omarchy.
 
 ## Install
 

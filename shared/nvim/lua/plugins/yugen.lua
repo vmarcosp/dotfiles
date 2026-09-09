@@ -15,6 +15,10 @@ local p = {
 	none = "none",
 }
 
+if require("config.platform").is_omarchy() then
+	return {}
+end
+
 return {
 	"bettervim/yugen.nvim",
 	config = function()

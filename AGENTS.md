@@ -70,7 +70,7 @@ Omarchy still writes theme state under `~/.config/omarchy/themes`, `themed/`, `p
 ## Common tasks
 
 - Shell: edit `shared/zsh/` plus `macos/zsh.zsh` or `omarchy/zsh.zsh`, then `exec zsh`
-- Neovim: `shared/nvim/lua/`
+- Neovim: `shared/nvim/lua/` — yugen on macOS; on Omarchy, live theme from `~/.local/state/omarchy/current/theme/neovim.lua` — yugen on macOS; on Omarchy, live theme from `~/.local/state/omarchy/current/theme/neovim.lua`
 - tmux bar: `shared/better-tmux/` — `themes/macos.tsx` (yugen) vs `themes/omarchy.tsx` (reads live Omarchy `colors.toml`). `install.sh` fetches the GitHub release binary into `~/.local/bin`.
 - Global skill/rule: `shared/agents/skills/` or `shared/agents/rules/`
 - Omarchy desktop: `omarchy/hypr/`, `omarchy/config/shell.json` — then `hyprctl reload` / `hyprctl configerrors`

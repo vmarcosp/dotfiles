@@ -153,6 +153,8 @@ link_omarchy() {
     "$HOME/.config/omarchy/hooks/font-set.d/keep-split-fonts"
 
   mkdir -p "$HOME/.config/fontconfig/conf.d"
+  backup_then_link "$DOTFILES/omarchy/fontconfig/fonts.conf" \
+    "$HOME/.config/fontconfig/fonts.conf"
   backup_then_link "$DOTFILES/omarchy/fontconfig/conf.d/51-ui-fonts.conf" \
     "$HOME/.config/fontconfig/conf.d/51-ui-fonts.conf"
 
@@ -161,8 +163,8 @@ link_omarchy() {
   backup_then_link "$DOTFILES/omarchy/gtk/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
 
   if command -v gsettings >/dev/null; then
-    gsettings set org.gnome.desktop.interface font-name 'Inter 11'
-    gsettings set org.gnome.desktop.interface document-font-name 'IBM Plex Sans 12'
+    gsettings set org.gnome.desktop.interface font-name 'Inter 14'
+    gsettings set org.gnome.desktop.interface document-font-name 'Inter 14'
   fi
 
   link_bin_dir "$DOTFILES/omarchy/bin"
