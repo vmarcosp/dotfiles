@@ -48,6 +48,84 @@ link_bin_dir() {
   done
 }
 
+# MCP configs stay machine-local. If ~/.cursor/mcp.json is a repo symlink, copy it to a regular file.
+localize_cursor_mcp() {
+  local dest="$HOME/.cursor/mcp.json"
+  local tmp="${dest}.dotfiles-local"
+  mkdir -p "$HOME/.cursor"
+
+  [ -L "$dest" ] || return 0
+
+  if [ -f "$dest" ]; then
+    cp "$dest" "$tmp"
+  elif [ -f "$DOTFILES/shared/cursor/mcp.json" ]; then
+    cp "$DOTFILES/shared/cursor/mcp.json" "$tmp"
+  else
+    local commit=""
+    commit="$(git -C "$DOTFILES" log -1 --format=%H -- shared/cursor/mcp.json 2>/dev/null || true)"
+    if [ -z "$commit" ] || ! git -C "$DOTFILES" show "$commit:shared/cursor/mcp.json" >"$tmp" 2>/dev/null; then
+      warn "Could not materialize $dest from the old symlink; fix it by hand."
+      rm -f "$tmp"
+      return 0
+    fi
+  fi
+
+  rm -f "$dest"
+  mv "$tmp" "$dest"
+  log "Left $dest as a local file (not managed by this repo)"
+}
+
+# Playwright + Context7 on this machine only (never committed).
+ensure_local_mcp() {
+  localize_cursor_mcp
+  python3 - "$@" <<'PY'
+import json
+from pathlib import Path
+
+cursor_path = Path.home() / ".cursor" / "mcp.json"
+cursor_path.parent.mkdir(parents=True, exist_ok=True)
+if cursor_path.is_symlink():
+    raise SystemExit("cursor mcp.json is still a symlink")
+cursor = {"mcpServers": {}}
+if cursor_path.is_file():
+    cursor = json.loads(cursor_path.read_text())
+servers = cursor.setdefault("mcpServers", {})
+servers["playwright"] = {
+    "command": "npx",
+    "args": ["-y", "@playwright/mcp@latest"],
+}
+servers["context7"] = {
+    "url": "https://mcp.context7.com/mcp",
+    "headers": {"CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"},
+}
+cursor_path.write_text(json.dumps(cursor, indent=2) + "\n")
+cursor_path.chmod(0o600)
+
+opencode_path = Path.home() / ".config" / "opencode" / "mcp.local.json"
+opencode_path.parent.mkdir(parents=True, exist_ok=True)
+opencode = {"$schema": "https://opencode.ai/config.json", "mcp": {}}
+if opencode_path.is_file() and not opencode_path.is_symlink():
+    opencode = json.loads(opencode_path.read_text())
+mcp = opencode.setdefault("mcp", {})
+mcp["playwright"] = {
+    "type": "local",
+    "command": ["npx", "-y", "@playwright/mcp@latest"],
+    "enabled": True,
+}
+mcp["context7"] = {
+    "type": "remote",
+    "url": "https://mcp.context7.com/mcp",
+    "enabled": True,
+    "headers": {"CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"},
+}
+opencode["$schema"] = "https://opencode.ai/config.json"
+opencode_path.write_text(json.dumps(opencode, indent=2) + "\n")
+opencode_path.chmod(0o600)
+print(f"wrote {cursor_path}")
+print(f"wrote {opencode_path}")
+PY
+}
+
 resolve_dotfiles() {
   if [ -n "${DOTFILES:-}" ] && [ -d "$DOTFILES/lib" ]; then
     printf '%s\n' "$DOTFILES"

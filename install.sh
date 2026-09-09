@@ -104,7 +104,7 @@ link_shared() {
   mkdir -p "$HOME/.cursor"
   backup_then_link "$DOTFILES/shared/agents/skills" "$HOME/.cursor/skills"
   backup_then_link "$DOTFILES/shared/cursor/hooks.json" "$HOME/.cursor/hooks.json"
-  backup_then_link "$DOTFILES/shared/cursor/mcp.json" "$HOME/.cursor/mcp.json"
+  ensure_local_mcp
 
   mkdir -p "$HOME/.opencode" "$HOME/.config/opencode"
   backup_then_link "$DOTFILES/shared/opencode/plugins" "$HOME/.opencode/plugins"

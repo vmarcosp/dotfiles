@@ -12,6 +12,11 @@ unset _zshrc
 
 [[ -f "$HOME/env-vars.sh" ]] && source "$HOME/env-vars.sh"
 
+# OpenCode merges this over the git-linked ~/.config/opencode/opencode.json
+if [[ -z "${OPENCODE_CONFIG:-}" && -f "$HOME/.config/opencode/mcp.local.json" ]]; then
+  export OPENCODE_CONFIG="$HOME/.config/opencode/mcp.local.json"
+fi
+
 export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export PATH="$HOME/.local/bin:$HOME/bin:$DOTFILES/shared/bin:$DOTFILES/$(host_name)/bin:$DOTFILES/shared/better-tmux/node_modules/.bin:$PATH"

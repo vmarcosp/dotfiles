@@ -48,6 +48,13 @@ check_link "$HOME/.agents" "shared/agents"
 check_link "$HOME/.config/kitty/kitty.conf" "macos/kitty"
 check_link "$HOME/Library/Application Support/com.mitchellh.ghostty/config" "macos/ghostty"
 
+localize_cursor_mcp
+ensure_local_mcp
+if [ -L "$HOME/.cursor/mcp.json" ]; then
+  warn "~/.cursor/mcp.json is still a symlink; MCP must stay local"
+  stale_ok=1
+fi
+
 # Drop broken ~/bin entries that pointed at the old bin/ or env/ paths.
 if [ -d "$HOME/bin" ]; then
   for f in "$HOME/bin"/*; do

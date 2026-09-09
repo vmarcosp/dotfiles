@@ -23,7 +23,8 @@ dotfiles/
 │   ├── better-tmux/
 │   ├── agents/             # global AI skills/rules → ~/.agents, ~/.claude, ~/.cursor
 │   ├── claude/
-│   ├── cursor/
+│   ├── cursor/             # hooks only; MCP is ~/.cursor/mcp.json (local)
+│   ├── opencode/           # global config; MCP overlay is ~/.config/opencode/mcp.local.json
 │   ├── opencode/
 │   └── bin/
 ├── macos/                  # Darwin only
