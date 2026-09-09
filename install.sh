@@ -145,9 +145,25 @@ link_omarchy() {
   backup_then_link "$DOTFILES/omarchy/config/extensions/omarchy-menu.jsonc" \
     "$HOME/.config/omarchy/extensions/omarchy-menu.jsonc"
 
-  mkdir -p "$HOME/.config/omarchy/hooks/theme-set.d"
+  mkdir -p "$HOME/.config/omarchy/hooks/theme-set.d" \
+    "$HOME/.config/omarchy/hooks/font-set.d"
   backup_then_link "$DOTFILES/omarchy/hooks/theme-set.d/refresh-better-tmux" \
     "$HOME/.config/omarchy/hooks/theme-set.d/refresh-better-tmux"
+  backup_then_link "$DOTFILES/omarchy/hooks/font-set.d/keep-split-fonts" \
+    "$HOME/.config/omarchy/hooks/font-set.d/keep-split-fonts"
+
+  mkdir -p "$HOME/.config/fontconfig/conf.d"
+  backup_then_link "$DOTFILES/omarchy/fontconfig/conf.d/51-ui-fonts.conf" \
+    "$HOME/.config/fontconfig/conf.d/51-ui-fonts.conf"
+
+  mkdir -p "$HOME/.config/gtk-3.0" "$HOME/.config/gtk-4.0"
+  backup_then_link "$DOTFILES/omarchy/gtk/settings.ini" "$HOME/.config/gtk-3.0/settings.ini"
+  backup_then_link "$DOTFILES/omarchy/gtk/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
+
+  if command -v gsettings >/dev/null; then
+    gsettings set org.gnome.desktop.interface font-name 'Inter 11'
+    gsettings set org.gnome.desktop.interface document-font-name 'IBM Plex Sans 12'
+  fi
 
   link_bin_dir "$DOTFILES/omarchy/bin"
 }
@@ -187,6 +203,33 @@ install_macos() {
   nvm alias default 'lts/*'
 }
 
+install_todoist_cli_npm() {
+  # Pin to mise Node. Cursor (and similar) put their own node first on PATH,
+  # and npm then installs globals into that prefix — td never shows up in a
+  # normal shell.
+  local node_bin npm_bin prefix
+  if command -v mise >/dev/null; then
+    node_bin="$(mise which node 2>/dev/null || true)"
+  fi
+  if [ -z "${node_bin:-}" ] || [ ! -x "$node_bin" ]; then
+    warn "mise Node not found; skip Todoist CLI (mise install node)"
+    return 0
+  fi
+  prefix="$(cd "$(dirname "$node_bin")/.." && pwd)"
+  npm_bin="$(dirname "$node_bin")/npm"
+  if [ ! -x "$npm_bin" ]; then
+    warn "mise npm not found at $npm_bin; skip Todoist CLI"
+    return 0
+  fi
+  if [ -x "$prefix/bin/td" ] && [ -z "${TODOIST_CLI_FORCE:-}" ]; then
+    log "Todoist CLI already at $prefix/bin/td"
+    return 0
+  fi
+  log "Installing Todoist CLI (@doist/todoist-cli) into $prefix"
+  "$npm_bin" install -g --prefix "$prefix" --allow-scripts=@doist/todoist-cli \
+    @doist/todoist-cli
+}
+
 install_omarchy_pkgs() {
   # shellcheck disable=SC1091
   . "$DOTFILES/omarchy/packages.sh"
@@ -198,6 +241,13 @@ install_omarchy_pkgs() {
   if ! omarchy pkg add "${OMARCHY_PACKAGES[@]}"; then
     warn "omarchy pkg add failed (sudo?). Run: omarchy pkg add ${OMARCHY_PACKAGES[*]}"
   fi
+  if [ "${#OMARCHY_AUR_PACKAGES[@]}" -gt 0 ]; then
+    log "Installing Omarchy AUR packages: ${OMARCHY_AUR_PACKAGES[*]}"
+    if ! omarchy pkg aur add "${OMARCHY_AUR_PACKAGES[@]}"; then
+      warn "omarchy pkg aur add failed. Run: omarchy pkg aur add ${OMARCHY_AUR_PACKAGES[*]}"
+    fi
+  fi
+  install_todoist_cli_npm
 }
 
 case "$HOST" in
@@ -218,6 +268,11 @@ esac
 install_better_tmux
 
 log "Done. Host=$HOST"
+if command -v td >/dev/null; then
+  log "Todoist CLI is installed. Sign in once with: td auth login"
+else
+  warn "Todoist CLI (td) is not on PATH yet."
+fi
 if [ "$HOST" = omarchy ]; then
   log "Ghostty uses the Omarchy theme file (not yugen). Restart terminals to reload."
   log "Ghostty starts zsh via command = zsh. Login shell is still bash until: chsh -s /usr/bin/zsh"

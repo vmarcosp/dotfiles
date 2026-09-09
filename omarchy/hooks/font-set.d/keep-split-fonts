@@ -1,0 +1,30 @@
+#!/bin/bash
+# After `omarchy font set`: keep Ghostty on Space Mono and the Omarchy
+# shell (bar/menus) on Inter. That command rewrites both terminals and
+# ~/.config/fontconfig/fonts.conf (which loads after conf.d, so it wins).
+set -euo pipefail
+
+mkdir -p "$HOME/.config/fontconfig"
+cat >"$HOME/.config/fontconfig/fonts.conf" <<'XML'
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <match target="pattern">
+    <test name="family" qual="any">
+      <string>monospace</string>
+    </test>
+    <edit name="family" mode="prepend_first" binding="strong">
+      <string>Inter</string>
+    </edit>
+  </match>
+</fontconfig>
+XML
+
+cfg="$HOME/.config/ghostty/config"
+if [[ -f $cfg ]]; then
+  sed --follow-symlinks -i 's/^font-family = ".*"/font-family = "SpaceMono Nerd Font"/' "$cfg"
+fi
+
+if pgrep -x ghostty >/dev/null; then
+  pkill -SIGUSR2 ghostty || true
+fi

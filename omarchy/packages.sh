@@ -8,4 +8,13 @@ OMARCHY_PACKAGES=(
   fzf
   fd
   bat
+  ttf-space-mono-nerd
+  inter-font
+  ttf-ibm-plex
+)
+
+# Official Linux desktop is the AppImage. CLI is npm (@doist/todoist-cli) via mise.
+# shellcheck disable=SC2034
+OMARCHY_AUR_PACKAGES=(
+  todoist-appimage
 )

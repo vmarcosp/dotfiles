@@ -12,6 +12,7 @@ MACOS_FORMULAE=(
   bun
   neovim
   pnpm
+  todoist-cli
 )
 
 MACOS_CASKS=(
@@ -21,6 +22,7 @@ MACOS_CASKS=(
   arc
   discord
   hiddenbar
+  todoist-app
 )
 
 MACOS_FONTS=(

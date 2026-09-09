@@ -79,4 +79,4 @@ Omarchy still writes theme state under `~/.config/omarchy/themes`, `themed/`, `p
 ## Packages
 
 - macOS: Homebrew lists in `macos/packages.sh` (casks, nvm, Kitty)
-- Omarchy: `omarchy pkg add` from `omarchy/packages.sh` only. Neovim, tmux, Ghostty, lazygit, jq, mise ship with Omarchy. Do not install `omarchy-zsh` (it would fight this `.zshrc`). Do not install nvm here (mise).
+- Omarchy: `omarchy pkg add` from `OMARCHY_PACKAGES` in `omarchy/packages.sh`; AUR extras via `omarchy pkg aur add` (`OMARCHY_AUR_PACKAGES`, currently Todoist AppImage). Todoist CLI (`td`) is `npm i -g @doist/todoist-cli` through mise Node. Neovim, tmux, Ghostty, lazygit, jq, mise ship with Omarchy. Do not install `omarchy-zsh` (it would fight this `.zshrc`). Do not install nvm here (mise).

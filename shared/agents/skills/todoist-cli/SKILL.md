@@ -5,7 +5,6 @@ compatibility: "Requires the td CLI (@doist/todoist-cli) to be installed and aut
 license: MIT
 metadata:
   author: Doist
-  version: "1.69.2"
 ---
 
 # Todoist CLI (td)
@@ -23,7 +22,8 @@ metadata:
 
 ## Shared Flags
 
-- Read and list commands commonly support `--json`, but other output and pagination flags vary by family. Many list commands support subsets of `--ndjson`, `--full`, `--raw`, `--limit <n>`, `--all`, `--cursor <cursor>`, or `--show-urls`; check `td <command> --help` for the exact surface.
+- Read and list commands commonly support `--json`, but other output and pagination flags vary by family. Many list commands support subsets of `--ndjson`, `--ids-only`, `--full`, `--raw`, `--limit <n>`, `--all`, `--cursor <cursor>`, or `--show-urls`; check `td <command> --help` for the exact surface.
+- When supported, `--ids-only` prints one stable result ID per line with no empty-state text. Any incomplete-page notice goes to stderr, so stdout remains pipeable. It is mutually exclusive with `--json` and `--ndjson`. Check `td <command> --help` for support and the type of ID returned.
 - Create and update commands commonly support `--json` to return the created or updated entity.
 - Mutating commands support `--dry-run` to preview actions without executing them.
 - Destructive commands typically require `--yes`.
@@ -42,9 +42,12 @@ td auth login --read-only --additional-scopes=backups
 td auth login --additional-scopes=billing
 td auth login --additional-scopes=app-management,backups
 td auth login --callback-port 9000           # override the OAuth callback port
+td auth login --no-browser-open              # print the authorize URL instead of opening a browser
+td auth login --credential-store=plaintext   # explicitly store the credential in plaintext
 td auth login --json                         # emit the new account record as JSON
 td auth login --ndjson                       # one-line newline-delimited JSON
 td auth token
+td auth token "$TOKEN" --credential-store=plaintext
 td auth status
 td auth status --json                        # full status payload as JSON (--ndjson also supported)
 TOKEN=$(td auth token view)
@@ -53,7 +56,7 @@ td auth logout
 td auth logout --json                        # emits `{"ok": true}` (--ndjson is silent)
 ```
 
-`td auth login`, `td auth status`, and `td auth logout` all accept the standard `--json` / `--ndjson` machine-output flags. For `login` and `status` the body carries the account record (id, email, auth metadata, plus `storedUsers` and `source` from status); `logout` emits a `{"ok": true}` envelope under `--json` and stays silent under `--ndjson`. Across all three, keyring-fallback warnings are written to stderr so stdout stays parseable. `td auth login` additionally accepts `--callback-port <n>` (default `8765`, with a small fallback range when the port is busy).
+`td auth login`, `td auth status`, and `td auth logout` all accept the standard `--json` / `--ndjson` machine-output flags. For `login` and `status` the body carries the account record (id, email, auth metadata, plus `storedUsers` and `source` from status); `logout` emits a `{"ok": true}` envelope under `--json` and stays silent under `--ndjson`. `td auth login` additionally accepts `--callback-port <n>` (default `8765`, with a small fallback range when the port is busy) and `--no-browser-open`, which prints the authorization URL for manual copy-paste instead of opening a browser (useful on headless or remote hosts).
 
 Opt-in OAuth scopes are requested via `--additional-scopes=<list>` (comma-separated). Run `td auth login --help` for the full list. Currently supported:
 
@@ -63,7 +66,7 @@ Opt-in OAuth scopes are requested via `--additional-scopes=<list>` (comma-separa
 
 Combine freely with `--read-only` to keep data access read-only while still granting an opt-in scope (e.g. `td auth login --read-only --additional-scopes=backups`). When a command fails for lack of a scope, the error suggests a re-login command that preserves whichever flags were originally used.
 
-Tokens are stored in the OS credential manager when available, with fallback to `~/.config/todoist-cli/config.json`. `TODOIST_API_TOKEN` takes precedence over stored credentials.
+Tokens are stored in the OS credential manager by default. If it is unavailable, credential writes fail without a plaintext fallback. Pass `--credential-store=plaintext` to `td auth login` or `td auth token` only when you explicitly accept plaintext config-file storage; every such write emits a warning to stderr. `TODOIST_API_TOKEN` takes precedence over stored credentials.
 
 `td auth token view` writes the stored token to stdout for use in scripts. **Always capture it into a shell variable** (e.g. `TOKEN=$(td auth token view)`) — never invoke it bare in an agent transcript or piped to a shell that echoes its output, since that would leak the secret. Honors `--user <id|email>` for multi-account installs and refuses when `TODOIST_API_TOKEN` is set in the environment (the token is already available there).
 
@@ -90,9 +93,8 @@ Resolution order: `--user <ref>` > `user.defaultUser` from config > the only sto
 
 - Daily views: `td today`, `td inbox`, `td upcoming`, `td completed`, `td activity`
 - Task lifecycle: `td task list/view/add/quickadd/update/reschedule/move/complete/uncomplete/delete/browse` (alias: `td task qa` for `quickadd`)
-- Projects: `td project list/view/create/update/archive/unarchive/archived/delete/move/reorder/join/browse/collaborators/permissions`
+- Projects: `td project list/view/create/update/archive/unarchive/archived/delete/move/reorder/join/share/browse/collaborators/permissions`
 - Project analytics: `td project progress/health/health-context/activity-stats/analyze-health`
-- Goals: `td goal list/view/create/update/delete/complete/uncomplete/link/unlink`
 - Organization: `td label ...`, `td filter ...`, `td section ...`, `td folder ...`, `td workspace ...`
 - Collaboration: `td comment ...`, `td notification ...`, `td reminder ...`
 - Templates and files: `td template ...`, `td attachment view <file-url>`, `td backup ...`
@@ -132,6 +134,7 @@ td task quickadd "Buy milk tomorrow p1 #Shopping"
 td task qa "Review PR @urgent +Alice"
 td task list --project "Work" --label "urgent" --priority p1
 td task view "Buy milk"
+td task view "Plan sprint" --include-children             # list direct subtasks, flagging ones that nest further
 td task add "Plan sprint" --project "Work" --section "Planning" --labels "urgent,review"
 td task update "Plan sprint" --deadline "2026-06-01" --assignee me
 td task reschedule "Plan sprint" 2026-03-20T14:00:00
@@ -153,6 +156,7 @@ Useful task flags:
 - `--stdin` on `task add` reads the task description from stdin; on `task quickadd` (and the top-level `td add`) it reads the full natural-language text from stdin.
 - `--parent`, `--section`, `--project`, `--workspace`, `--assignee`, `--labels`, `--due`, `--deadline`, `--duration`, and `--priority` cover most task workflows.
 - `td task complete --forever` stops recurrence; `td task update --no-due` clears the due date, `--no-deadline` clears deadlines, and `--no-labels` removes all labels; `td task move --no-parent` and `--no-section` detach from hierarchy.
+- `--include-children` on `task view` lists up to 25 direct subtasks, each flagged with whether it has subtasks of its own. **A dated parent can hide an undated subtask that no date filter will surface, so check this before assuming a task is a leaf** rather than guessing. Past 25, page the rest with `td task list --parent id:<id> --all`. Under `--json` it merges `childCount`, `children`, `hasMoreChildren` and `childrenError` into the task object; `childrenError` means the listing is incomplete, not empty.
 
 ### Projects And Workspaces
 ```bash
@@ -160,8 +164,13 @@ td project list --personal
 td project list --search "Road"
 td project archived
 td project view "Roadmap" --detailed
+td project view "Roadmap" --raw                          # don't render the description markdown
+td project view "Roadmap" --include-children             # list direct sub-projects, flagging ones that nest further
 td project collaborators "Roadmap"
 td project create --name "New Project" --color blue
+td project create --name "New Project" --description "Quarterly OKRs"
+td project create --name "Imported" --stdin              # read the description from stdin
+td project update "Roadmap" --description "Updated scope"
 td project update "Roadmap" --favorite
 td project update "Roadmap" --folder "Engineering"
 td project update "Roadmap" --no-folder
@@ -178,6 +187,12 @@ td project archive "Roadmap"
 td project unarchive "Roadmap"
 td project move "Roadmap" --to-workspace "Acme" --folder "Engineering" --visibility team --yes
 td project join id:abc123
+td project share "Roadmap" alice@example.com
+td project share --project "Roadmap" alice@example.com
+td project share "Roadmap" alice@example.com --message "Join the planning"
+td project share "Roadmap" alice@example.com --json
+td project share "Roadmap" alice@example.com --dry-run
+td project share "Team Plan" bob@example.com --role guest --auto-invite
 td project delete "Roadmap" --yes
 td project progress "Roadmap"
 td project health "Roadmap"
@@ -205,6 +220,8 @@ td folder update "Engineering" --name "Platform" --workspace "Acme"
 td folder delete "Engineering" --workspace "Acme" --yes
 ```
 
+`--include-children` on `project view` lists up to 25 direct sub-projects, each flagged with whether it has sub-projects of its own, and merges the same `childCount` / `children` / `hasMoreChildren` / `childrenError` fields under `--json`. Workspace projects never have sub-projects — they nest under folders instead, so they always report none. A `Parent:` line is shown for any sub-project whether or not the flag is passed.
+
 ### Labels, Filters, And Sections
 ```bash
 td label list
@@ -219,8 +236,12 @@ td label remove-shared "oldname" --yes
 
 td filter list
 td filter view "Urgent work"
-td filter create --name "Urgent work" --query "p1 & #Work"
+td filter view "Urgent work" --sort priority --sort-order desc   # override the view's sorting
+td filter view "Urgent work" --sort none                         # keep the raw API order
+td filter create --name "Urgent work" --query "p1 & #Work" --description "Everything blocking the release"
 td filter update "Urgent work" --query "p1 & #Work & today"
+td filter update "Urgent work" --description "Updated scope"     # description-only update
+td filter update "Urgent work" --no-description                  # clear the description
 td filter delete "Urgent work" --yes
 td filter browse "Urgent work"
 
@@ -228,7 +249,11 @@ td section list "Roadmap"
 td section list --search "Planning"
 td section list --search "Planning" --project "Roadmap"
 td section create --project "Roadmap" --name "In Progress"
+td section create --project "Roadmap" --name "QA" --description "Bugs to verify"
+td section create --project "Roadmap" --name "Imported" --stdin   # read the description from stdin
 td section update id:123 --name "Done"
+td section update id:123 --description "Sprint backlog"            # description-only update
+echo "" | td section update id:123 --stdin                        # empty stdin clears the description
 td section reorder "Review" --project "Roadmap" --before "Done"
 td section reorder "Review" --project "Roadmap" --after "In Progress"
 td section reorder --section "Review" --project "Roadmap" --position 0 --dry-run
@@ -239,26 +264,11 @@ td section delete id:123 --yes
 td section browse id:123
 ```
 
-Shared labels can appear in `td label list` and `td label view`, but standard update and delete actions only work for labels with IDs. Use `td label rename-shared` and `td label remove-shared` for shared labels.
+Saved filters can contain multiple comma-separated queries, each displayed as a separate filter section. `td filter view` preserves those sections and applies `--limit` to each one. Under `--json`, multi-section filters return `{ sections: [{ query, results, nextCursor }] }`; under `--ndjson`, each line is one section with the same fields. Because each section has its own pagination cursor, use `--all` instead of `--cursor` for multi-section filters.
 
-### Goals
-```bash
-td goal list                                 # List all accessible goals
-td goal list --workspace "Work"              # Filter to workspace goals
-td goal view "Ship v2"                       # View goal details and linked tasks
-td goal create --name "Ship v2"              # Create personal goal
-td goal create --name "Ship v2" --workspace "Work"  # Create workspace goal
-td goal create --name "Ship v2" --deadline "2026-04-03"
-td goal create --name "Ship v2" --json       # Return created goal as JSON
-td goal create --name "Ship v2" --dry-run    # Preview creation
-td goal update "Ship v2" --name "Ship v3"
-td goal update "Ship v2" --description "New desc" --json
-td goal delete "Ship v2" --yes
-td goal complete "Ship v2"                   # Mark goal as completed
-td goal uncomplete "Ship v2"                 # Reopen a completed goal
-td goal link "Ship v2" --task "Buy milk"     # Link a task to a goal
-td goal unlink "Ship v2" --task "Buy milk"   # Unlink a task from a goal
-```
+`td filter view` orders tasks the way the Todoist apps do: it applies the sorting saved on that filter's view, and falls back to Todoist's default hierarchy (priority, then date, then deadline, then project and task order; date first for filters that query dates). `--sort` overrides it with `default`, `priority`, `date`, `deadline`, `date-added`, `name`, `project`, `assignee`, `workspace`, or `none` for the raw API order, and `--sort-order asc|desc` sets the direction of whichever field is in play (`default` and `none` have no direction). Sorting is applied to the tasks that were fetched, so pair it with `--all` when a filter has more results than the limit.
+
+Shared labels can appear in `td label list` and `td label view`, but standard update and delete actions only work for labels with IDs. Use `td label rename-shared` and `td label remove-shared` for shared labels.
 
 ### Comments, Attachments, Notifications, And Reminders
 ```bash
@@ -266,6 +276,8 @@ td comment list "Plan sprint"
 td comment list "Roadmap" --project
 td comment add "Plan sprint" --content "See attached" --file ./report.pdf
 td comment add "Plan sprint" --content "See attached" --file ./report.pdf --file-name "Quarterly report.pdf"
+td comment add "Plan sprint" --content "@Ana could you review?" --notify "Ana"
+td comment add "Plan sprint" --content "Note to self" --no-notify
 td comment update id:123 --content "Updated text"
 td comment delete id:123 --yes
 td comment browse id:123
@@ -293,6 +305,8 @@ td reminder location get id:456
 ```
 
 `td attachment view` prints text attachments directly and encodes binary content as base64. Use `--json` for metadata plus content. Prefer this over `curl` + `Read` on Todoist file URLs — for images in particular, `Read` will try to decode the file through the vision pipeline, and if that fails the image stays pinned in conversation context and every retry hits the same error.
+
+Comments notify only the people `comment add` is handed. Writing "@Ana" in the text notifies nobody — name her with `--notify`. Omit `--notify` to notify whoever the Todoist apps would (the task's assignee, assigner and creator on a first comment, or the previous comment's participants on a reply), or pass `--no-notify` to stay silent. Notification cannot be sent when editing a comment, only when adding one.
 
 `td comment view` flags image attachments with a `Hint` line pointing at `td attachment view`. In `--json` mode the hint is written to stderr so stdout stays parseable — watch the tool output, not just the JSON body.
 
@@ -336,19 +350,34 @@ td apps view 9909
 td apps view id:9909 --json
 td apps view id:9909 --include-secrets
 td apps view id:9909 --json --include-secrets
+td apps update id:9909 --name "My Renamed App"
+td apps update id:9909 --description "Does a useful thing"
 td apps update id:9909 --add-oauth-redirect https://example.com/callback
 td apps update id:9909 --remove-oauth-redirect https://example.com/callback --yes
+td apps update id:9909 --set-webhook-url https://example.com/webhook
+td apps update id:9909 --name "My App" --description "New blurb" --set-webhook-url https://example.com/webhook
+td apps delete id:9909 --yes
 ```
 
 The `apps` command surface manages the user's registered Todoist developer apps (integrations). All `apps` subcommands require the `dev:app_console` OAuth scope — re-run `td auth login --additional-scopes=app-management` to grant it. Without the scope, calls fail with a `MISSING_SCOPE` error pointing at the same hint.
 
 `td apps list` plain output leads with the display name and follows it with `(id:N)` (self-describing in `--accessible` mode), then an indented `Client ID: <client_id>` line, then the description. `--json` / `--ndjson` dump the full app payload (id, clientId, displayName, status, userId, createdAt, serviceUrl, oauthRedirectUri, description, icons, appTokenScopes).
 
-`td apps view <ref>` accepts a name (fuzzy/case-insensitive), `id:N`, or a raw numeric id. Plain output shows display name as a header, then a labelled key/value block (id, status, users, created date, service URL, OAuth redirect, token scopes, icon URL, client id) followed by the description. Webhook configuration is always fetched (`getAppWebhook` — callback URL is user-supplied, not a secret). When `--include-secrets` is set, the command additionally fetches the app's secrets (`client_secret`), verification token, test token, and distribution token.
+`td apps view <ref>` accepts a name (fuzzy/case-insensitive), `id:N`, or a raw numeric id. Plain output shows display name as a header, then a labelled key/value block (id, status, users, created date, service URL, OAuth redirect, token scopes, icon URL, client id) followed by the description. Webhook configuration is always fetched (`getAppWebhook` — callback URL is user-supplied, not a secret). When the app has UI extensions, a `UI extensions:` section lists each one as `<name> (<type>[: <sub-type>])` (type is `context-menu`/`composer`/`settings`; sub-type is the `context-menu` context `project`/`task` or the `composer` location `task`/`comment`), followed by an `Install URL:` line (`https://app.todoist.com/app/install/<distribution_token>`) — the link shared so others can install the integration. In `--json` / `--ndjson` the payload always carries `uiExtensions`, `distributionToken`, and `installUrl` (the last is `null` when there are no UI extensions). When `--include-secrets` is set, the command additionally fetches the app's secrets (`client_secret`), verification token, and test token.
 
-`td apps update <ref> --add-oauth-redirect <url>` appends an OAuth redirect URI to the app, and `--remove-oauth-redirect <url>` takes one off (requires `--yes` to actually mutate, like `td task delete`). The two flags are mutually exclusive — pass one at a time. The URI is validated before any API call: `https://<host>`, `http(s)://localhost[:port][/path]`, `http(s)://127.0.0.1[:port][/path]`, or a custom-scheme URI (e.g. `myapp://callback`) are accepted; `javascript`, `data`, `file`, `vbscript`, and `ftp` custom schemes are rejected. Removals skip validation so users can clean up legacy malformed URIs. Adding a URI already set on the app fails with `ALREADY_EXISTS`; removing a URI that isn't on the app exits 0 with a message and makes no API call. Supports `--dry-run` and `--json`.
+All `td apps update` flags combine in a single invocation, which performs up to two API calls: an app-record patch (`updateApp`, carrying any of display name, description, OAuth redirect URIs) followed by a webhook URL swap (`updateAppWebhook`, a separate endpoint). The record patch runs first; if it succeeds and the webhook call then fails, the record change stays persisted (no rollback). Passing no flags errors with `NO_CHANGES`. The only mutually-exclusive pair is `--add-oauth-redirect` + `--remove-oauth-redirect` (they read-modify-write the same field) → `CONFLICTING_OPTIONS`.
 
-The OAuth `client_id` is **public** and always shown. The four sensitive credentials — client secret, verification token, test access token, distribution token — are **hidden by default**. In plain mode each of those lines renders a `(hidden — pass --include-secrets to reveal)` hint; in `--json` / `--ndjson` the `clientSecret`, `verificationToken`, `distributionToken`, and `testToken` keys are omitted from the payload entirely. With `--include-secrets`, the values are rendered / emitted normally — in that mode a non-existent test token reads as `(not created)`. Webhook configuration is always included when configured (callback URL, event list, version); a missing webhook renders as `(not configured)` in plain output and `null` in JSON.
+`--name <name>` sets the app's display name (SDK `displayName`) and `--description <description>` sets its description; an empty `--description ""` clears the description, while an empty/whitespace `--name` is rejected with `INVALID_OPTIONS`.
+
+`--add-oauth-redirect <url>` appends an OAuth redirect URI to the app, and `--remove-oauth-redirect <url>` takes one off (requires `--yes` to actually mutate, like `td task delete`). The URI is validated before any API call: `https://<host>`, `http(s)://localhost[:port][/path]`, `http(s)://127.0.0.1[:port][/path]`, or a custom-scheme URI (e.g. `myapp://callback`) are accepted; `javascript`, `data`, `file`, `vbscript`, and `ftp` custom schemes are rejected. Removals skip validation so users can clean up legacy malformed URIs. Adding a URI already set on the app fails with `ALREADY_EXISTS`; removing a URI that isn't on the app is a no-op (message, no API call). A real removal gates the whole invocation: without `--yes` nothing is performed (plain output prints a batch "would update" preview; `--json` throws `CONFIRMATION_REQUIRED`), so any name/description/webhook change in the same command is withheld too.
+
+`--set-webhook-url <url>` swaps the callback URL on the app's existing webhook. The webhook holds a single URL, so this is a straight set; the current webhook's event list and version are read (`getAppWebhook`) and preserved — only the URL changes. It errors with `NO_WEBHOOK` if the app has no webhook configured yet (a webhook must exist before its URL can be changed, since creating one needs an event list). The URL must be a public `https://<host>` URL. Setting the URL to the value already configured is a no-op (message, no API call).
+
+`--dry-run` prints one combined preview of every pending change. `--json` output shape depends on which surfaces the flags touched: a lone app-record change emits the bare app object, a lone webhook change emits the bare webhook object, and touching both emits `{ "app": <app>, "webhook": <webhook> }`.
+
+`td apps delete <ref>` deletes a registered app (resolved by name, `id:N`, or raw numeric id). **This is destructive and irreversible: deleting an app immediately breaks it for everyone who uses it — any user who authorized the integration loses access, and the app cannot be restored. Always confirm with the user that they are sure before running with `--yes`.** It requires `--yes` to actually delete; without it the command prints a `Would delete app: …` preview and makes no API call (same convention as `td folder delete` / `td workspace delete`). `--dry-run` prints the standard dry-run preview.
+
+The OAuth `client_id` is **public** and always shown. The distribution token is **not** a secret (it is a shareable install link): in plain output it surfaces only via the `Install URL` line, which appears only when the app has UI extensions; in `--json` / `--ndjson` the `distributionToken` key is always present. The three sensitive credentials — client secret, verification token, test access token — are **hidden by default**. In plain mode each of those lines renders a `(hidden — pass --include-secrets to reveal)` hint; in `--json` / `--ndjson` the `clientSecret`, `verificationToken`, and `testToken` keys are omitted from the payload entirely. With `--include-secrets`, the values are rendered / emitted normally — in that mode a non-existent test token reads as `(not created)`. Webhook configuration is always included when configured (callback URL, event list, version); a missing webhook renders as `(not configured)` in plain output and `null` in JSON.
 
 ### Billing
 ```bash
@@ -378,6 +407,7 @@ td config view --json
 td config view --show-token
 
 td completion install zsh
+td completion install pwsh
 td completion uninstall
 
 td view https://app.todoist.com/app/task/buy-milk-abc123

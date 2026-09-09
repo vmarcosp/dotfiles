@@ -5,7 +5,7 @@ config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
 command = zsh
 
 # Font
-font-family = "JetBrainsMono Nerd Font"
+font-family = "SpaceMono Nerd Font"
 font-style = Regular
 font-size = 11
 

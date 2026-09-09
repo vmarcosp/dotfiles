@@ -1,3 +1,6 @@
+-- Launcher / polkit / clipboard popups (bar still follows fontconfig monospace).
+hl.env("OMARCHY_MENU_FONT", "Inter")
+
 -- Change the default Omarchy look'n'feel.
 
 -- https://wiki.hypr.land/Configuring/Basics/Variables/#general
