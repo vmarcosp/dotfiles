@@ -186,7 +186,7 @@ install_macos() {
 
   log "Updating Homebrew"
   brew update
-  brew upgrade
+  brew upgrade || warn "brew upgrade had errors; continuing with remaining setup"
   log "Installing formulae"
   brew install "${MACOS_FORMULAE[@]}"
   log "Installing casks"

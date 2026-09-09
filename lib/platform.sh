@@ -56,18 +56,20 @@ localize_cursor_mcp() {
 
   [ -L "$dest" ] || return 0
 
+  copy_mcp_from_git() {
+    local path="$1" commit
+    commit="$(git -C "$DOTFILES" log -1 --diff-filter=ACMR --format=%H -- "$path" 2>/dev/null || true)"
+    [ -n "$commit" ] && git -C "$DOTFILES" show "${commit}:${path}" >"$tmp" 2>/dev/null
+  }
+
   if [ -f "$dest" ]; then
     cp "$dest" "$tmp"
   elif [ -f "$DOTFILES/shared/cursor/mcp.json" ]; then
     cp "$DOTFILES/shared/cursor/mcp.json" "$tmp"
-  else
-    local commit=""
-    commit="$(git -C "$DOTFILES" log -1 --format=%H -- shared/cursor/mcp.json 2>/dev/null || true)"
-    if [ -z "$commit" ] || ! git -C "$DOTFILES" show "$commit:shared/cursor/mcp.json" >"$tmp" 2>/dev/null; then
-      warn "Could not materialize $dest from the old symlink; fix it by hand."
-      rm -f "$tmp"
-      return 0
-    fi
+  elif ! copy_mcp_from_git shared/cursor/mcp.json && ! copy_mcp_from_git cursor/mcp.json; then
+    warn "Could not materialize $dest from the old symlink; fix it by hand."
+    rm -f "$tmp"
+    return 0
   fi
 
   rm -f "$dest"
