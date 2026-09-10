@@ -25,12 +25,34 @@ install_oh_my_zsh() {
   fi
 }
 
+# TPM + plugins live under XDG when ~/.config/tmux/tmux.conf exists (both hosts
+# link that file). Matching that path keeps install_plugins and run-shell aligned.
+tpm_plugins_dir() {
+  echo "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/plugins"
+}
+
 install_tpm() {
-  if [ ! -d "$HOME/.tmux/plugins/tpm" ]; then
+  local plugins tpm
+  plugins="$(tpm_plugins_dir)"
+  tpm="$plugins/tpm"
+  mkdir -p "$plugins"
+
+  if [ ! -d "$tpm" ]; then
     log "Installing tmux plugin manager"
-    git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
+    git clone https://github.com/tmux-plugins/tpm "$tpm"
   else
-    git -C "$HOME/.tmux/plugins/tpm" pull --ff-only || true
+    git -C "$tpm" pull --ff-only || true
+  fi
+
+  # Drop the legacy clone if we migrated to XDG (harmless if absent).
+  if [ -d "$HOME/.tmux/plugins/tpm" ] && [ "$tpm" != "$HOME/.tmux/plugins/tpm" ]; then
+    rm -rf "$HOME/.tmux/plugins/tpm"
+    rmdir "$HOME/.tmux/plugins" 2>/dev/null || true
+  fi
+
+  if [ -x "$tpm/bin/install_plugins" ]; then
+    log "Installing tmux plugins (resurrect, sensible, …)"
+    "$tpm/bin/install_plugins" || warn "TPM install_plugins failed; in tmux: prefix + I"
   fi
 }
 
