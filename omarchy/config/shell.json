@@ -39,13 +39,13 @@
       ],
       "right": [
         {
-          "id": "omarchy.tray"
-        },
-        {
           "id": "omarchy.agents"
         },
         {
           "id": "omarchy.bluetooth"
+        },
+        {
+          "id": "omarchy.tray"
         },
         {
           "id": "omarchy.network"
