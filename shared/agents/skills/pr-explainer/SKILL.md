@@ -39,7 +39,7 @@ Lead with the person in front of the product (or API, CLI, admin screen: whoever
 
 **Match the prompt.** Use the same words the person used when they invoked this skill: product names, "we"/"they"/"I", domain slang, how they named the PR. Do not rename their terms into your own. Do not upgrade their casual phrasing into formal review-speak.
 
-1. Run every block of explanation through `/humanizer --voice casual --purpose technical` before showing it. Not optional. Show the humanizer output, not the draft. Keep their terms intact through that pass.
+1. Run every block of explanation through `/my-voice --voice casual --purpose technical` before showing it. Not optional. Show the my-voice output, not the draft. Keep their terms intact through that pass.
 2. Simple English. Short sentences. One idea per sentence. Bullets over paragraphs. Diagrams over bullets when two states, a path, or a split can be drawn.
 3. ELI5 means build from the smallest true statement and define a term the moment you use it. It does not mean metaphors, similes, or toy objects. Wrong: "a hash is a fingerprint." Right: "A hash is a fixed-length number computed from input bytes. Same bytes in, same number out."
 4. **Visual first.** Default is ASCII. A round with zero diagrams is unfinished unless the slice is a rename or docs (say so in one line). Draw:
@@ -53,7 +53,7 @@ Lead with the person in front of the product (or API, CLI, admin screen: whoever
 Wrong: `Foo.handle now calls Guard.check before Bar.save.`
 Right: `They can submit again after a 429. The retry lives in Foo.handle, behind Guard.check.`
 
-**Completion criterion (voice):** user-facing fact first; their words, not yours; at least one ASCII figure per overview section that has a path or a comparison; code is optional hint; humanizer ran; zero metaphors in ELI5 bits.
+**Completion criterion (voice):** user-facing fact first; their words, not yours; at least one ASCII figure per overview section that has a path or a comparison; code is optional hint; my-voice ran; zero metaphors in ELI5 bits.
 
 ## Step 0: Read the real diff
 
@@ -148,7 +148,7 @@ End Session A with this, nothing more:
 
 > Ask anything about this round, or pick a deep dive. Say when you're ready for the quiz.
 
-**Completion criterion:** glossary sits under the title; four beats are user-facing and drawn where they compare or flow; 1-3 deep dives named not written; their wording used; humanizer ran; quiz not started; next round not started.
+**Completion criterion:** glossary sits under the title; four beats are user-facing and drawn where they compare or flow; 1-3 deep dives named not written; their wording used; my-voice ran; quiz not started; next round not started.
 
 ---
 

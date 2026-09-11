@@ -31,6 +31,12 @@ kill-ports() {
 commit-sync() {
   git add .
   git commit -m "*"
+
+  if ! git pull --rebase; then
+    print -u2 "commit-sync: pull stopped with conflicts. Resolve them before pushing."
+    return 1
+  fi
+
   git push
 }
 

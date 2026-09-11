@@ -28,20 +28,19 @@ Also:
 
 ## Writing
 
-For prose meant to ship — READMEs, docs, blog posts, commit messages for publication, PR descriptions, emails — run `/humanizer` before delivering.
+For prose the user will send or ship — Slack, docs, READMEs, RFCs, emails, PR descriptions — run `/my-voice` before delivering. Same flags as `/humanizer`; my-voice wraps it and applies Marcos's voice (pt-BR and en-US).
 
-Defaults: `--voice technical --purpose technical`. Pick other flags when context calls for it:
+Infer defaults from the situation:
 
-- `--voice casual` — social posts, informal notes
-- `--voice professional` — business comms, reports
-- `--voice warm` — tutorials, onboarding
-- `--voice blunt` — internal reviews, direct feedback
-- `--purpose email` — no markdown, greetings/signoffs allowed
+- Slack / replies — `--voice casual --purpose email`
+- Docs, RFCs, READMEs — `--voice technical --purpose technical`
+- Hiring / stakeholder notes — `--voice professional`
+- Reviews / hard calls — `--voice blunt`
 - `--purpose marketing` — short paragraphs, one CTA
-- `--mode edit --file <path>` — in-place edits to an existing file
-- `--mode detect --score` — audit only, no rewrite
+- `--mode edit --file <path>` — in-place edits
+- `--mode detect --score` — audit only
 
-Apply humanizer to the final draft, not to code, config, or chat replies.
+Apply my-voice to the final draft, not to code or config. Replies in this chat still follow Chat above.
 
 <!-- rules -->
 Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read the file when relevant:
