@@ -5,7 +5,7 @@ disable-model-invocation: true
 license: MIT
 metadata:
   author: Marcos Oliveira
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Brainstorm
@@ -44,8 +44,8 @@ Consolidate what Phase 3 surfaced: name the invariant or principle discovered, r
 
 Offer formalization. Check what's available in the environment for turning this into a durable artifact:
 
-1. Look for an existing skill in this environment suited to formalizing the outcome — a PRD, TDD, ADR, spec, or RFC skill (match by name/description, don't assume a fixed name).
-2. If one or more exist, use the AskQuestion tool to ask the user which one to hand off to, and with what summary. When candidates overlap in name but not in purpose — e.g. an implementation-plan skill and an SDD/specification skill can both be called "spec" — present them as distinct options, each with a one-line statement of what it produces, and let the user pick; never collapse them into one choice or assume the name resolves the ambiguity.
+1. Look for an existing skill in this environment suited to formalizing the outcome — TDD, ADR, RFC, or similar (match by name/description, don't assume a fixed name).
+2. If one or more exist, use the AskQuestion tool to ask the user which one to hand off to, and with what summary. When candidates overlap in name but not in purpose — e.g. two skills that both say "design" but produce different artifacts — present them as distinct options, each with a one-line statement of what it produces, and let the user pick; never collapse them into one choice or assume the name resolves the ambiguity.
 3. If none exist, offer to write the convergence artifact yourself:
    - Search the repo for an existing brainstorm directory, in order: `docs/brainstorms/`, `docs/brainstorm/`, `brainstorms/`.
    - **Found** → use it.

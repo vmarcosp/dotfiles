@@ -1,16 +1,8 @@
 return {
 	"tpope/vim-surround",
-	"andymass/vim-matchup",
-	"tpope/vim-sensible",
-	"norcalli/nvim-colorizer.lua",
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
-		config = true,
-	},
-	{
-		"windwp/nvim-autopairs",
-		event = "InsertEnter",
 		config = true,
 	},
 	{
@@ -21,9 +13,6 @@ return {
 			indent = { enabled = true },
 			dashboard = require("config.dashboard"),
 			input = { enabled = true },
-			notifier = { enabled = true },
-			scroll = { enabled = true },
-			animations = { enabled = true },
 		},
 	},
 }

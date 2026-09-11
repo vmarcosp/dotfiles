@@ -9,7 +9,7 @@ export const colors = {
 }
 
 export const status = {
-  bg: colors.bg0,
+  bg: 'default',
   fg: colors.fg0,
   position: 'bottom' as const,
 }

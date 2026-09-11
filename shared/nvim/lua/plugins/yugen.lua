@@ -27,9 +27,9 @@ return {
 			vim.api.nvim_set_hl(0, group, styles)
 		end
 
-		hl("CustomLualineMode", { bg = p.color800, fg = p.color300 })
+		hl("CustomLualineMode", { bg = p.none, fg = p.color300 })
 
-		hl("MyDashboardFooter", { bg = p.color800, fg = p.primary })
+		hl("MyDashboardFooter", { bg = p.none, fg = p.primary })
 
 		hl("TelescopeResultsTitle", { bg = p.color700, fg = p.color700 })
 		hl("TelescopePreviewBorder", { bg = p.color700, fg = p.color700 })
@@ -44,12 +44,12 @@ return {
 		hl("TelescopePromptTitle", { bg = p.color600, fg = p.color100 })
 		hl("TelescopePromptNormal", { bg = p.color700, fg = p.color100 })
 		hl("TelescopePromptBorder", { bg = p.color700, fg = p.color700 })
-		hl("WinSeparator", { bg = p.color800, fg = p.color700 })
+		hl("WinSeparator", { bg = p.none, fg = p.color700 })
 
-		hl("SnacksDashboardHeader", { bg = p.color800, fg = p.color300 })
-		hl("SnacksDashboardDesc", { bg = p.color800, fg = p.color400 })
-		hl("SnacksDashboardIcon", { bg = p.color800, fg = p.color400 })
-		hl("SnacksDashboardKey", { bg = p.color800, fg = p.color400 })
+		hl("SnacksDashboardHeader", { bg = p.none, fg = p.color300 })
+		hl("SnacksDashboardDesc", { bg = p.none, fg = p.color400 })
+		hl("SnacksDashboardIcon", { bg = p.none, fg = p.color400 })
+		hl("SnacksDashboardKey", { bg = p.none, fg = p.color400 })
 		hl("SnacksInputBorder", { bg = p.color700, fg = p.color700 })
 		hl("SnacksInputNormal", { bg = p.color700, fg = p.color200 })
 		hl("SnacksInputTitle", { bg = p.color600, fg = p.color200 })

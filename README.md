@@ -39,7 +39,7 @@ omarchy/    Omarchy only (Hyprland, Ghostty + theme include, shell.json)
 
 ## Skills
 
-Skills live in [`shared/agents/skills/`](shared/agents/skills/) and link into Claude Code, Cursor, and opencode. Pipeline: `/brainstorm` → `/prd` `/tdd` `/adr` → `/phasing` → `/spec` → `/implement`.
+Skills live in [`shared/agents/skills/`](shared/agents/skills/) and link into Claude Code, Cursor, and opencode. Design docs: `/brainstorm` → `/tdd` `/adr`. Review a delivered diff with `/review`.
 
 ## License
 
