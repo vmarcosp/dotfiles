@@ -12,6 +12,9 @@ if [[ -x $cli && -f $file ]]; then
   "$cli" --file "$file"
 fi
 
-# Keep panes transparent; omarchy-theme-set-tmux otherwise sets a solid window-style.
+# Keep panes + status transparent so Ghostty/Hyprland opacity shows through.
+# better-tmux only writes legacy status-bg/fg; modern tmux renders status-style
+# (defaults to solid green). omarchy-theme-set-tmux paints a solid window-style.
+tmux set-option -g status-style bg=default,fg=default
 tmux set-option -g window-style default
 tmux set-option -g window-active-style default
