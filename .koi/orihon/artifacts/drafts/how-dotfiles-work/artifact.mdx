@@ -1,0 +1,145 @@
+<ArtifactHeader
+  title="How these dotfiles work"
+  kind="question-deep-dive"
+  readerGoal="Understand the dual-host model so you can edit the right tree and re-run install safely."
+/>
+
+<Summary>
+One repo serves macOS and Omarchy as equal hosts. `install.sh` detects the host, installs packages for that host, then symlinks `shared/` plus either `macos/` or `omarchy/` into home. After `git pull`, re-run `./install.sh`. Edit files in the repo — live configs are symlinks, not copies.
+</Summary>
+
+<Section id="dual-host-model" title="What is the dual-host model?">
+
+macOS and Omarchy share one repository. Host detection is explicit; the installer never assumes Darwin just because this layout used to be Mac-only.
+
+<Evidence source="lib/platform.sh">
+`is_macos` checks `uname -s = Darwin`. `is_omarchy` checks `/usr/share/omarchy` or `omarchy` on `PATH`. `host_name` returns `macos`, `omarchy`, `linux`, or `unknown`.
+</Evidence>
+
+| Host | Own | Do not own |
+|------|-----|------------|
+| Both | `shared/**` | — |
+| macOS | `macos/**` | `omarchy/**` |
+| Omarchy | `omarchy/**` | `macos/**`, `/usr/share/omarchy/**` |
+
+<Callout tone="warning">
+Never edit package-owned Omarchy under `/usr/share/omarchy/`. User desktop config lives in `omarchy/` and is linked into `~/.config`.
+</Callout>
+
+<FileTree root="dotfiles/">
+install.sh
+lib/platform.sh
+shared/          # both hosts
+macos/           # Darwin only
+omarchy/         # Omarchy only
+AGENTS.md
+</FileTree>
+
+</Section>
+
+<Section id="bootstrap-flow" title="What does install.sh actually do?">
+
+`install.sh` is the only ongoing bootstrap. It is idempotent: safe after every `git pull`.
+
+<Timeline>
+  <Step id="detect-host" title="Detect host">
+    Source `lib/platform.sh`, set `HOST` from `host_name`.
+    <Evidence source="install.sh:9" />
+  </Step>
+  <Step id="host-packages" title="Install host packages">
+    macOS: Homebrew formulae, casks, fonts, nvm. Omarchy: `omarchy pkg add` / AUR list, then Todoist CLI via mise Node.
+    <Evidence source="install.sh:277-280" />
+  </Step>
+  <Step id="shell-tmux" title="oh-my-zsh + TPM">
+    Ensure oh-my-zsh and autosuggestions; clone TPM under XDG and install plugins.
+  </Step>
+  <Step id="link-shared" title="Link shared config">
+    Symlink git, zsh, nvim, tmux, better-tmux, agents (Claude/Cursor/opencode), and `shared/bin`.
+    <Evidence source="install.sh:105-138" />
+  </Step>
+  <Step id="link-host" title="Link host-specific config">
+    macOS: Kitty + yugen Ghostty. Omarchy: Ghostty, Hyprland, shell.json/toml, hooks, fonts, GTK, `omarchy/bin`.
+  </Step>
+  <Step id="better-tmux" title="better-tmux CLI + JS deps">
+    Fetch the GitHub release binary into `~/.local/bin`, then `pnpm`/`npm` install under `shared/better-tmux`.
+  </Step>
+</Timeline>
+
+Symlinks use `backup_then_link`: a real file at the destination is moved aside to a `.bak.dotfiles.` plus epoch suffix before `ln -sfn`.
+
+<Evidence source="lib/platform.sh:backup_then_link">
+Missing source is skipped with a warning. Existing non-symlink destinations are renamed, then the destination becomes a force-updated symlink to the repo path.
+</Evidence>
+
+<Details summary="Day-two sync commands">
+On either host: `git pull && ./install.sh`.
+
+First pull of this layout on the Mac also needs `./mac-compliance.sh` once (rewrites old symlink targets, then runs install). After that, Mac and Omarchy both use `install.sh` only.
+
+Omarchy: if you want zsh as the login shell, `chsh -s /usr/bin/zsh`. Do not install the `omarchy-zsh` package — it fights this `.zshrc`.
+</Details>
+
+</Section>
+
+<Section id="runtime-wiring" title="How does a running shell pick shared vs host config?">
+
+`~/.zshrc` is a symlink into `shared/zsh/.zshrc`. That file resolves `DOTFILES` from the symlink target, loads `lib/platform.sh`, then sources `$DOTFILES/$host/zsh.zsh` when it exists.
+
+<Evidence source="shared/zsh/.zshrc">
+After oh-my-zsh and shared functions load, the file sets `host` from `host_name` and sources `$DOTFILES/$host/zsh.zsh` when that file exists (`macos/zsh.zsh` or `omarchy/zsh.zsh`).
+</Evidence>
+
+PATH prefers `~/.local/bin`, `~/bin`, then `shared/bin` and the host `bin/`. Interactive shells outside tmux auto-start tmux.
+
+Themes follow the same split:
+
+- Neovim: this lazy.nvim tree on both hosts (not Omarchy LazyVim). yugen on macOS; on Omarchy, live theme from `~/.local/state/omarchy/current/theme/neovim.lua`.
+- Ghostty: yugen on macOS; Omarchy theme include on Omarchy.
+- better-tmux bar: `themes/macos.tsx` (yugen) vs `themes/omarchy.tsx` (reads live Omarchy `colors.toml`). Omarchy theme-set hooks refresh the bar.
+
+<Callout tone="note">
+Omarchy still writes theme state under `~/.config/omarchy/themes`, `themed/`, `plugins/`, and `~/.local/state/omarchy/`. Those stay off git.
+</Callout>
+
+</Section>
+
+<Section id="what-stays-local" title="What is deliberately not in git?">
+
+MCP and secrets stay machine-local. `ensure_local_mcp` demotes a repo-linked `~/.cursor/mcp.json` to a regular file and writes Playwright + Context7 into Cursor and OpenCode local MCP overlays. Cursor MCP is `~/.cursor/mcp.json`; OpenCode overlay is `~/.config/opencode/mcp.local.json` (selected via `OPENCODE_CONFIG` in `.zshrc`).
+
+<Evidence source="lib/platform.sh:ensure_local_mcp" />
+
+Agent skills and rules live in `shared/agents/` and are linked into `~/.agents`, `~/.claude`, and `~/.cursor/skills` so Claude, Cursor, and OpenCode share one skill tree.
+
+</Section>
+
+<Section id="edit-map" title="Where do I change what?">
+
+| Want to change | Edit | Then |
+|----------------|------|------|
+| Shared shell | `shared/zsh/` + host `zsh.zsh` | `exec zsh` |
+| Neovim | `shared/nvim/lua/` | reload nvim |
+| tmux bar | `shared/better-tmux/` | better-tmux rebuild / theme hook |
+| Global AI skill/rule | `shared/agents/skills/` or `rules/` | already linked |
+| Omarchy desktop | `omarchy/hypr/`, `omarchy/config/` | `hyprctl reload` |
+| New symlink | add to `install.sh` | re-run `./install.sh` |
+| macOS packages | `macos/packages.sh` | `./install.sh` |
+| Omarchy packages | `omarchy/packages.sh` | `./install.sh` |
+
+</Section>
+
+<Question
+  id="next-focus"
+  prompt="Which part should the next Orihon pass expand?"
+  why="Keeps a follow-up deep-dive focused on the subsystem you actually need next."
+>
+  <Choice id="focus-install" value="install.sh and symlink map" />
+  <Choice id="focus-omarchy" value="Omarchy desktop + theme hooks" />
+  <Choice id="focus-agents" value="shared agents / skills linking" />
+  <Choice id="focus-enough" value="This is enough; no expansion" />
+  <FreeResponse
+    id="focus-note"
+    label="Anything unclear or wrong?"
+    placeholder="Name a path or behavior that still does not match how you use the machines"
+  />
+</Question>

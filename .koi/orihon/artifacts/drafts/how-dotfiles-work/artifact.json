@@ -1,0 +1,9 @@
+{
+  "format": "orihon.artifact/v1",
+  "id": "how-dotfiles-work",
+  "title": "How these dotfiles work",
+  "archetype": "question-deep-dive",
+  "catalog_version": 1,
+  "created_at": "2026-09-10T23:37:52.484545425Z",
+  "theme": "koi"
+}
