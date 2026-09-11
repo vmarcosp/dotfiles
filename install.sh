@@ -140,10 +140,6 @@ link_shared() {
 
 link_macos() {
   log "Linking macOS config"
-  mkdir -p "$HOME/.config/kitty"
-  backup_then_link "$DOTFILES/macos/kitty/kitty.conf" "$HOME/.config/kitty/kitty.conf"
-  backup_then_link "$DOTFILES/macos/kitty/yugen.conf" "$HOME/.config/kitty/yugen.conf"
-
   local ghostty="$HOME/Library/Application Support/com.mitchellh.ghostty"
   mkdir -p "$ghostty"
   backup_then_link "$DOTFILES/macos/ghostty/config" "$ghostty/config"

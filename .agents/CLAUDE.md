@@ -3,7 +3,7 @@
 This repository is **macOS and Omarchy**. Detect the host (`uname`, `/usr/share/omarchy`) before you edit. Layout and symlink map: root `AGENTS.md`.
 
 - `shared/` — both machines
-- `macos/` — Darwin only (Kitty, yugen Ghostty)
+- `macos/` — Darwin only (yugen Ghostty)
 - `omarchy/` — Hyprland, Omarchy shell.json, Ghostty with Omarchy theme include
 - `install.sh` — ongoing bootstrap on both hosts
 - `mac-compliance.sh` — one-shot Mac rewrite of pre-`shared/` links

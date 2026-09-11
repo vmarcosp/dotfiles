@@ -1,11 +1,10 @@
-# Fonts (match macos/kitty/kitty.conf)
+# Fonts
 font-family = Space Mono
 font-family-italic = Operator Mono
 font-style-italic = Book Italic
 font-size = 16
 window-inherit-font-size = false
 
-# kitty adjust_line_height 8
 adjust-cell-height = 8
 
 # Window

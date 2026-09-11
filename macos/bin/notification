@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# notification - Fire a macOS notification via terminal-notifier, with Kitty focus on click
+# notification - Fire a macOS notification via terminal-notifier, with Ghostty focus on click
 # Usage: notification <title> <message> [--tone info|alert] [--subtitle <text>] [--group <id>] [--remove]
 
 set -e
@@ -11,7 +11,7 @@ TONE="info"
 SUBTITLE=""
 GROUP="claude-code"
 REMOVE=false
-KITTY_BUNDLE="net.kovidgoyal.kitty"
+GHOSTTY_BUNDLE="com.mitchellh.ghostty"
 
 # Parse args
 while [[ $# -gt 0 ]]; do
@@ -76,12 +76,12 @@ if command -v terminal-notifier &>/dev/null; then
         -message "${MESSAGE:-}"
         -sound "$SOUND"
         -group "$GROUP"
-        -activate "$KITTY_BUNDLE"
+        -activate "$GHOSTTY_BUNDLE"
     )
     [[ -n "$SUBTITLE" ]] && ARGS+=(-subtitle "$SUBTITLE")
     terminal-notifier "${ARGS[@]}"
 elif [[ "$(uname)" == "Darwin" ]]; then
-    # Fallback: osascript banner (no Kitty focus, no group)
+    # Fallback: osascript banner (no Ghostty focus, no group)
     osascript -e "display notification \"${MESSAGE:-}\" with title \"$TITLE\" sound name \"$SOUND\""
 else
     # Non-macOS fallback

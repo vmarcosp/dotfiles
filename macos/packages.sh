@@ -18,7 +18,6 @@ MACOS_FORMULAE=(
 MACOS_CASKS=(
   raycast
   rectangle
-  kitty
   arc
   discord
   hiddenbar
