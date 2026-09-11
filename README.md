@@ -40,17 +40,17 @@ Live in [`shared/agents/skills/`](shared/agents/skills/) and link into every age
 |:------|:-----------|
 | `/brainstorm` | Turn a fuzzy idea into something decision-ready |
 | `/adr` | Record an architecture decision |
-| `/tdd` | Red-green-refactor on a scoped change |
-| `/review` | Review a delivered diff |
+| `/tdd` | Write or update a technical design doc |
+| `/review` | Review a delivered change against its contracts |
+| `/pr-explainer` | Walk a PR in rounds — overview, Q&A, quiz |
+| `/triage-pr-followups` | Triage leftover follow-ups on an open PR |
 | `/my-voice` | Rewrite prose in my voice |
 | `/humanizer` | Strip chatbot tells from a draft |
 | `/nous` | Act on Nous review threads on a local doc |
-| `/richview` | HTML preview of specs, plans, or context |
-| `/orihon` | Local rich artifact with the Orihon CLI |
 | `/notification` | Desktop ping when an agent needs you |
 | `todoist-cli` | Tasks via the `td` CLI |
-
-More in the folder — `context7-mcp`, `pr-explainer`, `triage-pr-followups`, `writing-great-skills`.
+| `context7-mcp` | Fetch current library docs via Context7 |
+| `writing-great-skills` | Reference for authoring skills well |
 
 ## Install
 
