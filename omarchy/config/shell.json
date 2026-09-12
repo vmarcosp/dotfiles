@@ -62,5 +62,12 @@
       ]
     }
   },
-  "plugins": []
+  "plugins": [
+    {
+      "id": "bobbynicholas.omaland"
+    },
+    {
+      "id": "io.github.tallsam.navbar-cat"
+    }
+  ]
 }

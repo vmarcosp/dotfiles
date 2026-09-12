@@ -51,3 +51,21 @@ hl.env("OMARCHY_MENU_FONT", "Inter")
 --     column_width = 0.97,
 --   },
 -- })
+
+-- >>> omaland managed block >>>
+-- Written by Omaland. Safe to hand-edit: Omaland re-reads this block
+-- every time it opens, and only ever rewrites what's between the fences.
+hl.config({
+  decoration = {
+    border_part_of_window = false,
+  },
+
+  general = {
+    gaps_out = 24,
+
+    snap = {
+      enabled = false,
+    },
+  },
+})
+-- <<< omaland managed block <<<
