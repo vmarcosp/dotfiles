@@ -49,3 +49,7 @@ if [[ -z "${TMUX:-}" && -o interactive && -t 0 && -t 1 ]] && command -v tmux >/d
   fi
   unset _tmux_client _tmux_server
 fi
+
+
+# Added by Antigravity CLI installer
+export PATH="/home/marcos/.local/bin:$PATH"

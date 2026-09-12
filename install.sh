@@ -128,6 +128,9 @@ link_shared() {
   backup_then_link "$DOTFILES/shared/cursor/hooks.json" "$HOME/.cursor/hooks.json"
   ensure_local_mcp
 
+  mkdir -p "$HOME/.gemini/config"
+  backup_then_link "$DOTFILES/shared/agents/skills" "$HOME/.gemini/config/skills"
+
   mkdir -p "$HOME/.opencode" "$HOME/.config/opencode"
   backup_then_link "$DOTFILES/shared/opencode/plugins" "$HOME/.opencode/plugins"
   backup_then_link "$DOTFILES/shared/opencode/tui.jsonc" "$HOME/.config/opencode/tui.jsonc"
@@ -181,8 +184,9 @@ link_omarchy() {
   backup_then_link "$DOTFILES/omarchy/gtk/settings.ini" "$HOME/.config/gtk-4.0/settings.ini"
 
   if command -v gsettings >/dev/null; then
-    gsettings set org.gnome.desktop.interface font-name 'Inter 14'
-    gsettings set org.gnome.desktop.interface document-font-name 'Inter 14'
+    gsettings set org.gnome.desktop.interface font-name 'Inter 11'
+    gsettings set org.gnome.desktop.interface document-font-name 'Inter 11'
+    gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
   fi
 
   link_bin_dir "$DOTFILES/omarchy/bin"

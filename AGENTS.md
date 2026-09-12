@@ -21,7 +21,7 @@ dotfiles/
 │   ├── nvim/               # this lazy.nvim config (not Omarchy LazyVim)
 │   ├── tmux/.tmux.conf
 │   ├── better-tmux/
-│   ├── agents/             # global AI skills/rules → ~/.agents, ~/.claude, ~/.cursor
+│   ├── agents/             # global AI skills/rules → ~/.agents, ~/.claude, ~/.cursor, ~/.gemini
 │   ├── claude/
 │   ├── cursor/             # hooks only; MCP is ~/.cursor/mcp.json (local)
 │   ├── opencode/           # global config; MCP overlay is ~/.config/opencode/mcp.local.json
