@@ -47,6 +47,8 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 
 - `~/.agents/rules/context7.md` — use Context7 MCP for library docs
 - `~/.agents/rules/notification.md` — when to notify the user via `/notification`
+- `~/.agents/rules/remote-dev.md` — bind servers to 0.0.0.0 and supply Tailscale URLs when in SSH / remote mode
 <!-- rules -->
 
 @RTK.md
+
