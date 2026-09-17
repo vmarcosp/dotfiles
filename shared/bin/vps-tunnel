@@ -6,7 +6,7 @@
 
 set -euo pipefail
 
-HOST="${VPS_TUNNEL_HOST:-vps}"
+HOST="${VPS_TUNNEL_HOST:-pc}"
 TIMEOUT="${VPS_TUNNEL_TIMEOUT:-7200}" # seconds; 0 = no limit
 PID_DIR="${VPS_TUNNEL_PID_DIR:-${XDG_RUNTIME_DIR:-/tmp}}"
 

@@ -10,6 +10,15 @@
       "pluginName": "mattpocock-skills",
       "installedAt": "2026-07-10T01:58:45.074Z",
       "updatedAt": "2026-07-10T01:58:45.074Z"
+    },
+    "nous": {
+      "source": "vtex/nous",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/vtex/nous.git",
+      "skillPath": "skills/nous/SKILL.md",
+      "skillFolderHash": "08e721e82ab7136fc8fb69bb76202f53ce86350a",
+      "installedAt": "2026-09-16T20:24:19.411Z",
+      "updatedAt": "2026-09-16T20:24:19.411Z"
     }
   },
   "dismissed": {

@@ -221,15 +221,24 @@ Against a running Nous, `open` validates the target, stores the session, **navig
 
 ## Installing this skill elsewhere
 
+The default path is the skills CLI, which discovers `skills/nous/` in this repo:
+
+```bash
+npx skills add vtex/nous
+npx skills install vtex/nous   # same command
+```
+
+That writes `.agents/skills/nous` (and any other agent homes you pick). If the Nous CLI is already on `PATH`:
+
 ```bash
 nous-app skills install                          # prompts for the directories
 nous-app skills install --for agents --for cursor # explicit, no prompt
 nous-app skills install /repos/acme --yes         # another repo, take the default
 ```
 
-With no `--for` and a terminal attached, it lists the agent directories it found (`.agents`, `.claude`, `.cursor`, `.opencode`), marks the ones that already exist, and asks. **Piped or called by an agent it never prompts** — it installs to `.agents/skills/` and returns. `--for` is repeatable; `--yes` takes the default without asking.
+With no `--for` and a terminal attached, `nous-app skills install` lists the agent directories it found (`.agents`, `.claude`, `.cursor`, `.opencode`), marks the ones that already exist, and asks. **Piped or called by an agent it never prompts** — it installs to `.agents/skills/` and returns. `--for` is repeatable; `--yes` takes the default without asking.
 
-The skill text is compiled into the binary, so this works from any directory. An existing `SKILL.md` is overwritten (that is how a newer skill arrives after a Nous update) and reported as `"replaced": true` — mention it if the user might have hand-edited theirs. A skill directory left over under the old `nous-comments` name is removed.
+The CLI skill text is compiled into the binary, so that form works from any directory. An existing `SKILL.md` is overwritten (that is how a newer skill arrives after a Nous update) and reported as `"replaced": true` — mention it if the user might have hand-edited theirs. A skill directory left over under the old `nous-comments` name is removed.
 
 ## What not to do
 

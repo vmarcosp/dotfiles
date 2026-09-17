@@ -2,7 +2,7 @@ import type { Bind } from 'better-tmux'
 
 export const bindings = [
   {
-    key: `\\\\`,
+    key: '=',
     command: 'split-window',
     options: ['-h', '-c', '"#{pane_current_path}"'],
   },

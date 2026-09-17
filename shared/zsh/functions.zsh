@@ -46,27 +46,6 @@ commit-changelog() {
   git commit -m "$prefix updated CHANGELOG.md"
 }
 
-ssh-vps() {
-  local host="${1:-vps}"
-  if [ -n "$TMUX" ]; then
-    tmux set-option -g prefix C-a
-    tmux bind-key C-a send-prefix
-    trap 'tmux set-option -g prefix C-d; tmux bind-key C-d send-prefix' EXIT INT
-  fi
-  ssh "$host"
-  if [ -n "$TMUX" ]; then
-    tmux set-option -g prefix C-d
-    tmux bind-key C-d send-prefix
-    trap - EXIT INT
-  fi
-}
-
-tmux-revert-prefix() {
-  tmux set-option -g prefix C-d
-  tmux bind-key C-d send-prefix
-  echo "Prefix reverted to C-d"
-}
-
 alias vim="nvim"
 alias avante='NVIM_AVANTE_MODE=1 nvim -c "lua vim.defer_fn(function() require(\"avante.api\").zen_mode() end, 100)"'
 alias claudio="claude --model fable"
