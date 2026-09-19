@@ -4,3 +4,6 @@ shared/agents/AGENTS.local.md
 .DS_Store
 .claude/settings.local.json
 *.bak.dotfiles.*
+
+# Host-specific Impeccable engine; the launcher downloads it on first run.
+shared/agents/skills/impeccable/scripts/bin/

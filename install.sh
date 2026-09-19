@@ -141,6 +141,42 @@ link_shared() {
   link_bin_dir "$DOTFILES/shared/bin"
 }
 
+# CS2 reads cfgs from the game cfg dir and from userdata/.../730/local/cfg.
+# Neither path is XDG; skip silently if Steam/CS2 is not installed on this host.
+link_cs2_cfgs() {
+  local src name steam_root cfg dest linked=0
+  [ -d "$DOTFILES/cs" ] || return 0
+
+  for src in "$DOTFILES/cs/"*.cfg; do
+    [ -f "$src" ] || continue
+    name="$(basename "$src")"
+
+    for steam_root in \
+      "$HOME/.local/share/Steam" \
+      "$HOME/.steam/steam" \
+      "$HOME/Library/Application Support/Steam"
+    do
+      [ -d "$steam_root" ] || continue
+
+      cfg="$steam_root/steamapps/common/Counter-Strike Global Offensive/game/csgo/cfg"
+      if [ -d "$cfg" ]; then
+        backup_then_link "$src" "$cfg/$name"
+        linked=1
+      fi
+
+      for dest in "$steam_root"/userdata/*/730/local/cfg; do
+        [ -d "$dest" ] || continue
+        backup_then_link "$src" "$dest/$name"
+        linked=1
+      done
+    done
+  done
+
+  if [ "$linked" -eq 1 ]; then
+    log "Linked CS2 cfg files into Steam cfg dirs"
+  fi
+}
+
 link_macos() {
   log "Linking macOS config"
   local ghostty="$HOME/Library/Application Support/com.mitchellh.ghostty"
@@ -282,6 +318,7 @@ esac
 
 install_oh_my_zsh
 link_shared
+link_cs2_cfgs
 install_tpm
 
 case "$HOST" in
