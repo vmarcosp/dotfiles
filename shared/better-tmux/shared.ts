@@ -2,7 +2,8 @@ import type { Bind } from 'better-tmux'
 
 export const bindings = [
   {
-    key: '=',
+    // Quoted because better-tmux passes the key through /bin/sh.
+    key: "'\\'",
     command: 'split-window',
     options: ['-h', '-c', '"#{pane_current_path}"'],
   },
