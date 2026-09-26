@@ -4,15 +4,25 @@
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
 -- Sofle (Vial) emits US HID keycodes; the Brazilian custom map lives in firmware.
--- Keep OS on US so symbols match Vial — br/abnt2 would remap them a second time.
--- (/etc/vconsole.conf is still br for the Beken ABNT2 / TTY; this overrides Hyprland.)
-hl.config({
-  input = {
-    kb_layout = "us",
-    kb_model = "",
-    kb_options = "compose:caps,shift:both_capslock_cancel",
-  },
-})
+-- Keep Hyprland on US so `;` stays `;` — br/abnt2 maps that HID key to `ç`.
+-- TTY stays KEYMAP=br-abnt2 for the Beken ABNT2 board. Graphical layout is
+-- XKBLAYOUT=us (Omarchy reads that from /etc/vconsole.conf). If you change
+-- X11 with localectl, pass --no-convert so the TTY keymap is left alone:
+--   localectl --no-convert set-x11-keymap us
+--   localectl --no-convert set-keymap br-abnt2
+local function apply_us_keyboard()
+  hl.config({
+    input = {
+      kb_layout = "us",
+      kb_model = "",
+      kb_options = "compose:caps,shift:both_capslock_cancel",
+    },
+  })
+end
+
+apply_us_keyboard()
+-- Session start can re-apply systemd-localed after Lua; pin US again then.
+hl.on("hyprland.start", apply_us_keyboard)
 
 -- Other input overrides (repeat, mouse, touchpad) stay commented so Omarchy
 -- defaults remain. Example:
