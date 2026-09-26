@@ -114,6 +114,7 @@ link_shared() {
   backup_then_link "$DOTFILES/shared/better-tmux" "$HOME/.config/better-tmux"
 
   backup_then_link "$DOTFILES/shared/agents" "$HOME/.agents"
+  backup_then_link "$DOTFILES/shared/agents/AGENTS.md" "$HOME/AGENTS.md"
   mkdir -p "$HOME/.claude"
   backup_then_link "$DOTFILES/shared/agents/AGENTS.md" "$HOME/.claude/CLAUDE.md"
   backup_then_link "$DOTFILES/shared/claude/settings.json" "$HOME/.claude/settings.json"
