@@ -69,3 +69,10 @@ hl.config({
   },
 })
 -- <<< omaland managed block <<<
+
+-- Tearing only applies to windows with immediate = true (CS2).
+hl.config({
+  general = {
+    allow_tearing = true,
+  },
+})

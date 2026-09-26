@@ -27,3 +27,18 @@ require("default.hypr.toggles")
 
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
+
+-- CS2 on XWayland: skip compositor extras so 1% lows don't collapse in fights.
+o.window("cs2", {
+  tag = "-default-opacity",
+  opacity = "1 1 override",
+  opaque = true,
+  no_blur = true,
+  no_anim = true,
+  no_shadow = true,
+  rounding = 0,
+  border_size = 0,
+  content = "game",
+  immediate = true,
+  idle_inhibit = "always",
+})

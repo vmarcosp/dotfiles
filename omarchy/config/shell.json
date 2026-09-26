@@ -6,7 +6,7 @@
   },
   "bar": {
     "position": "top",
-    "transparent": false,
+    "transparent": true,
     "centerAnchor": "omarchy.clock",
     "layout": {
       "left": [
@@ -19,9 +19,6 @@
       ],
       "center": [
         {
-          "id": "omarchy.indicators"
-        },
-        {
           "id": "omarchy.clock",
           "format": "dddd HH:mm",
           "formatAlt": "d MMMM 'W'ww yyyy",
@@ -29,6 +26,9 @@
         },
         {
           "id": "omarchy.keyboard-layout"
+        },
+        {
+          "id": "omarchy.indicators"
         },
         {
           "id": "omarchy.weather"
@@ -65,9 +65,6 @@
   "plugins": [
     {
       "id": "bobbynicholas.omaland"
-    },
-    {
-      "id": "io.github.tallsam.navbar-cat"
     }
   ]
 }

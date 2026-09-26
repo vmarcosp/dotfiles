@@ -3,12 +3,14 @@
 
 -- Keyboard layout and options.
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
--- Physical keyboard is Brazilian ABNT2; US layout made : produce ? and ? produce nothing.
+-- Sofle (Vial) emits US HID keycodes; the Brazilian custom map lives in firmware.
+-- Keep OS on US so symbols match Vial — br/abnt2 would remap them a second time.
+-- (/etc/vconsole.conf is still br for the Beken ABNT2 / TTY; this overrides Hyprland.)
 hl.config({
   input = {
-    kb_layout = "br",
-    kb_model = "abnt2",
-    kb_options = "compose:caps,shift:both_capslock_cancel,altwin:swap_ralt_rwin",
+    kb_layout = "us",
+    kb_model = "",
+    kb_options = "compose:caps,shift:both_capslock_cancel",
   },
 })
 

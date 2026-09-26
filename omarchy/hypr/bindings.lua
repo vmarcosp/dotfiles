@@ -4,26 +4,33 @@
 -- See current bindings and descriptions:
 --   omarchy menu keybindings --print
 
--- To disable every Omarchy default binding, set this in
--- ~/.config/hypr/hyprland.lua before require("default.hypr.omarchy"), then add
--- only the bindings you want below:
---   omarchy_default_bindings = false
+-- Vim-style window focus / swap (hjkl instead of arrows).
+-- Note: SUPER+J was Toggle window split; SUPER+K was Keybindings;
+-- SUPER+L was Toggle workspace layout — relocated below.
 
--- To disable all preinstalled app/webapp bindings, set:
---   omarchy_preinstalled_bindings = false
+hl.unbind("SUPER + LEFT")
+hl.unbind("SUPER + RIGHT")
+hl.unbind("SUPER + UP")
+hl.unbind("SUPER + DOWN")
+hl.unbind("SUPER + SHIFT + LEFT")
+hl.unbind("SUPER + SHIFT + RIGHT")
+hl.unbind("SUPER + SHIFT + UP")
+hl.unbind("SUPER + SHIFT + DOWN")
 
--- Add a new binding.
--- o.bind("SUPER + SHIFT + R", "SSH", "alacritty -e ssh your-server")
+hl.unbind("SUPER + J")
+hl.unbind("SUPER + K")
+hl.unbind("SUPER + L")
 
--- Change an existing binding by unbinding it first, then binding the key again.
--- This example changes SUPER+SPACE from the launcher to the Omarchy root menu.
--- hl.unbind("SUPER + SPACE")
--- o.bind("SUPER + SPACE", "Omarchy menu", "omarchy-menu toggle root")
+o.bind("SUPER + H", "Focus on left window", hl.dsp.focus({ direction = "l" }))
+o.bind("SUPER + L", "Focus on right window", hl.dsp.focus({ direction = "r" }))
+o.bind("SUPER + K", "Focus on above window", hl.dsp.focus({ direction = "u" }))
+o.bind("SUPER + J", "Focus on below window", hl.dsp.focus({ direction = "d" }))
 
--- Disable a default binding without replacing it.
--- hl.unbind("SUPER + SHIFT + B")
+o.bind("SUPER + SHIFT + H", "Swap window to the left", hl.dsp.window.swap({ direction = "l" }))
+o.bind("SUPER + SHIFT + L", "Swap window to the right", hl.dsp.window.swap({ direction = "r" }))
+o.bind("SUPER + SHIFT + K", "Swap window up", hl.dsp.window.swap({ direction = "u" }))
+o.bind("SUPER + SHIFT + J", "Swap window down", hl.dsp.window.swap({ direction = "d" }))
 
--- Logitech MX Keys examples:
--- o.bind("SUPER + SHIFT + S", nil, "omarchy-capture-screenshot")
--- o.bind("SUPER + H", nil, "voxtype record toggle")
--- o.bind("SUPER + PERIOD", nil, "omarchy-shell shell toggle omarchy.emojis")
+o.bind("SUPER + CTRL + J", "Toggle window split", hl.dsp.layout("togglesplit"))
+o.bind("SUPER + ALT + SHIFT + K", "Keybindings", "omarchy-menu-keybindings")
+o.bind("SUPER + ALT + L", "Toggle workspace layout", "omarchy-hyprland-workspace-layout-toggle")
