@@ -48,7 +48,5 @@ commit-changelog() {
 
 alias vim="nvim"
 alias avante='NVIM_AVANTE_MODE=1 nvim -c "lua vim.defer_fn(function() require(\"avante.api\").zen_mode() end, 100)"'
-alias claudio="claude --model fable"
-alias claudin="claude --model haiku"
 alias h2='$(npm prefix -s)/node_modules/.bin/shopify hydrogen'
 alias gemini="agy --dangerously-skip-permissions"
