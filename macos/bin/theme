@@ -1,0 +1,85 @@
+#!/usr/bin/env bash
+#
+# theme - Switch the macOS color theme for Ghostty, Neovim, and tmux
+# Usage: theme [yugen|everforest-light|toggle|list]
+#
+# State lives in ~/.local/state/dotfiles/theme. Ghostty reloads on SIGUSR2,
+# Neovim watches the state file, and tmux re-runs better-tmux.
+
+set -euo pipefail
+
+THEMES=(yugen everforest-light)
+DOTFILES="$(cd "$(dirname "$(readlink -f "$0")")/../.." && pwd)"
+STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles"
+STATE_FILE="$STATE_DIR/theme"
+
+current() {
+  if [ -s "$STATE_FILE" ]; then
+    tr -d '[:space:]' <"$STATE_FILE"
+  else
+    printf 'yugen'
+  fi
+}
+
+known() {
+  local t
+  for t in "${THEMES[@]}"; do
+    [ "$t" = "$1" ] && return 0
+  done
+  return 1
+}
+
+apply_ghostty() {
+  local link="$STATE_DIR/ghostty.conf"
+  if [ "$1" = yugen ]; then
+    rm -f "$link"
+  else
+    ln -sfn "$DOTFILES/macos/ghostty/$1.conf" "$link"
+  fi
+  pkill -USR2 -x ghostty 2>/dev/null || true
+}
+
+apply_tmux() {
+  tmux list-sessions >/dev/null 2>&1 || return 0
+  local cli="$HOME/.local/bin/better-tmux" file="$HOME/.config/better-tmux/index.tsx"
+  if [ -x "$cli" ] && [ -f "$file" ]; then
+    "$cli" --file "$file" >/dev/null
+  fi
+  # better-tmux writes the legacy status-bg/fg; keep the bar transparent.
+  tmux set-option -g status-style bg=default,fg=default
+}
+
+case "${1:-}" in
+  "")
+    current
+    echo
+    exit 0
+    ;;
+  list)
+    printf '%s\n' "${THEMES[@]}"
+    exit 0
+    ;;
+  toggle)
+    if [ "$(current)" = yugen ]; then next=everforest-light; else next=yugen; fi
+    ;;
+  -h | --help)
+    echo "Usage: theme [$(IFS='|'; echo "${THEMES[*]}")|toggle|list]"
+    exit 0
+    ;;
+  *)
+    next="$1"
+    ;;
+esac
+
+if ! known "$next"; then
+  echo "theme: unknown theme '$next' (try: ${THEMES[*]})" >&2
+  exit 1
+fi
+
+mkdir -p "$STATE_DIR"
+printf '%s\n' "$next" >"$STATE_FILE.tmp"
+mv "$STATE_FILE.tmp" "$STATE_FILE"
+
+apply_ghostty "$next"
+apply_tmux
+echo "theme: $next"

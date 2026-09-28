@@ -21,7 +21,10 @@ end
 
 return {
 	"bettervim/yugen.nvim",
+	-- Default theme; `theme everforest-light` swaps it out (see everforest-light.lua).
+	lazy = require("config.platform").macos_theme() ~= "yugen",
 	config = function()
+		vim.o.background = "dark"
 		vim.cmd.colorscheme("yugen")
 		local hl = function(group, styles)
 			vim.api.nvim_set_hl(0, group, styles)

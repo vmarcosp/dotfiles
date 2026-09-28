@@ -17,3 +17,5 @@ background-opacity-cells = false
 confirm-close-surface = false
 
 config-file = yugen.conf
+# `theme` links a palette override here; absent means yugen.
+config-file = ?~/.local/state/dotfiles/ghostty.conf

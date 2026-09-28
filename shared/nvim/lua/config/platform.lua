@@ -16,4 +16,16 @@ function M.omarchy_theme_lua()
 	return state
 end
 
+-- Written by macos/bin/theme.
+function M.macos_theme_file()
+	local state = vim.env.XDG_STATE_HOME or vim.fn.expand("~/.local/state")
+	return state .. "/dotfiles/theme"
+end
+
+function M.macos_theme()
+	local ok, lines = pcall(vim.fn.readfile, M.macos_theme_file(), "", 1)
+	local name = ok and lines[1] and vim.trim(lines[1]) or ""
+	return name ~= "" and name or "yugen"
+end
+
 return M
