@@ -1,6 +1,6 @@
 ---
 name: nous
-description: Acts on the review comments a human left in the Nous app on a local Markdown doc — reads each thread, works out whether it asks for an answer, an edit, or a discussion, and does that. Use when the user says "check my Nous comments", "/nous", "address the review", "what did I flag in <doc>", "answer the comments on this branch", or when work on a doc should be driven by comments a reviewer left in Nous on a local branch. Covers listing and filtering threads across a whole branch or one doc, answering questions, proposing and applying edits, discussing disagreements, resolving finished threads, deleting comments, opening a doc in the Nous UI, and installing this skill into another repo. Not for GitHub PR comments (use gh for those) and not for creating new threads.
+description: Acts on the review comments a human left in the Nous app on a local Markdown doc — reads each thread, works out whether it asks for an answer, an edit, or a discussion, and does that. Use when the user says "check my Nous comments", "/nous", "address the review", "what did I flag in <doc>", "answer the comments on this branch", or when work on a doc should be driven by comments a reviewer left in Nous on a local branch. Covers listing and filtering threads, waiting with `open --watch` for comments sent to the agent, answering questions, proposing and applying edits, discussing disagreements, resolving finished threads, deleting comments, opening a doc in the Nous UI, and installing this skill into another repo. Not for GitHub PR comments (use gh for those) and not for creating new threads.
 ---
 
 A human reviewed a doc in Nous and left comments on it. Your job is to work through them and **do what each one asks** — not to summarize them back, and not to hand the user a plan.
@@ -31,8 +31,8 @@ nous-app reply     <repo-path> <branch> <doc-path> <thread-id> <body>
 nous-app resolve   <repo-path> <branch> <doc-path> <thread-id>
 nous-app unresolve <repo-path> <branch> <doc-path> <thread-id>
 nous-app delete    <repo-path> <branch> <doc-path> <comment-id>
-nous-app open      <repo-path> <branch> <doc-path>
-nous-app <path>
+nous-app open      [--watch] <repo-path> <branch> <doc-path>
+nous-app <path> [--watch]
 nous-app skills install [dir] [--for agents|claude|cursor|opencode]... [--yes]
 nous-app help
 ```
@@ -69,6 +69,7 @@ One JSON object on stdout, tagged by `cmd`:
 - `resolve`/`unresolve` → `{"cmd":"setResolved","comment":{...}}`
 - `delete` → `{"cmd":"delete","deleted":["root-id","reply-id"]}`
 - `open` → `{"cmd":"open","target":{...}}`
+- `open --watch` → `{"cmd":"watch","threads":[...]}` — same thread shape as `list`
 - `skills` → `{"cmd":"skills","installed":[...]}`
 - `err` → `{"cmd":"err","error":{"kind":...}}`
 
@@ -161,7 +162,7 @@ nous-app reply "$REPO" "$BRANCH" "$DOC" "$ROOT_ID" \
   "Reading this as: delete the second paragraph under 'Anchoring' and move its one real claim into the preceding list. Confirm and I'll apply it."
 ```
 
-Then move to the next thread. **Do not sit and wait** — you are not polling, and there is no watch mode. Work through every thread you can, report what you proposed, and hand back.
+Then move to the next thread. **Do not sleep or re-run `list` in a loop.** After you have acted on every thread you can, wait with `open --watch` (below) rather than handing back and hoping the human pings chat.
 
 The human reads your proposals in the Nous UI and replies there. When they come back to you — a new session, or the same one — re-run `list --unanswered` and you will see their answers as new human messages on those threads.
 
@@ -215,6 +216,33 @@ Against a running Nous, `open` validates the target, stores the session, **navig
 
 `open` against a running Nous is also the one way to get a straight answer about whether a repo/branch/doc resolves.
 
+## Waiting for comments (`open --watch`)
+
+When you need the human to leave more comments (after a proposal, after applying a change, or at the start of a review session), **block on watch** instead of asking them to come back to chat:
+
+```bash
+nous-app open --watch "$REPO" "$BRANCH" "$DOC"
+nous-app docs/architecture.md --watch
+nous-app --watch docs/architecture.md
+```
+
+The command opens the doc (same as `open`), then **waits**. It returns when the reviewer has posted one or more comments with **Send to agent** checked (the default on the composer during a watch session), after a short settle so a burst of comments lands together. The payload is the same thread shape as `list`. Unchecked comments stay on disk and still show up in `list`; they never enter the wait.
+
+This is a review **session**, not a one-comment wait. After you act, watch again. Comments the reviewer types while you are acting are held for the next wait. Comments already returned in a previous payload are not sent again. If they reply on a thread you already handled, that thread comes back because of the new message — act on the new work, not the messages you already answered.
+
+```
+open --watch  →  act  →  open --watch  →  …
+```
+
+Keep looping until:
+
+- the human tells you to stop, or
+- `open --watch` returns `{"cmd":"watch","threads":[]}` (about 10 minutes with no Send-to-agent comments). Then stop watching. Do not start another wait.
+
+A composer left open holds the settle, so they can type several comments before you wake. After the last box closes, a few seconds of quiet batches them.
+
+There is no file fallback: like `open`, watch needs a running Nous. If a second `--watch` starts on the same doc, the first command errors with `watch superseded`. Do not poll `list` in a sleep loop.
+
 ## Deleting
 
 `delete` removes one comment permanently. Deleting a root takes its replies with it; the response lists every id removed, root first. There is no undo. Delete only what the user explicitly asked you to delete — never as cleanup, never to tidy a list, never in place of resolving.
@@ -254,7 +282,8 @@ The CLI skill text is compiled into the binary, so that form works from any dire
 - **Don't edit a comment.** No update verb exists. A correction goes in a new reply.
 - **Don't resolve a thread you didn't finish**, or one where you pushed back.
 - **Don't delete anything the user didn't ask you to delete.** It is permanent and takes replies with it.
-- **Don't poll or loop waiting for a reply.** Propose, move on, hand back. The human comes to you.
+- **Don't poll `list` in a sleep loop.** Wait with `open --watch`.
+- **Don't treat the first watch payload as the end of the review.** Watch again after you act, until the human says stop or a wait returns no threads.
 - **Don't use `--verbose` for normal work.** It costs several times the tokens and makes you redo the grouping.
-- **Don't invent flags.** The list filters above, plus `--for`/`--yes` on `skills install`, are all that exist.
+- **Don't invent flags.** The list filters above, `--watch` on `open`, and `--for`/`--yes` on `skills install`, are all that exist.
 - **Don't create a worktree or switch branches** to satisfy `worktree-not-found`. Report it.

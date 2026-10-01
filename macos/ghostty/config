@@ -2,7 +2,7 @@
 font-family = Space Mono
 font-family-italic = Operator Mono
 font-style-italic = Book Italic
-font-size = 16
+font-size = 13
 window-inherit-font-size = false
 
 adjust-cell-height = 8
