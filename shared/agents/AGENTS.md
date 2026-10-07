@@ -42,6 +42,10 @@ Infer defaults from the situation:
 
 Apply my-voice to the final draft, not to code or config. Replies in this chat still follow Chat above.
 
+## Local context
+
+If `~/.agents/AGENTS.local.md` exists, read it at the start of the session. It holds machine-local context (work vault, private skills). It is not in git.
+
 <!-- rules -->
 Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read the file when relevant:
 

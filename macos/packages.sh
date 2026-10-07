@@ -12,6 +12,7 @@ MACOS_FORMULAE=(
   bun
   neovim
   pnpm
+  container
   todoist-cli
 )
 

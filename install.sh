@@ -102,6 +102,91 @@ install_better_tmux() {
   fi
 }
 
+build_yokai_linux_artifact_macos() {
+  local repo="$1" builder patched status
+  builder="$repo/scripts/build-linux-artifacts.sh"
+
+  # Koi main currently omits VM sizing in this build helper. Apple container
+  # defaults to 1 GB, which is too small for Yokai's release build.
+  if grep -q -- '--memory ' "$builder"; then
+    KOI_LINUX_BUILD_BACKEND=container bash "$builder" "$repo"
+    return
+  fi
+
+  patched="$(mktemp "${TMPDIR:-/tmp}/koi-linux-artifacts.XXXXXX")"
+  awk '{
+    print
+    if ($0 ~ /container run -d --name "\$name"/)
+      print "    --memory 8g --cpus 4 \\"
+  }' "$builder" > "$patched"
+
+  if KOI_LINUX_BUILD_BACKEND=container bash "$patched" "$repo"; then
+    rm -f "$patched"
+  else
+    status=$?
+    rm -f "$patched"
+    return "$status"
+  fi
+}
+
+install_yokai() {
+  local data repo revision installed="" arch linux_bin
+  data="${KOI_DATA_DIR:-$HOME/.local/share/koi}"
+  repo="$data/source"
+
+  if ! command -v cargo >/dev/null; then
+    log "Installing Rust toolchain for Yokai"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs |
+      sh -s -- -y --profile minimal
+    export PATH="$HOME/.cargo/bin:$PATH"
+  fi
+
+  mkdir -p "$data"
+  if [ ! -e "$repo" ]; then
+    log "Cloning getkoi/koi"
+    git clone --depth=1 https://github.com/getkoi/koi.git "$repo"
+  elif [ -d "$repo/.git" ]; then
+    log "Updating getkoi/koi"
+    git -C "$repo" pull --ff-only
+  else
+    warn "$repo exists but is not a git checkout; skip Yokai update"
+    return 0
+  fi
+
+  # These executables belonged to the old monorepo. Current Koi ships only Yokai.
+  for package in koi komori orihon; do
+    cargo uninstall "$package" >/dev/null 2>&1 || true
+  done
+
+  revision="$(git -C "$repo" rev-parse HEAD)"
+  [ -f "$data/.installed-revision" ] &&
+    IFS= read -r installed < "$data/.installed-revision"
+  case "$(uname -m)" in
+    arm64|aarch64) arch=aarch64 ;;
+    x86_64|amd64) arch=x86_64 ;;
+    *) arch="$(uname -m)" ;;
+  esac
+  linux_bin="$data/bin/yokai-linux-$arch"
+
+  if command -v yokai >/dev/null &&
+    [ "$installed" = "$revision" ] &&
+    [ -x "$linux_bin" ]; then
+    log "Yokai already matches getkoi/koi@$revision"
+    return 0
+  fi
+
+  log "Installing Yokai from getkoi/koi@$revision"
+  if is_macos && command -v container >/dev/null; then
+    # Avoid the interactive first-start prompt in Koi's artifact builder.
+    container system kernel set --recommended
+    cargo install --path "$repo/crates/yokai" --force
+    build_yokai_linux_artifact_macos "$repo"
+  else
+    bash "$repo/install.sh"
+  fi
+  printf '%s\n' "$revision" > "$data/.installed-revision"
+}
+
 link_shared() {
   log "Linking shared config"
   backup_then_link "$DOTFILES/shared/git/.gitconfig" "$HOME/.gitconfig"
@@ -126,6 +211,9 @@ link_shared() {
 
   mkdir -p "$HOME/.cursor"
   backup_then_link "$DOTFILES/shared/agents/skills" "$HOME/.cursor/skills"
+  backup_then_link "$DOTFILES/shared/agents/agents" "$HOME/.cursor/agents"
+  backup_then_link "$DOTFILES/shared/agents/commands" "$HOME/.cursor/commands"
+  backup_then_link "$DOTFILES/shared/agents/rules" "$HOME/.cursor/rules"
   backup_then_link "$DOTFILES/shared/cursor/hooks.json" "$HOME/.cursor/hooks.json"
   ensure_local_mcp
 
@@ -328,6 +416,8 @@ case "$HOST" in
 esac
 
 install_better_tmux
+
+install_yokai
 
 log "Done. Host=$HOST"
 if command -v td >/dev/null; then

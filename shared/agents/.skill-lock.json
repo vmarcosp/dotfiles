@@ -19,6 +19,25 @@
       "skillFolderHash": "08e721e82ab7136fc8fb69bb76202f53ce86350a",
       "installedAt": "2026-09-16T20:24:19.411Z",
       "updatedAt": "2026-09-16T20:24:19.411Z"
+    },
+    "junji": {
+      "source": "getkoi/junji",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/getkoi/junji.git",
+      "skillPath": "skills/junji/SKILL.md",
+      "skillFolderHash": "74ff54bba280b949bcb45dccbc240ea22be8bf5c",
+      "installedAt": "2026-10-05T19:53:56.682Z",
+      "updatedAt": "2026-10-05T19:54:13.991Z"
+    },
+    "yokai": {
+      "source": "getkoi/koi",
+      "sourceType": "github",
+      "sourceUrl": "https://github.com/getkoi/koi.git",
+      "skillPath": "skills/yokai/SKILL.md",
+      "skillFolderHash": "63c8ecfe09e6673d4dd16da61b19cac543da6153",
+      "pluginName": "getkoi-koi",
+      "installedAt": "2026-10-05T19:54:21.709Z",
+      "updatedAt": "2026-10-05T19:54:21.709Z"
     }
   },
   "dismissed": {
