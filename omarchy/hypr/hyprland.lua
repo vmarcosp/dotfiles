@@ -28,7 +28,8 @@ require("default.hypr.toggles")
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
 
--- CS2 on XWayland: skip compositor extras so 1% lows don't collapse in fights.
+-- CS2: real fullscreen so tearing/scanout engage. Borderless only maximizes
+-- under the bar, and Hyprland then copies every frame.
 o.window("cs2", {
   tag = "-default-opacity",
   opacity = "1 1 override",
@@ -40,5 +41,7 @@ o.window("cs2", {
   border_size = 0,
   content = "game",
   immediate = true,
+  fullscreen = true,
+  sync_fullscreen = true,
   idle_inhibit = "always",
 })

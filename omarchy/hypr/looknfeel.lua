@@ -71,8 +71,12 @@ hl.config({
 -- <<< omaland managed block <<<
 
 -- Tearing only applies to windows with immediate = true (CS2).
+-- direct_scanout 2 turns on only for content type "game".
 hl.config({
   general = {
     allow_tearing = true,
+  },
+  render = {
+    direct_scanout = 2,
   },
 })

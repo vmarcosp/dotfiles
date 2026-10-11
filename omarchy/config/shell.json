@@ -6,7 +6,7 @@
   },
   "bar": {
     "position": "top",
-    "transparent": true,
+    "transparent": false,
     "centerAnchor": "omarchy.clock",
     "layout": {
       "left": [

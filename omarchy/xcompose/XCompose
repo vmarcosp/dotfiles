@@ -1,0 +1,12 @@
+# Run omarchy-restart-xcompose to apply changes
+
+# Include fast emoji access (also pulls the locale table via "%L")
+include "/usr/share/omarchy/default/xcompose"
+
+# us(intl): the locale table maps '+c to ć; Portuguese wants ç
+<dead_acute> <c> : "ç" ccedilla
+<dead_acute> <C> : "Ç" Ccedilla
+
+# Identification
+<Multi_key> <space> <n> : "Marcos Oliveira"
+<Multi_key> <space> <e> : "vmarcosp.pereira@gmail.com"

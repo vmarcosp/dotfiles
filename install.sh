@@ -314,7 +314,27 @@ link_omarchy() {
     gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
   fi
 
+  backup_then_link "$DOTFILES/omarchy/xcompose/XCompose" "$HOME/.XCompose"
+  sync_fcitx5_profile
+
   link_bin_dir "$DOTFILES/omarchy/bin"
+}
+
+# fcitx5 rewrites its profile on exit (replacing any symlink), so copy it with
+# the daemon stopped instead of linking.
+sync_fcitx5_profile() {
+  local src="$DOTFILES/omarchy/fcitx5/profile"
+  local dest="$HOME/.config/fcitx5/profile"
+  if [ -f "$dest" ] && cmp -s "$src" "$dest"; then
+    command -v omarchy-restart-xcompose >/dev/null && omarchy-restart-xcompose || true
+    return 0
+  fi
+  log "Writing fcitx5 profile (keyboard-us-intl)"
+  systemctl --user stop omarchy-fcitx5.service 2>/dev/null || true
+  pkill -x fcitx5 2>/dev/null || true
+  mkdir -p "$(dirname "$dest")"
+  cp "$src" "$dest"
+  systemctl --user start omarchy-fcitx5.service 2>/dev/null || true
 }
 
 install_macos() {

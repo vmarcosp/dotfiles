@@ -10,10 +10,14 @@
 -- X11 with localectl, pass --no-convert so the TTY keymap is left alone:
 --   localectl --no-convert set-x11-keymap us
 --   localectl --no-convert set-keymap br-abnt2
+-- `intl` makes ' ` ~ ^ " dead keys for accents. Its locale compose table maps
+-- '+c to ć, so ~/.XCompose (omarchy/xcompose/XCompose) remaps it to ç. fcitx5
+-- must use keyboard-us-intl too (omarchy/fcitx5/profile) or it drops the dead keys.
 local function apply_us_keyboard()
   hl.config({
     input = {
       kb_layout = "us",
+      kb_variant = "intl",
       kb_model = "",
       kb_options = "compose:caps,shift:both_capslock_cancel",
     },

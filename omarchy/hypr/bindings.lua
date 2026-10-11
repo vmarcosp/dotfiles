@@ -34,3 +34,25 @@ o.bind("SUPER + SHIFT + J", "Swap window down", hl.dsp.window.swap({ direction =
 o.bind("SUPER + CTRL + J", "Toggle window split", hl.dsp.layout("togglesplit"))
 o.bind("SUPER + ALT + SHIFT + K", "Keybindings", "omarchy-menu-keybindings")
 o.bind("SUPER + ALT + L", "Toggle workspace layout", "omarchy-hyprland-workspace-layout-toggle")
+
+-- Dictation push-to-talk on SUPER+comma (Wispr-style). Note: SUPER+comma was
+-- Dismiss last notification — relocated to SUPER+period.
+-- xkbcommon keysyms must be lower-case ("comma", "period").
+-- The stop bind ignores mods: releasing SUPER before comma changes the modmask,
+-- so a "SUPER + comma" release bind never fires and recording hangs until the
+-- 60s cap. The flag keeps plain comma typing from spawning `voxtype` each time.
+hl.unbind("SUPER + comma")
+o.bind("SUPER + period", "Dismiss last notification", "omarchy-shell notifications dismissOne")
+if o.cmd_present("voxtype") then
+  local dictating = false
+  hl.bind("SUPER + comma", function()
+    dictating = true
+    hl.exec_cmd("voxtype record start")
+  end, { description = "Start dictation (push-to-talk)" })
+  hl.bind("comma", function()
+    if dictating then
+      dictating = false
+      hl.exec_cmd("voxtype record stop")
+    end
+  end, { release = true, ignore_mods = true, non_consuming = true, description = "Stop dictation (push-to-talk)" })
+end
