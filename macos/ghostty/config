@@ -2,13 +2,13 @@
 font-family = Space Mono
 font-family-italic = Operator Mono
 font-style-italic = Book Italic
-font-size = 13
+font-size = 12
 window-inherit-font-size = false
 
 adjust-cell-height = 8
 
 # Window
-background-opacity = 0.95
+background-opacity = 0.89
 background-blur = 25
 macos-titlebar-style = hidden
 window-padding-x = 16
