@@ -51,7 +51,7 @@ install_tpm() {
   fi
 
   if [ -x "$tpm/bin/install_plugins" ]; then
-    log "Installing tmux plugins (resurrect, sensible, …)"
+    log "Installing tmux plugins (resurrect, continuum, sensible, …)"
     "$tpm/bin/install_plugins" || warn "TPM install_plugins failed; in tmux: prefix + I"
   fi
 }

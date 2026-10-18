@@ -45,6 +45,11 @@ apply_tmux() {
   if [ -x "$cli" ] && [ -f "$file" ]; then
     "$cli" --file "$file" >/dev/null
   fi
+  # better-tmux clears status-right, which drops the continuum autosave hook.
+  local continuum="$HOME/.config/tmux/plugins/tmux-continuum/continuum.tmux"
+  if [ -x "$continuum" ]; then
+    "$continuum" >/dev/null 2>&1 || true
+  fi
   # better-tmux writes the legacy status-bg/fg; keep the bar transparent.
   tmux set-option -g status-style bg=default,fg=default
 }
