@@ -1,3 +1,5 @@
+local machine = require("hypr.machine")
+
 -- Launcher / polkit / clipboard popups (bar still follows fontconfig monospace).
 hl.env("OMARCHY_MENU_FONT", "Inter")
 
@@ -70,13 +72,15 @@ hl.config({
 })
 -- <<< omaland managed block <<<
 
--- Tearing only applies to windows with immediate = true (CS2).
+-- Tearing only applies to windows with immediate = true (CS2 on the desktop).
 -- direct_scanout 2 turns on only for content type "game".
-hl.config({
-  general = {
-    allow_tearing = true,
-  },
-  render = {
-    direct_scanout = 2,
-  },
-})
+if machine == "pc" then
+  hl.config({
+    general = {
+      allow_tearing = true,
+    },
+    render = {
+      direct_scanout = 2,
+    },
+  })
+end

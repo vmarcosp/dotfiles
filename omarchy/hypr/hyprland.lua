@@ -28,20 +28,22 @@ require("default.hypr.toggles")
 -- Add any other personal Hyprland configuration below.
 -- o.window("qemu", { workspace = "5" })
 
--- CS2: real fullscreen so tearing/scanout engage. Borderless only maximizes
--- under the bar, and Hyprland then copies every frame.
-o.window("cs2", {
-  tag = "-default-opacity",
-  opacity = "1 1 override",
-  opaque = true,
-  no_blur = true,
-  no_anim = true,
-  no_shadow = true,
-  rounding = 0,
-  border_size = 0,
-  content = "game",
-  immediate = true,
-  fullscreen = true,
-  sync_fullscreen = true,
-  idle_inhibit = "always",
-})
+-- CS2 on the desktop: real fullscreen so tearing/scanout engage. Borderless
+-- only maximizes under the bar, and Hyprland then copies every frame.
+if require("hypr.machine") == "pc" then
+  o.window("cs2", {
+    tag = "-default-opacity",
+    opacity = "1 1 override",
+    opaque = true,
+    no_blur = true,
+    no_anim = true,
+    no_shadow = true,
+    rounding = 0,
+    border_size = 0,
+    content = "game",
+    immediate = true,
+    fullscreen = true,
+    sync_fullscreen = true,
+    idle_inhibit = "always",
+  })
+end

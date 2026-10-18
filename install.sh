@@ -314,8 +314,15 @@ link_omarchy() {
     gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
   fi
 
-  backup_then_link "$DOTFILES/omarchy/xcompose/XCompose" "$HOME/.XCompose"
-  sync_fcitx5_profile
+  if [ "${OMARCHY_MACHINE:-pc}" = "macbook" ]; then
+    backup_then_link "$DOTFILES/omarchy/xcompose/XCompose.macbook" "$HOME/.XCompose"
+    if command -v omarchy-restart-xcompose >/dev/null; then
+      omarchy-restart-xcompose || true
+    fi
+  else
+    backup_then_link "$DOTFILES/omarchy/xcompose/XCompose" "$HOME/.XCompose"
+    sync_fcitx5_profile
+  fi
 
   link_bin_dir "$DOTFILES/omarchy/bin"
 }
@@ -419,6 +426,47 @@ install_omarchy_pkgs() {
   install_todoist_cli_npm
 }
 
+# Ask which Omarchy box this is. The Lua configs read ~/.config/omarchy/machine.
+# OMARCHY_MACHINE=pc|macbook skips the prompt. A saved answer is the default.
+resolve_omarchy_machine() {
+  local saved="$HOME/.config/omarchy/machine"
+  local choice="${OMARCHY_MACHINE:-}"
+  local default="" reply=""
+
+  if [ -z "$choice" ] && [ -f "$saved" ]; then
+    default="$(tr -d '[:space:]' <"$saved")"
+  fi
+
+  if [ -z "$choice" ] && [ -t 0 ]; then
+    if [ -n "$default" ]; then
+      printf 'Esta máquina Omarchy é pc ou macbook? [%s] ' "$default"
+    else
+      printf 'Esta máquina Omarchy é pc ou macbook? '
+    fi
+    read -r reply || true
+    choice="${reply:-$default}"
+  elif [ -z "$choice" ]; then
+    choice="$default"
+  fi
+
+  case "$choice" in
+    pc|macbook) ;;
+    *)
+      warn "Máquina Omarchy inválida: '${choice:-}'. Use pc ou macbook (ou OMARCHY_MACHINE=macbook)."
+      exit 1
+      ;;
+  esac
+
+  mkdir -p "$(dirname "$saved")"
+  printf '%s\n' "$choice" >"$saved"
+  OMARCHY_MACHINE="$choice"
+  log "Omarchy machine: $OMARCHY_MACHINE"
+}
+
+if [ "$HOST" = omarchy ]; then
+  resolve_omarchy_machine
+fi
+
 case "$HOST" in
   macos) install_macos ;;
   omarchy) install_omarchy_pkgs ;;
@@ -446,6 +494,7 @@ else
   warn "Todoist CLI (td) is not on PATH yet."
 fi
 if [ "$HOST" = omarchy ]; then
+  log "Omarchy profile: ${OMARCHY_MACHINE:-pc}"
   log "Ghostty uses the Omarchy theme file (not yugen). Restart terminals to reload."
   log "Ghostty starts zsh via command = zsh. Login shell is still bash until: chsh -s /usr/bin/zsh"
   if command -v hyprctl >/dev/null; then

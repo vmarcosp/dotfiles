@@ -1,3 +1,5 @@
+local machine = require("hypr.machine")
+
 -- Keep only your personal input overrides here. Uncommented settings below
 -- replace Omarchy's defaults.
 
@@ -13,20 +15,38 @@
 -- `intl` makes ' ` ~ ^ " dead keys for accents. Its locale compose table maps
 -- '+c to ć, so ~/.XCompose (omarchy/xcompose/XCompose) remaps it to ç. fcitx5
 -- must use keyboard-us-intl too (omarchy/fcitx5/profile) or it drops the dead keys.
-local function apply_us_keyboard()
-  hl.config({
-    input = {
-      kb_layout = "us",
-      kb_variant = "intl",
-      kb_model = "",
-      kb_options = "compose:caps,shift:both_capslock_cancel",
-    },
-  })
+if machine == "pc" then
+  local function apply_us_keyboard()
+    hl.config({
+      input = {
+        kb_layout = "us",
+        kb_variant = "intl",
+        kb_model = "",
+        kb_options = "compose:caps,shift:both_capslock_cancel",
+      },
+    })
+  end
+
+  apply_us_keyboard()
+  -- Session start can re-apply systemd-localed after Lua; pin US again then.
+  hl.on("hyprland.start", apply_us_keyboard)
 end
 
-apply_us_keyboard()
--- Session start can re-apply systemd-localed after Lua; pin US again then.
-hl.on("hyprland.start", apply_us_keyboard)
+hl.config({
+  input = {
+    touchpad = {
+      scroll_factor = 0.3,
+    },
+  },
+})
+
+-- Sensitivity range is -1.0..1.0; Omarchy default is 0.
+if machine == "macbook" then
+  hl.device({
+    name = "apple-inc.-apple-internal-keyboard-/-trackpad-1",
+    sensitivity = 0.27,
+  })
+end
 
 -- Other input overrides (repeat, mouse, touchpad) stay commented so Omarchy
 -- defaults remain. Example:
