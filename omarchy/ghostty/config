@@ -1,5 +1,8 @@
 # Colors come from the active Omarchy theme. Do not import macos/ghostty/yugen.conf.
 config-file = ?"~/.local/state/omarchy/current/theme/ghostty.conf"
+# Per-machine overrides: omarchy/ghostty/pc.conf or macbook.conf, linked by install.sh.
+# Included files load after this one, so they win over anything set here.
+config-file = ?"~/.config/ghostty/machine.conf"
 
 # Login shell is still bash until chsh; always start zsh in this terminal.
 command = zsh

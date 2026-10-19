@@ -1,5 +1,12 @@
-# Shared by install.sh, mac-compliance.sh, and zsh. Safe in bash and zsh.
+# Shared by install.sh and zsh. Safe in bash and zsh.
 # DOTFILES must be set by the caller.
+#
+# Three machines, two hosts:
+#   macos            MacBook on macOS
+#   omarchy-pc       desktop PC on Omarchy
+#   omarchy-macbook  MacBook Pro (T2) on Omarchy
+# host_name picks the repo folder (macos/ or omarchy/). machine_name adds the
+# Omarchy profile that install.sh saves in ~/.config/omarchy/machine.
 
 is_macos() { [ "$(uname -s)" = Darwin ]; }
 is_linux() { [ "$(uname -s)" = Linux ]; }
@@ -14,6 +21,28 @@ host_name() {
     printf '%s\n' linux
   else
     printf '%s\n' unknown
+  fi
+}
+
+OMARCHY_MACHINE_FILE="$HOME/.config/omarchy/machine"
+
+# pc or macbook. Missing or unknown values fall back to pc, like hypr/machine.lua.
+omarchy_profile() {
+  local profile=""
+  [ -f "$OMARCHY_MACHINE_FILE" ] && profile="$(tr -d '[:space:]' <"$OMARCHY_MACHINE_FILE")"
+  case "$profile" in
+    pc|macbook) printf '%s\n' "$profile" ;;
+    *) printf '%s\n' pc ;;
+  esac
+}
+
+machine_name() {
+  local host
+  host="$(host_name)"
+  if [ "$host" = omarchy ]; then
+    printf 'omarchy-%s\n' "$(omarchy_profile)"
+  else
+    printf '%s\n' "$host"
   fi
 }
 

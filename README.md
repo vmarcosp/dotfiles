@@ -2,7 +2,7 @@
 
 # ~/dotfiles
 
-Everything I use my day to day in mac coding environments. From skills to tool configurations and custom scripts.
+Everything I use day to day on my macOS and Omarchy machines. From skills to tool configurations and custom scripts.
 
 [Overview](#overview) · [Tools](#tools) · [Skills](#skills) · [Install](#install) · [What's inside](#whats-inside)
 
@@ -12,7 +12,15 @@ Everything I use my day to day in mac coding environments. From skills to tool c
 
 ## Overview
 
-One repo for the machine I actually code on. macOS is the main target; Omarchy gets the same tree when I'm on the Linux box.
+One repo for the three machines I code on:
+
+| Machine | What it is |
+|:--------|:-----------|
+| `macos` | MacBook on macOS |
+| `omarchy-pc` | Desktop PC on Omarchy |
+| `omarchy-macbook` | MacBook Pro running Omarchy |
+
+Both Omarchy boxes share `omarchy/`. `install.sh` asks which one it's on (`pc` or `macbook`), saves the answer in `~/.config/omarchy/machine`, and Hyprland, Ghostty, XCompose, and zsh (`$DOTFILES_MACHINE`) branch on it.
 
 Edit files here. `install.sh` symlinks them into place and installs packages. Idempotent — safe to run again after every `git pull`.
 
@@ -59,13 +67,7 @@ git clone https://github.com/vmarcosp/dotfiles ~/dotfiles
 cd ~/dotfiles && ./install.sh
 ```
 
-That installs packages for the detected host, clones oh-my-zsh and tmux plugins if needed, and links config into `~`.
-
-**First time on the Mac** after this layout landed:
-
-```sh
-./mac-compliance.sh
-```
+That installs packages for the detected host, clones oh-my-zsh and tmux plugins if needed, and links config into `~`. On Omarchy it asks `pc` or `macbook` the first time; `OMARCHY_MACHINE=macbook ./install.sh` skips the prompt.
 
 **Day to day:**
 
@@ -82,17 +84,16 @@ Agent context for this repo: [AGENTS.md](AGENTS.md).
 
 ```
 dotfiles/
-├── install.sh              # packages + symlinks (both hosts)
-├── mac-compliance.sh       # one-shot Mac migration
-├── lib/platform.sh         # host detection
-├── shared/                 # both hosts
+├── install.sh              # packages + symlinks (all machines)
+├── lib/platform.sh         # host + machine detection
+├── shared/                 # all machines
 │   ├── zsh/ nvim/ tmux/ git/
 │   ├── better-tmux/
 │   ├── agents/             # skills, rules → ~/.agents, ~/.cursor, ~/.claude
 │   ├── claude/ cursor/ opencode/
 │   └── bin/
 ├── macos/                  # Homebrew, Ghostty (yugen), mac scripts
-└── omarchy/                # Hyprland, Ghostty, shell.json, desktop hooks
+└── omarchy/                # both Omarchy machines: Hyprland, Ghostty, shell.json, desktop hooks
 ```
 
 MIT

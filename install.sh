@@ -280,6 +280,8 @@ link_omarchy() {
   log "Linking Omarchy config"
   mkdir -p "$HOME/.config/ghostty"
   backup_then_link "$DOTFILES/omarchy/ghostty/config" "$HOME/.config/ghostty/config"
+  backup_then_link "$DOTFILES/omarchy/ghostty/${OMARCHY_MACHINE:-pc}.conf" \
+    "$HOME/.config/ghostty/machine.conf"
 
   backup_then_link "$DOTFILES/omarchy/hypr" "$HOME/.config/hypr"
 
@@ -426,10 +428,11 @@ install_omarchy_pkgs() {
   install_todoist_cli_npm
 }
 
-# Ask which Omarchy box this is. The Lua configs read ~/.config/omarchy/machine.
-# OMARCHY_MACHINE=pc|macbook skips the prompt. A saved answer is the default.
+# Ask which Omarchy box this is. hypr/machine.lua, zsh, and Ghostty read
+# ~/.config/omarchy/machine. OMARCHY_MACHINE=pc|macbook skips the prompt.
+# A saved answer is the default.
 resolve_omarchy_machine() {
-  local saved="$HOME/.config/omarchy/machine"
+  local saved="$OMARCHY_MACHINE_FILE"
   local choice="${OMARCHY_MACHINE:-}"
   local default="" reply=""
 
@@ -487,15 +490,14 @@ install_better_tmux
 
 install_yokai
 
-log "Done. Host=$HOST"
+log "Done. Machine=$(machine_name)"
 if command -v td >/dev/null; then
   log "Todoist CLI is installed. Sign in once with: td auth login"
 else
   warn "Todoist CLI (td) is not on PATH yet."
 fi
 if [ "$HOST" = omarchy ]; then
-  log "Omarchy profile: ${OMARCHY_MACHINE:-pc}"
-  log "Ghostty uses the Omarchy theme file (not yugen). Restart terminals to reload."
+  log "Ghostty uses the Omarchy theme file (not yugen) plus omarchy/ghostty/${OMARCHY_MACHINE:-pc}.conf. Restart terminals to reload."
   log "Ghostty starts zsh via command = zsh. Login shell is still bash until: chsh -s /usr/bin/zsh"
   if command -v hyprctl >/dev/null; then
     hyprctl reload >/dev/null || true

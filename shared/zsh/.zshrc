@@ -10,6 +10,9 @@ unset _zshrc
 # shellcheck disable=SC1091
 . "$DOTFILES/lib/platform.sh"
 
+# macos, omarchy-pc, or omarchy-macbook. Branch on this for per-machine shell bits.
+export DOTFILES_MACHINE="$(machine_name)"
+
 [[ -f "$HOME/env-vars.sh" ]] && source "$HOME/env-vars.sh"
 
 # OpenCode merges this over the git-linked ~/.config/opencode/opencode.json
