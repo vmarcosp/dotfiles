@@ -426,6 +426,65 @@ install_omarchy_pkgs() {
     fi
   fi
   install_todoist_cli_npm
+  install_voxtype
+}
+
+# Same steps as `omarchy voxtype install`, without the confirm prompt.
+# Hyprland already owns the hotkey (F9, Super+Ctrl+X, and Super+comma here).
+install_voxtype() {
+  local omarchy_path cfg
+  if ! command -v voxtype >/dev/null; then
+    warn "voxtype is not installed; skip dictation setup"
+    return 0
+  fi
+
+  omarchy_path="${OMARCHY_PATH:-/usr/share/omarchy}"
+  cfg="$HOME/.config/voxtype/config.toml"
+  mkdir -p "$HOME/.config/voxtype"
+  if [ ! -f "$cfg" ]; then
+    if [ -f "$omarchy_path/default/voxtype/config.toml" ]; then
+      log "Installing Voxtype config"
+      cp "$omarchy_path/default/voxtype/config.toml" "$cfg"
+    else
+      warn "Omarchy Voxtype config template missing"
+    fi
+  fi
+
+  # Omarchy's template is English-only (base.en). Dictation here is
+  # Brazilian Portuguese, and a compositor record start stops itself
+  # after a short silence instead of waiting for the key release.
+  if [ "$(voxtype config get whisper.model 2>/dev/null || true)" = "base.en" ]; then
+    voxtype config set whisper.model small
+    voxtype config set whisper.initial_prompt "Português do Brasil."
+  fi
+  voxtype config set whisper.language pt
+  voxtype config set whisper.translate false
+  voxtype config set audio.external_trigger_silence_timeout_secs 1.5
+
+  log "Downloading Voxtype model and enabling the user service"
+  voxtype setup --download --model "$(voxtype config get whisper.model)" --no-post-install
+  # The MacBook's Iris Plus is a weak Vulkan device. Enabling it replaces
+  # the AVX2 CPU binary. The PC still follows Omarchy and turns GPU on.
+  if [ "$(omarchy_profile)" != "macbook" ] &&
+    command -v omarchy-hw-vulkan >/dev/null && omarchy-hw-vulkan; then
+    voxtype setup gpu --enable || warn "Voxtype GPU setup failed; CPU binary stays active"
+  fi
+  if [ -f "$cfg" ] && ! grep -q 'pre_output_command' "$cfg"; then
+    python3 - "$cfg" <<'PY'
+import pathlib, sys
+path = pathlib.Path(sys.argv[1])
+text = path.read_text()
+needle = "type_delay_ms = 1\n"
+insert = (
+    'pre_output_command = "hyprctl eval \'hl.dispatch(hl.dsp.submap(\\"voxtype_suppress\\"))\'"\n'
+    'post_output_command = "hyprctl eval \'hl.dispatch(hl.dsp.submap(\\"reset\\"))\'"\n'
+)
+if needle not in text:
+    sys.exit("voxtype config has no type_delay_ms line")
+path.write_text(text.replace(needle, needle + insert, 1))
+PY
+  fi
+  voxtype setup systemd
 }
 
 # Ask which Omarchy box this is. hypr/machine.lua, zsh, and Ghostty read

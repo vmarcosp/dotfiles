@@ -11,6 +11,11 @@ OMARCHY_PACKAGES=(
   ttf-space-mono-nerd
   inter-font
   ttf-ibm-plex
+  # Wayland typing for Voxtype. Omarchy's dictation installer pulls this too.
+  wtype
+  voxtype-bin
+  # Mesh VPN. Each machine still logs in on its own: tailscale up --qr
+  tailscale
 )
 
 # Official Linux desktop is the AppImage. CLI is npm (@doist/todoist-cli) via mise.

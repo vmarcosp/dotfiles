@@ -24,6 +24,12 @@ export LANG=en_US.UTF-8
 export EDITOR="nvim"
 export PATH="$HOME/.local/bin:$HOME/bin:$DOTFILES/shared/bin:$DOTFILES/$(host_name)/bin:$DOTFILES/shared/better-tmux/node_modules/.bin:$PATH"
 
+# A Cursor tool shell sets NO_COLOR=1 and FORCE_COLOR=0. If that shell
+# starts tmux, the server keeps both flags and this CLI draws with no style.
+if [[ -n ${CURSOR_AGENT:-} || -n ${__CURSOR_SANDBOX_ENV_RESTORE:-} ]]; then
+  unset NO_COLOR FORCE_COLOR
+fi
+
 export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
 ZSH_THEME="robbyrussell"
 plugins=(git vi-mode)

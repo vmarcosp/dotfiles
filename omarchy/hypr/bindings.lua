@@ -44,6 +44,24 @@ o.bind("SUPER + ALT + L", "Toggle workspace layout", "omarchy-hyprland-workspace
 hl.unbind("SUPER + comma")
 o.bind("SUPER + period", "Dismiss last notification", "omarchy-shell notifications dismissOne")
 if o.cmd_present("voxtype") then
+  -- Voxtype enters this submap before it types. Held Super/Ctrl/Alt/Shift
+  -- then cannot turn the transcript into shortcuts. F12 exits if Voxtype dies.
+  hl.define_submap("voxtype_suppress", function()
+    for _, key in ipairs({
+      "Super_L",
+      "Super_R",
+      "Control_L",
+      "Control_R",
+      "Alt_L",
+      "Alt_R",
+      "Shift_L",
+      "Shift_R",
+    }) do
+      hl.bind(key, hl.dsp.no_op())
+    end
+    hl.bind("F12", hl.dsp.submap("reset"), { description = "Leave Voxtype typing mode" })
+  end)
+
   local dictating = false
   hl.bind("SUPER + comma", function()
     dictating = true
