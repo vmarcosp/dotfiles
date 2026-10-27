@@ -20,7 +20,7 @@ One repo for the three machines I code on:
 | `omarchy-pc` | Desktop PC on Omarchy |
 | `omarchy-macbook` | MacBook Pro running Omarchy |
 
-Both Omarchy boxes share `omarchy/`. `install.sh` asks which one it's on (`pc` or `macbook`), saves the answer in `~/.config/omarchy/machine`, and Hyprland, Ghostty, XCompose, and zsh (`$DOTFILES_MACHINE`) branch on it.
+Both Omarchy boxes share `omarchy/`. `install.sh` asks which one it's on (`pc` or `macbook`), saves the answer in `~/.config/omarchy/machine`, and Hyprland, Ghostty, and zsh (`$DOTFILES_MACHINE`) branch on it.
 
 Edit files here. `install.sh` symlinks them into place and installs packages. Idempotent — safe to run again after every `git pull`.
 

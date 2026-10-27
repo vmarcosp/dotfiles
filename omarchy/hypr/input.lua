@@ -3,34 +3,32 @@ local machine = require("hypr.machine")
 -- Keep only your personal input overrides here. Uncommented settings below
 -- replace Omarchy's defaults.
 
--- Keyboard layout and options.
+-- Keyboard layout and options (both machines).
 -- See https://wiki.hypr.land/Configuring/Basics/Variables/#input
--- Sofle (Vial) emits US HID keycodes; the Brazilian custom map lives in firmware.
+-- `intl` makes ' ` ~ ^ " dead keys for accents. Its locale compose table maps
+-- '+c to ć, so ~/.XCompose (omarchy/xcompose/XCompose) remaps it to ç. fcitx5
+-- must use keyboard-us-intl too (omarchy/fcitx5/profile) or it drops the dead keys.
+-- PC: Sofle (Vial) emits US HID keycodes; the Brazilian custom map lives in firmware.
 -- Keep Hyprland on US so `;` stays `;` — br/abnt2 maps that HID key to `ç`.
 -- TTY stays KEYMAP=br-abnt2 for the Beken ABNT2 board. Graphical layout is
 -- XKBLAYOUT=us (Omarchy reads that from /etc/vconsole.conf). If you change
 -- X11 with localectl, pass --no-convert so the TTY keymap is left alone:
 --   localectl --no-convert set-x11-keymap us
 --   localectl --no-convert set-keymap br-abnt2
--- `intl` makes ' ` ~ ^ " dead keys for accents. Its locale compose table maps
--- '+c to ć, so ~/.XCompose (omarchy/xcompose/XCompose) remaps it to ç. fcitx5
--- must use keyboard-us-intl too (omarchy/fcitx5/profile) or it drops the dead keys.
-if machine == "pc" then
-  local function apply_us_keyboard()
-    hl.config({
-      input = {
-        kb_layout = "us",
-        kb_variant = "intl",
-        kb_model = "",
-        kb_options = "compose:caps,shift:both_capslock_cancel",
-      },
-    })
-  end
-
-  apply_us_keyboard()
-  -- Session start can re-apply systemd-localed after Lua; pin US again then.
-  hl.on("hyprland.start", apply_us_keyboard)
+local function apply_us_keyboard()
+  hl.config({
+    input = {
+      kb_layout = "us",
+      kb_variant = "intl",
+      kb_model = "",
+      kb_options = "compose:caps,shift:both_capslock_cancel",
+    },
+  })
 end
+
+apply_us_keyboard()
+-- Session start can re-apply systemd-localed after Lua; pin US again then.
+hl.on("hyprland.start", apply_us_keyboard)
 
 hl.config({
   input = {

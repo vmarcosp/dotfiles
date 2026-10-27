@@ -1,8 +1,0 @@
-# Run omarchy-restart-xcompose to apply changes
-
-# Include fast emoji access (also pulls the locale table via "%L")
-include "/usr/share/omarchy/default/xcompose"
-
-# Identification
-<Multi_key> <space> <n> : "Marcos Oliveira"
-<Multi_key> <space> <e> : "vmarcosp.pereira@gmail.com"

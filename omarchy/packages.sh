@@ -22,4 +22,6 @@ OMARCHY_PACKAGES=(
 # shellcheck disable=SC2034
 OMARCHY_AUR_PACKAGES=(
   todoist-appimage
+  # Native Spotify client (crmne/spotifast). Playback needs Spotify Premium.
+  spotifast-bin
 )

@@ -46,7 +46,8 @@ dotfiles/
 │   ├── packages.sh
 │   ├── ghostty/            # config (both) + pc.conf / macbook.conf overrides
 │   ├── hypr/               # → ~/.config/hypr; machine.lua reads the profile
-│   ├── xcompose/           # XCompose (pc) / XCompose.macbook
+│   ├── xcompose/           # XCompose (both; `'c` → `ç` for us-intl)
+│   ├── fcitx5/             # profile (both; keyboard-us-intl)
 │   ├── config/             # selected ~/.config/omarchy files
 │   └── bin/                # notification (desktop toast)
 └── .agents/                # rules for this repo only
@@ -59,13 +60,15 @@ Both Omarchy machines share `omarchy/`. The profile picks the per-machine parts.
 ```
 install.sh ──asks pc|macbook──▶ ~/.config/omarchy/machine
                                    │
-     ┌─────────────────┬───────────┼──────────────┬──────────────────┐
-     ▼                 ▼           ▼              ▼                  ▼
-hypr/machine.lua   zsh            Ghostty        XCompose           fcitx5
-(monitors, input,  DOTFILES_      machine.conf → ~/.XCompose        profile
- looknfeel,        MACHINE        pc.conf or     (pc or macbook)    (pc only)
- autostart, rules)                macbook.conf
+     ┌─────────────────┬───────────┴──────────────┐
+     ▼                 ▼                          ▼
+hypr/machine.lua   zsh                        Ghostty
+(monitors, input,  DOTFILES_                  machine.conf →
+ looknfeel,        MACHINE                    pc.conf or
+ autostart, rules)                            macbook.conf
 ```
+
+Keyboard is the same on both: `us` + `intl` (dead keys for accents), `~/.XCompose` from `omarchy/xcompose/XCompose`, fcitx5 profile `keyboard-us-intl`.
 
 - First run asks the question. Later runs default to the saved answer.
 - `OMARCHY_MACHINE=macbook ./install.sh` (or `pc`) skips the prompt.
@@ -76,10 +79,9 @@ Current per-machine differences:
 | Area | omarchy-pc | omarchy-macbook |
 |------|------------|-----------------|
 | Monitors (`hypr/monitors.lua`) | `HDMI-A-1` 1080p at 240 Hz, scale 1, `GDK_SCALE=1` | `eDP-1` scale 2, `GDK_SCALE=2` |
-| Input (`hypr/input.lua`) | `us` intl layout, Beken ABNT2 board | Apple internal trackpad sensitivity |
+| Input (`hypr/input.lua`) | Beken ABNT2 board (TTY `br-abnt2`) | Apple internal trackpad sensitivity |
 | Look and feel (`hypr/looknfeel.lua`) | Tearing + direct scanout for games | Omarchy defaults |
 | Autostart / window rules | qBittorrent, CS2 rules | — |
-| XCompose | `XCompose` (`'c` → `ç` for us-intl) | `XCompose.macbook` (no `'c` override) |
 | Ghostty | `omarchy/ghostty/pc.conf` | `omarchy/ghostty/macbook.conf` |
 
 ## Where to put a change
@@ -114,4 +116,4 @@ git pull && ./install.sh
 ## Packages
 
 - macOS: Homebrew lists in `macos/packages.sh` (casks, nvm)
-- Omarchy (both machines): `omarchy pkg add` from `OMARCHY_PACKAGES` in `omarchy/packages.sh`; AUR extras via `omarchy pkg aur add` (`OMARCHY_AUR_PACKAGES`, currently Todoist AppImage). Todoist CLI (`td`) is `npm i -g @doist/todoist-cli` through mise Node. Neovim, tmux, Ghostty, lazygit, jq, mise ship with Omarchy. Do not install `omarchy-zsh` (it would fight this `.zshrc`). Do not install nvm here (mise).
+- Omarchy (both machines): `omarchy pkg add` from `OMARCHY_PACKAGES` in `omarchy/packages.sh`; AUR extras via `omarchy pkg aur add` (`OMARCHY_AUR_PACKAGES`, currently Todoist AppImage and Spotifast). Todoist CLI (`td`) is `npm i -g @doist/todoist-cli` through mise Node. Neovim, tmux, Ghostty, lazygit, jq, mise ship with Omarchy. Do not install `omarchy-zsh` (it would fight this `.zshrc`). Do not install nvm here (mise).

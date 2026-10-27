@@ -316,15 +316,8 @@ link_omarchy() {
     gsettings set org.gnome.desktop.interface text-scaling-factor 1.0
   fi
 
-  if [ "${OMARCHY_MACHINE:-pc}" = "macbook" ]; then
-    backup_then_link "$DOTFILES/omarchy/xcompose/XCompose.macbook" "$HOME/.XCompose"
-    if command -v omarchy-restart-xcompose >/dev/null; then
-      omarchy-restart-xcompose || true
-    fi
-  else
-    backup_then_link "$DOTFILES/omarchy/xcompose/XCompose" "$HOME/.XCompose"
-    sync_fcitx5_profile
-  fi
+  backup_then_link "$DOTFILES/omarchy/xcompose/XCompose" "$HOME/.XCompose"
+  sync_fcitx5_profile
 
   link_bin_dir "$DOTFILES/omarchy/bin"
 }
