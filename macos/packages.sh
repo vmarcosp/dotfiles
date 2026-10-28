@@ -23,6 +23,7 @@ MACOS_CASKS=(
   discord
   hiddenbar
   todoist-app
+  moonlight
 )
 
 MACOS_FONTS=(

@@ -1,0 +1,636 @@
+#!/usr/bin/env bash
+#
+# agent-dispatch - Run resumable Cursor or Claude workers in detached tmux sessions.
+#
+
+set -euo pipefail
+
+STATE_ROOT="${AGENT_DISPATCH_STATE_DIR:-${XDG_STATE_HOME:-$HOME/.local/state}/agent-dispatch}"
+SELF="${BASH_SOURCE[0]}"
+
+usage() {
+  cat <<'EOF'
+Usage:
+  agent-dispatch send [options] -- <prompt>
+  agent-dispatch reply <job-id> [options] -- <prompt>
+  agent-dispatch status [job-id]
+  agent-dispatch read [job-id] [turn]
+  agent-dispatch log [job-id] [turn]
+  agent-dispatch wait [job-id] [--timeout seconds]
+  agent-dispatch list
+  agent-dispatch stop <job-id>
+
+Send/reply options:
+  --engine cursor|claude  Worker CLI (default: cursor)
+  --model MODEL          Engine-specific model name
+  --mode agent|plan|ask  Execution mode (default: agent; ask is Cursor-only)
+  --cwd PATH             Worker directory (default: current directory)
+  --add-dir PATH         Additional directory available to the worker
+  --name NAME            Short task name
+  --prompt-file PATH     Read the prompt from a file instead of arguments/stdin
+  --tmux-session NAME    Parent session (default: the caller's tmux session)
+  --force                Allow the worker to bypass permission prompts
+
+The worker runs in a detached window in the orchestrator's tmux session. This
+command never sends keystrokes to an existing pane.
+EOF
+}
+
+die() {
+  printf 'agent-dispatch: %s\n' "$*" >&2
+  exit 1
+}
+
+require_command() {
+  command -v "$1" >/dev/null 2>&1 || die "missing command: $1"
+}
+
+now() {
+  date -u '+%Y-%m-%dT%H:%M:%SZ'
+}
+
+slugify() {
+  printf '%s' "$1" |
+    tr '[:upper:]' '[:lower:]' |
+    tr -cs 'a-z0-9' '-' |
+    sed 's/^-//; s/-$//' |
+    cut -c1-28
+}
+
+new_uuid() {
+  if command -v uuidgen >/dev/null 2>&1; then
+    uuidgen | tr '[:upper:]' '[:lower:]'
+  elif [ -r /proc/sys/kernel/random/uuid ]; then
+    cat /proc/sys/kernel/random/uuid
+  else
+    python3 -c 'import uuid; print(uuid.uuid4())'
+  fi
+}
+
+job_dir() {
+  printf '%s/jobs/%s\n' "$STATE_ROOT" "$1"
+}
+
+latest_job() {
+  [ -d "$STATE_ROOT/jobs" ] || return 1
+  # Job IDs contain only timestamp, slug and numeric suffix characters.
+  # shellcheck disable=SC2012
+  ls -1dt "$STATE_ROOT"/jobs/* 2>/dev/null | sed -n '1p' | xargs basename
+}
+
+resolve_job() {
+  local requested="${1:-}" resolved
+  if [ -n "$requested" ]; then
+    resolved="$requested"
+  else
+    resolved="$(latest_job)" || die "no dispatched jobs"
+  fi
+  [ -d "$(job_dir "$resolved")" ] || die "unknown job: $resolved"
+  printf '%s\n' "$resolved"
+}
+
+read_field() {
+  local dir="$1" field="$2"
+  [ -f "$dir/$field" ] && cat "$dir/$field"
+}
+
+write_field() {
+  local dir="$1" field="$2" value="$3" tmp
+  tmp="$dir/.$field.tmp.$$"
+  printf '%s\n' "$value" > "$tmp"
+  mv "$tmp" "$dir/$field"
+}
+
+notify_result() {
+  local title="$1" message="$2" tone="${3:-info}"
+  if command -v notification >/dev/null 2>&1; then
+    notification "$title" "$message" --tone "$tone" --group agent-dispatch >/dev/null 2>&1 || true
+  elif [ "$(uname -s)" = "Darwin" ] && command -v osascript >/dev/null 2>&1; then
+    osascript -e "display notification \"${message//\"/\\\"}\" with title \"${title//\"/\\\"}\"" \
+      >/dev/null 2>&1 || true
+  fi
+}
+
+read_prompt() {
+  local prompt_file="$1"
+  shift
+
+  if [ -n "$prompt_file" ]; then
+    [ -f "$prompt_file" ] || die "prompt file not found: $prompt_file"
+    cat "$prompt_file"
+  elif [ "$#" -gt 0 ]; then
+    printf '%s\n' "$*"
+  elif [ ! -t 0 ]; then
+    cat
+  else
+    die "provide a prompt after --, with --prompt-file, or on stdin"
+  fi
+}
+
+append_worker_contract() {
+  cat
+  cat <<'EOF'
+
+Worker response contract:
+- Complete the requested work or stop at a real blocker.
+- Return a concise final report with outcome, changed files or external writes, verification, and blockers.
+- Do not wait for another interactive message. The dispatcher can resume this conversation later.
+EOF
+}
+
+resolve_tmux_session() {
+  local requested="$1" session
+  if [ -n "$requested" ]; then
+    session="$requested"
+  elif [ -n "${TMUX_PANE:-}" ]; then
+    session="$(tmux display-message -p -t "$TMUX_PANE" '#{session_name}')"
+  elif [ -n "${TMUX:-}" ]; then
+    session="$(tmux display-message -p '#{session_name}')"
+  else
+    die "not inside tmux; pass --tmux-session NAME"
+  fi
+  tmux has-session -t "$session" 2>/dev/null || die "tmux session not found: $session"
+  printf '%s\n' "$session"
+}
+
+launch_turn() {
+  local id="$1" turn="$2" dir session command window window_name
+  dir="$(job_dir "$id")"
+  session="$(read_field "$dir" tmux-session)"
+
+  require_command tmux
+  tmux has-session -t "$session" 2>/dev/null || die "tmux session no longer exists: $session"
+
+  write_field "$dir" state "queued"
+  printf -v command '%q ' "$SELF" _run-turn "$id" "$turn"
+  window_name="agent-$(slugify "$(read_field "$dir" name)")-$turn"
+  if ! window="$(tmux new-window -d -P -F '#{window_id}' -t "$session:" -n "$window_name" \
+    -c "$(read_field "$dir" cwd)" "$command")"; then
+    write_field "$dir" state "launch-failed"
+    die "could not create a worker window in tmux session: $session"
+  fi
+  write_field "$dir" tmux-window "$window"
+}
+
+parse_send_options() {
+  ENGINE="cursor"
+  MODEL=""
+  CWD="$PWD"
+  ADD_DIR=""
+  NAME="task"
+  PROMPT_FILE=""
+  TMUX_SESSION=""
+  FORCE="0"
+  MODE="agent"
+  POSITIONAL=""
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --engine)
+        [ "$#" -ge 2 ] || die "--engine requires a value"
+        ENGINE="$2"
+        shift 2
+        ;;
+      --model)
+        [ "$#" -ge 2 ] || die "--model requires a value"
+        MODEL="$2"
+        shift 2
+        ;;
+      --mode)
+        [ "$#" -ge 2 ] || die "--mode requires a value"
+        MODE="$2"
+        shift 2
+        ;;
+      --cwd)
+        [ "$#" -ge 2 ] || die "--cwd requires a value"
+        CWD="$2"
+        shift 2
+        ;;
+      --add-dir)
+        [ "$#" -ge 2 ] || die "--add-dir requires a value"
+        ADD_DIR="$2"
+        shift 2
+        ;;
+      --name)
+        [ "$#" -ge 2 ] || die "--name requires a value"
+        NAME="$2"
+        shift 2
+        ;;
+      --prompt-file)
+        [ "$#" -ge 2 ] || die "--prompt-file requires a value"
+        PROMPT_FILE="$2"
+        shift 2
+        ;;
+      --tmux-session)
+        [ "$#" -ge 2 ] || die "--tmux-session requires a value"
+        TMUX_SESSION="$2"
+        shift 2
+        ;;
+      --force)
+        FORCE="1"
+        shift
+        ;;
+      --)
+        shift
+        POSITIONAL="$*"
+        break
+        ;;
+      -*)
+        die "unknown option: $1"
+        ;;
+      *)
+        POSITIONAL="$*"
+        break
+        ;;
+    esac
+  done
+
+  case "$ENGINE" in
+    cursor|claude) ;;
+    *) die "--engine must be cursor or claude" ;;
+  esac
+  case "$MODE" in
+    agent|plan|ask) ;;
+    *) die "--mode must be agent, plan or ask" ;;
+  esac
+  if [ "$ENGINE" = "claude" ] && [ "$MODE" = "ask" ]; then
+    die "--mode ask is supported only by Cursor"
+  fi
+  [ -d "$CWD" ] || die "directory not found: $CWD"
+  [ -z "$ADD_DIR" ] || [ -d "$ADD_DIR" ] || die "additional directory not found: $ADD_DIR"
+}
+
+command_send() {
+  local prompt slug id dir session_id tmux_session
+  parse_send_options "$@"
+  require_command tmux
+  tmux_session="$(resolve_tmux_session "$TMUX_SESSION")"
+
+  case "$ENGINE" in
+    cursor)
+      require_command cursor-agent
+      session_id="$(cursor-agent create-chat | tr -d '\r\n')"
+      [ -n "$session_id" ] || die "Cursor did not return a chat ID"
+      ;;
+    claude)
+      require_command claude
+      session_id="$(new_uuid)"
+      ;;
+  esac
+
+  prompt="$(read_prompt "$PROMPT_FILE" ${POSITIONAL:+"$POSITIONAL"} | append_worker_contract)"
+  [ -n "$prompt" ] || die "prompt is empty"
+
+  slug="$(slugify "$NAME")"
+  [ -n "$slug" ] || slug="task"
+  id="$(date '+%Y%m%d-%H%M%S')-$slug-$RANDOM"
+  dir="$(job_dir "$id")"
+  mkdir -p "$dir/turns"
+
+  write_field "$dir" id "$id"
+  write_field "$dir" name "$NAME"
+  write_field "$dir" engine "$ENGINE"
+  write_field "$dir" model "$MODEL"
+  write_field "$dir" mode "$MODE"
+  write_field "$dir" cwd "$(cd "$CWD" && pwd)"
+  write_field "$dir" add-dir "$([ -z "$ADD_DIR" ] || (cd "$ADD_DIR" && pwd))"
+  write_field "$dir" force "$FORCE"
+  write_field "$dir" session-id "$session_id"
+  write_field "$dir" tmux-session "$tmux_session"
+  write_field "$dir" created-at "$(now)"
+  write_field "$dir" turn "1"
+  printf '%s\n' "$MODE" > "$dir/turns/1.mode"
+  printf '%s\n' "$prompt" > "$dir/turns/1.prompt.md"
+
+  launch_turn "$id" "1"
+  printf '%s\n' "$id"
+}
+
+command_reply() {
+  local id dir state prompt turn prompt_file="" positional="" mode previous_mode current_turn session_id previous_response
+  [ "$#" -ge 1 ] || die "reply requires a job ID"
+  id="$(resolve_job "$1")"
+  shift
+  dir="$(job_dir "$id")"
+  previous_mode="$(read_field "$dir" mode)"
+  mode="$previous_mode"
+  current_turn="$(read_field "$dir" turn)"
+  state="$(read_field "$dir" state)"
+  case "$state" in
+    running|queued) die "job is still $state; wait for its notification before replying" ;;
+  esac
+
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --prompt-file)
+        [ "$#" -ge 2 ] || die "--prompt-file requires a value"
+        prompt_file="$2"
+        shift 2
+        ;;
+      --mode)
+        [ "$#" -ge 2 ] || die "--mode requires a value"
+        mode="$2"
+        shift 2
+        ;;
+      --)
+        shift
+        positional="$*"
+        break
+        ;;
+      -*)
+        die "unknown reply option: $1"
+        ;;
+      *)
+        positional="$*"
+        break
+        ;;
+    esac
+  done
+
+  case "$mode" in
+    agent|plan|ask) ;;
+    *) die "--mode must be agent, plan or ask" ;;
+  esac
+  if [ "$(read_field "$dir" engine)" = "claude" ] && [ "$mode" = "ask" ]; then
+    die "--mode ask is supported only by Cursor"
+  fi
+  prompt="$(read_prompt "$prompt_file" ${positional:+"$positional"} | append_worker_contract)"
+  [ -n "$prompt" ] || die "prompt is empty"
+  if [ "$(read_field "$dir" engine)" = "cursor" ] && [ "$mode" = "agent" ] && [ "$previous_mode" != "agent" ]; then
+    require_command cursor-agent
+    session_id="$(cursor-agent create-chat | tr -d '\r\n')"
+    [ -n "$session_id" ] || die "Cursor did not return a chat ID for the Agent-mode handoff"
+    write_field "$dir" session-id "$session_id"
+    previous_response="$dir/turns/$current_turn.response.md"
+    if [ -s "$previous_response" ]; then
+      prompt="$(
+        printf '%s\n\n%s\n\n%s\n' \
+          'Read-only planning handoff from the previous Cursor chat:' \
+          "$(cat "$previous_response")" \
+          "$prompt"
+      )"
+    fi
+  fi
+  turn=$(( current_turn + 1 ))
+  write_field "$dir" turn "$turn"
+  write_field "$dir" mode "$mode"
+  printf '%s\n' "$mode" > "$dir/turns/$turn.mode"
+  printf '%s\n' "$prompt" > "$dir/turns/$turn.prompt.md"
+  launch_turn "$id" "$turn"
+  printf '%s\n' "$id"
+}
+
+command_status() {
+  local id dir
+  id="$(resolve_job "${1:-}")"
+  dir="$(job_dir "$id")"
+  printf 'job: %s\n' "$id"
+  printf 'name: %s\n' "$(read_field "$dir" name)"
+  printf 'engine: %s\n' "$(read_field "$dir" engine)"
+  printf 'model: %s\n' "$(read_field "$dir" model)"
+  printf 'mode: %s\n' "$(read_field "$dir" mode)"
+  printf 'cwd: %s\n' "$(read_field "$dir" cwd)"
+  printf 'add dir: %s\n' "$(read_field "$dir" add-dir)"
+  printf 'state: %s\n' "$(read_field "$dir" state)"
+  printf 'turn: %s\n' "$(read_field "$dir" turn)"
+  printf 'tmux session: %s\n' "$(read_field "$dir" tmux-session)"
+  printf 'tmux window: %s\n' "$(read_field "$dir" tmux-window)"
+  printf 'started: %s\n' "$(read_field "$dir" started-at)"
+  printf 'finished: %s\n' "$(read_field "$dir" finished-at)"
+  printf 'exit: %s\n' "$(read_field "$dir" exit-code)"
+  printf 'response: %s/turns/%s.response.md\n' "$dir" "$(read_field "$dir" turn)"
+}
+
+command_read() {
+  local id dir turn response
+  id="$(resolve_job "${1:-}")"
+  dir="$(job_dir "$id")"
+  turn="${2:-$(read_field "$dir" turn)}"
+  response="$dir/turns/$turn.response.md"
+  [ -f "$response" ] || die "response is not ready: $response"
+  cat "$response"
+}
+
+command_log() {
+  local id dir turn log
+  id="$(resolve_job "${1:-}")"
+  dir="$(job_dir "$id")"
+  turn="${2:-$(read_field "$dir" turn)}"
+  log="$dir/turns/$turn.log"
+  [ -f "$log" ] || die "log is not ready: $log"
+  cat "$log"
+}
+
+command_wait() {
+  local requested="" timeout="0" id dir started state
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      --timeout)
+        [ "$#" -ge 2 ] || die "--timeout requires seconds"
+        timeout="$2"
+        shift 2
+        ;;
+      *)
+        [ -z "$requested" ] || die "wait accepts one job ID"
+        requested="$1"
+        shift
+        ;;
+    esac
+  done
+
+  id="$(resolve_job "$requested")"
+  dir="$(job_dir "$id")"
+  started="$(date +%s)"
+  while :; do
+    state="$(read_field "$dir" state)"
+    case "$state" in
+      queued|running) ;;
+      *)
+        command_status "$id"
+        case "$state" in done) return 0 ;; *) return 1 ;; esac
+        ;;
+    esac
+    if [ "$timeout" -gt 0 ] && [ $(( $(date +%s) - started )) -ge "$timeout" ]; then
+      die "timed out waiting for $id"
+    fi
+    sleep 2
+  done
+}
+
+command_list() {
+  local dir id
+  [ -d "$STATE_ROOT/jobs" ] || return 0
+  for dir in "$STATE_ROOT"/jobs/*; do
+    [ -d "$dir" ] || continue
+    id="$(basename "$dir")"
+    printf '%-48s %-9s %-7s %s\n' \
+      "$id" "$(read_field "$dir" state)" "$(read_field "$dir" engine)" "$(read_field "$dir" name)"
+  done | sort -r
+}
+
+command_stop() {
+  local id dir window state
+  [ "$#" -eq 1 ] || die "stop requires a job ID"
+  id="$(resolve_job "$1")"
+  dir="$(job_dir "$id")"
+  window="$(read_field "$dir" tmux-window)"
+  state="$(read_field "$dir" state)"
+  case "$state" in
+    queued|running)
+      tmux kill-window -t "$window" 2>/dev/null || true
+      write_field "$dir" state "stopped"
+      write_field "$dir" finished-at "$(now)"
+      write_field "$dir" exit-code "130"
+      notify_result "Agent stopped" "$id" "alert"
+      ;;
+    *) die "job is not running: $id ($state)" ;;
+  esac
+}
+
+run_cursor_turn() {
+  local dir="$1" turn="$2" prompt="$3" response_tmp="$4" log="$5"
+  local model mode force session_id cwd add_dir
+  model="$(read_field "$dir" model)"
+  mode="$(cat "$dir/turns/$turn.mode")"
+  force="$(read_field "$dir" force)"
+  session_id="$(read_field "$dir" session-id)"
+  cwd="$(read_field "$dir" cwd)"
+  add_dir="$(read_field "$dir" add-dir)"
+
+  set -- cursor-agent --print --output-format text --trust --workspace "$cwd" --resume "$session_id"
+  [ -z "$add_dir" ] || set -- "$@" --add-dir "$add_dir"
+  [ -z "$model" ] || set -- "$@" --model "$model"
+  [ "$mode" = "agent" ] || set -- "$@" --mode "$mode"
+  if [ "$force" = "1" ]; then
+    set -- "$@" --force
+  else
+    set -- "$@" --auto-review --sandbox enabled
+  fi
+  "$@" "$prompt" > "$response_tmp" 2> "$log"
+}
+
+run_claude_turn() {
+  local dir="$1" turn="$2" prompt="$3" response_tmp="$4" log="$5"
+  local model mode force session_id cwd add_dir
+  model="$(read_field "$dir" model)"
+  mode="$(cat "$dir/turns/$turn.mode")"
+  force="$(read_field "$dir" force)"
+  session_id="$(read_field "$dir" session-id)"
+  cwd="$(read_field "$dir" cwd)"
+  add_dir="$(read_field "$dir" add-dir)"
+
+  set -- claude --print --output-format text --permission-prompts none
+  if [ "$turn" = "1" ]; then
+    set -- "$@" --session-id "$session_id"
+  else
+    set -- "$@" --resume "$session_id"
+  fi
+  [ -z "$model" ] || set -- "$@" --model "$model"
+  [ -z "$add_dir" ] || set -- "$@" --add-dir "$add_dir"
+  if [ "$mode" = "plan" ]; then
+    set -- "$@" --permission-mode plan
+  elif [ "$force" = "1" ]; then
+    set -- "$@" --dangerously-skip-permissions
+  else
+    set -- "$@" --permission-mode auto
+  fi
+  (
+    cd "$cwd"
+    "$@" "$prompt"
+  ) > "$response_tmp" 2> "$log"
+}
+
+command_run_turn() {
+  local id="$1" turn="$2" dir engine prompt_file response response_tmp log status
+  dir="$(job_dir "$id")"
+  [ -d "$dir" ] || die "unknown internal job: $id"
+  prompt_file="$dir/turns/$turn.prompt.md"
+  response="$dir/turns/$turn.response.md"
+  response_tmp="$dir/turns/.$turn.response.tmp"
+  log="$dir/turns/$turn.log"
+  engine="$(read_field "$dir" engine)"
+
+  write_field "$dir" state "running"
+  write_field "$dir" started-at "$(now)"
+  rm -f "$response_tmp"
+
+  set +e
+  case "$engine" in
+    cursor)
+      run_cursor_turn "$dir" "$turn" "$(cat "$prompt_file")" "$response_tmp" "$log"
+      status=$?
+      ;;
+    claude)
+      run_claude_turn "$dir" "$turn" "$(cat "$prompt_file")" "$response_tmp" "$log"
+      status=$?
+      ;;
+    *)
+      printf 'Unknown engine: %s\n' "$engine" > "$log"
+      status=2
+      ;;
+  esac
+  set -e
+
+  if [ -s "$response_tmp" ]; then
+    mv "$response_tmp" "$response"
+  else
+    rm -f "$response_tmp"
+    printf 'Worker produced no response. Read the turn log for details.\n' > "$response"
+  fi
+
+  write_field "$dir" exit-code "$status"
+  write_field "$dir" finished-at "$(now)"
+  if [ "$status" -eq 0 ]; then
+    write_field "$dir" state "done"
+    notify_result "Agent finished" "$id: $(read_field "$dir" name)" "info"
+  else
+    write_field "$dir" state "failed"
+    notify_result "Agent failed" "$id exited $status" "alert"
+  fi
+  return "$status"
+}
+
+case "${1:-}" in
+  send)
+    shift
+    command_send "$@"
+    ;;
+  reply)
+    shift
+    command_reply "$@"
+    ;;
+  status)
+    shift
+    command_status "${1:-}"
+    ;;
+  read)
+    shift
+    command_read "${1:-}" "${2:-}"
+    ;;
+  log)
+    shift
+    command_log "${1:-}" "${2:-}"
+    ;;
+  wait)
+    shift
+    command_wait "$@"
+    ;;
+  list)
+    command_list
+    ;;
+  stop)
+    shift
+    command_stop "$@"
+    ;;
+  _run-turn)
+    [ "$#" -eq 3 ] || die "invalid internal invocation"
+    command_run_turn "$2" "$3"
+    ;;
+  --help|-h|help|"")
+    usage
+    ;;
+  *)
+    usage >&2
+    die "unknown command: $1"
+    ;;
+esac
