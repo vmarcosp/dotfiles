@@ -196,6 +196,7 @@ link_shared() {
   # tmux 3.2+ prefers XDG over ~/.tmux.conf when this file exists (Omarchy ships one).
   mkdir -p "$HOME/.config/tmux"
   backup_then_link "$DOTFILES/shared/tmux/.tmux.conf" "$HOME/.config/tmux/tmux.conf"
+  backup_then_link "$DOTFILES/shared/tmux/agents.conf" "$HOME/.config/tmux/agents.conf"
   backup_then_link "$DOTFILES/shared/better-tmux" "$HOME/.config/better-tmux"
 
   backup_then_link "$DOTFILES/shared/agents" "$HOME/.agents"

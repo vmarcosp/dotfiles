@@ -1,0 +1,243 @@
+#!/usr/bin/env bash
+#
+# agent-watch - Track which tmux windows hold a coding agent and whether it needs you.
+#
+# Usage:
+#   agent-watch tick        scan every pane, update window state, print the status-right segment
+#   agent-watch next        jump to the next window that needs you (any session)
+#   agent-watch menu [CLIENT]  pop up a menu of every agent window across sessions
+#
+# State per window (tmux option @agent_state, icon in @agent_icon):
+#   ask      agent is blocked on an approval prompt              (red ▲)
+#   waiting  agent stopped working and you have not looked yet   (yellow ●)
+#   working  agent is running                                    (blue ◐)
+#   idle     agent is at its prompt and you have seen it         (dim ○)
+#
+# Detection reads the footer of each pane, so it works with any agent whose UI
+# matches the patterns below (Cursor CLI, Claude Code). Edit the patterns when a
+# new UI needs support.
+#
+# Opt-in desktop notification when an agent starts needing you:
+#   tmux set -g @agent-notify on
+
+ASK_RE='Waiting for approval|Run \(once\)|Run this command|Allow (this )?web (search|fetch)|Do you want to proceed'
+WORK_RE='ctrl\+c to stop|esc to interrupt'
+IDLE_RE='Add a follow-up|\? for shortcuts'
+# Panes running these never hold an agent UI; skip the capture.
+SKIP_CMDS=' zsh bash fish sh dash nu nvim vim ssh lazygit '
+
+ICON_ASK='#[fg=red]▲'
+ICON_WAITING='#[fg=yellow]●'
+ICON_WORKING='#[fg=blue]◐'
+ICON_IDLE='#[fg=brightblack]○'
+
+ASK=()
+NEED=()
+WORK=0
+MAX_NAMES=4
+
+rank_of() {
+  case "$1" in
+    ask) echo 4 ;;
+    waiting) echo 3 ;;
+    working | settling) echo 2 ;;
+    idle) echo 1 ;;
+    *) echo 0 ;;
+  esac
+}
+
+state_of_rank() {
+  case "$1" in
+    4) echo ask ;;
+    3) echo waiting ;;
+    2) echo working ;;
+    1) echo idle ;;
+    *) echo "" ;;
+  esac
+}
+
+icon_of() {
+  case "$1" in
+    ask) printf '%s' "$ICON_ASK" ;;
+    waiting) printf '%s' "$ICON_WAITING" ;;
+    working) printf '%s' "$ICON_WORKING" ;;
+    idle) printf '%s' "$ICON_IDLE" ;;
+  esac
+}
+
+# Print ask|working|idle|none for a pane, from the last lines of its screen.
+classify() {
+  local footer
+  footer=$(tmux capture-pane -p -t "$1" 2>/dev/null | grep -v '^[[:space:]]*$' | tail -8)
+  if grep -Eq "$ASK_RE" <<<"$footer"; then
+    echo ask
+  elif grep -Eq "$WORK_RE" <<<"$footer"; then
+    echo working
+  elif grep -Eq "$IDLE_RE" <<<"$footer"; then
+    echo idle
+  else
+    echo none
+  fi
+}
+
+# Apply window state; $1 window id, $2 state, $3 session, $4 index.
+apply_window() {
+  local wid="$1" state="$2"
+  if [ -z "$state" ]; then
+    tmux set-option -wu -t "$wid" @agent_state 2>/dev/null
+    tmux set-option -wu -t "$wid" @agent_icon 2>/dev/null
+  else
+    tmux set-option -w -t "$wid" @agent_state "$state" 2>/dev/null
+    # Leading space separates the icon from the window name in the tab.
+    tmux set-option -w -t "$wid" @agent_icon " $(icon_of "$state")" 2>/dev/null
+  fi
+}
+
+flush_window() {
+  [ -n "$cur_win" ] || return 0
+  local state
+  state=$(state_of_rank "$best")
+  [ "$state" = "$cur_prev" ] || apply_window "$cur_win" "$state"
+  case "$state" in
+    ask) ASK+=("$cur_sess:$cur_idx") ;;
+    waiting) NEED+=("$cur_sess:$cur_idx") ;;
+    working) WORK=$((WORK + 1)) ;;
+  esac
+}
+
+notify_enabled() {
+  [ "$(tmux show-options -gqv @agent-notify 2>/dev/null)" = on ] && command -v notification >/dev/null 2>&1
+}
+
+scan() {
+  local pid wid cmd vis pprev wprev idx sess raw new r
+  local cur_win="" cur_prev="" cur_sess="" cur_idx="" best=0
+
+  while IFS='|' read -r pid wid cmd vis pprev wprev idx sess; do
+    if [ "$wid" != "$cur_win" ]; then
+      flush_window
+      cur_win="$wid" cur_prev="$wprev" cur_sess="$sess" cur_idx="$idx" best=0
+    fi
+
+    case "$SKIP_CMDS" in
+      *" $cmd "*) raw=none ;;
+      *) raw=$(classify "$pid") ;;
+    esac
+
+    case "$raw" in
+      ask) new=ask ;;
+      working) new=working ;;
+      idle)
+        if [ "$vis" = 1 ]; then
+          new=idle
+        else
+          # A one-tick prompt between tool calls is not "done": confirm on the next tick.
+          case "$pprev" in
+            working) new=settling ;;
+            settling | waiting | ask) new=waiting ;;
+            *) new=idle ;;
+          esac
+        fi
+        ;;
+      *) new="" ;;
+    esac
+
+    if [ "$new" != "$pprev" ]; then
+      if [ -z "$new" ]; then
+        tmux set-option -pu -t "$pid" @agent_pane 2>/dev/null
+      else
+        tmux set-option -p -t "$pid" @agent_pane "$new" 2>/dev/null
+      fi
+      case "$new" in
+        waiting | ask)
+          if [ "$pprev" != waiting ] && [ "$pprev" != ask ] && notify_enabled; then
+            notification "Agent needs you" "$sess:$idx" --tone alert --group "agent-$wid" >/dev/null 2>&1 &
+          fi
+          ;;
+      esac
+    fi
+
+    r=$(rank_of "$new")
+    [ "$r" -gt "$best" ] && best=$r
+  done < <(tmux list-panes -a -F '#{pane_id}|#{window_id}|#{pane_current_command}|#{?#{&&:#{&&:#{window_active},#{pane_active}},#{session_attached}},1,0}|#{@agent_pane}|#{@agent_state}|#{window_index}|#{session_name}' 2>/dev/null)
+  flush_window
+}
+
+# Drop the emoji/dash prefix from session names; the bar is narrow.
+short_names() {
+  printf '%s\n' "$@" | LC_ALL=C sed 's/^[^A-Za-z0-9]*//'
+}
+
+cmd_tick() {
+  scan
+  local out="" shown names n
+  n=${#ASK[@]}
+  if [ "$n" -gt 0 ]; then
+    shown=("${ASK[@]:0:$MAX_NAMES}")
+    names=$(short_names "${shown[@]}" | tr '\n' ' ')
+    out="#[fg=red,bold]▲ ${names% }"
+    [ "$n" -gt "$MAX_NAMES" ] && out="$out +$((n - MAX_NAMES))"
+    out="$out#[default] "
+  fi
+  n=${#NEED[@]}
+  if [ "$n" -gt 0 ]; then
+    shown=("${NEED[@]:0:$MAX_NAMES}")
+    names=$(short_names "${shown[@]}" | tr '\n' ' ')
+    out="$out#[fg=yellow,bold]● ${names% }"
+    [ "$n" -gt "$MAX_NAMES" ] && out="$out +$((n - MAX_NAMES))"
+    out="$out#[default] "
+  fi
+  [ "$WORK" -gt 0 ] && out="$out#[fg=blue]◐ $WORK#[default] "
+  printf '%s' "$out"
+}
+
+cmd_next() {
+  scan
+  local state sess idx target=""
+  while IFS='|' read -r state sess idx; do
+    [ "$state" = ask ] && { target="$sess:$idx"; break; }
+    [ "$state" = waiting ] && [ -z "$target" ] && target="$sess:$idx"
+  done < <(tmux list-windows -a -F '#{@agent_state}|#{session_name}|#{window_index}' 2>/dev/null)
+
+  if [ -z "$target" ]; then
+    tmux display-message "No agent needs you"
+    return 0
+  fi
+  tmux switch-client -t "=${target%%:*}:${target#*:}" 2>/dev/null ||
+    tmux select-window -t "=${target%%:*}:${target#*:}"
+  scan
+}
+
+cmd_menu() {
+  local client="${1:-}" state sess idx wname title label key i=0 items=() keys="123456789abcdefghijklmnopqrstuvwxyz"
+  scan
+  for want in ask waiting working idle; do
+    while IFS='|' read -r state sess idx wname title; do
+      [ "$state" = "$want" ] || continue
+      i=$((i + 1))
+      [ "$i" -gt 35 ] && break 2
+      key="${keys:$((i - 1)):1}"
+      label="$(icon_of "$state") #[default]${sess}:${idx} ${wname}"
+      [ -n "$title" ] && label="$label #[fg=brightblack]${title}"
+      items+=("$label" "$key" "switch-client -t '=${sess}:${idx}'")
+    done < <(tmux list-windows -a -F '#{@agent_state}|#{session_name}|#{window_index}|#{window_name}|#{pane_title}' 2>/dev/null)
+  done
+
+  if [ "$i" -eq 0 ]; then
+    tmux display-message "No agents running"
+    return 0
+  fi
+  local args=(display-menu -T "Agents" -x C -y C)
+  [ -n "$client" ] && args+=(-c "$client")
+  tmux "${args[@]}" "${items[@]}"
+}
+
+case "${1:-}" in
+  tick) cmd_tick ;;
+  next) cmd_next ;;
+  menu) cmd_menu "${2:-}" ;;
+  *)
+    sed -n '3,12p' "${BASH_SOURCE[0]}" | sed 's/^# \{0,1\}//'
+    exit 1
+    ;;
+esac

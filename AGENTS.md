@@ -109,6 +109,7 @@ git pull && ./install.sh
 - Ghostty: `macos/ghostty/config` on macos. On Omarchy, `omarchy/ghostty/config` for both machines, `pc.conf` / `macbook.conf` for one. Reload with `Ctrl+Shift+,`.
 - Neovim: `shared/nvim/lua/`. yugen on macOS; on Omarchy, live theme from `~/.local/state/omarchy/current/theme/neovim.lua`.
 - tmux bar: `shared/better-tmux/`. `themes/macos.tsx` (yugen) vs `themes/omarchy.tsx` (reads live Omarchy `colors.toml`). `install.sh` fetches the GitHub release binary into `~/.local/bin`.
+- Agent awareness in tmux: `shared/bin/agent-watch` scans every pane's footer (Cursor CLI, Claude Code patterns at the top of the script) and sets `@agent_state` / `@agent_icon` per window. `shared/tmux/agents.conf` wires it into `status-right` and binds `prefix g` (jump to next window needing you) and `prefix a` (menu of all agent windows). Opt-in desktop notification: `tmux set -g @agent-notify on`. Omarchy's `refresh-better-tmux` hook should `tmux source-file ~/.config/tmux/agents.conf` too, or a theme change drops the status segment.
 - Global skill/rule: `shared/agents/skills/` or `shared/agents/rules/`
 - Omarchy desktop: `omarchy/hypr/`, `omarchy/config/shell.json`, then `hyprctl reload` / `hyprctl configerrors`
 - New symlink: `install.sh`, then re-run it
