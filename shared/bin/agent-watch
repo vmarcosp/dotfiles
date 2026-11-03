@@ -20,9 +20,12 @@
 # Opt-in desktop notification when an agent starts needing you:
 #   tmux set -g @agent-notify on
 
-ASK_RE='Waiting for approval|Run \(once\)|Run this command|Allow (this )?web (search|fetch)|Do you want to proceed'
-WORK_RE='ctrl\+c to stop|esc to interrupt'
-IDLE_RE='Add a follow-up|\? for shortcuts'
+ASK_RE='Waiting for approval|Run \(once\)|Run this command|Allow (this )?web (search|fetch)|Do you want to (proceed|make this edit|create|allow)|Would you like to proceed|Enter to select'
+WORK_RE='ctrl\+c to stop|esc to interrupt|Waiting for [0-9]+ background agents?'
+# Claude Code drops "? for shortcuts" when a permission mode or vim mode owns the footer.
+IDLE_RE='Add a follow-up|\? for shortcuts|shift\+tab to cycle|-- (INSERT|NORMAL) --'
+# Claude Code lists running subagents under its prompt, so look past them.
+FOOTER_LINES=16
 # Panes running these never hold an agent UI; skip the capture.
 SKIP_CMDS=' zsh bash fish sh dash nu nvim vim ssh lazygit '
 
@@ -68,7 +71,7 @@ icon_of() {
 # Print ask|working|idle|none for a pane, from the last lines of its screen.
 classify() {
   local footer
-  footer=$(tmux capture-pane -p -t "$1" 2>/dev/null | grep -v '^[[:space:]]*$' | tail -8)
+  footer=$(tmux capture-pane -p -t "$1" 2>/dev/null | grep -v '^[[:space:]]*$' | tail -"$FOOTER_LINES")
   if grep -Eq "$ASK_RE" <<<"$footer"; then
     echo ask
   elif grep -Eq "$WORK_RE" <<<"$footer"; then
