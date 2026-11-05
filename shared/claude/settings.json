@@ -22,5 +22,6 @@
   "effortLevel": "medium",
   "theme": "dark-ansi",
   "editorMode": "vim",
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "idleCompaction": false
 }
