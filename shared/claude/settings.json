@@ -5,9 +5,9 @@
   "permissions": {
     "allow": [
       "Bash",
-      "Read(*)",
-      "Write(*)",
-      "Edit(*)"
+      "Read",
+      "Write",
+      "Edit"
     ],
     "deny": [
       "Bash(rm -rf :*)"

@@ -6,7 +6,7 @@ description: Dispatches resumable Cursor or Claude workers through detached wind
 # Agent Dispatch
 
 Use `agent-dispatch` on `PATH`. It treats tmux as a process supervisor and files as the communication channel.
-Never use `tmux send-keys` for agent communication.
+Never use `tmux send-keys` for agent communication. If the user asks you to open a window in their own tmux and type a command there, that is not a dispatch: follow `user-tmux`.
 
 The dispatcher creates a detached window in the caller's current tmux session. If the caller is outside tmux, pass
 `--tmux-session NAME`. It never switches the active window.

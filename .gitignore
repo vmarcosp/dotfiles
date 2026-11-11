@@ -7,3 +7,6 @@ shared/agents/AGENTS.local.md
 
 # Host-specific Impeccable engine; the launcher downloads it on first run.
 shared/agents/skills/impeccable/scripts/bin/
+
+# Claude desktop creates this synced skills dir; never track it.
+shared/agents/skills/synced/
