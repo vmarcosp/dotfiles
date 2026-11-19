@@ -42,6 +42,15 @@ Infer defaults from the situation:
 
 Apply my-voice to the final draft, not to code or config. Replies in this chat still follow Chat above.
 
+## Working with me
+
+- **Modes.** A free session: you orchestrate subagents with the models I name. A Jira task: small ones the same way; large ones go RFC → Junji/Yokai run. Recommend run or no run; I decide.
+- **Questions.** One per message: `Pergunta X de N: <title>`, short context, an ASCII drawing when it helps, numbered options with the recommended one marked. No ask tool: I answer with the number.
+- **Review.** Fable for a run or a large PR; Opus for a small task. A Fable second opinion before an unclear orchestrator decision.
+- **Memory.** `/brain` maps my vault (`~/projects/brain`; you write only in `Agent/`). `/handoff write` before `/compact` or the end of a session; `/handoff read` after. `/orchestrate` runs a Junji/Yokai run.
+- **Where things go.** Jira for work tasks and follow-ups on them. Todoist for my own reminders. Lasting technical decisions in the repo (RFC, ADR, reference).
+- Details and the reasons: `~/projects/brain/Agent/Método/`.
+
 ## Local context
 
 If `~/.agents/AGENTS.local.md` exists, read it at the start of the session. It holds machine-local context (work vault, private skills). It is not in git.
