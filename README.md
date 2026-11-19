@@ -46,12 +46,9 @@ Live in [`shared/agents/skills/`](shared/agents/skills/) and link into every age
 
 | Skill | Use it for |
 |:------|:-----------|
-| `/brainstorm` | Turn a fuzzy idea into something decision-ready |
 | `/adr` | Record an architecture decision |
-| `/tdd` | Write or update a technical design doc |
 | `/review` | Review a delivered change against its contracts |
 | `/pr-explainer` | Walk a PR in rounds — overview, Q&A, quiz |
-| `/triage-pr-followups` | Triage leftover follow-ups on an open PR |
 | `/my-voice` | Rewrite prose in my voice |
 | `/humanizer` | Strip chatbot tells from a draft |
 | `/nous` | Act on Nous review threads on a local doc |
