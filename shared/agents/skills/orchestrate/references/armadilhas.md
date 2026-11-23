@@ -2,6 +2,10 @@
 
 Leia antes de aceitar o "verde" de uma fase.
 
+- **Painel Rex da run**: fechar o painel mata o Yokai (não há `nohup` no modo Rex); o watchdog vê
+  `DEAD` e o restart abre um painel novo. `/compact` ou reiniciar o Claude não matam a run: o painel é
+  do Rex. Não digitar no painel (o Yokai roda com stdin em `/dev/null`).
+
 - **O e2e de uma fase é auto-reportado.** O gate do Yokai roda os sensores (lint, typecheck, unit); o
   judge não roda nada. Confira no transcript do Build (`~/.claude/projects/<worktree-slug>/<session>.jsonl`;
   os ids estão no log do Yokai, linha `claude session …`) o reporter de cada spec do Verify.

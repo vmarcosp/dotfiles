@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless as a detached shell process with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orquestra", "monta a run", "sobe a run".
+description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless in a Rex pane beside the session (detached shell process outside Rex) with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orquestra", "monta a run", "sobe a run".
 ---
 
 The orchestrator delegates; it does not implement. It reviews what comes back, decides what is its own
@@ -37,11 +37,15 @@ start command.
 
 ## 2. Start and watch
 
-1. Start Yokai headless with no terminal, detached from the agent's shell:
-   `~/.claude/skills/orchestrate/scripts/run-yokai.sh start <worktree> <log>`. `YOKAI_ARGS` defaults
-   to `--headless --max-iters 2`; the script refuses `--allow-gated`. `run-yokai.sh status <log>`
-   prints `RUNNING <pid>`, `EXITED <code>` or `STOPPED`; `run-yokai.sh stop <log>` stops the run.
-   Marcos follows it with `tail -f <log>` if he wants.
+1. Start Yokai headless: `~/.claude/skills/orchestrate/scripts/run-yokai.sh start <worktree> <log>`,
+   with the log outside the repo (e.g. `~/.worktrees/yokai-<story>.log`). Inside Rex (`REX_SESSION` and
+   `REX_BLOCK` set) it opens a pane to the right of the orchestrator's pane, without taking focus, and
+   Marcos watches the run there; the output also goes to the log. Outside Rex (SSH, cloud) it runs
+   detached with `nohup`. `YOKAI_ARGS` defaults to `--headless --max-iters 2`; the script refuses
+   `--allow-gated`. `run-yokai.sh status <log>` prints `RUNNING <pid>`, `EXITED <code>` or `STOPPED`;
+   `run-yokai.sh stop <log>` stops the run and leaves the pane open on its last output. The pane's
+   block id is in `<log>.block`; read it with `rex capture -s "$REX_SESSION" -b <block> --trim`. Never
+   type into the pane; closing it kills the run.
 2. Start the watchdog with the Bash tool in the background:
    `~/.claude/skills/orchestrate/scripts/watchdog.sh <worktree> <log> [precheck]`.
 3. On each watchdog exit, act, log one entry (time, phase, what happened, decision, Fable's view if

@@ -26,7 +26,7 @@ Done when one path is chosen.
 1. Gather from this session, not from memory of older ones. For each item, write where it lives so a
    reader can check it:
    - **Running:** what it does, the agent's name or description, the process command (for a Yokai run,
-     the `run-yokai.sh` log path), the worktree, and the push state (`git -C <wt> status -sb`: ahead/behind origin).
+     the `run-yokai.sh` log path and, in Rex, the pane's block id from `<log>.block`), the worktree, and the push state (`git -C <wt> status -sb`: ahead/behind origin).
    - **PRs:** number, head SHA, mergeable state, failing checks by name.
    - **Waiting on Marcos:** each item as a concrete action.
    - **Next steps:** in order, naming the first one exactly (for example "Estado › Até a Fase 4, item 1").
