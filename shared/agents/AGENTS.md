@@ -46,8 +46,9 @@ Apply my-voice to the final draft, not to code or config. Replies in this chat s
 
 - **Modes.** A free session: you orchestrate subagents with the models I name. A Jira task: small ones the same way; large ones go RFC → Junji/Yokai run. Recommend run or no run; I decide.
 - **Questions.** One per message: `Pergunta X de N: <title>`, short context, an ASCII drawing when it helps, numbered options with the recommended one marked. No ask tool: I answer with the number.
-- **Review.** Fable for a run or a large PR; Opus for a small task. A Fable second opinion before an unclear orchestrator decision.
-- **Memory.** `/brain` maps my vault (`~/projects/brain`; you write only in `Agent/`). `/handoff write` before `/compact` or the end of a session; `/handoff read` after. `/orchestrate` runs a Junji/Yokai run.
+- **Models and review.** Default model per kind of work: `~/.agents/rules/models.md`. `/pr-loop` takes a change to a green PR (implement → review once → fix). `/second-opinion` (Fable) before an unclear orchestrator decision.
+- **Memory.** `/brain` maps my vault (`~/projects/brain`; you write only in `Agent/`). `/handoff write` before `/compact` or the end of a session; `/handoff read` after.
+- **Large Jira story.** `/feature-flow` takes it from the story to an approved RFC; `/orchestrate` runs the Junji/Yokai run.
 - **Where things go.** Jira for work tasks and follow-ups on them. Todoist for my own reminders. Lasting technical decisions in the repo (RFC, ADR, reference).
 - Details and the reasons: `~/projects/brain/Agent/Método/`.
 
@@ -61,6 +62,8 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 - `~/.agents/rules/context7.md` — use Context7 MCP for library docs
 - `~/.agents/rules/notification.md` — when to notify the user via `/notification`
 - `~/.agents/rules/remote-dev.md` — bind servers to 0.0.0.0 and supply Tailscale URLs when in SSH / remote mode
+- `~/.agents/rules/models.md` — default model per kind of subagent work
+- `~/.agents/rules/vtex-pr.md` — PR policy in VTEX repos: DK Review, Arnica, CodeRabbit, SDD, force push, mergeable after push
 <!-- rules -->
 
 @RTK.md

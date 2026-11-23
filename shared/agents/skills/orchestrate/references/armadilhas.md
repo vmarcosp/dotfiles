@@ -24,5 +24,4 @@ Leia antes de aceitar o "verde" de uma fase.
   build. Dois agentes de e2e ou live no mesmo worktree se atropelam; use outro worktree e outra porta.
 - **Login e budget**: rode o preflight do QA (token válido, budget do modelo) antes de disparar QA ao
   vivo; o token do CLI expira.
-- **Conflito com a main** trava o CI de PR em silêncio (GitHub não roda o workflow). Veja
-  `gh pr view --json mergeable` depois de cada push.
+- **Conflito com a main** trava o CI de PR em silêncio: regra em `~/.agents/rules/vtex-pr.md`.

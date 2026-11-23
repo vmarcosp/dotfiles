@@ -17,12 +17,13 @@ editing an approved RFC beyond status and links; opening a `[gated]` phase; `vte
 spending outside what was agreed; posting to Slack or publishing outside. An approval covers that one
 case.
 
-When a decision is not obvious, brief a **Fable** subagent with the situation, the evidence and the
-options, never your conclusion, then decide. Log both.
+When a decision is not obvious, run `/second-opinion` (a Fable with the situation, the evidence and the
+options, never your conclusion), then decide. Log both. Default models: `~/.agents/rules/models.md`;
+PR policy: `~/.agents/rules/vtex-pr.md`.
 
 ## 1. Prepare
 
-1. The RFC is approved and the Jira story exists. Create the epic folder and run log in the Brain if
+1. The RFC is approved and the Jira story exists (if not, `/feature-flow` gets there first). Create the epic folder and run log in the Brain if
    missing: `Agent/<Projeto>/<ÉPICO> <nome>/Runs/<HISTÓRIA> <run> — decisões.md` with a "Mandato"
    section copied from above and the environment (worktree, branch, base commit, links, models).
 2. Junji: spawn one named **Opus** subagent and keep it alive across verbs (`begin`, `plan`, `refine`).
@@ -72,8 +73,10 @@ Defaults, unless Marcos says otherwise:
 4. QA: an agent with the repo's QA skill (`studio-qa` in vtex-studio), preflight first; write its
    report to the evidence folder if the agent cannot.
 5. Fixes: group findings by area and give each group to one agent, serially in the same worktree
-   (parallel agents collide on hooks and builds), or in separate worktrees.
-6. CI green; DK Review blockers only; Marcos marks SDD/Component checks.
+   (parallel agents collide on hooks and builds), or in separate worktrees. Each group follows the fix
+   and verify steps of `/pr-loop`.
+6. CI green, per `~/.agents/rules/vtex-pr.md` (DK blockers only after round one; Marcos marks
+   SDD/Component checks).
 7. Marcos's manual QA; merge and release (his); consolidate the plan into reference docs and remove
    `.koi/run/`; close the Jira story with PR and release links.
 
