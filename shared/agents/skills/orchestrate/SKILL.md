@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless in tmux with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orquestra", "monta a run", "sobe a run".
+description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless as a detached shell process with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orquestra", "monta a run", "sobe a run".
 ---
 
 The orchestrator delegates; it does not implement. It reviews what comes back, decides what is its own
@@ -37,16 +37,19 @@ start command.
 
 ## 2. Start and watch
 
-1. `tmux new-window -d -n <run-window> -c <worktree>` in Marcos's tmux session, then
-   `tmux send-keys -t <run-window> "yokai --headless --max-iters 2 2>&1 | tee -a <log>" Enter`.
-   Never `--allow-gated`.
+1. Start Yokai headless with no terminal, detached from the agent's shell:
+   `~/.claude/skills/orchestrate/scripts/run-yokai.sh start <worktree> <log>`. `YOKAI_ARGS` defaults
+   to `--headless --max-iters 2`; the script refuses `--allow-gated`. `run-yokai.sh status <log>`
+   prints `RUNNING <pid>`, `EXITED <code>` or `STOPPED`; `run-yokai.sh stop <log>` stops the run.
+   Marcos follows it with `tail -f <log>` if he wants.
 2. Start the watchdog with the Bash tool in the background:
-   `~/.claude/skills/orchestrate/scripts/watchdog.sh <worktree> <log> <run-window> [precheck]`.
+   `~/.claude/skills/orchestrate/scripts/watchdog.sh <worktree> <log> [precheck]`.
 3. On each watchdog exit, act, log one entry (time, phase, what happened, decision, Fable's view if
    asked, how to undo) and start the watchdog again:
    - `NEW_COMMIT` → review the phase: `git show --stat`, the phase plan's Outcome, the judge lines in the
      log; for e2e claims, the build transcript. Note follow-ups for the post-run list.
-   - `HALTED` / `STALLED` / `DEAD` / `PRECHECK_FAILED` → read the log tail, decide within the mandate,
+   - `HALTED` / `STALLED` / `DEAD` / `STOPPED` / `PRECHECK_FAILED` (the line carries Yokai's exit
+     status) → read the log tail, decide within the mandate,
      escalate otherwise. A defect found mid-run that later phases do not depend on goes to the post-run
      list instead of stopping the run.
    - `FINISHED` → go to 3.

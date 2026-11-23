@@ -25,8 +25,8 @@ Done when one path is chosen.
 
 1. Gather from this session, not from memory of older ones. For each item, write where it lives so a
    reader can check it:
-   - **Running:** what it does, the agent's name or description, the tmux window or the process
-     command, the worktree, and the push state (`git -C <wt> status -sb`: ahead/behind origin).
+   - **Running:** what it does, the agent's name or description, the process command (for a Yokai run,
+     the `run-yokai.sh` log path), the worktree, and the push state (`git -C <wt> status -sb`: ahead/behind origin).
    - **PRs:** number, head SHA, mergeable state, failing checks by name.
    - **Waiting on Marcos:** each item as a concrete action.
    - **Next steps:** in order, naming the first one exactly (for example "Estado › Até a Fase 4, item 1").
@@ -50,7 +50,7 @@ Done when the file is written and every running item names its agent or process,
 2. Check reality against the note, read-only:
    - each worktree: `git -C <wt> fetch -q` then `git -C <wt> status -sb` and `git -C <wt> log --oneline -3`;
    - each PR: `gh pr view <n> -R <repo> --json state,mergeable,headRefOid,statusCheckRollup`;
-   - each process: `tmux list-windows -a` for named windows, `pgrep -fl "<command in the note>"`;
+   - each process: `run-yokai.sh status <log>` for a Yokai run, `pgrep -fl "<command in the note>"` otherwise;
    - each subagent: in the same session, its notification; in a new session, treat it as stopped.
 3. Update the affected lines of `handoff.md` with what you found (it is in `Agent/`, so this is allowed).
 4. Tell Marcos in at most 6 lines: what is running, what waits on him, the next step you will take, and
