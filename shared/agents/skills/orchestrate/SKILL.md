@@ -17,8 +17,8 @@ editing an approved RFC beyond status and links; opening a `[gated]` phase; sign
 spending outside what was agreed; posting to Slack or publishing outside. An approval covers that one
 case.
 
-When a decision is not obvious, run `/second-opinion` (a Fable with the situation, the evidence and the
-options, never your conclusion), then decide. Log both. Default models: `~/.agents/rules/models.md`;
+When a decision is not obvious, run `/deliberate` (a level that fits the stakes; the brief has the
+situation, the evidence and the options, never your conclusion), then decide. Log both. Default models: `~/.agents/rules/models.md`;
 the PR policy of the repo's organization, when there is one, is linked from `~/.agents/AGENTS.local.md`.
 
 ## 1. Prepare
@@ -74,7 +74,7 @@ Defaults, unless Marcos says otherwise:
    report to the evidence folder if the agent cannot.
 5. Fixes: group findings by area and give each group to one agent, serially in the same worktree
    (parallel agents collide on hooks and builds), or in separate worktrees. Each group follows the fix
-   and verify steps of `/pr-loop`.
+   and verify steps of `/forge`.
 6. Consolidate on the same PR, **before the merge**: `/junji consolidate` and the repo's `consolidate`
    skill turn the plan into reference docs, set the RFC to Implemented (and its ADRs' status), rewire
    links and remove `.koi/` with `git rm`. The merge must never land the run's plan on main.

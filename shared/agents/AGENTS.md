@@ -46,7 +46,7 @@ Apply my-voice to the final draft, not to code or config. Replies in this chat s
 
 - **Modes.** A free session: you orchestrate subagents with the models I name. A Jira task: small ones the same way; large ones go RFC → Junji/Yokai run. Recommend run or no run; I decide.
 - **Questions.** One per message: `Pergunta X de N: <title>`, short context, an ASCII drawing when it helps, numbered options with the recommended one marked. No ask tool: I answer with the number.
-- **Models and review.** Default model per kind of work: `~/.agents/rules/models.md`. `/pr-loop` takes a change to a green PR (implement → review once → fix). `/second-opinion` (Fable) before an unclear orchestrator decision.
+- **Models and review.** Default model per kind of work: `~/.agents/rules/models.md`. `/forge [lite|standard|heavy]` takes a change to a green PR (plan → implement → review → fix → QA). `/deliberate [quick|standard|council]` gets an unanchored outside opinion before an unclear decision.
 - **Memory.** `/brain` maps my vault (`~/projects/brain`; you write only in `Agent/`). `/handoff write` before `/compact` or the end of a session; `/handoff read` after.
 - **Large Jira story.** `/feature-flow` takes it from the story to an approved RFC; `/orchestrate` runs the Junji/Yokai run.
 - **Where things go.** Jira for work tasks and follow-ups on them. Todoist for my own reminders. Lasting technical decisions in the repo (RFC, ADR, reference).

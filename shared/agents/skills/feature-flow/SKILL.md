@@ -46,7 +46,7 @@ Done when the draft is committed locally.
 
 One **Fable** reviews the RFC against the story, the sources and the code: blockers, should-fix, nits.
 Resolve each by rule and send the list to the writer; escalate only what the rules do not settle. For a
-call that is yours but not obvious, use `/second-opinion`.
+call that is yours but not obvious, use `/deliberate`.
 
 Done when every finding is applied, rejected with a reason, or queued for Marcos.
 
@@ -62,6 +62,6 @@ Done when Marcos says the RFC is approved.
 
 The writer sets the status to Approved; open the docs-only PR with the repo's `open-pr` skill (pass the
 description through `/my-voice`). Marcos merges. Update `State.md`, then recommend a run or no run with
-the reason. On a run, continue with `/orchestrate` (Prepare); otherwise `/pr-loop`.
+the reason. On a run, continue with `/orchestrate` (Prepare); otherwise `/forge`.
 
 Done when the RFC is merged as Approved and the next step is decided.
