@@ -75,9 +75,12 @@ Defaults, unless Marcos says otherwise:
 5. Fixes: group findings by area and give each group to one agent, serially in the same worktree
    (parallel agents collide on hooks and builds), or in separate worktrees. Each group follows the fix
    and verify steps of `/pr-loop`.
-6. CI green, per `~/.agents/rules/vtex-pr.md` (DK blockers only after round one; Marcos marks
+6. Consolidate on the same PR, **before the merge**: `/junji consolidate` and the repo's `consolidate`
+   skill turn the plan into reference docs, set the RFC to Implemented (and its ADRs' status), rewire
+   links and remove `.koi/` with `git rm`. The merge must never land the run's plan on main.
+7. CI green, per `~/.agents/rules/vtex-pr.md` (DK blockers only after round one; Marcos marks
    SDD/Component checks).
-7. Marcos's manual QA; merge and release (his); consolidate the plan into reference docs and remove
-   `.koi/run/`; close the Jira story with PR and release links.
+8. Marcos's manual QA; merge and release (his); close the Jira story with PR and release links.
 
-Done when the PR is merged and released, the run log has a closing entry and `Estado.md` is updated.
+Done when the PR is merged and released with no `.koi/` on main, the run log has a closing entry and
+`Estado.md` is updated.
