@@ -42,19 +42,19 @@ Hermes agent **Atena**. Coding agents (Claude Code, Cursor) read the whole vault
 ```
 Agent/
 ├─ README.md                   how the folder works
-├─ Método/                     how Marcos works with agents (all projects)
-└─ <Projeto>/                  e.g. VTEX Studio/
-    ├─ Contexto.md             stable: repos, docs, Jira, traps
-    └─ <ÉPICO> <nome>/         e.g. FSPG-1105 Storefront Creation/
-        ├─ Estado.md           live, short: phases, open items, decisions in force
+├─ Method/                     how Marcos works with agents (all projects)
+└─ <Project>/                  e.g. VTEX Studio/
+    ├─ Context.md             stable: repos, docs, Jira, traps
+    └─ <EPIC> <name>/         e.g. FSPG-1234 Epic name/
+        ├─ State.md           live, short: phases, open items, decisions in force
         ├─ handoff.md          "where I am now" (skill handoff)
-        └─ Runs/<HISTÓRIA> <run> — decisões.md   orchestrator log (skill orchestrate)
+        └─ Runs/<STORY> <run> — decisions.md   orchestrator log (skill orchestrate)
 ```
 
 - Write in en-US (chat with Marcos stays pt-BR). Every note gets frontmatter `date: YYYY-MM-DD` and
   `type: notes`. When a task, phase or epic ends, delete its folder; move what stays true to the repo,
-  Jira or the project's `Contexto.md`.
-- Start a session on an epic by reading its `handoff.md` and `Estado.md` (skill `handoff`).
+  Jira or the project's `Context.md`.
+- Start a session on an epic by reading its `handoff.md` and `State.md` (skill `handoff`).
 - A new project or epic folder is created only after Marcos confirms its name.
 - Jira is the source of truth for execution; a lasting technical decision goes to the repo (RFC, ADR,
   reference), not here. Delete a note that lost its purpose; git keeps the history.

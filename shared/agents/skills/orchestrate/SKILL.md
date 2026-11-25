@@ -4,8 +4,8 @@ description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yo
 ---
 
 The orchestrator delegates; it does not implement. It reviews what comes back, decides what is its own
-to decide and brings Marcos only what is his. Read `~/projects/brain/Agent/Método/Modos de trabalho.md`
-and `Como trabalhar com o Marcos.md` if this session has not. State goes to the Brain (skill `brain`);
+to decide and brings Marcos only what is his. Read `~/projects/brain/Agent/Method/Working modes.md`
+and `Working with Marcos.md` if this session has not. State goes to the Brain (skill `brain`);
 context across `/compact` goes through the `handoff` skill. Before trusting any phase result, read
 [references/armadilhas.md](references/armadilhas.md).
 
@@ -24,7 +24,7 @@ PR policy: `~/.agents/rules/vtex-pr.md`.
 ## 1. Prepare
 
 1. The RFC is approved and the Jira story exists (if not, `/feature-flow` gets there first). Create the epic folder and run log in the Brain if
-   missing: `Agent/<Projeto>/<ÉPICO> <nome>/Runs/<HISTÓRIA> <run> — decisões.md` with a "Mandato"
+   missing: `Agent/<Project>/<EPIC> <name>/Runs/<STORY> <run> — decisions.md` with a "Mandate"
    section copied from above and the environment (worktree, branch, base commit, links, models).
 2. Junji: spawn one named **Opus** subagent and keep it alive across verbs (`begin`, `plan`, `refine`).
    Answer its grill questions from the RFC and the rules; bring Marcos only real decisions, one at a time.
@@ -83,4 +83,4 @@ Defaults, unless Marcos says otherwise:
 8. Marcos's manual QA; merge and release (his); close the Jira story with PR and release links.
 
 Done when the PR is merged and released with no `.koi/` on main, the run log has a closing entry and
-`Estado.md` is updated.
+`State.md` is updated.

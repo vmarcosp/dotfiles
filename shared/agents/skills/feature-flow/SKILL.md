@@ -3,7 +3,7 @@ name: feature-flow
 description: Drive a large Jira story from the story to an approved, merged RFC (Mode B, steps 1–2 of Marcos's method) and hand it to /orchestrate. Checks the story, gathers context from pinned sources, has a named Opus write the RFC with the repo's rfc skill, gets a Fable review, publishes a technical artifact for Marcos and resolves the open questions one at a time. Use when Marcos starts a new phase or large story ("começa a fase N", "monta a RFC", "feature-flow FSPG-123"), or asks for "o fluxo completo" before a run.
 ---
 
-Method and reasons: `~/projects/brain/Agent/Método/` (`Modos de trabalho.md`, `Como trabalhar com o
+Method and reasons: `~/projects/brain/Agent/Method/` (`Working modes.md`, `Working with
 Marcos.md`). State goes to the Brain epic folder (skill `brain`); context across `/compact` through
 `/handoff`. The orchestrator delegates the writing; it decides by rule what a rule settles and brings
 Marcos only scope, deadlines, other people's dependencies and what is outside the mandate.
@@ -61,7 +61,7 @@ Done when Marcos says the RFC is approved.
 ## 6. Merge and hand off
 
 The writer sets the status to Approved; open the docs-only PR with the repo's `open-pr` skill (pass the
-description through `/my-voice`). Marcos merges. Update `Estado.md`, then recommend a run or no run with
+description through `/my-voice`). Marcos merges. Update `State.md`, then recommend a run or no run with
 the reason. On a run, continue with `/orchestrate` (Prepare); otherwise `/pr-loop`.
 
 Done when the RFC is merged as Approved and the next step is decided.

@@ -22,8 +22,8 @@ a mockup of it. The main diagrams are interactive, not static.
 1. **The document path** (argument or the one just written in this session). Required.
 2. **The sources it pins** (PRD, handoff, prototype), at the pinned commit. Read only to check claims
    the page makes; never add content from them that the document does not state.
-3. **The decision log**, if any: the epic's Brain note (`~/projects/brain/Agent/<Projeto>/<Épico>/`,
-   `Estado.md` or `Runs/* — decisões.md`), or a "Decided before this RFC" section.
+3. **The decision log**, if any: the epic's Brain note (`~/projects/brain/Agent/<Project>/<Epic>/`,
+   `State.md` or `Runs/* — decisions.md`), or a "Decided before this RFC" section.
 
 No document path, or two candidates: ask Marcos with numbered options.
 

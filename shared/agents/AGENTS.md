@@ -50,7 +50,7 @@ Apply my-voice to the final draft, not to code or config. Replies in this chat s
 - **Memory.** `/brain` maps my vault (`~/projects/brain`; you write only in `Agent/`). `/handoff write` before `/compact` or the end of a session; `/handoff read` after.
 - **Large Jira story.** `/feature-flow` takes it from the story to an approved RFC; `/orchestrate` runs the Junji/Yokai run.
 - **Where things go.** Jira for work tasks and follow-ups on them. Todoist for my own reminders. Lasting technical decisions in the repo (RFC, ADR, reference).
-- Details and the reasons: `~/projects/brain/Agent/Método/`.
+- Details and the reasons: `~/projects/brain/Agent/Method/`.
 
 ## Local context
 
