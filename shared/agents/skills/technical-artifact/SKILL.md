@@ -1,6 +1,6 @@
 ---
 name: technical-artifact
-description: Turn a technical document (RFC, TDD, ADR, design doc) into a visual, interactive summary page published with the Artifact tool, which Marcos reads instead of the document. Minimal black-white-gray page with a few pastels, a clickable architecture, step-through flows, UI mockups and every decision with its origin and reason; drops code and run phases. Use when asked for "artefato da RFC", "resumo visual", "technical artifact", "/technical-artifact <path>", or after an RFC, TDD or ADR is written and debated for Marcos to read (Modo B, step 2).
+description: Turn a technical document (RFC, TDD, ADR, design doc) into a visual, interactive summary page published with the Artifact tool, which Marcos reads instead of the document. Minimal black-white-gray page with a few pastels, a clickable architecture, step-through flows, UI mockups and every decision with its origin and reason; drops code and run phases. Use when asked for "an artifact of the RFC", "a visual summary", "technical artifact", "/technical-artifact <path>", or after an RFC, TDD or ADR is written and debated for Marcos to read (Mode B, step 2).
 ---
 
 The page is the document **easier to read, not shallower**. Marcos reads it instead of the document,
@@ -60,7 +60,8 @@ noted gap.
 
 ## Structure the page
 
-Write in pt-BR. Code names (types, functions, files, events, UI strings quoted from the handoff) stay
+Write in pt-BR unless Marcos asks for another language for this page (then translate the section
+names, origin labels and tags too). Code names (types, functions, files, events, UI strings quoted from the handoff) stay
 exactly as in the document, in `<code>`. Source anchors such as "handoff L507" or "PRD L764" appear
 only in the decisions' origin column and in the Divergências table, never in prose.
 
