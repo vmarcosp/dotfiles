@@ -1,6 +1,6 @@
 ---
 name: feature-flow
-description: Drive a large Jira story from the story to an approved, merged RFC (Mode B, steps 1–2 of Marcos's method) and hand it to /orchestrate. Checks the story, gathers context from pinned sources, has a named Opus write the RFC with the repo's rfc skill, gets a Fable review, publishes a technical artifact for Marcos and resolves the open questions one at a time. Use when Marcos starts a new phase or large story ("começa a fase N", "monta a RFC", "feature-flow FSPG-123"), or asks for "o fluxo completo" before a run.
+description: Drive a large Jira story from the story to an approved, merged RFC (Mode B, steps 1–2 of Marcos's method) and hand it to /orchestrate. Checks the story, gathers context from pinned sources, has a named Opus write the RFC with the repo's rfc skill, gets a Fable review, publishes a technical artifact for Marcos and resolves the open questions one at a time. Use when Marcos starts a new phase or large story ("start phase N", "write the RFC", "feature-flow PROJ-123"), or asks for "the full flow" before a run.
 ---
 
 Method and reasons: `~/projects/brain/Agent/Method/` (`Working modes.md`, `Working with
@@ -18,14 +18,14 @@ story ✓ ──► context note ──► RFC (Opus, named) ──► Fable rev
 ## 1. Story
 
 Read the Jira story. It needs scope, out of scope, acceptance criteria and sources pinned to a commit
-(PRD, design handoff, prototype). Missing parts: propose the text to Marcos; write it to Jira (English)
-only with his ok.
+(PRD, design handoff, prototype). Missing parts: propose the text to Marcos; write it to Jira only with his ok
+(title and description in the project's language, comments in English).
 
 Done when the story has the four parts or Marcos accepted the gap.
 
 ## 2. Context
 
-Write `Agent/<Project>/<Epic>/RFC <n> — contexto.md` in the Brain: the story, the requirements read from
+Write `Agent/<Project>/<Epic>/RFC <n> — context.md` in the Brain: the story, the requirements read from
 the pinned sources (with line numbers), the code as it is today (paths), and the open product points.
 Settle each open point by rule (PRD wins on behavior and scope; handoff and `CONTENT.md` on text and
 visuals; handoff over prototype); ask Marcos the rest, one question at a time, and record his answers
