@@ -1,25 +1,25 @@
 ---
 name: orchestrate
-description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless in a Rex pane beside the session (detached shell process outside Rex) with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orquestra", "monta a run", "sobe a run".
+description: Run Marcos's orchestrator role for a large task: prepare a Junji/Yokai run from an approved RFC, supervise it headless in a Rex pane beside the session (detached shell process outside Rex) with a watchdog, decide non-destructive halts with a Fable second opinion, review each phase, and drive the post-run (review, QA, fixes, CI). Use when Marcos asks to set up, start, watch or close a run, or says "orchestrate", "set up the run", "start the run".
 ---
 
 The orchestrator delegates; it does not implement. It reviews what comes back, decides what is its own
 to decide and brings Marcos only what is his. Read `~/projects/brain/Agent/Method/Working modes.md`
 and `Working with Marcos.md` if this session has not. State goes to the Brain (skill `brain`);
 context across `/compact` goes through the `handoff` skill. Before trusting any phase result, read
-[references/armadilhas.md](references/armadilhas.md).
+[references/traps.md](references/traps.md).
 
 ## Mandate
 
 Decide alone only what is non-destructive and reversible. Ask Marcos first for: force push; deleting a
 branch, file, tag or store; reset or discarding work; changing a gate, sensor or verification bar;
-editing an approved RFC beyond status and links; opening a `[gated]` phase; `vtex login/logout/switch`;
+editing an approved RFC beyond status and links; opening a `[gated]` phase; signing a CLI in or out or switching its account;
 spending outside what was agreed; posting to Slack or publishing outside. An approval covers that one
 case.
 
 When a decision is not obvious, run `/second-opinion` (a Fable with the situation, the evidence and the
 options, never your conclusion), then decide. Log both. Default models: `~/.agents/rules/models.md`;
-PR policy: `~/.agents/rules/vtex-pr.md`.
+the PR policy of the repo's organization, when there is one, is linked from `~/.agents/AGENTS.local.md`.
 
 ## 1. Prepare
 
@@ -70,7 +70,7 @@ Defaults, unless Marcos says otherwise:
 1. Run the e2e suite once from the place that rebuilds; fix real breaks first.
 2. Push and open the PR (repo's `open-pr` skill).
 3. Review: **Fable** for a run or a large PR (`/code-review … --comment`), **Opus** for a small one.
-4. QA: an agent with the repo's QA skill (`studio-qa` in vtex-studio), preflight first; write its
+4. QA: an agent with the repo's QA skill, preflight first (sign-in, budget, services up); write its
    report to the evidence folder if the agent cannot.
 5. Fixes: group findings by area and give each group to one agent, serially in the same worktree
    (parallel agents collide on hooks and builds), or in separate worktrees. Each group follows the fix
@@ -78,8 +78,8 @@ Defaults, unless Marcos says otherwise:
 6. Consolidate on the same PR, **before the merge**: `/junji consolidate` and the repo's `consolidate`
    skill turn the plan into reference docs, set the RFC to Implemented (and its ADRs' status), rewire
    links and remove `.koi/` with `git rm`. The merge must never land the run's plan on main.
-7. CI green, per `~/.agents/rules/vtex-pr.md` (DK blockers only after round one; Marcos marks
-   SDD/Component checks).
+7. CI green, per the organization's PR policy (review bots: blockers only after round one; Marcos
+   marks the manual checks).
 8. Marcos's manual QA; merge and release (his); close the Jira story with PR and release links.
 
 Done when the PR is merged and released with no `.koi/` on main, the run log has a closing entry and

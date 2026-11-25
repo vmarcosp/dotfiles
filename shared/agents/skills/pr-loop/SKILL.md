@@ -4,8 +4,8 @@ description: Take a change from task to a green pull request with Marcos's imple
 ---
 
 The orchestrator runs the loop; it does not write the code. Model defaults are in
-`~/.agents/rules/models.md`; Marcos may name others. PR policy (DK, Arnica, SDD, force push) is in
-`~/.agents/rules/vtex-pr.md`.
+`~/.agents/rules/models.md`; Marcos may name others. The PR policy of the repo's organization (review bots, required checks, force
+push), when there is one, is linked from `~/.agents/AGENTS.local.md`.
 
 ```
 implement (Sonnet | Opus) ──► review once (Opus | Fable) ──► fix (Sonnet) ──► verify (orchestrator)
@@ -43,7 +43,8 @@ the reason).
 ## 3. Fix
 
 One **Sonnet** (Opus if a finding needs design judgment) fixes, in one round: the reviewer's fix-now
-findings, CodeRabbit's comments (fix or answer), DK Review per `vtex-pr.md`, and every red CI check. It
+findings, review-bot comments per the organization's PR policy (fix or answer each), and every red CI
+check. It
 replies to each thread it addressed. One agent per worktree at a time: parallel agents collide on hooks
 and builds.
 

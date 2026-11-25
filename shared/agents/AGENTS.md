@@ -63,7 +63,6 @@ Always apply the rules in `~/.agents/rules/` as if they were inlined here. Read 
 - `~/.agents/rules/notification.md` — when to notify the user via `/notification`
 - `~/.agents/rules/remote-dev.md` — bind servers to 0.0.0.0 and supply Tailscale URLs when in SSH / remote mode
 - `~/.agents/rules/models.md` — default model per kind of subagent work
-- `~/.agents/rules/vtex-pr.md` — PR policy in VTEX repos: DK Review, Arnica, CodeRabbit, SDD, force push, mergeable after push
 <!-- rules -->
 
 @RTK.md

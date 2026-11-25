@@ -9,7 +9,7 @@
 #   worktree         the repo the run commits to
 #   log-file         the log run-yokai.sh writes (its .pid and .exit files sit beside it)
 #   precheck-command optional; run every tick from the worktree. Non-zero exit → PRECHECK_FAILED.
-#                    Example: ".koi/link-sukima.sh check || .koi/link-sukima.sh link"
+#                    Example: ".koi/link-dep.sh check || .koi/link-dep.sh link" (re-link a local dependency)
 #
 # Env: INTERVAL (s, default 1800), STALE (s without log output while alive, default 3600),
 #      MAX_RESTARTS (default 2), YOKAI_ARGS (default "--headless --max-iters 2").
