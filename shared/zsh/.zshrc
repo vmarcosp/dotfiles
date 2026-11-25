@@ -45,7 +45,8 @@ if [[ -f "$DOTFILES/$host/zsh.zsh" ]]; then
   source "$DOTFILES/$host/zsh.zsh"
 fi
 
-if [[ -z "${TMUX:-}" && -o interactive && -t 0 && -t 1 ]] && command -v tmux >/dev/null; then
+# macOS stays in the shell. Omarchy still attaches on an interactive tty.
+if [[ "$host" != macos && -z "${TMUX:-}" && -o interactive && -t 0 && -t 1 ]] && command -v tmux >/dev/null; then
   # A package upgrade leaves the old server running; the new client then can't
   # attach and only says "open terminal failed: not a terminal".
   _tmux_client="${$(tmux -V)#tmux }"
