@@ -51,7 +51,9 @@ Agent/
         └─ Runs/<HISTÓRIA> <run> — decisões.md   orchestrator log (skill orchestrate)
 ```
 
-- Write in pt-BR. Every note gets frontmatter `date: YYYY-MM-DD` and `type: notes`.
+- Write in en-US (chat with Marcos stays pt-BR). Every note gets frontmatter `date: YYYY-MM-DD` and
+  `type: notes`. When a task, phase or epic ends, delete its folder; move what stays true to the repo,
+  Jira or the project's `Contexto.md`.
 - Start a session on an epic by reading its `handoff.md` and `Estado.md` (skill `handoff`).
 - A new project or epic folder is created only after Marcos confirms its name.
 - Jira is the source of truth for execution; a lasting technical decision goes to the repo (RFC, ADR,

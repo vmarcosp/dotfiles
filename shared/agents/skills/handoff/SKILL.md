@@ -33,8 +33,8 @@ Done when one path is chosen.
    - **Do not reopen:** decisions already taken.
    - **Local state:** env lines, forged versions, ports, spare worktrees, backup tags with the repo they
      live in.
-2. Overwrite `handoff.md` with the frontmatter (`date`, `type: notes`) and the sections `Rodando`,
-   `PRs`, `Esperando o Marcos`, `Próximos passos`, `Não reabrir`, `Locais`, in pt-BR. Link `[[Estado]]`
+2. Overwrite `handoff.md` with the frontmatter (`date`, `type: notes`) and the sections `Running`,
+   `PRs`, `Waiting on Marcos`, `Next steps`, `Do not reopen`, `Local state`, in en-US. Link `[[Estado]]`
    and the active run log. Keep it under ~60 lines: detail belongs in `Estado.md` or the run log.
 3. If a milestone changed (phase closed, scope decided), update `Estado.md` too.
 4. Append one line to the active run log, if any: date, "handoff escrito".
