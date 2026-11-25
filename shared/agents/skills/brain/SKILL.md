@@ -1,60 +1,41 @@
 ---
 name: brain
-description: Map of Marcos's Obsidian vault (~/projects/brain) for coding agents — what each folder holds, the one folder agents may write (Agent/), what never to read, frontmatter, and how to look up people, projects and channels. Use when reading or writing anything in the Brain, resolving a person, project, channel or VTEX term, or deciding where an agent note goes.
+description: How coding agents use Marcos's private notes vault (the "Brain") — where it lives, what may be read, the one folder agents write (Agent/), how agent notes are laid out and kept, and how to look up people, projects and terms. Use when reading or writing anything in the Brain, resolving a person, project or term, or deciding where an agent note goes.
 ---
 
-The vault is `~/projects/brain` (private, git-synced). It is Marcos's work vault, kept mostly by his
-Hermes agent **Atena**. Coding agents (Claude Code, Cursor) read the whole vault and write **only in
-`Agent/`**. The vault's own rules are in `~/projects/brain/AGENTS.md`; read it before writing.
+The vault's location, what must never be read and how to look things up are machine-local: read
+`~/.agents/AGENTS.local.md` first. The vault documents itself: its root `AGENTS.md` (folders,
+boundaries, frontmatter) and `Agent/README.md` (the agent folder). Read both before writing.
 
-## Never
+## Rules
 
-- Read `Terapia*`, `Interview*`, `Debrief*` files or any `.env`.
-- Write outside `Agent/`. A change elsewhere (even the vault `AGENTS.md`) needs Marcos's explicit ok
-  for that change, with the diff shown first.
-- Create folders the vault says not to: `References/`, `Proposals/`, `Inbox/`, `Garden/`, `Agents/`.
-- Put actionables in the vault: they go to Todoist (`td`, skill `todoist-cli`). Work tasks go to Jira.
-
-## Looking things up
-
-- Person, Slack channel, project, repo or VTEX term: run `~/.hermes/scripts/brain` first, e.g.
-  `~/.hermes/scripts/brain person Davis`. Use Slack/Jira/Confluence MCPs only when it has no match or
-  live data is needed. With none or many matches, ask Marcos.
-- Ambiguous names or acronyms: `CONTEXT.md`. People and projects: `Atena/Context/People.md`,
-  `Atena/Context/Projects.md`.
-
-## Folders
-
-| Folder | Holds | Agents |
-|---|---|---|
-| `Agent/` | Coding agents' working notes: method, project context, epic state, handoffs, run logs | read + write |
-| `Atena/Context/` | People and Projects directory | read |
-| `Atena/Memory/` | Atena's sessions and reviews | read |
-| `Library/Notes/` | Ideas, references, proposals, long docs | read |
-| `Library/Researches/` | Agent research outputs | read |
-| `Library/Mentorias/`, `Library/Drawings/` | Mentoring, Excalidraw | read |
-| `Career/` | Goals, brag doc, cycles | read |
-| `Journal/Meetings/`, `Journal/Daily/` | Meetings and dailies | read |
-| `Templates/`, `Excalidraw/` | Templates and drawings | read |
+- Read what the vault's `AGENTS.md` allows; never read what `AGENTS.local.md` forbids.
+- Write **only in `Agent/`**. A change anywhere else, even the vault's `AGENTS.md`, needs Marcos's
+  explicit ok for that change, with the diff shown first.
+- Actionables do not go in the vault: personal reminders go to Todoist, work tasks to the issue tracker.
+- Resolve a person, project, channel or term with the lookup `AGENTS.local.md` names before any MCP
+  search; with none or many matches, ask Marcos.
 
 ## Agent/
 
 ```
 Agent/
 ├─ README.md                   how the folder works
-├─ Method/                     how Marcos works with agents (all projects)
-└─ <Project>/                  e.g. VTEX Studio/
-    ├─ Context.md             stable: repos, docs, Jira, traps
-    └─ <EPIC> <name>/         e.g. FSPG-1234 Epic name/
-        ├─ State.md           live, short: phases, open items, decisions in force
+├─ Method/                     how Marcos works with agents (every project)
+├─ <Org>/                      rules for every repo of an organization (e.g. its PR policy)
+└─ <Project>/
+    ├─ Context.md              stable: repos, docs, issue tracker, traps
+    └─ <EPIC> <name>/          one folder per epic or large task in progress
+        ├─ State.md            live, short: phases, open items, decisions in force
         ├─ handoff.md          "where I am now" (skill handoff)
         └─ Runs/<STORY> <run> — decisions.md   orchestrator log (skill orchestrate)
 ```
 
-- Write in en-US (chat with Marcos stays pt-BR). Every note gets frontmatter `date: YYYY-MM-DD` and
-  `type: notes`. When a task, phase or epic ends, delete its folder; move what stays true to the repo,
-  Jira or the project's `Context.md`.
+- Write in en-US, file and folder names included (chat with Marcos stays pt-BR). Every note gets the
+  frontmatter the vault's `AGENTS.md` defines.
 - Start a session on an epic by reading its `handoff.md` and `State.md` (skill `handoff`).
 - A new project or epic folder is created only after Marcos confirms its name.
-- Jira is the source of truth for execution; a lasting technical decision goes to the repo (RFC, ADR,
-  reference), not here. Delete a note that lost its purpose; git keeps the history.
+- When a task, phase or epic ends, delete its folder (`/handoff close`); move what stays true to the
+  repo, the issue tracker or the project's `Context.md`. Nothing about finished work stays.
+- The issue tracker is the source of truth for execution; a lasting technical decision goes to the repo
+  (RFC, ADR, reference), not here. Delete a note that lost its purpose; git keeps the history.
